@@ -32,12 +32,13 @@
             this.tbSpreadsheetPath = new System.Windows.Forms.TextBox();
             this.btnSpreadsheetBrowse = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.cbBuildTrace = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnBuild
             // 
             this.btnBuild.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBuild.Location = new System.Drawing.Point(159, 51);
+            this.btnBuild.Location = new System.Drawing.Point(137, 51);
             this.btnBuild.Name = "btnBuild";
             this.btnBuild.Size = new System.Drawing.Size(132, 23);
             this.btnBuild.TabIndex = 0;
@@ -71,11 +72,22 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "Requirements Spreadsheet";
             // 
+            // cbBuildTrace
+            // 
+            this.cbBuildTrace.AutoSize = true;
+            this.cbBuildTrace.Location = new System.Drawing.Point(290, 55);
+            this.cbBuildTrace.Name = "cbBuildTrace";
+            this.cbBuildTrace.Size = new System.Drawing.Size(137, 17);
+            this.cbBuildTrace.TabIndex = 7;
+            this.cbBuildTrace.Text = "Build Traceability Matrix";
+            this.cbBuildTrace.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(450, 84);
+            this.Controls.Add(this.cbBuildTrace);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnSpreadsheetBrowse);
             this.Controls.Add(this.tbSpreadsheetPath);
@@ -94,6 +106,7 @@
         private System.Windows.Forms.TextBox tbSpreadsheetPath;
         private System.Windows.Forms.Button btnSpreadsheetBrowse;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox cbBuildTrace;
 
     }
 }

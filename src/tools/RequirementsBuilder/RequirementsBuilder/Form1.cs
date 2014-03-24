@@ -33,9 +33,10 @@ namespace RequirementsBuilder
 
         private void PerformBuildRequirements()
         {
-            _excel = new Microsoft.Office.Interop.Excel.Application();
-            _word = new Microsoft.Office.Interop.Word.Application();
+            _excel = new Excel.Application();
+            _word = new Word.Application();
             _word.Visible = true;
+            _excel.Visible = true;
 
             this.BeginInvoke(
                         new Action<Form1>(s =>
@@ -49,15 +50,23 @@ namespace RequirementsBuilder
             if (File.Exists(spreadsheetPath))
             {
                 var workbook = _excel.Workbooks.Open(spreadsheetPath);
-                Word.Document doc = BuildRequirementsDoc(workbook);
-                try 
+                var requirements = new List<Requirement>();
+                Word.Document doc = BuildRequirementsDoc(workbook, out requirements);
+                if (cbBuildTrace.Enabled)
+                {
+                    BuildTraceMatrix(workbook, requirements);
+                    try
+                    {
+                        workbook.Save();
+                    }
+                    catch (Exception) { } 
+                }
+                try
                 {
                     // This call throws when the user elects to 'cancel' the save operation.
                     doc.Save();
                 }
-                catch (Exception)
-                { }
-               
+                catch (Exception) { }
             }
             else
             {
@@ -79,20 +88,66 @@ namespace RequirementsBuilder
                         }), new object[] { this });
         }
 
-        private Word.Document BuildRequirementsDoc(Excel.Workbook workbook)
+        private void BuildTraceMatrix(Excel.Workbook workbook, List<Requirement> requirements)
+        {
+            Excel.Worksheet urdSheet = workbook.Worksheets["URD"];
+            Excel.Worksheet traceSheet = workbook.Worksheets["Matrix"];
+
+            var urdColMap = new Dictionary<string, int>();
+            for (int i = 2; i < urdSheet.UsedRange.Rows.Count; i++)
+            {
+                Excel.Range row = urdSheet.UsedRange.Rows[i];
+                var cellValue = row.Cells[Missing, 1].Value as string;
+                if (cellValue != null)
+                {
+                    urdColMap.Add(cellValue, i); 
+                }
+            }
+
+            var srsTraceMap = new Dictionary<string, string[]>();
+            requirements.ForEach(r => srsTraceMap.Add(r.Id, r.Traceability != null ? r.Traceability.Trim().Split(',') : new string[] { "" }));
+
+            int rowIdx = 2;
+
+            // URD Column headings
+            foreach (var pair in urdColMap)
+            {
+                traceSheet.Cells[1, pair.Value].Value = pair.Key;
+            }
+
+            // Fill out the table
+            foreach (var pair in srsTraceMap)
+            {
+                traceSheet.Cells[rowIdx, 1].Value = pair.Key;
+                foreach (var tracedUrd in pair.Value)
+                {
+                    if (urdColMap.ContainsKey(tracedUrd))
+                    {
+                        traceSheet.Cells[rowIdx, urdColMap[tracedUrd]].Value = "X";
+                    }
+                }
+                rowIdx++;
+            }
+        }
+
+        private Word.Document BuildRequirementsDoc(Excel.Workbook workbook, out List<Requirement> requirements)
         {
             Word.Document doc = CreateWordDocument();
             doc.Activate();
             Excel.Worksheet rqmntsWorksheet = workbook.Worksheets["SRS"];
 
             Excel.Range usedRange = rqmntsWorksheet.UsedRange;
-            var requirements = new List<Requirement>();
+            requirements = new List<Requirement>();
 
             // The first row (i == 1) is reserved for headings, so skip it. 
             for (int i = 2; i < usedRange.Rows.Count; i++)
             {
                 var row = usedRange.Rows[i];
-                requirements.Add(ExcelRowToRequirement(row));
+                var rqmnt = ExcelRowToRequirement(row);
+                if (rqmnt.Id != null)
+                {
+                    requirements.Add(rqmnt);
+                }
             }
 
             // Categorise requirements by their functional mappings (e.g. Sensing and Environment)
