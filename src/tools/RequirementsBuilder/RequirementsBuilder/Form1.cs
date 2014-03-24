@@ -94,7 +94,7 @@ namespace RequirementsBuilder
             Excel.Worksheet traceSheet = workbook.Worksheets["Matrix"];
 
             var urdColMap = new Dictionary<string, int>();
-            for (int i = 2; i < urdSheet.UsedRange.Rows.Count; i++)
+            for (int i = 2; i <= urdSheet.UsedRange.Rows.Count; i++)
             {
                 Excel.Range row = urdSheet.UsedRange.Rows[i];
                 var cellValue = row.Cells[Missing, 1].Value as string;
@@ -105,9 +105,20 @@ namespace RequirementsBuilder
             }
 
             var srsTraceMap = new Dictionary<string, string[]>();
-            requirements.ForEach(r => srsTraceMap.Add(r.Id, r.Traceability != null ? r.Traceability.Trim().Split(',') : new string[] { "" }));
-
-            int rowIdx = 2;
+            
+            foreach(var r in requirements)
+            {
+                var tracedList = new string [] { "" };
+                if (r.Traceability != null)
+                {
+                    tracedList = r.Traceability.Split(',');
+                }
+                for (int i = 0; i < tracedList.Length; i++)
+                {
+                    tracedList[i] = tracedList[i].Trim();
+                }
+                srsTraceMap.Add(r.Id, tracedList);
+            }
 
             // URD Column headings
             foreach (var pair in urdColMap)
@@ -115,9 +126,12 @@ namespace RequirementsBuilder
                 traceSheet.Cells[1, pair.Value].Value = pair.Key;
             }
 
+            int rowIdx = 2;
+
             // Fill out the table
             foreach (var pair in srsTraceMap)
             {
+                // SRS Row label
                 traceSheet.Cells[rowIdx, 1].Value = pair.Key;
                 foreach (var tracedUrd in pair.Value)
                 {
