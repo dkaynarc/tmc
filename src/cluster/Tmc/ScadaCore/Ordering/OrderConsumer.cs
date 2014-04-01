@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tmc.Scada.Core
+namespace Tmc.Scada.Core.Ordering
 {
-    internal class Robot : IRobot
+    class OrderConsumer
     {
-        public string Name { get; set; }
     }
 }

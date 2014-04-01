@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sensors
+namespace Tmc.Robotics
 {
-    public class Class1
+    public interface IRobot
     {
     }
 }

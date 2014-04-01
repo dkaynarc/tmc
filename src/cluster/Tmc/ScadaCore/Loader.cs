@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tmc.Robotics
+namespace Tmc.Scada.Core
 {
-    public class Placeholder
+    class Loader
     {
     }
 }

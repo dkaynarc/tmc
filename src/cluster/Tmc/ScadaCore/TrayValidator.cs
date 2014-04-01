@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tmc.Scada.Core
 {
-    internal interface IRobot : IEquipment
+    class TrayValidator
     {
     }
 }

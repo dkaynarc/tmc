@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tmc.Scada.Core
 {
-    internal interface IEquipment
+    class Tray
     {
-        string Name { get; set; }
     }
 }

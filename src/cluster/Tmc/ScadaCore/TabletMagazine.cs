@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sensors
+namespace Tmc.Scada.Core
 {
-    public class Class1
+    class TabletMagazine
     {
+        public Dictionary<string, int> Slots { get; set; }
     }
 }

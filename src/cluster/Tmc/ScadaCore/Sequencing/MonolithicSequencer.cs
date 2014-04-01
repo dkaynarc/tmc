@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sensors
+namespace Tmc.Scada.Core.Sequencing
 {
-    public class Class1
+    class MonolithicSequencer : Sequencer
     {
     }
 }
