@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace Tmc.Scada.Core.Ordering
 {
-    class Order
+    public class Order
     {
+        public OrderConfiguration Configuration { get; set; }
+
+        public string Id { get; set; }
+
+        public Order()
+        {
+            this.Configuration = new OrderConfiguration();
+        }
     }
 }

@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace Tmc.Scada.Core.Ordering
 {
-    class OrderConsumer
+    public class OrderConsumer
     {
+        private Queue<Order> _orderQueue;
+
+        public OrderConsumer()
+        {
+            this._orderQueue = new Queue<Order>();
+        }
     }
 }

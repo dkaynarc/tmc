@@ -9,7 +9,7 @@ using Tmc.Sensors;
 
 namespace Tmc.Scada.Core
 {
-    internal class ClusterConfig
+    public class ClusterConfig
     {
         public string Name;
         public Dictionary<string, IRobot> Robots;

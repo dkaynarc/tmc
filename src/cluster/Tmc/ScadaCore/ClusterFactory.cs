@@ -9,7 +9,7 @@ namespace Tmc.Scada.Core
 {
     internal static class ClusterFactory
     {
-        internal static ClusterConfig LoadFromFile(string filename)
+        private static ClusterConfig CreateClusterConfig(string filename)
         {
             ClusterConfig config = null;
             try

@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace Tmc.Scada.Core.Sequencing
 {
-    class MonolithicSequencer : Sequencer
+    public interface ISequencer
     {
+        string Name { get; set; }
+        bool Enabled { get; }
+
+        void Start();
+        void Update();
+        void Stop();
     }
 }
