@@ -19,6 +19,7 @@ namespace Tmc.Scada.Core.Sequencing
         public bool Enabled { get; private set; }
         public Dictionary<string, FSMState> States { get { return _states; } set { _states = value; } }
 
+        private ScadaEngine _engine;
         private FSMState _currState;
         private FSMState _nextState;
         private Dictionary<string, FSMState> _states;
@@ -37,8 +38,9 @@ namespace Tmc.Scada.Core.Sequencing
             }
         }
 
-        public FSMSequencer()
+        public FSMSequencer(ScadaEngine engine)
         {
+            _engine = engine;
             _currState = null;
             _nextState = _currState;
             _states = new Dictionary<string, FSMState>();

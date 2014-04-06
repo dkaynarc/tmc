@@ -12,18 +12,18 @@ namespace Tmc.Scada.Core
     public class ClusterConfig
     {
         public string Name;
-        public Dictionary<string, IRobot> Robots;
+        public Dictionary<Type, IRobot> Robots;
         public Dictionary<string, IConveyor> Conveyors;
         public Dictionary<string, ICamera> Cameras;
-        public Dictionary<string, ISensor> Sensors;
+        public Dictionary<Type, ISensor> Sensors;
         
         ClusterConfig()
         {
             Name = "";
-            Robots = new Dictionary<string, IRobot>();
+            Robots = new Dictionary<Type, IRobot>();
             Conveyors = new Dictionary<string, IConveyor>();
             Cameras = new Dictionary<string, ICamera>();
-            Sensors = new Dictionary<string, ISensor>();
+            Sensors = new Dictionary<Type, ISensor>();
         }
     }
 }
