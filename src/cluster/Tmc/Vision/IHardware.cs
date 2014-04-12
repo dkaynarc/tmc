@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Tmc.Vision
 {
-    class TrayDetector
+    class IHardware
     {
+
     }
 }
