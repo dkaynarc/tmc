@@ -16,6 +16,6 @@ namespace Tmc.Common
     public interface IHardware
     {
         string Name { get; set; }
-        HardwareStatus GetHardwareStatus();
+        //HardwareStatus GetHardwareStatus();
     }
 }
