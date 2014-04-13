@@ -68,25 +68,50 @@ namespace Tmc.Scada.Core
         {
             ClusterConfig config = new ClusterConfig();
 
+            var hardware = new List<IHardware>();
+
             foreach (var hwTemplate in template.Hardware)
             {
-                
+                hardware.Add(CreateHardware(hwTemplate.Type));
+            }
+
+            foreach (var hw in hardware)
+            {
+                if (hw is IRobot)
+                {
+                    config.Robots.Add(hw.GetType(), hw as IRobot);
+                }
+
+                if (hw is IConveyor)
+                {
+                    config.Conveyors.Add(hw.GetType(), hw as IConveyor);
+                }
+
+                if (hw is ISensor)
+                {
+                    config.Sensors.Add(hw.GetType(), hw as ISensor);
+                }
+
+                if (hw is ICamera)
+                {
+                    config.Cameras.Add(hw.Name, hw as ICamera);
+                }
             }
 
             return config;
         }
 
-        private static T CreateHardware<T>() where T : class, IHardware
+        private static IHardware CreateHardware(Type type)
         {
-            var typeSwitch = new Dictionary<Type, IHardware>
+            var typeSwitch = new Dictionary<Type, Func<IHardware>>
             {
-                { typeof(ICamera),      CreateCamera() },
-                { typeof(ISensor),      CreateSensor() },
-                { typeof(IRobot),       CreateRobot(typeof(T)) },
-                { typeof(IConveyor),    CreateConveyor(typeof(T))}
+                { typeof(ICamera),      () => { return CreateCamera(); }},
+                { typeof(ISensor),      () => { return CreateSensor(); }},
+                { typeof(IRobot),       () => { return CreateRobot(type); }},
+                { typeof(IConveyor),    () => { return CreateConveyor(); }}
             };
 
-            return typeSwitch[typeof(T)] as T;
+            return typeSwitch[type]();
         }
 
         private static ICamera CreateCamera()
@@ -100,12 +125,12 @@ namespace Tmc.Scada.Core
             throw new NotImplementedException();
         }
 
-        private static IRobot CreateRobot(Type t)
+        private static IRobot CreateRobot(Type type)
         {
-            throw new NotImplementedException();
+            return RobotFactory.CreateRobot(type);
         }
 
-        private static IConveyor CreateConveyor(Type t)
+        private static IConveyor CreateConveyor()
         {
             throw new NotImplementedException();
         }

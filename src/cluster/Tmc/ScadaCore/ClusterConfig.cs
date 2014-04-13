@@ -13,7 +13,7 @@ namespace Tmc.Scada.Core
     {
         public string Name;
         public Dictionary<Type, IRobot> Robots;
-        public Dictionary<string, IConveyor> Conveyors;
+        public Dictionary<Type, IConveyor> Conveyors;
         public Dictionary<string, ICamera> Cameras;
         public Dictionary<Type, ISensor> Sensors;
         public Dictionary<Type, IActivityController> ActivityController;
@@ -22,7 +22,7 @@ namespace Tmc.Scada.Core
         {
             Name = "";
             Robots = new Dictionary<Type, IRobot>();
-            Conveyors = new Dictionary<string, IConveyor>();
+            Conveyors = new Dictionary<Type, IConveyor>();
             Cameras = new Dictionary<string, ICamera>();
             Sensors = new Dictionary<Type, ISensor>();
             ActivityController = new Dictionary<Type, IActivityController>();
