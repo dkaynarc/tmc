@@ -16,11 +16,21 @@ namespace Tmc.Scada.Core
     internal static class ClusterFactory
     {
         private static readonly Dictionary<string, Type> HardwareMapping;
-        private static readonly Dictionary<string, ClusterTemplate> ClusterTemplates;
         
         static ClusterFactory()
         {
             HardwareMapping = new Dictionary<string, Type>();
+            BuildMappings();
+        }
+
+        public static ClusterConfig CreateCluster(string fileName)
+        {
+            var doc = XDocument.Load(fileName);
+            var root = doc.Element("Plant");
+            var templateName = root.Attribute("Name").Value;
+            var clusterElement = root.Element("Cluster");
+            var clusterTemplate = LoadClusterTemplate(clusterElement);
+            return CreateClusterConfig(clusterTemplate);
         }
 
         private static void BuildMappings()
@@ -54,29 +64,15 @@ namespace Tmc.Scada.Core
             }
         }
 
-        public static ClusterConfig CreateCluster(string fileName)
-        {
-            var doc = XDocument.Load(fileName);
-            var root = doc.Element("Plant");
-            var templateName = root.Attribute("Name").Value;
-            var clusterElement = root.Element("Cluster");
-            var clusterTemplate = LoadClusterTemplate(clusterElement);
-            return CreateClusterConfig(clusterTemplate);
-        }
-
         private static ClusterConfig CreateClusterConfig(ClusterTemplate template)
         {
             ClusterConfig config = new ClusterConfig();
 
-            var hardware = new List<IHardware>();
-
             foreach (var hwTemplate in template.Hardware)
             {
-                hardware.Add(CreateHardware(hwTemplate.Type));
-            }
+                var hw = CreateHardware(hwTemplate.Type);
+                hw.SetParameters(hwTemplate.Parameters);
 
-            foreach (var hw in hardware)
-            {
                 if (hw is IRobot)
                 {
                     config.Robots.Add(hw.GetType(), hw as IRobot);
