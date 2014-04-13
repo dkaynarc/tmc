@@ -12,7 +12,6 @@ namespace Tmc.Scada.Core.Ordering
 
         public string Id { get; set; }
 
-
         public Order()
         {
             this.Configuration = new OrderConfiguration();
