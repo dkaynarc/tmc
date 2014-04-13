@@ -18,7 +18,7 @@ namespace Tmc.Scada.Core
         public Dictionary<Type, ISensor> Sensors;
         public Dictionary<Type, IActivityController> ActivityController;
         
-        ClusterConfig()
+        public ClusterConfig()
         {
             Name = "";
             Robots = new Dictionary<Type, IRobot>();

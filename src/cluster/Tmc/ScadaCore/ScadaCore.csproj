@@ -58,7 +58,7 @@
     <Compile Include="Ordering\OrderConsumer.cs" />
     <Compile Include="Palletiser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reporting\ReportGenerator.cs" />
+    <Compile Include="Sequencing\Reporting\ReportGenerator.cs" />
     <Compile Include="ScadaEngine.cs" />
     <Compile Include="Sequencing\FSMState.cs" />
     <Compile Include="Sequencing\ISequencer.cs" />

@@ -9,7 +9,6 @@ namespace Tmc.Common
     public enum HardwareStatus
     {
         Offline,
-        Online,
         Operational,
         Failed
     }
@@ -17,6 +16,6 @@ namespace Tmc.Common
     public interface IHardware
     {
         string Name { get; set; }
-        HardwareStatus GetHardwareStatus();
+        HardwareStatus GetStatus();
     }
 }
