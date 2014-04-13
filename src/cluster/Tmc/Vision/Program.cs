@@ -14,6 +14,8 @@ namespace Tmc.Vision
         [STAThread]
         static void Main()
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
             SorterVision sort = new SorterVision();
             sort.hi();
         }

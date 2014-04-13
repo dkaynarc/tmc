@@ -16,6 +16,7 @@ namespace Tmc.Vision
         public void hi()
         {
             string win1 = "Test Window"; //The name of the window
+
             CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
 
             Image<Bgr, Byte> img = new Image<Bgr, byte>(400, 200, new Bgr(255, 0, 0)); //Create an image of 400x200 of Blue color
