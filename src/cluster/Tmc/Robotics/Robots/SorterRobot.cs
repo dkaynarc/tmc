@@ -1,4 +1,5 @@
-﻿namespace Tmc.Robotics
+﻿using System.Collections.Generic;
+namespace Tmc.Robotics
 {
     public class SorterRobot : IRobot
     {
@@ -7,6 +8,11 @@
         public Common.HardwareStatus GetStatus()
         {
             return Common.HardwareStatus.Offline;
+        }
+
+        public void SetParameters(Dictionary<string, string> parameters)
+        {
+
         }
     }
 }

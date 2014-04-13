@@ -17,5 +17,6 @@ namespace Tmc.Common
     {
         string Name { get; set; }
         HardwareStatus GetStatus();
+        void SetParameters(Dictionary<string, string> parameters);
     }
 }
