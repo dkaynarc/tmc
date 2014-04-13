@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 using System.Xml.Linq;
 using Tmc.Common;
 using Tmc.Robotics;
-using Tmc.Vision;
 using Tmc.Sensors;
+using Tmc.Vision;
 
 namespace Tmc.Scada.Core
 {
@@ -32,10 +27,9 @@ namespace Tmc.Scada.Core
         public static ClusterConfig CreateCluster(string fileName)
         {
             var doc = XDocument.Load(fileName);
-            var root = doc.Element("Plant");
+            var root = doc.Element("Cluster");
             var templateName = root.Attribute("Name").Value;
-            var clusterElement = root.Element("Cluster");
-            var clusterTemplate = LoadClusterTemplate(clusterElement);
+            var clusterTemplate = LoadClusterTemplate(root);
             return CreateClusterConfig(clusterTemplate);
         }
 
@@ -100,7 +94,23 @@ namespace Tmc.Scada.Core
                 }
             }
 
+            config.Controllers = CreateControllers(config);
+
             return config;
+        }
+
+        private static Dictionary<Type, IController> CreateControllers(ClusterConfig config)
+        {
+            var controllers = new Dictionary<Type, IController>();
+
+            controllers.Add(typeof(Assembler), new Assembler(config));
+            controllers.Add(typeof(ConveyorController), new ConveyorController(config));
+            controllers.Add(typeof(Loader), new Loader(config));
+            controllers.Add(typeof(Palletiser), new Palletiser(config));
+            controllers.Add(typeof(Sorter), new Sorter(config));
+            controllers.Add(typeof(TrayVerifier), new TrayVerifier(config));
+
+            return controllers;
         }
 
         private static IHardware CreateHardware(Type type)

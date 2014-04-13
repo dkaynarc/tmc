@@ -39,34 +39,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assembler.cs" />
-    <Compile Include="IActivityController.cs" />
+    <Compile Include="Controllers\Assembler.cs" />
+    <Compile Include="Controllers\IController.cs" />
     <Compile Include="EnvironmentMonitor.cs" />
     <Compile Include="ClusterConfig.cs" />
     <Compile Include="ClusterFactory.cs" />
     <Compile Include="ConfigTemplates.cs" />
-    <Compile Include="ConveyorController.cs" />
+    <Compile Include="Controllers\ConveyorController.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="IScada.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="NameAttribute.cs" />
     <Compile Include="HardwareMonitor.cs" />
     <Compile Include="Sequencing\FSMSequencer.cs" />
-    <Compile Include="Loader.cs" />
+    <Compile Include="Controllers\Loader.cs" />
     <Compile Include="Ordering\Order.cs" />
     <Compile Include="Ordering\OrderConfiguration.cs" />
     <Compile Include="Ordering\OrderConsumer.cs" />
-    <Compile Include="Palletiser.cs" />
+    <Compile Include="Controllers\Palletiser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sequencing\Reporting\ReportGenerator.cs" />
+    <Compile Include="Reporting\ReportGenerator.cs" />
     <Compile Include="ScadaEngine.cs" />
     <Compile Include="Sequencing\FSMState.cs" />
     <Compile Include="Sequencing\ISequencer.cs" />
-    <Compile Include="Sorter.cs" />
+    <Compile Include="Controllers\Sorter.cs" />
     <Compile Include="Tablet.cs" />
     <Compile Include="TabletMagazine.cs" />
     <Compile Include="Tray.cs" />
-    <Compile Include="TrayVerifier.cs" />
+    <Compile Include="Controllers\TrayVerifier.cs" />
     <Compile Include="XmlFactory.cs" />
   </ItemGroup>
   <ItemGroup>

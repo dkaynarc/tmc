@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Tmc.Scada.Core
 {
-    class TrayVerifier : IActivityController
+    public class Sorter : ControllerBase
     {
+        public Sorter(ClusterConfig config) : base(config)
+        {
+        }
     }
 }

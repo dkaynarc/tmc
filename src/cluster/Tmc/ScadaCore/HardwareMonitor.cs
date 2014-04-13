@@ -15,9 +15,7 @@ namespace Tmc.Scada.Core
         public HardwareMonitor(ScadaEngine engine)
         {
             this._engine = engine;
-            this._hardware = new List<IHardware>();
-            var config = engine.ClusterConfig;
-            //_hardware.AddRange();
+            _hardware = _engine.ClusterConfig.GetAllHardware();
         }
     }
 }

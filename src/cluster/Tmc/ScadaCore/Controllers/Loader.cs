@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Tmc.Scada.Core
 {
-    class Loader : IActivityController
+    public class Loader : ControllerBase
     {
+        public Loader(ClusterConfig config) : base(config)
+        {
+        }
     }
 }

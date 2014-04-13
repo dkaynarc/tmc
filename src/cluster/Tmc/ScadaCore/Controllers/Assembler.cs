@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Tmc.Scada.Core
 {
-    public interface IActivityController
+    public class Assembler : ControllerBase
     {
-
+        public Assembler(ClusterConfig config) : base(config)
+        {
+        }
     }
 }

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Tmc.Common;
 using Tmc.Robotics;
-using Tmc.Vision;
 using Tmc.Sensors;
+using Tmc.Vision;
 
 namespace Tmc.Scada.Core
 {
@@ -16,7 +15,7 @@ namespace Tmc.Scada.Core
         public Dictionary<Type, IConveyor> Conveyors;
         public Dictionary<string, ICamera> Cameras;
         public Dictionary<Type, ISensor> Sensors;
-        public Dictionary<Type, IActivityController> ActivityController;
+        public Dictionary<Type, IController> Controllers;
         
         public ClusterConfig()
         {
@@ -25,7 +24,17 @@ namespace Tmc.Scada.Core
             Conveyors = new Dictionary<Type, IConveyor>();
             Cameras = new Dictionary<string, ICamera>();
             Sensors = new Dictionary<Type, ISensor>();
-            ActivityController = new Dictionary<Type, IActivityController>();
+            Controllers = new Dictionary<Type, IController>();
+        }
+
+        public List<IHardware> GetAllHardware()
+        {
+            var hardware = new List<IHardware>();
+            hardware.AddRange(Robots.Values.ToList());
+            hardware.AddRange(Conveyors.Values.ToList());
+            hardware.AddRange(Cameras.Values.ToList());
+            hardware.AddRange(Sensors.Values.ToList());
+            return hardware;
         }
     }
 }
