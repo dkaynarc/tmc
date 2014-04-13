@@ -1,6 +1,8 @@
-﻿namespace Tmc.Robotics
+﻿using Tmc.Common;
+
+namespace Tmc.Robotics
 {
-    public interface IConveyor
+    public interface IConveyor : IHardware
     {
     }
 }
