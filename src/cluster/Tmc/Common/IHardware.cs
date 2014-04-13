@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Tmc.Common
 {
-    enum HardwareStatus
+    public enum HardwareStatus
     {
         Offline,
+        Online,
         Operational,
         Failed
     }

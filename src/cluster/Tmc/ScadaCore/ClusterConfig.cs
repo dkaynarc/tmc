@@ -16,6 +16,7 @@ namespace Tmc.Scada.Core
         public Dictionary<string, IConveyor> Conveyors;
         public Dictionary<string, ICamera> Cameras;
         public Dictionary<Type, ISensor> Sensors;
+        public Dictionary<Type, IActivityController> ActivityController;
         
         ClusterConfig()
         {
@@ -24,6 +25,7 @@ namespace Tmc.Scada.Core
             Conveyors = new Dictionary<string, IConveyor>();
             Cameras = new Dictionary<string, ICamera>();
             Sensors = new Dictionary<Type, ISensor>();
+            ActivityController = new Dictionary<Type, IActivityController>();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tmc.Scada.Core
 {
-    class Sorter
+    class Sorter : IActivityController
     {
     }
 }
