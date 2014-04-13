@@ -54,6 +54,12 @@ namespace Tmc.Scada.Core
             }
         }
 
+        /// <summary>
+        /// Creates a TMC cluster and returns a configuration object that 
+        /// encapsulates the hardware and controllers.
+        /// </summary>
+        /// <param name="fileName">Path to an XML file to parse</param>
+        /// <returns>Cluster Configuration object encapsulating the created hardware and controllers.</returns>
         public static ClusterConfig CreateCluster(string fileName)
         {
             var doc = XDocument.Load(fileName);
