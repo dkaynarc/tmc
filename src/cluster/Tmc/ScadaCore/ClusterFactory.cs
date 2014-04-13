@@ -71,7 +71,6 @@ namespace Tmc.Scada.Core
             foreach (var hwTemplate in template.Hardware)
             {
                 var hw = CreateHardware(hwTemplate.Type);
-                hw.SetParameters(hwTemplate.Parameters);
 
                 if (hw is IRobot)
                 {
@@ -92,6 +91,9 @@ namespace Tmc.Scada.Core
                 {
                     config.Cameras.Add(hw.Name, hw as ICamera);
                 }
+                
+                hw.SetParameters(hwTemplate.Parameters);
+                hw.Initialise();
             }
 
             config.Controllers = CreateControllers(config);

@@ -10,9 +10,12 @@ namespace Tmc.Robotics
             return Common.HardwareStatus.Offline;
         }
 
+        public void Initialise()
+        {
+        }
+
         public void SetParameters(Dictionary<string, string> parameters)
         {
-
         }
     }
 }
