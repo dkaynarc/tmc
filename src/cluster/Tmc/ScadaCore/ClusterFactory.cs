@@ -23,6 +23,12 @@ namespace Tmc.Scada.Core
             BuildMappings();
         }
 
+        /// <summary>
+        /// Creates a TMC cluster and returns a configuration object that 
+        /// encapsulates the hardware and controllers.
+        /// </summary>
+        /// <param name="fileName">Path to an XML file to parse</param>
+        /// <returns>Cluster Configuration object encapsulating the created hardware and controllers.</returns>
         public static ClusterConfig CreateCluster(string fileName)
         {
             var doc = XDocument.Load(fileName);
@@ -62,22 +68,6 @@ namespace Tmc.Scada.Core
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Creates a TMC cluster and returns a configuration object that 
-        /// encapsulates the hardware and controllers.
-        /// </summary>
-        /// <param name="fileName">Path to an XML file to parse</param>
-        /// <returns>Cluster Configuration object encapsulating the created hardware and controllers.</returns>
-        public static ClusterConfig CreateCluster(string fileName)
-        {
-            var doc = XDocument.Load(fileName);
-            var root = doc.Element("Plant");
-            var templateName = root.Attribute("Name").Value;
-            var clusterElement = root.Element("Cluster");
-            var clusterTemplate = LoadClusterTemplate(clusterElement);
-            return CreateClusterConfig(clusterTemplate);
         }
 
         private static ClusterConfig CreateClusterConfig(ClusterTemplate template)
