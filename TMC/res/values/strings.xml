@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TMC</string>
+    <string name="action_settings">Settings</string>
+    <string name="loginactivity_title_tv">Login Details</string>
+    <string name="loginactivity_username_tv">Username:</string>
+    <string name="loginactivity_password_tv">Password:</string>
+    <string name="loginactivity_login_b">Login</string>
+    <string name="selection_operations_b">Operations</string>
+    <string name="selection_orders_b">Orders</string>
+    <string name="selection_logout_b">Logout</string>
+    <string name="queuelist_createorder_b">Create Order</string>
+    <string name="orderrow_orderstatus_iv">Order Status</string>
+    <string name="orderrow_deleteorder_ib">Delete Order</string>
+    <string name="title_selection">Selection</string>
+    <string name="title_order_list">Order List</string>
+    <string name="title_activity_module">TMC</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="list_nodata">No Data.</string>
+    <string name="orderrow_ordername_tv">Name: </string>
+    <string name="orderrow_ordernumber_tv">Number: </string>
+    <string name="orderrow_orderstatus_tv">Status: </string>
+    <string name="title_activity_create_order">CreateOrderActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="createorder_title_tv">Create Order</string>
+    <string name="createorder_ordername_tv">Order Name:</string>
+    <string name="createorder_ordernumber_tv">Order Number:</string>
+    <string name="createorder_createorder_b">Create</string>
+    <string name="createorder_cancel_b">Cancel</string>
+    <string name="controller_shutdown_b">Shutdown</string>
+    <string name="controller_startup_b">Startup</string>
+    <string name="controller_emergencystop_b">Emergency Stop</string>
+    <string name="machinerow_machinetype_iv">Machine Type</string>
+    <string name="machinerow_machinename_tv">Machine Name: </string>
+    <string name="machinerow_machinestatus_tv">Machine Status: </string>
+    <string name="machinelist_shutdown_b">Shutdown</string>
+    <string name="machinelist_startup_b">Startup</string>
+    <string name="machinelist_emergencystop_b">Emergency Stop</string>
+    <string name="logout_logout_b">Logout</string>
+    <string name="title_activity_modify_order">ModifyOrderActivity</string>
+    <string name="modifyorder_title_tv">Modify Order</string>
+    <string name="modifyorder_ordername_tv">Order Name:</string>
+    <string name="modifyorder_ordernumber_tv">Order Number:</string>
+    <string name="modifyorder_modifyorder_b">Modify</string>
+    <string name="modifyorder_cancel_b">Cancel</string>
+
+</resources>

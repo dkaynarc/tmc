@@ -1,0 +1,77 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".CreateOrderActivity" >
+
+    <TextView
+        android:id="@+id/createorder_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/createorder_title_tv"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/createorder_ordername_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/createorder_title_tv"
+        android:layout_marginTop="20dp"
+        android:text="@string/createorder_ordername_tv"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <EditText
+        android:id="@+id/createorder_ordername_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/createorder_ordername_tv"
+        android:layout_alignBaseline="@+id/createorder_ordername_tv"
+        android:ems="10"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/createorder_ordernumber_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/createorder_ordername_tv"
+        android:layout_marginTop="20dp"
+        android:text="@string/createorder_ordernumber_tv"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <EditText
+        android:id="@+id/createorder_ordernumber_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/createorder_ordernumber_tv"
+        android:layout_alignBaseline="@+id/createorder_ordernumber_tv"
+        android:ems="10"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/createorder_createorder_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/createorder_ordernumber_tv"
+        android:layout_marginTop="30dp"
+        android:onClick="onCreateOrderClicked"
+        android:text="@string/createorder_createorder_b" />
+
+    <Button
+        android:id="@+id/createorder_cancel_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onCancelOrderClicked"
+        android:layout_alignBaseline="@+id/createorder_createorder_b"
+        android:layout_toRightOf="@+id/createorder_createorder_b"
+        android:text="@string/createorder_cancel_b" />
+
+</RelativeLayout>
