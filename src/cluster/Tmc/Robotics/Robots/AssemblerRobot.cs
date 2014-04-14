@@ -2,21 +2,8 @@
 
 namespace Tmc.Robotics
 {
-    public class AssemblerRobot : IRobot
+    public class AssemblerRobot : BaseRobot
     {
-        public string Name { get; set; }
-
-        public Common.HardwareStatus GetStatus()
-        {
-            return Common.HardwareStatus.Offline;
-        }
-
-        public void Initialise()
-        {
-        }
-
-        public void SetParameters(Dictionary<string, string> parameters)
-        {
-        }
+       
     }
 }
