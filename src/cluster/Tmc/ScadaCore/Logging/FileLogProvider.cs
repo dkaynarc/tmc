@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Tmc.Scada.Core
 {
-    public sealed class FileLogProvider : ILogProvider
+    public sealed class FileLogProvider : ILogProvider, IDisposable
     {
         private StreamWriter _streamWriter;
 
@@ -19,6 +19,11 @@ namespace Tmc.Scada.Core
             this.ProvidedStrategy = LogStrategy.File;
             this.DefaultLogLevel = defaultLogLevel;
             OpenFile(fileName);
+        }
+
+        public void Dispose()
+        {
+            _streamWriter.Dispose();
         }
 
         public void Write(string message)
