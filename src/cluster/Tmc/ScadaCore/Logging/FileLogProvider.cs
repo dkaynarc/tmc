@@ -44,9 +44,9 @@ namespace Tmc.Scada.Core
                 _streamWriter = new StreamWriter(fileName, true);
                 _streamWriter.AutoFlush = true;
             }
-            catch (FileNotFoundException)
+            catch (IOException)
             {
-                throw new ArgumentException("Filename " + fileName + "does not exist");
+                throw new ArgumentException("Filename " + fileName + "is invalid");
             }
         }
     }
