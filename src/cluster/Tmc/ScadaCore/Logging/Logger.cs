@@ -36,11 +36,9 @@ namespace Tmc.Scada.Core
 
         private Logger()
         {
-            var appSettings = ConfigurationManager.AppSettings;
-            //var filename = ConfigurationManager.AppSettings["logfile"].ToString();
-            var filename = appSettings["LogFile"];
+            var fileName = ConfigurationManager.AppSettings["LogFile"].ToString();
             _logProviders = new List<ILogProvider>();
-            _logProviders.Add(new FileLogProvider(filename.ToString()));
+            _logProviders.Add(new FileLogProvider(fileName));
             DefaultStrategy = LogStrategy.All;
             Strategy = DefaultStrategy;
         }
