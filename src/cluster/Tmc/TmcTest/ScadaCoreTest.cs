@@ -27,7 +27,10 @@ namespace TmcTest
             LogEntry logMessage = new LogEntry("Test123");
 
             // act
-            using(var fileLogProvider = new FileLogProvider(filePath)){fileLogProvider.Write(logMessage);}
+            using (var fileLogProvider = new FileLogProvider(filePath))
+            {
+                fileLogProvider.Write(logMessage);
+            }
 
             var reader = new StreamReader(filePath);
                 
