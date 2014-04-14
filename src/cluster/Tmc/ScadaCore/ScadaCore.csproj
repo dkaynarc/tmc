@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -48,7 +49,10 @@
     <Compile Include="Controllers\ConveyorController.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="IScada.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="Logging\FileLogProvider.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\ILogProvider.cs" />
+    <Compile Include="Logging\LogEntry.cs" />
     <Compile Include="NameAttribute.cs" />
     <Compile Include="HardwareMonitor.cs" />
     <Compile Include="Sequencing\FSMSequencer.cs" />
