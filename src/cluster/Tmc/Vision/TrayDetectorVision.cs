@@ -12,8 +12,8 @@ namespace Tmc.Vision
 {
     class TrayDetectorVision
     {
-        private fixed int Xarray[4];
-        private fixed int Yarray[4];
+        private int[] Xarray;
+        private int[] Yarray;
         private Camera camera;
 
         TrayDetectorVision(Camera camera)

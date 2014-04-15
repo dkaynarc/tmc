@@ -7,16 +7,14 @@ using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using Tmc.Common;
 
 namespace Tmc.Vision
 {
-    class Camera
+    public class Camera : IHardware
     {
-        //private string cameraLocation;
-
-        public Camera()//string cameraLocation)
+        public Camera()
         {
-            //this.cameraLocation = cameraLocation;
         }
 
         public void GetImage(ref IntPtr image)

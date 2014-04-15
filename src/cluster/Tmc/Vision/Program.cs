@@ -22,8 +22,8 @@ namespace Tmc.Vision
             Application.SetCompatibleTextRenderingDefault(false);
             //SorterVision sort = new SorterVision();
             //sort.hi();
-            Camera SorterCamera         = new Camera("hi");
-            Camera TrayDetectionCamera  = new Camera("bye");
+            Camera SorterCamera         = new Camera();
+            Camera TrayDetectionCamera  = new Camera();
 
 
         }
