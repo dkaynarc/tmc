@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tmc.Common;
 
 namespace Tmc.Vision
 {
    
-    public interface ICamera
+    public interface ICamera : IHardware
     {
-         //SorterVision sortc = new SorterVision();
-
-         void hi();
     }
 }

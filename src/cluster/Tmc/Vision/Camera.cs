@@ -11,8 +11,9 @@ using Tmc.Common;
 
 namespace Tmc.Vision
 {
-    public class Camera : IHardware
+    public class Camera : ICamera
     {
+        public string Name { get; set; }
         public Camera()
         {
         }
@@ -22,10 +23,20 @@ namespace Tmc.Vision
              
         }
 
-        public bool GetStatues()
-        {
 
-            return true;
+        public HardwareStatus GetStatus()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Initialise()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetParameters(Dictionary<string, string> parameters)
+        {
+            throw new NotImplementedException();
         }
     }
 }
