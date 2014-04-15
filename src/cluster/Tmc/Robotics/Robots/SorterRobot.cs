@@ -1,21 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 namespace Tmc.Robotics
 {
-    public class SorterRobot : IRobot
+    public class SorterRobot : BaseRobot
     {
-        public string Name { get; set; }
-
-        public Common.HardwareStatus GetStatus()
+        public void GetMagazine()
         {
-            return Common.HardwareStatus.Offline;
+            this.RunRapidProgram("this is a stub");
         }
 
-        public void Initialise()
+        public void ReturnMagazine()
         {
+            this.RunRapidProgram("this is a stub");
         }
 
-        public void SetParameters(Dictionary<string, string> parameters)
+        public void GetTablet(int XCoord, int YCoord, int magazineIndex)
         {
+            this.RunRapidProgram("this is a stub");
         }
     }
 }

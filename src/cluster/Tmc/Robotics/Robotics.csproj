@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ABB.Robotics.Controllers.PC">
+      <HintPath>Service References\ABB.Robotics.Controllers.PC.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConveyorFactory.cs" />
+    <Compile Include="Conveyors\BluetoothConveyor.cs" />
     <Compile Include="Robots\AssemblerRobot.cs" />
     <Compile Include="Contracts\IConveyor.cs" />
     <Compile Include="Contracts\IRobot.cs" />
@@ -46,6 +51,7 @@
     <Compile Include="Robots\PalletiserRobot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RobotFactory.cs" />
+    <Compile Include="Robots\Primatives\BaseRobot.cs" />
     <Compile Include="Robots\SorterRobot.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -54,7 +60,28 @@
       <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="mod\GetMagazine.mod">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mod\pickUpChip.mod">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mod\ReturnMagazine.mod">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mod\shakeProcedure.mod">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="mod\unloadProcedure.mod">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

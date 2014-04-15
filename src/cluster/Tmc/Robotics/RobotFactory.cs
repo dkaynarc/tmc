@@ -34,25 +34,21 @@
         private static AssemblerRobot BuildAssembler()
         {
             return new AssemblerRobot() { Name = "Assembler" };
-            throw new NotImplementedException();
         }
 
         private static LoaderRobot BuildLoader()
         {
             return new LoaderRobot() { Name = "Loader" };
-            throw new NotImplementedException();
         }
 
         private static PalletiserRobot BuildPalletiser()
         {
             return new PalletiserRobot() { Name = "Palletiser" };
-            throw new NotImplementedException();
         }
 
         private static SorterRobot BuildSorter()
         {
             return new SorterRobot() { Name = "Sorter" };
-            throw new NotImplementedException();
         }
     }
 }

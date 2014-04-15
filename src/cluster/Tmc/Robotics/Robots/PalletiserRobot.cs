@@ -1,23 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Tmc.Robotics
 {
-    public class PalletiserRobot : IRobot
+    public class PalletiserRobot : BaseRobot
     {
-        public string Name { get; set; }
-
-        public Common.HardwareStatus GetStatus()
+        public void Palletise()
         {
-            return Common.HardwareStatus.Offline;
-        }
-
-        public void Initialise()
-        {
-        }
-
-        public void SetParameters(Dictionary<string, string> parameters)
-        {
-
+            this.RunRapidProgram("this is a stub");
         }
     }
 }
