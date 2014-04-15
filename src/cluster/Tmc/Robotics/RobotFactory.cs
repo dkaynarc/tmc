@@ -3,8 +3,13 @@
     using System;
     using System.Collections.Generic;
 
+   
+
+
     public static class RobotFactory
     {
+
+        
         public static T CreateRobot<T>() where T : class, IRobot
         {
             var caseSwitch = new Dictionary<Type, Func<T>>
