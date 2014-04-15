@@ -8,16 +8,27 @@ namespace Tmc.Robotics
 {
     public static class ConveyorFactory
     {
-        public static T CreateFactory<T>() where T : class, IRobot
+        public static T CreateConveyor<T>() where T : class, IRobot
         {
             var caseSwitch = new Dictionary<Type, Func<T>>
             {
-                {typeof(BluetoothConveyor)
-            }
+                {typeof(BluetoothConveyor), () => { return BuildBluetoothConveyor() as T; }}
+            };
+
             return caseSwitch[typeof(T)]();
         }
 
-        private void BluetoothConveyor BuildBluetoothConveyor()
+        public static IConveyor CreateConveyor(Type type)
+        {
+            var caseSwitch = new Dictionary<Type, Func<IConveyor>>
+            {
+                {typeof(BluetoothConveyor), () => { return BuildBluetoothConveyor(); }}
+            };
+
+            return caseSwitch[type]();
+        }
+
+        private static BluetoothConveyor BuildBluetoothConveyor()
         {
             return new BluetoothConveyor();
         }
