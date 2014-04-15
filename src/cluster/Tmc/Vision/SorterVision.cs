@@ -13,7 +13,28 @@ namespace Tmc.Vision
 {
     class SorterVision
     {
-        public void hi()
+        private Camera camera;
+
+        SorterVision(Camera camera)
+        {
+            this.camera = camera;
+        }
+
+        public void RunSorterCamera()
+        {
+            
+        }
+
+        private void GetXYZForTablets()
+        {
+            
+        }
+
+        private void DetectOverLap()
+        {
+                   
+        }
+        /*public void hi()
         {
             string win1 = "Test Window"; //The name of the window
 
@@ -27,6 +48,6 @@ namespace Tmc.Vision
             CvInvoke.cvShowImage(win1, img); //Show the image
             CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
             CvInvoke.cvDestroyWindow(win1); //Destory the window
-        }
+        }*/
     }
 }

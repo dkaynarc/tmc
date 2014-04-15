@@ -8,5 +8,20 @@ namespace Tmc.Vision
 {
     class VisionBase
     {
+
+        VisionBase()
+        { 
+            
+        }
+
+        public void DetectTablets()
+        {
+            
+        }
+
+        public void DetectTabletType()
+        {
+            
+        }
     }
 }

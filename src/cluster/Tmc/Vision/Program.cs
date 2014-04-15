@@ -12,12 +12,20 @@ namespace Tmc.Vision
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
+
+        //private Camera SorterCamera;
+        //private Camera TrayCamera;
         static void Main()
         {
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            SorterVision sort = new SorterVision();
-            sort.hi();
+            //SorterVision sort = new SorterVision();
+            //sort.hi();
+            Camera SorterCamera         = new Camera("hi");
+            Camera TrayDetectionCamera  = new Camera("bye");
+
+
         }
     }
 }
