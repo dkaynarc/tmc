@@ -58,14 +58,25 @@ namespace Tmc.Robotics
 
         public void SetParameters(Dictionary<string, string> parameters)
         {
+            string param;
             IPAddress ip;
-            if(IPAddress.TryParse(parameters["IPAddress"], out ip))
+
+            if(!parameters.TryGetValue("IPAddress", out param))
             {
-                this.RobotIPAddress = ip;
-                return;
+                throw new Exception("Robots require an IPAddress parameter");
             }
 
-            throw new ArgumentException("Invalid IP Address for robot");
+            if(!IPAddress.TryParse(param, out ip))
+            {
+                throw new ArgumentException("Invalid IP Address for robot");
+            }
+
+            if(parameters.TryGetValue("Name", out param))
+            {
+                this.Name = param;
+            }
+
+            this.RobotIPAddress = ip;
         }
 
         protected void RunRapidProgram(string filename)
