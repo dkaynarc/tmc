@@ -3,19 +3,13 @@
     using System;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// just testing my sourse tree is working
-    /// </summary>
+   
 
 
     public static class RobotFactory
     {
 
-        /// <summary>
-        /// Test my source tree is working again
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        
         public static T CreateRobot<T>() where T : class, IRobot
         {
             var caseSwitch = new Dictionary<Type, Func<T>>
