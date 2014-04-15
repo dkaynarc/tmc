@@ -51,6 +51,11 @@ namespace Tmc.Robotics
             throw new Exception(string.Format("Robot at {0} could not be found.", this.RobotIPAddress));
         }
 
+        public void Shutdown()
+        {
+
+        }
+
         public void SetParameters(Dictionary<string, string> parameters)
         {
             IPAddress ip;
