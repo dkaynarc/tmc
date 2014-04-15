@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tmc.Scada.Core
 {
-    class TabletMagazine
+    public class TabletMagazine
     {
         public Dictionary<string, int> Slots { get; set; }
     }

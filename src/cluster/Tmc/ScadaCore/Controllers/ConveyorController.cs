@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Tmc.Scada.Core
 {
-    class ConveyorManager
+    public class ConveyorController : ControllerBase
     {
+        public ConveyorController(ClusterConfig config) : base(config)
+        {
+        }
     }
 }

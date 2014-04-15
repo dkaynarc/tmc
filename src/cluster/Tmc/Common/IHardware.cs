@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tmc.Common
 {
-    enum HardwareStatus
+    public enum HardwareStatus
     {
         Offline,
         Operational,
@@ -16,6 +16,8 @@ namespace Tmc.Common
     public interface IHardware
     {
         string Name { get; set; }
-        //HardwareStatus GetHardwareStatus();
+        HardwareStatus GetStatus();
+        void Initialise();
+        void SetParameters(Dictionary<string, string> parameters);
     }
 }

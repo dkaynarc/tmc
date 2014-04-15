@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tmc.Scada.Core
+namespace Tmc.Scada.Core.Sequencing
 {
-    class Loader
+    public static class StateHelpers
     {
+        
     }
 }
