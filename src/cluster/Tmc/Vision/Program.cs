@@ -18,13 +18,20 @@ namespace Tmc.Vision
         static void Main()
         {
             
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            //SorterVision sort = new SorterVision();
-            //sort.hi();
-            Camera SorterCamera         = new Camera();
-            Camera TrayDetectionCamera  = new Camera();
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            ////SorterVision sort = new SorterVision();
+            ////sort.hi();
+            //Camera SorterCamera         = new Camera();
+            //Camera TrayDetectionCamera  = new Camera();
+            TestCamera();
+        }
 
+        static void TestCamera()
+        {
+            ICamera c = new Camera();
+            c.SetParameters(new Dictionary<string, string> { { "Name", "TestCam1" }, { "ConnectionString", "0" } });
+            c.Initialise();
 
         }
     }

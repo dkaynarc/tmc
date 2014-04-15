@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using Tmc.Common;
 
 namespace Tmc.Vision
 {
@@ -18,6 +19,12 @@ namespace Tmc.Vision
         SorterVision(Camera camera)
         {
             this.camera = camera;
+        }
+
+        public List<Tablet> GetVisibleTablets()
+        {
+            var tablets = new List<Tablet>();
+            return tablets;
         }
 
         public void RunSorterCamera()

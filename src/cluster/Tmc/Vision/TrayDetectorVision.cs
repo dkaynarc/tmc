@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
@@ -15,7 +16,7 @@ namespace Tmc.Vision
         private int[] Xarray;
         private int[] Yarray;
         private Camera camera;
-
+        public Point p;
         TrayDetectorVision(Camera camera)
         {
             this.camera = camera;
@@ -29,7 +30,6 @@ namespace Tmc.Vision
 
         private bool DetectTray()
         {
-
             return true;
         }
 
