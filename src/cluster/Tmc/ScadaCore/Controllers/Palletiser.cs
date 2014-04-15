@@ -11,5 +11,9 @@ namespace Tmc.Scada.Core
         public Palletiser(ClusterConfig config) : base(config)
         {
         }
+
+        public override void Begin(ControllerParams parameters)
+        {
+        }
     }
 }

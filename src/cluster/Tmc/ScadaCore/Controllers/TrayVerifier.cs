@@ -12,4 +12,9 @@ namespace Tmc.Scada.Core
         {
         }
     }
+
+    public class TrayVerifierParams : ControllerParams
+    {
+        public Tray TraySpecification { get; set; }
+    }
 }

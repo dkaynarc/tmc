@@ -67,6 +67,7 @@
     <Compile Include="Sequencing\FSMState.cs" />
     <Compile Include="Sequencing\ISequencer.cs" />
     <Compile Include="Controllers\Sorter.cs" />
+    <Compile Include="Sequencing\StateHelpers.cs" />
     <Compile Include="Tablet.cs" />
     <Compile Include="TabletMagazine.cs" />
     <Compile Include="Tray.cs" />

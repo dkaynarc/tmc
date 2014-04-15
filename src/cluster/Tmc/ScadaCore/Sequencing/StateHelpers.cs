@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tmc.Scada.Core
+namespace Tmc.Scada.Core.Sequencing
 {
-    public class TabletMagazine
+    public static class StateHelpers
     {
-        public Dictionary<string, int> Slots { get; set; }
+        
     }
 }

@@ -11,5 +11,19 @@ namespace Tmc.Scada.Core
         public Sorter(ClusterConfig config) : base(config)
         {
         }
+
+        public override void Begin(ControllerParams parameters)
+        {
+            var p = parameters as SorterParams;
+            if (p != null)
+            {
+                OnCompleted(new EventArgs()); 
+            }
+        }
+    }
+
+    public class SorterParams : ControllerParams
+    {
+        public TabletMagazine Magazine;
     }
 }

@@ -10,6 +10,20 @@ namespace Tmc.Scada.Core
     {
         public Assembler(ClusterConfig config) : base(config)
         {
+        }    
+
+        public override void Begin(ControllerParams parameters)
+        {
+            var p = parameters as AssemblerParams;
+            if (p != null)
+            {
+                OnCompleted(new EventArgs());
+            }
         }
+    }
+
+    public class AssemblerParams : ControllerParams
+    {
+        public OrderConfiguration OrderConfig;
     }
 }
