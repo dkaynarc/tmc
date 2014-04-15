@@ -10,7 +10,7 @@ using Tmc.Common;
 
 namespace Tmc.Robotics
 {
-    internal class BaseRobot : IRobot
+    public class BaseRobot : IRobot
     {
         public string Name { get; set; }
         public IPAddress RobotIPAddress { get; set; }
