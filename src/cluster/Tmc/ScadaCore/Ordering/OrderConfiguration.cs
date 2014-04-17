@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tmc.Scada.Core.Ordering
+namespace Tmc.Scada.Core
 {
-    class OrderConfiguration
+    public class OrderConfiguration
     {
     }
 }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace Tmc.Scada.App
 {
     public partial class MainForm : Form
@@ -15,6 +16,7 @@ namespace Tmc.Scada.App
         public MainForm()
         {
             InitializeComponent();
+
         }
     }
 }

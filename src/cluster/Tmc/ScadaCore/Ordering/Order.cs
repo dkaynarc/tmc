@@ -4,9 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tmc.Scada.Core.Ordering
+namespace Tmc.Scada.Core
 {
-    class Order
+    public class Order
     {
+        public OrderConfiguration Configuration { get; set; }
+
+        public string Id { get; set; }
+
+        public Order()
+        {
+            this.Configuration = new OrderConfiguration();
+        }
     }
 }
