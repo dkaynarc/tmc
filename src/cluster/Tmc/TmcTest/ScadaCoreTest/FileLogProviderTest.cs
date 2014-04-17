@@ -3,10 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tmc.Scada.Core;
 using System.IO;
 
-namespace TmcTest
+namespace TmcTest.ScadaCore
 {
     [TestClass]
-    public class ScadaCoreTest
+    public class FileLogProviderTest
     {
 
         //A test method must meet the following requirements:
@@ -19,7 +19,7 @@ namespace TmcTest
         /// This is then read back using the StreamReader to ensure the log was written correctly
         /// </summary>
         [TestMethod]
-        public void FileLogProviderTest()
+        public void FileLogProviderTest_Write()
         {
             // arrange
             const string filePath = "TestFile.txt";
