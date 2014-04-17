@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Tmc.Scada.Core
 {
-    class Palletiser
+    public class TrayVerifier : ControllerBase
     {
+        public TrayVerifier(ClusterConfig config) : base(config)
+        {
+        }
     }
 }
