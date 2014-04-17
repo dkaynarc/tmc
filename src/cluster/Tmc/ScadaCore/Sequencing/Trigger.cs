@@ -1,7 +1,7 @@
 ﻿
 namespace Tmc.Scada.Core.Sequencing
 {
-    public enum StateEvent
+    public enum Trigger
     {
         // Global commands
         Shutdown,
@@ -14,6 +14,6 @@ namespace Tmc.Scada.Core.Sequencing
         // State specific commands
         // Verification
         TrayVerificationCompleted,
-        ProductVerificationCompleted,
+        ProductVerificationCompleted
     }
 }

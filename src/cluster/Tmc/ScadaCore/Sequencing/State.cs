@@ -8,6 +8,7 @@ namespace Tmc.Scada.Core.Sequencing
         Startup,
         Shutdown,
         Idle,
+        Running,
         // Assembly Process States
         LoadingTray,
         AssemblyConveyorMovingForward,

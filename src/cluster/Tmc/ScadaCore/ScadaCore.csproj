@@ -62,7 +62,7 @@
     <Compile Include="Logging\LogEntry.cs" />
     <Compile Include="NameAttribute.cs" />
     <Compile Include="HardwareMonitor.cs" />
-    <Compile Include="Sequencing\StateEvent.cs" />
+    <Compile Include="Sequencing\Trigger.cs" />
     <Compile Include="Sequencing\FSMSequencer.cs" />
     <Compile Include="Controllers\Loader.cs" />
     <Compile Include="Ordering\Order.cs" />
