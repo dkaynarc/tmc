@@ -1,22 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Tmc.Robotics
 {
-    public class LoaderRobot : IRobot
+    public class LoaderRobot : BaseRobot
     {
-        public string Name { get; set; }
-
-        public Common.HardwareStatus GetStatus()
+        public void GetTray(int trayNumber)
         {
-            return Common.HardwareStatus.Offline;
-        }
-        
-        public void Initialise()
-        {
+            this.RunRapidProgram("this is a stub");
         }
 
-        public void SetParameters(Dictionary<string, string> parameters)
+        public void Palletise()
         {
+            this.RunRapidProgram("this is a stub");
         }
     }
 }
