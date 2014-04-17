@@ -31,12 +31,14 @@ namespace Tmc.Scada.Core.Sequencing
             this._conveyorController = _engine.ClusterConfig.Controllers[typeof(ConveyorController)] as ConveyorController;
             this._assembler = _engine.ClusterConfig.Controllers[typeof(Assembler)] as Assembler;
             this._loader = _engine.ClusterConfig.Controllers[typeof(Loader)] as Loader;
+            this._sorter = _engine.ClusterConfig.Controllers[typeof(Sorter)] as Sorter;
             this._trayVerifier = _engine.ClusterConfig.Controllers[typeof(TrayVerifier)] as TrayVerifier;
             this._palletiser = _engine.ClusterConfig.Controllers[typeof(Palletiser)] as Palletiser;
 
             Debug.Assert(this._conveyorController != null);
             Debug.Assert(this._assembler != null);
             Debug.Assert(this._loader != null);
+            Debug.Assert(this._sorter != null);
             Debug.Assert(this._trayVerifier != null);
             Debug.Assert(this._palletiser != null);
 
@@ -112,6 +114,14 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.Shutdown);
 
             _fsm.In(State.SortingConveyorMovingBackward)
+                .ExecuteOnEntry(() =>
+                {
+                    _conveyorController.Begin(new ConveyorControllerParams
+                    {
+                        ConveyorType = ConveyorType.Sorting,
+                        ConveyorAction = ConveyorAction.MoveBackward
+                    });
+                })
                 .On(Trigger.Completed)
                     .Goto(State.PlacingTabletMagazineInAssemblyBuffer)
                 .On(Trigger.Stop)
@@ -136,6 +146,14 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.Shutdown);
 
             _fsm.In(State.SortingConveyorMovingForward)
+                .ExecuteOnEntry(() =>
+                {
+                    _conveyorController.Begin(new ConveyorControllerParams
+                    {
+                        ConveyorType = ConveyorType.Sorting,
+                        ConveyorAction = ConveyorAction.MoveForward
+                    });
+                })
                 .On(Trigger.Completed)
                     .Goto(State.PlacingTabletMagazineInSortingBuffer)
                 .On(Trigger.Stop)
@@ -163,6 +181,12 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.Shutdown);
 
             _fsm.In(State.AssemblyConveyorMovingForward)
+                .ExecuteOnEntry(() => { 
+                    _conveyorController.Begin(new ConveyorControllerParams
+                        {
+                            ConveyorType = ConveyorType.Assembly,
+                            ConveyorAction = ConveyorAction.MoveForward
+                        }); })
                 .On(Trigger.Completed)
                     .If(() => _conveyorController.CanMoveForward(ConveyorType.Assembly))
                         .Goto(State.VerifyingTray)
@@ -192,6 +216,14 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.Shutdown);
 
             _fsm.In(State.AssemblyConveyorMovingBackward)
+                .ExecuteOnEntry(() =>
+                {
+                    _conveyorController.Begin(new ConveyorControllerParams
+                    {
+                        ConveyorType = ConveyorType.Assembly,
+                        ConveyorAction = ConveyorAction.MoveBackward
+                    });
+                })
                 .On(Trigger.Completed)
                     .If(() => _conveyorController.CanMoveBackward(ConveyorType.Assembly))
                         .Goto(State.VerifyingTray)

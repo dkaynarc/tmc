@@ -10,7 +10,7 @@ namespace Tmc.Scada.Core
     public enum ConveyorType
     {
         Assembly,
-        Sorter
+        Sorting
     }
 
     public enum ConveyorAction
@@ -24,12 +24,14 @@ namespace Tmc.Scada.Core
         private Dictionary<ConveyorType, Type> _conveyorTypeMap;
         private Dictionary<ConveyorAction, Action<IConveyor>> _conveyorActionMap;
 
+        
+
         public ConveyorController(ClusterConfig config) : base(config)
         {
             _conveyorTypeMap = new Dictionary<ConveyorType,Type> 
             {
                 { ConveyorType.Assembly,    typeof(BluetoothConveyor) }, // TODO: Replace with correct type
-                { ConveyorType.Sorter,      typeof(BluetoothConveyor) }
+                { ConveyorType.Sorting,      typeof(BluetoothConveyor) }
             };
 
             _conveyorActionMap = new Dictionary<ConveyorAction, Action<IConveyor>>
