@@ -2,100 +2,114 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
+using Appccelerate.StateMachine;
 
 namespace Tmc.Scada.Core.Sequencing
 {
     public class FSMSequencer : ISequencer
     {
-        private enum FSMStatePhase
-        {
-            Begin = 0,
-            Update,
-            End
-        }
-
         public string Name { get; set; }
-
         public bool Enabled { get; private set; }
-        public Dictionary<string, FSMState> States { get { return _states; } set { _states = value; } }
 
-        private ScadaEngine _engine;
-        private FSMState _currState;
-        private FSMState _nextState;
-        private Dictionary<string, FSMState> _states;
-        private FSMStatePhase _currFSMPhase;
-        private static Dictionary<string, Type> _stateMapping = null;
+        private PassiveStateMachine<State, StateEvent> _fsm;
 
-
-        public FSMSequencer(ScadaEngine engine)
+        public FSMSequencer()
         {
-            _engine = engine;
-            _currState = null;
-            _nextState = _currState;
-            _states = new Dictionary<string, FSMState>();
+            _fsm = new PassiveStateMachine<State, StateEvent>();
+            Create();
         }
 
-        public void Start()
+        private void Create()
         {
-            Enabled = true;
+            CreateSortingStates();
+            CreateAssemblingStates();
+            CreateGlobalStates();
         }
 
-        public void Stop()
+        private void CreateGlobalStates()
         {
-            Enabled = false;
+            _fsm.In(State.Startup)
+                .On(StateEvent.Completed)
+                    .Goto(State.Sorting);
+
+            _fsm.In(State.Idle)
+                .On(StateEvent.Completed)
+                    .Goto(State.LoadingTray);
+
+            _fsm.In(State.Shutdown)
+                .On(StateEvent.Start)
+                    .Goto(State.Startup);
         }
 
-        public void Load(Dictionary<StateTransition, FSMState> transitionTable)
+        private void CreateSortingStates()
         {
-            
+            _fsm.In(State.Sorting)
+                .On(StateEvent.Completed)
+                    .Goto(State.PlacingTabletMagazineOnSortingConveyorFromSorter);
+
+            _fsm.In(State.PlacingTabletMagazineOnSortingConveyorFromSorter)
+                .On(StateEvent.Completed)
+                    .Goto(State.SortingConveyorMovingBackward);
+
+            _fsm.In(State.SortingConveyorMovingBackward)
+                .On(StateEvent.Completed)
+                    .Goto(State.PlacingTabletMagazineInAssemblyBuffer);
+
+            _fsm.In(State.PlacingTabletMagazineInAssemblyBuffer)
+                .On(StateEvent.Completed)
+                    .Goto(State.Idle);
+
+            _fsm.In(State.PlacingTabletMagazineOnSortingConveyorFromAssembler)
+                .On(StateEvent.Completed)
+                    .Goto(State.SortingConveyorMovingForward);
+
+            _fsm.In(State.SortingConveyorMovingForward)
+                .On(StateEvent.Completed)
+                    .Goto(State.PlacingTabletMagazineInSortingBuffer);
+
+            _fsm.In(State.PlacingTabletMagazineInSortingBuffer)
+                .On(StateEvent.Completed)
+                    .Goto(State.Sorting);
         }
 
-        public void Destroy()
+        private void CreateAssemblingStates()
         {
-            foreach (var state in _states.Values)
-            {
-                state.Destroy();
-            }
-        }
+            _fsm.In(State.LoadingTray)
+                .On(StateEvent.Completed)
+                    .Goto(State.AssemblyConveyorMovingForward);
 
-        public void Update()
-        {
-            if (Enabled)
-            {
-                switch (_currFSMPhase)
-                {
-                    case FSMStatePhase.Begin:
-                        _currState.Begin();
-                        _currFSMPhase = FSMStatePhase.Update;
-                        break;
-                    case FSMStatePhase.Update:
-                        //SetNextState(_currState.Update());
-                        break;
-                    case FSMStatePhase.End:
-                        _currState.End();
-                        _currFSMPhase = FSMStatePhase.Begin;
-                        _currState = _nextState;
-                        break;
-                    default:
-                        throw new System.InvalidOperationException("Unknown FSMStatePhase");
-                }
-            }
-        }
+            _fsm.In(State.AssemblyConveyorMovingForward)
+                .On(StateEvent.Completed)
+                    .If(() => true)
+                        .Goto(State.Assembling)
+                    .If(() => false)
+                        .Goto(State.VerifyingTray);
 
-        private void MoveNext(string nextState)
-        {
-            if (!string.IsNullOrEmpty(nextState) && nextState != _currState.Name)
-            {
-                if (_states.ContainsKey(nextState))
-                {
-                    _nextState = _states[nextState];
-                    _currFSMPhase = FSMStatePhase.End;
-                }
-                else
-                {
-                    throw new System.ArgumentException("nextState does not exist in states collection");
-                }
-            }
+            _fsm.In(State.VerifyingTray)
+                .On(StateEvent.Completed)
+                    .If(() => true)
+                        .Goto(State.AssemblyConveyorMovingForward)
+                    .If(() => false)
+                        .Goto(State.AssemblyConveyorMovingBackward);
+
+            _fsm.In(State.Assembling)
+                .On(StateEvent.Completed)
+                    .Goto(State.AssemblyConveyorMovingBackward);
+
+            _fsm.In(State.AssemblyConveyorMovingBackward)
+                .On(StateEvent.Completed)
+                    .If(() => true)
+                        .Goto(State.VerifyingTray)
+                    .If(() => false)
+                        .Goto(State.PlacingTrayInBuffer);
+
+            _fsm.In(State.PlacingTrayInBuffer)
+                .On(StateEvent.Completed)
+                    .Goto(State.Palletising);
+
+            _fsm.In(State.Palletising)
+                .On(StateEvent.Completed)
+                    .Goto(State.Idle);
         }
     }
 }

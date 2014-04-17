@@ -18,7 +18,6 @@ namespace Tmc.Scada.Core
 
         public ScadaEngine()
         {
-            this._sequencer = new FSMSequencer(this);
             this._hardwareMonitor = new HardwareMonitor(this);
             this._environmentMonitor = new EnvironmentMonitor(this);
         }
