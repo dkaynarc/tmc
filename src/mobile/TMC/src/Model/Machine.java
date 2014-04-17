@@ -1,6 +1,6 @@
 /* COPYRIGHT (C) 2014 Carlo Chumroonridhi. All Rights Reserved. */
 
-package com.ictdesign.tmc;
+package Model;
 
 /**
  * Defines the data structure of the machine object as well as its functions.

@@ -2,6 +2,7 @@
 
 package com.ictdesign.tmc;
 
+import Model.Machine;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;

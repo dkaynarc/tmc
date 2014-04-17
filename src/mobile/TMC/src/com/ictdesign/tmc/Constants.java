@@ -5,6 +5,9 @@ package com.ictdesign.tmc;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import Model.Machine;
+import Model.Order;
+
 /**
  * Defines all constants to be used globally between activities.
  * 
