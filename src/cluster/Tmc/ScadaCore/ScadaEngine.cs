@@ -21,5 +21,30 @@ namespace Tmc.Scada.Core
             this._hardwareMonitor = new HardwareMonitor(this);
             this._environmentMonitor = new EnvironmentMonitor(this);
         }
+
+        public void Initialise()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Start()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Stop()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Resume()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EmergencyStop()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
