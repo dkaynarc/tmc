@@ -47,6 +47,7 @@ namespace Tmc.Scada.Core
             if (p != null)
             {
                 _conveyorActionMap[p.ConveyorAction](_conveyorTypeMap[p.ConveyorType] as IConveyor);
+                OnCompleted(new EventArgs());
             }
         }
 
