@@ -14,7 +14,7 @@ namespace Tmc.Scada.Core
         LoadToRejectedBuffer
     }
 
-    public class Loader : ControllerBase
+    public sealed class Loader : ControllerBase
     {
         private LoaderRobot _loaderRobot;
         //private PlcSensor _traySensor;
@@ -64,6 +64,7 @@ namespace Tmc.Scada.Core
                     var shelf = SelectShelf();
                     _loaderRobot.GetTray(shelf);
                     IsRunning = false;
+                    OnCompleted(new EventArgs());
                 });
             task.Start();
         }
@@ -74,6 +75,7 @@ namespace Tmc.Scada.Core
                 {
                     _loaderRobot.Palletise();
                     IsRunning = false;
+                    OnCompleted(new EventArgs());
                 });
             task.Start();
         }
@@ -84,6 +86,7 @@ namespace Tmc.Scada.Core
                 {
                     _loaderRobot.Palletise();
                     IsRunning = false;
+                    OnCompleted(new EventArgs());
                 });
             task.Start();
         }

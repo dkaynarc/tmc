@@ -7,7 +7,7 @@ using Tmc.Robotics;
 
 namespace Tmc.Scada.Core
 {
-    public class Palletiser : ControllerBase
+    public sealed class Palletiser : ControllerBase
     {
         private PalletiserRobot _palletiserRobot;
         public Palletiser(ClusterConfig config) : base(config)
@@ -35,6 +35,7 @@ namespace Tmc.Scada.Core
                 {
                     _palletiserRobot.Palletise();
                     IsRunning = false;
+                    OnCompleted(new EventArgs());
                 });
             task.Start();
         }

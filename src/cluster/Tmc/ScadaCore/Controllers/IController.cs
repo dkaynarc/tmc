@@ -24,10 +24,7 @@ namespace Tmc.Scada.Core
             this.IsRunning = false;
         }
 
-        public virtual void Begin(ControllerParams parameters)
-        {
-
-        }
+        public abstract void Begin(ControllerParams parameters);
 
         protected virtual void OnCompleted(EventArgs e)
         {

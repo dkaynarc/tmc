@@ -27,7 +27,7 @@ namespace Tmc.Scada.Core
         Right
     }
 
-    public class ConveyorController : ControllerBase
+    public sealed class ConveyorController : ControllerBase
     {
         private Dictionary<ConveyorType, Type> _conveyorTypeMap;
         private Dictionary<ConveyorAction, Action<IConveyor>> _conveyorActionMap;
@@ -141,16 +141,14 @@ namespace Tmc.Scada.Core
             return fsm;
         }
 
-        private void MoveConveyor(ConveyorType type, ConveyorAction action)
-        {
-            _conveyorActionMap[action](_conveyorTypeMap[type] as IConveyor);
-            OnCompleted(new EventArgs());
-            IsRunning = false;
-        }
-
         private void MoveConveyorAsync(ConveyorType type, ConveyorAction action)
         {
-            var task = new Task(() => MoveConveyor(type, action));
+            var task = new Task(() =>
+                {
+                    _conveyorActionMap[action](_conveyorTypeMap[type] as IConveyor);
+                    IsRunning = false;
+                    OnCompleted(new EventArgs());
+                });
             task.Start();
         }
     }
