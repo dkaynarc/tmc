@@ -4,7 +4,6 @@ using System.IO;
 using System.Xml.Linq;
 using System.Diagnostics;
 using Appccelerate.StateMachine;
-using Appccelerate.StateMachine.Extensions;
 
 namespace Tmc.Scada.Core.Sequencing
 {
@@ -51,6 +50,8 @@ namespace Tmc.Scada.Core.Sequencing
             CreateSortingStates();
             CreateAssemblingStates();
             CreateGlobalStates();
+
+            _fsm.Initialize(State.Shutdown);
         }
 
         private void CreateGlobalStates()

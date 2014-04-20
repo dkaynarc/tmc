@@ -25,6 +25,7 @@ namespace Tmc.Scada.Core
 
         public virtual void Begin(ControllerParams parameters)
         {
+
         }
 
         protected virtual void OnCompleted(EventArgs e)
