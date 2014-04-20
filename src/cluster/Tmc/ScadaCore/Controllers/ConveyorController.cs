@@ -148,9 +148,10 @@ namespace Tmc.Scada.Core
             IsRunning = false;
         }
 
-        private async void MoveConveyorAsync(ConveyorType type, ConveyorAction action)
+        private void MoveConveyorAsync(ConveyorType type, ConveyorAction action)
         {
-            await new Task(() => MoveConveyor(type, action));
+            var task = new Task(() => MoveConveyor(type, action));
+            task.Start();
         }
     }
 
