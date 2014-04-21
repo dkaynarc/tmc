@@ -8,6 +8,7 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Tmc.Common;
+using System.Drawing;
 
 namespace Tmc.Vision
 {
@@ -28,7 +29,7 @@ namespace Tmc.Vision
 
         public Image<Bgr, byte> GetImage()
         {
-            var img = _capture.QueryFrame();
+            Image<Bgr, Byte> img = new Image<Bgr, byte>("../../tray.jpg");//var img = _capture.QueryFrame();
             if (img == null)
             {
                 _hardwareStatus = HardwareStatus.Failed;
@@ -51,7 +52,15 @@ namespace Tmc.Vision
         {
             try
             {
-                _capture = new Capture(ConnectionString);
+                //_capture = new Capture("http://192.168.0.11:8080/photo.jpg");//ConnectionString);
+                //string win1 = "Test Window"; //The name of the window
+                //CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
+                //BitmapImage image = new BitmapImage(new Uri("http://192.168.0.11:8080/photo.jpg"));
+
+                Image<Bgr, Byte> img = new Image<Bgr, byte>("../../tray.jpg"); //Create an image of 400x200 of Blue color
+                //CvInvoke.cvShowImage(win1, img); //Show the image
+                //CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
+                //CvInvoke.cvDestroyWindow(win1); //Destory the window
             }
             catch (Exception)
             {

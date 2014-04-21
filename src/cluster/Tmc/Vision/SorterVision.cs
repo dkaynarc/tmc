@@ -27,6 +27,11 @@ namespace Tmc.Vision
             return tablets;
         }
 
+        private void DetectOverLap()
+        {
+                   
+        }
+
         public void RunSorterCamera()
         {
             
@@ -35,11 +40,6 @@ namespace Tmc.Vision
         private void GetXYZForTablets()
         {
             
-        }
-
-        private void DetectOverLap()
-        {
-                   
         }
         /*public void hi()
         {
