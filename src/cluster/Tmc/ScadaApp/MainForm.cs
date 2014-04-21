@@ -7,16 +7,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Tmc.Scada.Core;
 
 
 namespace Tmc.Scada.App
 {
     public partial class MainForm : Form
     {
-        public MainForm()
+        private ScadaEngine scadaEngine;
+        public MainForm(ScadaEngine scadaEngine)
         {
             InitializeComponent();
+            this.scadaEngine = scadaEngine;
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = scadaEngine.Add(Convert.ToDouble(textBox2.Text), Convert.ToDouble(textBox3.Text)).ToString();
         }
     }
 }
