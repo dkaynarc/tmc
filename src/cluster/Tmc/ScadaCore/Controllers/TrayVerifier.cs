@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tmc.Vision;
+using Tmc.Common;
 
 namespace Tmc.Scada.Core
 {
