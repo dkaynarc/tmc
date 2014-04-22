@@ -12,6 +12,7 @@ namespace Tmc.Scada.Core
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.Single)]
     public class ScadaEngine : IScada
     {
+        public string Name { get; set; }
         public ClusterConfig ClusterConfig { get; set; }
         private ISequencer _sequencer;
         private HardwareMonitor _hardwareMonitor;

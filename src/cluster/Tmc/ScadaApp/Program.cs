@@ -20,9 +20,9 @@ namespace Tmc.Scada.App
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ScadaEngine scadaEngine = new ScadaEngine();
+            scadaEngine.Name = "Initial";
             scadaEngine.Add(12, 10);
             MainForm mainForm = new MainForm(scadaEngine);
-            
             // Step 1 Create a URI to serve as the base address.
             Uri baseAddress = new Uri("http://localhost:8000/TMC/");
 
@@ -32,8 +32,7 @@ namespace Tmc.Scada.App
             try
             {
                 // Step 3 Add a service endpoint.
-                //selfHost.AddServiceEndpoint(typeof(IScada), new WSHttpBinding(), "ScadaEngine");
-
+                selfHost.AddServiceEndpoint(typeof(IScada), new WSHttpBinding(), "ScadaEngine");
                 // Step 4 Enable metadata exchange.
                 ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
                 smb.HttpGetEnabled = true;
@@ -43,17 +42,15 @@ namespace Tmc.Scada.App
                 selfHost.Open();
                 mainForm.textBox1.Text = "The service is ready.";
 
-
+                Application.Run(mainForm);
                 // Close the ServiceHostBase to shutdown the service.
                 selfHost.Close();
-            }
+             }
             catch (CommunicationException ce)
             {
-                mainForm.textBox1.Text = "An exception occurred: {0}" + ce.Message;
                 selfHost.Abort();
+                MessageBox.Show(ce.Message);
             }
-
-            Application.Run(mainForm);
         }
     }
 }

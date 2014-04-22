@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaApp", "ScadaApp\ScadaApp.csproj", "{2C16F6E8-D131-4CF1-80DB-D460E1D605C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaCore", "ScadaCore\ScadaCore.csproj", "{5B8926DD-DD25-4531-AC23-2B31CB9774D4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService", "WebService\WebService.csproj", "{B5BCF8FA-9E0E-4C0B-9731-F4AE03CF3434}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Robotics", "Robotics\Robotics.csproj", "{DF66D143-D5CC-4BA7-A277-D0E76779B062}"
@@ -19,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TmcTest", "TmcTest\TmcTest.csproj", "{87CA9FC1-0480-44DB-8346-E5D8B963E35F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaCore", "ScadaCore\ScadaCore.csproj", "{5B8926DD-DD25-4531-AC23-2B31CB9774D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +29,6 @@ Global
 		{2C16F6E8-D131-4CF1-80DB-D460E1D605C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C16F6E8-D131-4CF1-80DB-D460E1D605C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C16F6E8-D131-4CF1-80DB-D460E1D605C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5B8926DD-DD25-4531-AC23-2B31CB9774D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B8926DD-DD25-4531-AC23-2B31CB9774D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B8926DD-DD25-4531-AC23-2B31CB9774D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B8926DD-DD25-4531-AC23-2B31CB9774D4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B5BCF8FA-9E0E-4C0B-9731-F4AE03CF3434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B5BCF8FA-9E0E-4C0B-9731-F4AE03CF3434}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5BCF8FA-9E0E-4C0B-9731-F4AE03CF3434}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +53,10 @@ Global
 		{87CA9FC1-0480-44DB-8346-E5D8B963E35F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87CA9FC1-0480-44DB-8346-E5D8B963E35F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87CA9FC1-0480-44DB-8346-E5D8B963E35F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B8926DD-DD25-4531-AC23-2B31CB9774D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B8926DD-DD25-4531-AC23-2B31CB9774D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B8926DD-DD25-4531-AC23-2B31CB9774D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B8926DD-DD25-4531-AC23-2B31CB9774D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
