@@ -33,6 +33,9 @@
     <Reference Include="ABB.Robotics.Controllers.PC">
       <HintPath>Service References\ABB.Robotics.Controllers.PC.dll</HintPath>
     </Reference>
+    <Reference Include="Conveyor">
+      <HintPath>..\..\..\..\..\..\Users\Shale\Documents\TMC Old\Conveyor\Code Samples\Conveyor Code Samples\Conveyorw\Debug\Conveyor.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
