@@ -12,7 +12,7 @@ using Emgu.CV.GPU;
 
 namespace Tmc.Vision
 {
-    abstract class VisionBase: Form1
+    public abstract class VisionBase
     {
 
        // VisionBase()

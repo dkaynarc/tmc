@@ -12,7 +12,7 @@ using Tmc.Common;
 
 namespace Tmc.Vision
 {
-    class SorterVision : VisionBase
+    public class SorterVision : VisionBase
     {
         int min, max;
         double par1;

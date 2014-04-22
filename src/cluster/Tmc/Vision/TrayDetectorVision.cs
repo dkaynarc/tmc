@@ -12,7 +12,7 @@ using Emgu.CV.GPU;
 
 namespace Tmc.Vision
 {
-    class TrayDetectorVision : VisionBase
+    public class TrayDetectorVision : VisionBase
     {
         int min, max;
         double par1;

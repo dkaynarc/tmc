@@ -70,19 +70,19 @@ namespace Tmc.Vision
 
         public void SetParameters(Dictionary<string, string> parameters)
         {
+        //    {
+        //        this.ConnectionString = s;
+        //    }
+            
+            
             string s = "";
             if (parameters.TryGetValue("Name", out s))
             {
                 this.Name = s;
             }
             if (parameters.TryGetValue("ConnectionString", out s))
-            {
-                this.ConnectionString = s;
-            }
-            else
-            {
                 throw new InvalidOperationException("No connection string passed to camera");
-            }
+            
         }
     }
 }
