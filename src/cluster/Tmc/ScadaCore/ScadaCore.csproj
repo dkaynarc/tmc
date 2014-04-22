@@ -59,7 +59,6 @@
     <Compile Include="HardwareMonitor.cs" />
     <Compile Include="Sequencing\FSMSequencer.cs" />
     <Compile Include="Controllers\Loader.cs" />
-    <Compile Include="Ordering\Order.cs" />
     <Compile Include="Ordering\OrderConfiguration.cs" />
     <Compile Include="Ordering\OrderConsumer.cs" />
     <Compile Include="Controllers\Palletiser.cs" />

@@ -32,7 +32,7 @@ namespace Tmc.Scada.App
             try
             {
                 // Step 3 Add a service endpoint.
-                selfHost.AddServiceEndpoint(typeof(IScada), new WSHttpBinding(), "ScadaEngine");
+                //selfHost.AddServiceEndpoint(typeof(IScada), new WSHttpBinding(), "ScadaEngine");
 
                 // Step 4 Enable metadata exchange.
                 ServiceMetadataBehavior smb = new ServiceMetadataBehavior();

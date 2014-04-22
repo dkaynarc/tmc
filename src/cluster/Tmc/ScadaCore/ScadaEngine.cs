@@ -16,6 +16,7 @@ namespace Tmc.Scada.Core
         private ISequencer _sequencer;
         private HardwareMonitor _hardwareMonitor;
         private EnvironmentMonitor _environmentMonitor;
+        private static double i = 0;
 
         public ScadaEngine()
         {
@@ -23,8 +24,6 @@ namespace Tmc.Scada.Core
             this._hardwareMonitor = new HardwareMonitor(this);
             this._environmentMonitor = new EnvironmentMonitor(this);
         }
-
-        private static double i = 0;
 
         public double Add(double n1, double n2)
         {
