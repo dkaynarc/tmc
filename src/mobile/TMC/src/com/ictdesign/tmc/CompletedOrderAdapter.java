@@ -4,6 +4,7 @@ package com.ictdesign.tmc;
 
 import java.util.ArrayList;
 
+import Model.Order;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -2,6 +2,7 @@ package com.ictdesign.tmc;
 
 import java.util.ArrayList;
 
+import Model.Order;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
