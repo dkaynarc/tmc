@@ -12,11 +12,11 @@ using Tmc.Common;
 
 namespace Tmc.Vision
 {
-    class SorterVision
+    public class SorterVision
     {
         private Camera camera;
 
-        SorterVision(Camera camera)
+        public SorterVision(Camera camera)
         {
             this.camera = camera;
         }

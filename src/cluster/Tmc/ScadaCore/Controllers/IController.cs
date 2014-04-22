@@ -21,11 +21,10 @@ namespace Tmc.Scada.Core
         public ControllerBase(ClusterConfig _config)
         {
             this._config = _config;
+            this.IsRunning = false;
         }
 
-        public virtual void Begin(ControllerParams parameters)
-        {
-        }
+        public abstract void Begin(ControllerParams parameters);
 
         protected virtual void OnCompleted(EventArgs e)
         {

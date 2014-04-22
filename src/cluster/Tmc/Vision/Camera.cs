@@ -7,7 +7,9 @@ using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using System.Drawing;
 using Tmc.Common;
+using System.Net;
 
 namespace Tmc.Vision
 {
@@ -35,6 +37,21 @@ namespace Tmc.Vision
                 throw new InvalidOperationException("Could not get image from capture device");
             }
             return img;
+        }
+
+        public Bitmap GetImageFromUrl()
+        {
+            Bitmap b = null;
+
+            var request = WebRequest.Create(ConnectionString);
+
+            using(var response = request.GetResponse())
+            using(var stream = response.GetResponseStream())
+            {
+                b = Bitmap.FromStream(stream) as Bitmap;
+            }
+
+            return b;
         }
 
         public void Shutdown()

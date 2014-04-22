@@ -2,205 +2,254 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
+using System.Diagnostics;
+using Appccelerate.StateMachine;
 
 namespace Tmc.Scada.Core.Sequencing
 {
     public class FSMSequencer : ISequencer
     {
-        private enum FSMStatePhase
-        {
-            Begin = 0,
-            Update,
-            End
-        }
-
         public string Name { get; set; }
-
         public bool Enabled { get; private set; }
-        public Dictionary<string, FSMState> States { get { return _states; } set { _states = value; } }
 
+        private PassiveStateMachine<State, Trigger> _fsm;
         private ScadaEngine _engine;
-        private FSMState _currState;
-        private FSMState _nextState;
-        private Dictionary<string, FSMState> _states;
-        private FSMStatePhase _currFSMPhase;
-        private static Dictionary<string, Type> _stateMapping = null;
-
-        private struct FSMTemplate
-        {
-            public Type Type;
-            public Dictionary<string, string> Parameters;
-
-            public FSMTemplate(Type type)
-            {
-                Type = type;
-                Parameters = new Dictionary<string, string>();
-            }
-        }
+        private ConveyorController _conveyorController;
+        private Assembler _assembler;
+        private Loader _loader;
+        private Sorter _sorter;
+        private TrayVerifier _trayVerifier;
+        private Palletiser _palletiser;
 
         public FSMSequencer(ScadaEngine engine)
         {
-            _engine = engine;
-            _currState = null;
-            _nextState = _currState;
-            _states = new Dictionary<string, FSMState>();
+            this._engine = engine;
+
+            Debug.Assert(this._engine != null);
+
+            this._conveyorController = _engine.ClusterConfig.Controllers[typeof(ConveyorController)] as ConveyorController;
+            this._assembler = _engine.ClusterConfig.Controllers[typeof(Assembler)] as Assembler;
+            this._loader = _engine.ClusterConfig.Controllers[typeof(Loader)] as Loader;
+            this._sorter = _engine.ClusterConfig.Controllers[typeof(Sorter)] as Sorter;
+            this._trayVerifier = _engine.ClusterConfig.Controllers[typeof(TrayVerifier)] as TrayVerifier;
+            this._palletiser = _engine.ClusterConfig.Controllers[typeof(Palletiser)] as Palletiser;
+
+            Debug.Assert(this._conveyorController != null);
+            Debug.Assert(this._assembler != null);
+            Debug.Assert(this._loader != null);
+            Debug.Assert(this._sorter != null);
+            Debug.Assert(this._trayVerifier != null);
+            Debug.Assert(this._palletiser != null);
+
+            _fsm = new PassiveStateMachine<State, Trigger>();
+            Create();
         }
 
-        public void Start()
+        private void Create()
         {
-            Enabled = true;
+            CreateSortingStates();
+            CreateAssemblingStates();
+            CreateGlobalStates();
+
+            _fsm.Initialize(State.Shutdown);
         }
 
-        public void Stop()
+        private void CreateGlobalStates()
         {
-            Enabled = false;
-        }
+            _fsm.In(State.Startup)
+                .On(Trigger.Completed)
+                    .Goto(State.Sorting);
 
-        public void Load(string filename)
-        {
-            
-            if (File.Exists(filename))
-            {
-                this.LoadFromXMLFile(filename);
-                _currFSMPhase = FSMStatePhase.Begin;
-            }
-            else
-            {
-                throw new ArgumentException("File not found: " + filename);
-            }
-        }
+            _fsm.In(State.Idle)
+                .On(Trigger.Completed)
+                    .Goto(State.LoadingTray)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
 
-        public void Destroy()
-        {
-            foreach (var state in _states.Values)
-            {
-                state.Destroy();
-            }
-        }
+            _fsm.In(State.Shutdown)
+                .On(Trigger.Start)
+                    .Goto(State.Startup);
 
-        public void Update()
+            _fsm.In(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.DefineHierarchyOn(State.Running)
+                .WithHistoryType(HistoryType.Deep)
+                .WithInitialSubState(State.Startup)
+                .WithSubState(State.Idle)
+                .WithSubState(State.LoadingTray)
+                .WithSubState(State.AssemblyConveyorMovingForward)
+                .WithSubState(State.VerifyingTray)
+                .WithSubState(State.Assembling)
+                .WithSubState(State.AssemblyConveyorMovingBackward)
+                .WithSubState(State.PlacingTrayInBuffer)
+                .WithSubState(State.Palletising)
+                .WithSubState(State.Sorting)
+                .WithSubState(State.PlacingTabletMagazineInSortingBuffer)
+                .WithSubState(State.PlacingTabletMagazineInAssemblyBuffer)
+                .WithSubState(State.PlacingTabletMagazineOnSortingConveyorFromSorter)
+                .WithSubState(State.PlacingTabletMagazineOnSortingConveyorFromAssembler)
+                .WithSubState(State.SortingConveyorMovingForward)
+                .WithSubState(State.SortingConveyorMovingBackward);
+        }
+        
+        private void CreateSortingStates()
         {
-            if (Enabled)
-            {
-                switch (_currFSMPhase)
+            _fsm.In(State.Sorting)
+                .On(Trigger.Completed)
+                    .Goto(State.PlacingTabletMagazineOnSortingConveyorFromSorter)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.PlacingTabletMagazineOnSortingConveyorFromSorter)
+                .On(Trigger.Completed)
+                    .Goto(State.SortingConveyorMovingBackward)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.SortingConveyorMovingBackward)
+                .ExecuteOnEntry(() =>
                 {
-                    case FSMStatePhase.Begin:
-                        _currState.Begin();
-                        _currFSMPhase = FSMStatePhase.Update;
-                        break;
-                    case FSMStatePhase.Update:
-                        SetNextState(_currState.Update());
-                        break;
-                    case FSMStatePhase.End:
-                        _currState.End();
-                        _currFSMPhase = FSMStatePhase.Begin;
-                        _currState = _nextState;
-                        break;
-                    default:
-                        throw new System.InvalidOperationException("Unknown FSMStatePhase");
-                }
-            }
-        }
-
-        private void SetNextState(string nextState)
-        {
-            if (!string.IsNullOrEmpty(nextState) && nextState != _currState.Name)
-            {
-                if (_states.ContainsKey(nextState))
-                {
-                    _nextState = _states[nextState];
-                    _currFSMPhase = FSMStatePhase.End;
-                }
-                else
-                {
-                    throw new System.ArgumentException("nextState does not exist in states collection");
-                }
-            }
-        }
-
-        #region Loading
-
-        private void LoadFromXMLFile(string filename)
-        {
-            if (_stateMapping == null)
-                BuildMappings();
-
-            var doc = XDocument.Load(filename);
-            var root = doc.Element("fsm");
-            Name = root.Attribute("name").Value;
-            var initialStateName = root.Attribute("initialState").Value;
-            var xStates = root.Elements("state");
-
-            foreach (var xState in xStates)
-            {
-                var state = BuildState(xState);
-                state.FSMController = this;
-                state.Initialise();
-                _states.Add(state.Name, state);
-            }
-
-            if (_states.ContainsKey(initialStateName))
-                _currState = _states[initialStateName];
-            else
-                throw new System.InvalidOperationException("No InitialState defined in file");
-        }
-
-        public static FSMState BuildState(XElement xml)
-        {
-            var name = xml.Attribute("name").Value;
-            var sType = _stateMapping[name.ToLower()];
-            var state = Activator.CreateInstance(sType) as FSMState;
-            state.Name = name;
-            foreach (var xTransition in xml.Elements("transition"))
-            {
-                var condition = xTransition.Attribute("condition").Value;
-                var nextState = xTransition.Attribute("nextState").Value;
-                state.Transitions.Add(condition, nextState);
-            }
-
-            var xParams = xml.Elements("params");
-            if (xParams != null)
-            {
-                var fsmTemplate = new FSMTemplate(sType);
-                foreach (var attribParam in xParams.Attributes())
-                    fsmTemplate.Parameters.Add(attribParam.Name.LocalName, attribParam.Value);
-
-                foreach (var bodyParam in xParams.Elements())
-                    fsmTemplate.Parameters.Add(bodyParam.Name.LocalName, bodyParam.Value);
-                state.SetParameters(fsmTemplate.Parameters);
-            }
-            return state;
-        }
-
-
-        private static void BuildMappings()
-        {
-            _stateMapping = new Dictionary<string, Type>();
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (var assembly in assemblies)
-            {
-                if (assembly.FullName.Contains("Tmc"))
-                {
-                    var types = assembly.GetTypes();
-                    foreach (var type in types)
+                    _conveyorController.Begin(new ConveyorControllerParams
                     {
-                        if (typeof(FSMState).IsAssignableFrom(type))
-                        {
-                            var name = type.FullName;
-                            var attribs = type.GetCustomAttributes(typeof(NameAttribute), false);
-                            if (attribs.Length > 0)
-                            {
-                                var attrib = attribs[0] as NameAttribute;
-                                if (attrib != null)
-                                    name = attrib.Name.ToLower();
-                            }
-                            _stateMapping.Add(name, type);
-                        }
-                    }
-                }
-            }
+                        ConveyorType = ConveyorType.Sorting,
+                        ConveyorAction = ConveyorAction.MoveBackward
+                    });
+                })
+                .On(Trigger.Completed)
+                    .Goto(State.PlacingTabletMagazineInAssemblyBuffer)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+            
+            _fsm.In(State.PlacingTabletMagazineInAssemblyBuffer)
+                .On(Trigger.Completed)
+                    .Goto(State.Idle)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.PlacingTabletMagazineOnSortingConveyorFromAssembler)
+                .On(Trigger.Completed)
+                    .Goto(State.SortingConveyorMovingForward)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.SortingConveyorMovingForward)
+                .ExecuteOnEntry(() =>
+                {
+                    _conveyorController.Begin(new ConveyorControllerParams
+                    {
+                        ConveyorType = ConveyorType.Sorting,
+                        ConveyorAction = ConveyorAction.MoveForward
+                    });
+                })
+                .On(Trigger.Completed)
+                    .Goto(State.PlacingTabletMagazineInSortingBuffer)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.PlacingTabletMagazineInSortingBuffer)
+                .On(Trigger.Completed)
+                    .Goto(State.Sorting)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
         }
 
-        #endregion
+        private void CreateAssemblingStates()
+        {
+            _fsm.In(State.LoadingTray)
+                .On(Trigger.Completed)
+                    .Goto(State.AssemblyConveyorMovingForward)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.AssemblyConveyorMovingForward)
+                .ExecuteOnEntry(() => { 
+                    _conveyorController.Begin(new ConveyorControllerParams
+                        {
+                            ConveyorType = ConveyorType.Assembly,
+                            ConveyorAction = ConveyorAction.MoveForward
+                        }); })
+                .On(Trigger.Completed)
+                    .If(() => _conveyorController.CanMoveForward(ConveyorType.Assembly))
+                        .Goto(State.VerifyingTray)
+                    .Otherwise()
+                        .Goto(State.Assembling)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.VerifyingTray)
+                .On(Trigger.TrayVerificationCompleted)
+                    .Goto(State.AssemblyConveyorMovingForward)
+                .On(Trigger.ProductVerificationCompleted)
+                    .Goto(State.AssemblyConveyorMovingBackward)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.Assembling)
+                .On(Trigger.Completed)
+                    .Goto(State.AssemblyConveyorMovingBackward)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.AssemblyConveyorMovingBackward)
+                .ExecuteOnEntry(() =>
+                {
+                    _conveyorController.Begin(new ConveyorControllerParams
+                    {
+                        ConveyorType = ConveyorType.Assembly,
+                        ConveyorAction = ConveyorAction.MoveBackward
+                    });
+                })
+                .On(Trigger.Completed)
+                    .If(() => _conveyorController.CanMoveBackward(ConveyorType.Assembly))
+                        .Goto(State.VerifyingTray)
+                    .Otherwise()
+                        .Goto(State.PlacingTrayInBuffer)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.PlacingTrayInBuffer)
+                .On(Trigger.Completed)
+                    .Goto(State.Palletising)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.Palletising)
+                .On(Trigger.Completed)
+                    .Goto(State.Idle)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+        }
     }
 }

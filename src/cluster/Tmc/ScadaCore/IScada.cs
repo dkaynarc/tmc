@@ -12,5 +12,10 @@ namespace Tmc.Scada.Core
     {
         [OperationContract]
         double Add(double n1, double n2);
+        void Initialise();
+        void Start();
+        void Stop();
+        void Resume();
+        void EmergencyStop();
     }
 }

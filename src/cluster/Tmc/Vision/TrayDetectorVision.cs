@@ -11,13 +11,13 @@ using Emgu.CV.Structure;
 
 namespace Tmc.Vision
 {
-    class TrayDetectorVision
+    public class TrayDetectorVision
     {
         private int[] Xarray;
         private int[] Yarray;
         private Camera camera;
         public Point p;
-        TrayDetectorVision(Camera camera)
+        public TrayDetectorVision(Camera camera)
         {
             this.camera = camera;
         }
