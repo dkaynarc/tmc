@@ -4,7 +4,6 @@ package com.ictdesign.tmc;
 
 import java.util.ArrayList;
 
-import Model.Machine;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Implements the OrderAdapter
+ * Implements the MachineStatusAdapter
  * 
  * Overrides only absolute necessary methods including constructor and
  * getView().
@@ -27,7 +26,7 @@ public class MachineStatusAdapter extends ArrayAdapter<Machine>
 	private static int mResource;
 
 	/**
-	 * Initializes the Order adapter's order items.
+	 * Initializes the Machine Status adapter's machine items.
 	 */
 
 	public MachineStatusAdapter(Context context, int resource,
@@ -50,13 +49,8 @@ public class MachineStatusAdapter extends ArrayAdapter<Machine>
 	 * object contains empty data before plugging the data into their respective
 	 * fields in the layout.
 	 * 
-	 * Main inconsistency is checking the order type to determine which picture
-	 * goes into the OrderType ImageView as well as setting the onClickListener
-	 * to the Delete ImageButton while storing the order in its tag for future
-	 * reference.
-	 * 
-	 * Maybe I should've passed its position rather than the object itself for
-	 * memory purposes but it should be okay for now.
+	 * Main inconsistency is checking the machine type and status to determine
+	 * which picture goes into the respective ImageViews as well as setting.
 	 */
 
 	@Override

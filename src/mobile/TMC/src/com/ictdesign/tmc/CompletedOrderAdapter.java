@@ -4,7 +4,6 @@ package com.ictdesign.tmc;
 
 import java.util.ArrayList;
 
-import Model.Order;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,12 +44,8 @@ public class CompletedOrderAdapter extends ArrayAdapter<Order>
 	 * fields in the layout.
 	 * 
 	 * Main inconsistency is checking the order type to determine which picture
-	 * goes into the OrderType ImageView as well as setting the onClickListener
-	 * to the Delete ImageButton while storing the order in its tag for future
-	 * reference.
-	 * 
-	 * Maybe I should've passed its position rather than the object itself for
-	 * memory purposes but it should be okay for now.
+	 * goes into the OrderType ImageView and removing the delete button because
+	 * completed orders shouldn't be deleted.
 	 */
 
 	@Override

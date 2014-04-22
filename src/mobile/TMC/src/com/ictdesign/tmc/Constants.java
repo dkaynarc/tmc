@@ -5,13 +5,10 @@ package com.ictdesign.tmc;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import Model.Machine;
-import Model.Order;
-
 /**
- * Defines all constants to be used globally between activities.
+ * Defines all constants to be used globally within the application.
  * 
- * Array used for subject list is also predefined here.
+ * Array used for order list is also predefined here.
  */
 
 public class Constants

@@ -1,3 +1,5 @@
+/* COPYRIGHT (C) 2014 Carlo Chumroonridhi. All Rights Reserved. */
+
 package com.ictdesign.tmc;
 
 import android.app.AlertDialog;
@@ -16,9 +18,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 /**
- * A dummy fragment representing a section of the app, but that simply displays
- * dummy text.
+ * Implements the logout fragment. Opens a dialog to confirm exiting of the
+ * module activity and redirects back to the login activity.
  */
+
 public class LogoutFragment extends Fragment
 {
 	MediaPlayer mMediaPlayer = new MediaPlayer();
@@ -26,11 +29,7 @@ public class LogoutFragment extends Fragment
 	private OnClickListener onLogoutClickListener = new OnClickListener() {
 		public void onClick(View view)
 		{
-			if (mMediaPlayer.isPlaying())
-				mMediaPlayer.stop();
-			mMediaPlayer = MediaPlayer.create(getActivity(), R.raw.ohno);
-			mMediaPlayer.setLooping(false);
-			mMediaPlayer.start();
+			playSound(R.raw.ohno);
 			Drawable myIcon = getResources().getDrawable(
 					android.R.drawable.ic_dialog_alert);
 			ColorFilter filter = new LightingColorFilter(Color.RED, Color.RED);
@@ -44,13 +43,9 @@ public class LogoutFragment extends Fragment
 								public void onClick(DialogInterface dialog,
 										int id)
 								{
-									if (mMediaPlayer.isPlaying())
-										mMediaPlayer.stop();
-									mMediaPlayer = MediaPlayer.create(
-											getActivity(), R.raw.bye);
-									mMediaPlayer.setLooping(false);
-									mMediaPlayer.start();
+									playSound(R.raw.bye);
 									getActivity().finish();
+									// Add possible logout code here?
 								}
 							})
 					.setNegativeButton(Constants.CANCEL,
@@ -64,6 +59,10 @@ public class LogoutFragment extends Fragment
 		}
 	};
 
+	/**
+	 * Sets the layout and onclick listener.
+	 */
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
@@ -73,5 +72,20 @@ public class LogoutFragment extends Fragment
 		((Button) rootView.findViewById(R.id.logout_logout_b))
 				.setOnClickListener(onLogoutClickListener);
 		return rootView;
+	}
+	
+	/**
+	 * Plays the sound of the id given.
+	 * 
+	 * @param soundId
+	 */
+	
+	public void playSound(int soundId)
+	{
+		if (mMediaPlayer.isPlaying())
+			mMediaPlayer.stop();
+		mMediaPlayer = MediaPlayer.create(getActivity(), soundId);
+		mMediaPlayer.setLooping(false);
+		mMediaPlayer.start();
 	}
 }

@@ -2,7 +2,6 @@ package com.ictdesign.tmc;
 
 import java.util.ArrayList;
 
-import Model.Order;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,14 +12,32 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+/**
+ * Implements the CompletedOrderFragment, loads up the list fragment's layout,
+ * plugs the list of completed orders into the adapter and set's the layout for
+ * that as well. Implements the clicking of each order to display their
+ * information.
+ */
+
 public class CompletedOrderFragment extends ListFragment
 {
+
+	/**
+	 * Sets the layouts of the fragment and rows, places the list of completed
+	 * orders into the respective adapter.
+	 */
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
 	{
 		View rootView = inflater.inflate(R.layout.list_completed, container,
 				false);
+		// In setListAdapter, replace the list "orders" with a function that
+		// returns
+		// a list of the completed orders. You can then remove the 4 lines of
+		// code
+		// below that set up the dummy "orders" list.
 		ArrayList<Order> orders = new ArrayList<Order>();
 		for (Order order : Constants.ORDERS)
 			if (order.getOrderStatus().equals(Constants.COMPLETE))
@@ -29,6 +46,11 @@ public class CompletedOrderFragment extends ListFragment
 				R.layout.order_row, orders));
 		return rootView;
 	}
+
+	/**
+	 * Implements the clicking of each order. Displays their information in a
+	 * dialog.
+	 */
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id)

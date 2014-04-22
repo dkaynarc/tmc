@@ -1,3 +1,5 @@
+/* COPYRIGHT (C) 2014 Carlo Chumroonridhi. All Rights Reserved. */
+
 package com.ictdesign.tmc;
 
 import android.app.ActionBar;
@@ -10,26 +12,22 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 
+/**
+ * Implements the main activity, which is the module activity. It contains many
+ * fragments which the user then scrolls through.
+ */
+
 public class ModuleActivity extends FragmentActivity implements
 		ActionBar.TabListener
 {
-
-	/**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide
-	 * fragments for each of the sections. We use a
-	 * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
-	 * will keep every loaded fragment in memory. If this becomes too memory
-	 * intensive, it may be best to switch to a
-	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-	 */
 	SectionsPagerAdapter mSectionsPagerAdapter;
+	ViewPager mViewPager;
+	static int turnedOn = 0;
 
 	/**
-	 * The {@link ViewPager} that will host the section contents.
+	 * Sets the layout, action bar and pager adapter which is used to scroll
+	 * through the fragments.
 	 */
-	ViewPager mViewPager;
-
-	static int turnedOn = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -37,12 +35,11 @@ public class ModuleActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_module);
 
-		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
+		// Creates adapter that will return a fragment for each primary
+		// section of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager());
 
@@ -51,8 +48,7 @@ public class ModuleActivity extends FragmentActivity implements
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
 		// When swiping between different sections, select the corresponding
-		// tab. We can also use ActionBar.Tab#select() to do this if we have
-		// a reference to the Tab.
+		// tab. We can also use the action bar's tabs to do this.
 		mViewPager
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
@@ -75,20 +71,26 @@ public class ModuleActivity extends FragmentActivity implements
 		}
 	}
 
+	/**
+	 * Inflate the menu; this adds items to the action bar.
+	 */
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.module, menu);
 		return true;
 	}
+
+	/**
+	 * When the given tab is selected, switch to the corresponding page in the
+	 * ViewPager.
+	 */
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction)
 	{
-		// When the given tab is selected, switch to the corresponding page in
-		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
 	}
 
@@ -105,23 +107,25 @@ public class ModuleActivity extends FragmentActivity implements
 	}
 
 	/**
-	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-	 * one of the sections/tabs/pages.
+	 * A FragmentPagerAdapter that returns a fragment corresponding to one of
+	 * the sections/tabs/pages.
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter
 	{
-
 		public SectionsPagerAdapter(FragmentManager fm)
 		{
 			super(fm);
 		}
 
+		/**
+		 * getItem is called to instantiate the fragment for the given page.
+		 * 
+		 * Returns the respective fragment in regards to the position.
+		 */
+
 		@Override
 		public Fragment getItem(int position)
 		{
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
 			Fragment fragment;
 			switch (position)
 			{
@@ -142,20 +146,25 @@ public class ModuleActivity extends FragmentActivity implements
 			return fragment;
 		}
 
+		/**
+		 * Returns the amount of fragments in the module activity.
+		 */
+		
 		@Override
 		public int getCount()
 		{
-			// Show 3 total pages.
 			return 4;
 		}
+		
+		/**
+		 * Returns the title of each fragment in respect to its position.
+		 */
 
 		@Override
 		public CharSequence getPageTitle(int position)
 		{
 			switch (position)
 			{
-			// case 0:
-			// return Constants.CONTROLLER;
 			case 0:
 				return Constants.MACHINE_STATUS;
 			case 1:

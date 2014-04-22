@@ -3,8 +3,6 @@
 package com.ictdesign.tmc;
 
 import java.util.ArrayList;
-
-import Model.Order;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Implements the OrderAdapter
+ * Implements the OrderQueueAdapter
  * 
  * Overrides only absolute necessary methods including constructor and
  * getView().
@@ -53,9 +51,6 @@ public class OrderQueueAdapter extends ArrayAdapter<Order>
 	 * goes into the OrderType ImageView as well as setting the onClickListener
 	 * to the Delete ImageButton while storing the order in its tag for future
 	 * reference.
-	 * 
-	 * Maybe I should've passed its position rather than the object itself for
-	 * memory purposes but it should be okay for now.
 	 */
 
 	@Override

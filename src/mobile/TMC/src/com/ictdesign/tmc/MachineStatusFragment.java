@@ -2,7 +2,7 @@
 
 package com.ictdesign.tmc;
 
-import Model.Machine;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -25,9 +25,9 @@ import android.widget.ListView;
 /**
  * Sets the layout for the activity.
  * 
- * Creates a new adapter for a list of orders using predefined values.
+ * Creates a new adapter for a list of machines using predefined values.
  * 
- * Implements each order's "Delete" button.
+ * Also implements the shutdown, start-up and emergency stop buttons.
  */
 
 public class MachineStatusFragment extends ListFragment
@@ -65,6 +65,10 @@ public class MachineStatusFragment extends ListFragment
 		}
 	};
 
+	/**
+	 * Implements the startup onClickListener
+	 */
+	
 	private OnClickListener onStartupClickListener = new OnClickListener() {
 		public void onClick(final View view)
 		{
@@ -72,6 +76,10 @@ public class MachineStatusFragment extends ListFragment
 		}
 	};
 
+	/**
+	 * Implements the shutdown onClickListener
+	 */
+	
 	private OnClickListener onShutdownClickListener = new OnClickListener() {
 		public void onClick(final View view)
 		{
@@ -79,6 +87,12 @@ public class MachineStatusFragment extends ListFragment
 		}
 	};
 
+	/**
+	 * Implements the handler for the new threads created by the startup and
+	 * shutdown buttons. Only necessary for demonstration purposes.
+	 */
+	
+	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg)
@@ -98,8 +112,10 @@ public class MachineStatusFragment extends ListFragment
 	/**
 	 * Sets the layout for the activity.
 	 * 
-	 * Creates a new adapter for a list of orders using predefined values.
+	 * Creates a new adapter for a list of machines using predefined values and
+	 * sets the onClickListeners for the buttons.
 	 */
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
@@ -118,15 +134,9 @@ public class MachineStatusFragment extends ListFragment
 	}
 
 	/**
-	 * Implements each order's "Delete" button:
+	 * Implements each machine's "onClickListener".
 	 * 
-	 * Gets the adapter from the ListView.
-	 * 
-	 * Gets the order from the view's tag.
-	 * 
-	 * Removes order from adapter.
-	 * 
-	 * Notifies adapter to update data changes.
+	 * Basically just displays a dialog with its status.
 	 */
 
 	@Override
@@ -151,17 +161,20 @@ public class MachineStatusFragment extends ListFragment
 						}).show();
 	}
 
+	/**
+	 * Creates a new thread, plays the startup sound and then turns machines on
+	 * when sound finishes playing. Only used for demonstrative purposes, will
+	 * need some further implementation.
+	 */
+	
 	public void startup()
 	{
 		new Thread() {
 			@Override
 			public void run()
 			{
-				if (mMediaPlayer.isPlaying())
-					mMediaPlayer.stop();
-				mMediaPlayer = MediaPlayer.create(getActivity(), R.raw.startup);
-				mMediaPlayer.setLooping(false);
-				mMediaPlayer.start();
+				playSound(R.raw.startup);
+				// Replace while and mHandler method with startup() function
 				while (mMediaPlayer.isPlaying())
 				{
 				}
@@ -170,18 +183,20 @@ public class MachineStatusFragment extends ListFragment
 		}.start();
 	}
 
+	/**
+	 * Creates a new thread, plays the shutdown sound and then turns machines
+	 * off when sound finishes playing. Only used for demonstrative purposes,
+	 * will need some further implementation.
+	 */
+	
 	public void shutdown()
 	{
 		new Thread() {
 			@Override
 			public void run()
 			{
-				if (mMediaPlayer.isPlaying())
-					mMediaPlayer.stop();
-				mMediaPlayer = MediaPlayer
-						.create(getActivity(), R.raw.shutdown);
-				mMediaPlayer.setLooping(false);
-				mMediaPlayer.start();
+				playSound(R.raw.shutdown);
+				// Replace while and mHandler method with shutdown() function
 				while (mMediaPlayer.isPlaying())
 				{
 				}
@@ -190,6 +205,11 @@ public class MachineStatusFragment extends ListFragment
 		}.start();
 	}
 
+	/**
+	 * Turns all machines in the adapter on. Only used for demonstrative
+	 * purposes.
+	 */
+	
 	public void turnOn()
 	{
 		MachineStatusAdapter adapter = (MachineStatusAdapter) getListView()
@@ -203,6 +223,11 @@ public class MachineStatusFragment extends ListFragment
 		adapter.notifyDataSetChanged();
 	}
 
+	/**
+	 * Turns all machines in the adapter off. Only used for demonstrative
+	 * purposes.
+	 */
+	
 	public void turnOff()
 	{
 		MachineStatusAdapter adapter = (MachineStatusAdapter) getListView()
@@ -216,12 +241,29 @@ public class MachineStatusFragment extends ListFragment
 		}
 	}
 
+	/**
+	 * Instantly turns all machines in the adapter off and then plays the
+	 * respective sound. Only used for demonstrative purposes.
+	 */
+	
 	public void emergencyStop()
 	{
+		// Replace turnOff() with emergencyStop() method
 		turnOff();
+		playSound(R.raw.stop);
+	}
+
+	/**
+	 * Plays the sound of the id given.
+	 * 
+	 * @param soundId
+	 */
+	
+	public void playSound(int soundId)
+	{
 		if (mMediaPlayer.isPlaying())
 			mMediaPlayer.stop();
-		mMediaPlayer = MediaPlayer.create(getActivity(), R.raw.stop);
+		mMediaPlayer = MediaPlayer.create(getActivity(), soundId);
 		mMediaPlayer.setLooping(false);
 		mMediaPlayer.start();
 	}
