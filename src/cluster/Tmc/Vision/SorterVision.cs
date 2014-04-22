@@ -12,11 +12,17 @@ using Tmc.Common;
 
 namespace Tmc.Vision
 {
-    class SorterVision
+    class SorterVision : VisionBase
     {
-        private Camera camera;
+        int min, max;
+        double par1;
+        double par2;
 
-        SorterVision(Camera camera)
+        private Camera camera;
+        private Image<Bgr, Byte> img;
+        Form1 f;
+
+        public SorterVision(Camera camera)
         {
             this.camera = camera;
         }
@@ -26,35 +32,29 @@ namespace Tmc.Vision
             var tablets = new List<Tablet>();
             return tablets;
         }
-
-        private void DetectOverLap()
-        {
-                   
-        }
-
+        
         public void RunSorterCamera()
         {
-            
+            CircleF[] circles = DetectTablets(img, min, max, par1, par2, f);
+            DetectOverLap();
+            DetectDamagedTablet();
+            GetXYZForTablets();
         }
-
+        
+        private void DetectOverLap()
+        {
+              
+        }
+             
         private void GetXYZForTablets()
         {
             
         }
-        /*public void hi()
-        {
-            string win1 = "Test Window"; //The name of the window
 
-            CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
-
-            Image<Bgr, Byte> img = new Image<Bgr, byte>(400, 200, new Bgr(255, 0, 0)); //Create an image of 400x200 of Blue color
-            MCvFont f = new MCvFont(FONT.CV_FONT_HERSHEY_COMPLEX, 1.0, 1.0); //Create the font
-
-            img.Draw("Hello, world", ref f, new System.Drawing.Point(10, 80), new Bgr(0, 255, 0)); //Draw "Hello, world." on the image using the specific font
-
-            CvInvoke.cvShowImage(win1, img); //Show the image
-            CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
-            CvInvoke.cvDestroyWindow(win1); //Destory the window
-        }*/
+        private void DetectDamagedTablet()
+        { 
+            
+        }
+  
     }
 }

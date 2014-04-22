@@ -40,7 +40,7 @@ namespace Tmc.Vision
 
         public void Shutdown()
         {
-            _capture.Dispose();
+            //_capture.Dispose();
         }
 
         public HardwareStatus GetStatus()

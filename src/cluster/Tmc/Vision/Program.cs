@@ -17,7 +17,7 @@ namespace Tmc.Vision
         //private Camera TrayCamera;
         static void Main()
         {
-            
+            //Form1();
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
             ////SorterVision sort = new SorterVision();
