@@ -5,10 +5,7 @@ package com.ictdesign.tmc;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 
@@ -20,9 +17,8 @@ import android.view.Menu;
 public class ModuleActivity extends FragmentActivity implements
 		ActionBar.TabListener
 {
-	SectionsPagerAdapter mSectionsPagerAdapter;
+	ModulePagerAdapter mSectionsPagerAdapter;
 	ViewPager mViewPager;
-	static int turnedOn = 0;
 
 	/**
 	 * Sets the layout, action bar and pager adapter which is used to scroll
@@ -40,7 +36,7 @@ public class ModuleActivity extends FragmentActivity implements
 
 		// Creates adapter that will return a fragment for each primary
 		// section of the app.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
+		mSectionsPagerAdapter = new ModulePagerAdapter(
 				getSupportFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
@@ -104,78 +100,6 @@ public class ModuleActivity extends FragmentActivity implements
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction)
 	{
-	}
-
-	/**
-	 * A FragmentPagerAdapter that returns a fragment corresponding to one of
-	 * the sections/tabs/pages.
-	 */
-	public class SectionsPagerAdapter extends FragmentPagerAdapter
-	{
-		public SectionsPagerAdapter(FragmentManager fm)
-		{
-			super(fm);
-		}
-
-		/**
-		 * getItem is called to instantiate the fragment for the given page.
-		 * 
-		 * Returns the respective fragment in regards to the position.
-		 */
-
-		@Override
-		public Fragment getItem(int position)
-		{
-			Fragment fragment;
-			switch (position)
-			{
-			case 0:
-				fragment = new MachineStatusFragment();
-				break;
-			case 1:
-				fragment = new OrderQueueFragment();
-				break;
-			case 2:
-				fragment = new CompletedOrderFragment();
-				break;
-			default:
-				fragment = new LogoutFragment();
-			}
-			Bundle args = new Bundle();
-			fragment.setArguments(args);
-			return fragment;
-		}
-
-		/**
-		 * Returns the amount of fragments in the module activity.
-		 */
-		
-		@Override
-		public int getCount()
-		{
-			return 4;
-		}
-		
-		/**
-		 * Returns the title of each fragment in respect to its position.
-		 */
-
-		@Override
-		public CharSequence getPageTitle(int position)
-		{
-			switch (position)
-			{
-			case 0:
-				return Constants.MACHINE_STATUS;
-			case 1:
-				return Constants.ORDER_QUEUE;
-			case 2:
-				return Constants.COMPLETED_ORDERS;
-			case 3:
-				return Constants.LOGOUT;
-			}
-			return null;
-		}
 	}
 
 }

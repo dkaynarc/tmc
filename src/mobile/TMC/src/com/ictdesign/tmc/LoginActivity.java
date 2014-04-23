@@ -17,7 +17,7 @@ import android.widget.Toast;
 public class LoginActivity extends Activity
 {
 
-	static int turnedOn = 0;
+	static boolean turnedOn = false;
 
 	/**
 	 * Sets the layout and starts the next activity once during start-up for
@@ -30,11 +30,11 @@ public class LoginActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		Intent intent = new Intent(LoginActivity.this, ModuleActivity.class);
-		if (turnedOn == 0)
+		if (turnedOn == false)
 			// Replace this with something you might want to do only once during
 			// startup.
 			startActivity(intent);
-		turnedOn = 1;
+		turnedOn = true;
 	}
 
 	/**
