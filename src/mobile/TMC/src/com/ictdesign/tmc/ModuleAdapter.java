@@ -12,9 +12,9 @@ import android.support.v4.app.FragmentPagerAdapter;
  * the sections/tabs/pages.
  */
 
-public class ModulePagerAdapter extends FragmentPagerAdapter
+public class ModuleAdapter extends FragmentPagerAdapter
 {
-	public ModulePagerAdapter(FragmentManager fm)
+	public ModuleAdapter(FragmentManager fm)
 	{
 		super(fm);
 	}

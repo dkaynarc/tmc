@@ -17,7 +17,7 @@ import android.view.Menu;
 public class ModuleActivity extends FragmentActivity implements
 		ActionBar.TabListener
 {
-	ModulePagerAdapter mSectionsPagerAdapter;
+	ModuleAdapter mModuleAdapter;
 	ViewPager mViewPager;
 
 	/**
@@ -36,12 +36,12 @@ public class ModuleActivity extends FragmentActivity implements
 
 		// Creates adapter that will return a fragment for each primary
 		// section of the app.
-		mSectionsPagerAdapter = new ModulePagerAdapter(
+		mModuleAdapter = new ModuleAdapter(
 				getSupportFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
+		mViewPager.setAdapter(mModuleAdapter);
 
 		// When swiping between different sections, select the corresponding
 		// tab. We can also use the action bar's tabs to do this.
@@ -55,14 +55,14 @@ public class ModuleActivity extends FragmentActivity implements
 				});
 
 		// For each of the sections in the app, add a tab to the action bar.
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++)
+		for (int i = 0; i < mModuleAdapter.getCount(); i++)
 		{
 			// Create a tab with text corresponding to the page title defined by
 			// the adapter. Also specify this Activity object, which implements
 			// the TabListener interface, as the callback (listener) for when
 			// this tab is selected.
 			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
+					.setText(mModuleAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
 	}
