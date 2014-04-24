@@ -14,9 +14,9 @@ namespace Tmc.Vision
 {
     public class SorterVision : VisionBase
     {
-        int min, max;
-        double par1;
-        double par2;
+        int minCircle, maxCircle;
+        int cannyThresh, cannyAccumThresh;
+        double par3, par4;
 
         private Camera camera;
         private Image<Bgr, Byte> img;
@@ -35,7 +35,8 @@ namespace Tmc.Vision
         
         public void RunSorterCamera()
         {
-            CircleF[] circles = DetectTablets(img, min, max, par1, par2, f);
+            img = camera.GetImage();
+            CircleF[] circles = DetectTablets(img, minCircle, maxCircle, par3, par4, cannyThresh, cannyAccumThresh, f);
             DetectOverLap();
             DetectDamagedTablet();
             GetXYZForTablets();

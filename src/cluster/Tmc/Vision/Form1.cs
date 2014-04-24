@@ -37,12 +37,22 @@ namespace Tmc.Vision
             pictureBox2.Image = src.ToBitmap();
         }
 
-        public void getValue(out int min, out int max, out double par1, out double par2)
+        public void getValue(ref int min, ref int max, ref double par3, ref double par4, ref int cannyThresh, ref int cannyAccumThresh)
         {
-            min = (int)Nmin.Value;
-            max = (int)Nmax.Value;
-            par1 = (double)Npar1.Value;
-            par2 = (double)Npar2.Value;
+            min =               Convert.ToInt32(Nmin.Value);
+            max =               Convert.ToInt32(Nmax.Value);
+            cannyThresh =       Convert.ToInt32(Npar1.Value);
+            cannyAccumThresh =  Convert.ToInt32(Npar2.Value);
+            par3 =              Convert.ToDouble(Npar3.Value);
+            par4 =              Convert.ToDouble(Npar4.Value);
+            //(int)Nmax.Value;
+            //par1 = (double)Npar1.Value;
+            //par2 = (double)Npar2.Value;
+        }
+
+        public void textb(int b)
+        {
+            //textBox1.Text = b;
         }
     }
 }

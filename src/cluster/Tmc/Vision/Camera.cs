@@ -29,7 +29,7 @@ namespace Tmc.Vision
 
         public Image<Bgr, byte> GetImage()
         {
-            Image<Bgr, Byte> img = new Image<Bgr, byte>("../../tray.jpg");//var img = _capture.QueryFrame();
+            Image<Bgr, Byte> img = new Image<Bgr, byte>("../../sort.jpg");//var img = _capture.QueryFrame();
             if (img == null)
             {
                 _hardwareStatus = HardwareStatus.Failed;
@@ -70,18 +70,22 @@ namespace Tmc.Vision
 
         public void SetParameters(Dictionary<string, string> parameters)
         {
-        //    {
-        //        this.ConnectionString = s;
-        //    }
-            
-            
             string s = "";
+            {
+                this.ConnectionString = s;
+            }
+            
+            
+            
             if (parameters.TryGetValue("Name", out s))
             {
                 this.Name = s;
             }
             if (parameters.TryGetValue("ConnectionString", out s))
-                throw new InvalidOperationException("No connection string passed to camera");
+            {
+                this.ConnectionString = s;
+            }
+                //throw new InvalidOperationException("No connection string passed to camera");
             
         }
     }

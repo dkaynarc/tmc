@@ -14,10 +14,9 @@ namespace Tmc.Vision
 {
     public class TrayDetectorVision : VisionBase
     {
-        int min, max;
-        double par1;
-        double par2;
-
+        private int minCircle, maxCircle;
+        private int cannyThresh, cannyAccumThresh;
+        double par3, par4;
         //private int[] Xarray;
         //private int[] Yarray;
         private Camera camera;
@@ -54,7 +53,7 @@ namespace Tmc.Vision
             Rectangle rect = new Rectangle();
             rect.X = 360;
             rect.Y = 220;
-            rect.Width = 420;
+            rect.Width = 420+100;
             rect.Height= 400;
             imgTray = img.GetSubRect(rect);
             return true;
@@ -64,8 +63,8 @@ namespace Tmc.Vision
         {
             while (true)
             {
-                f.getValue(out min,out max,out par1,out par2);
-                DetectTablets(imgTray, min, max, par1, par2, f);
+                f.getValue(ref minCircle, ref maxCircle, ref par3, ref par4, ref cannyThresh,ref cannyAccumThresh);
+                DetectTablets(imgTray, minCircle, maxCircle, par3, par4, cannyThresh, cannyAccumThresh, f);
             }
         }
 
