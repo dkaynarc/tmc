@@ -1,12 +1,9 @@
 /* COPYRIGHT (C) 2014 Carlo Chumroonridhi. All Rights Reserved. */
 
-package com.ictdesign.tmc;
+package Model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import Model.Machine;
-import Model.Order;
 
 /**
  * Defines all constants to be used globally within the application.

@@ -1,8 +1,15 @@
 /* COPYRIGHT (C) 2014 Carlo Chumroonridhi. All Rights Reserved. */
 
-package com.ictdesign.tmc;
+package Fragments;
 
+import com.ictdesign.tmc.R;
+import com.ictdesign.tmc.R.id;
+import com.ictdesign.tmc.R.layout;
+import com.ictdesign.tmc.R.raw;
+
+import Model.Constants;
 import Model.Machine;
+import ViewAdapters.MachineStatusAdapter;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;

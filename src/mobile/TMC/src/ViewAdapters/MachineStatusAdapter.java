@@ -1,9 +1,15 @@
 /* COPYRIGHT (C) 2014 Carlo Chumroonridhi. All Rights Reserved. */
 
-package com.ictdesign.tmc;
+package ViewAdapters;
 
 import java.util.ArrayList;
 
+import com.ictdesign.tmc.R;
+import com.ictdesign.tmc.R.drawable;
+import com.ictdesign.tmc.R.id;
+import com.ictdesign.tmc.R.layout;
+
+import Model.Constants;
 import Model.Machine;
 import android.content.Context;
 import android.view.LayoutInflater;

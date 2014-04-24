@@ -1,8 +1,14 @@
-package com.ictdesign.tmc;
+package Fragments;
 
 import java.util.ArrayList;
 
+import com.ictdesign.tmc.R;
+import com.ictdesign.tmc.R.id;
+import com.ictdesign.tmc.R.layout;
+
+import Model.Constants;
 import Model.Order;
+import ViewAdapters.CompletedOrderAdapter;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;

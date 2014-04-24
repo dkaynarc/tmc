@@ -27,7 +27,7 @@
             android:label="@string/title_selection" >
         </activity>
         <activity
-            android:name="com.ictdesign.tmc.OrderQueueFragment"
+            android:name="Fragments.OrderQueueFragment"
             android:label="@string/title_order_list" >
         </activity>
         <activity
