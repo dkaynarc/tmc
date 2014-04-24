@@ -29,11 +29,14 @@ namespace Tmc.Vision
             f = new Form1();
             f.Show();
             this.camera = camera;
+
+            this.camera.ConnectionString = new Uri(@"http://www.wwrd.com.au/images/P/2260248_Fable%20s-4%2016cm%20Accent%20Plates-652383734586-co.jpg");
         }
 
         public void RunTrayDetectionVision()
         {
             img = camera.GetImage();
+            //img = camera.GetImageHttp(new Uri(@"http://www.wwrd.com.au/images/P/2260248_Fable%20s-4%2016cm%20Accent%20Plates-652383734586-co.jpg"));
             string win1 = "Test Window"; //The name of the window
             CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
             //BitmapImage image = new Bi6tmapImage(new Uri("http://192.168.0.11:8080/photo.jpg"));
@@ -55,7 +58,7 @@ namespace Tmc.Vision
             rect.Y = 220;
             rect.Width = 420+100;
             rect.Height= 400;
-            imgTray = img.GetSubRect(rect);
+            imgTray = img;//.GetSubRect(rect);
             return true;
         }
 

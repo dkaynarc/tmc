@@ -10,6 +10,6 @@ namespace Tmc.Vision
 {
     public interface ICamera : IHardware
     {
-        string ConnectionString { get; set; }
+        Uri ConnectionString { get; set; }
     }
 }

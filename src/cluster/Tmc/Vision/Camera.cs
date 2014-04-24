@@ -9,13 +9,14 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Tmc.Common;
 using System.Drawing;
+using System.Net;
 
 namespace Tmc.Vision
 {
     public class Camera : ICamera
     {
         public string Name { get; set; }
-        public string ConnectionString { get; set; }
+        public Uri ConnectionString { get; set; }
 
         public Capture CaptureDevice { get { return _capture; } private set { _capture = value; } }
 
@@ -27,15 +28,41 @@ namespace Tmc.Vision
             _hardwareStatus = HardwareStatus.Offline;
         }
 
+        //public Image<Bgr, byte> GetImage()
+        //{
+        //    Image<Bgr, Byte> img = new Image<Bgr, byte>("../../sort.jpg");//var img = _capture.QueryFrame();
+        //    if (img == null)
+        //    {
+        //        _hardwareStatus = HardwareStatus.Failed;
+        //        throw new InvalidOperationException("Could not get image from capture device");
+        //    }
+        //    return img;
+        //}
+
         public Image<Bgr, byte> GetImage()
         {
-            Image<Bgr, Byte> img = new Image<Bgr, byte>("../../sort.jpg");//var img = _capture.QueryFrame();
-            if (img == null)
+            var image = GetImageHttp(ConnectionString);
+
+            if (image == null)
             {
                 _hardwareStatus = HardwareStatus.Failed;
                 throw new InvalidOperationException("Could not get image from capture device");
             }
-            return img;
+
+            return image;
+        }
+
+        public Image<Bgr, byte> GetImageHttp(Uri uri)
+        {
+            Image<Bgr, byte> emguImg = null;
+            var request = WebRequest.Create(uri);
+            using (var response = request.GetResponse())
+            using (var stream = response.GetResponseStream())
+            {
+                var img = Bitmap.FromStream(stream) as Bitmap;
+                emguImg = new Image<Bgr, byte>(img);
+            }
+            return emguImg;
         }
 
         public void Shutdown()
@@ -71,21 +98,19 @@ namespace Tmc.Vision
         public void SetParameters(Dictionary<string, string> parameters)
         {
             string s = "";
-            {
-                this.ConnectionString = s;
-            }
-            
-            
-            
             if (parameters.TryGetValue("Name", out s))
             {
                 this.Name = s;
             }
+
             if (parameters.TryGetValue("ConnectionString", out s))
             {
-                this.ConnectionString = s;
+                this.ConnectionString = new Uri(s);
             }
-                //throw new InvalidOperationException("No connection string passed to camera");
+            else
+            {
+                throw new InvalidOperationException("No connection string passed to camera");
+            }
             
         }
     }
