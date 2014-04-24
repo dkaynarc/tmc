@@ -35,7 +35,7 @@ public class OrderQueueFragment extends ListFragment
 	 * Implements the order's delete button.
 	 */
 
-	private OnClickListener mClickListener = new OnClickListener() {
+	private OnClickListener onDeleteOrderClickListener = new OnClickListener() {
 		public void onClick(final View view)
 		{
 			new AlertDialog.Builder(getActivity())
@@ -74,7 +74,7 @@ public class OrderQueueFragment extends ListFragment
 	 * activity.
 	 */
 
-	private OnClickListener mCreateOrderListener = new OnClickListener() {
+	private OnClickListener onCreateOrderClickListener = new OnClickListener() {
 		public void onClick(View view)
 		{
 			Intent intent = new Intent(getActivity(), CreateOrderActivity.class);
@@ -93,7 +93,7 @@ public class OrderQueueFragment extends ListFragment
 	{
 		View rootView = inflater.inflate(R.layout.list_queue, container, false);
 		((Button) rootView.findViewById(R.id.queuelist_createorder_b))
-				.setOnClickListener(mCreateOrderListener);
+				.setOnClickListener(onCreateOrderClickListener);
 		ArrayList<Order> orders = new ArrayList<Order>();
 		// Get list of orders that are either active and pending
 		for (Order order : Constants.ORDERS)
@@ -101,7 +101,7 @@ public class OrderQueueFragment extends ListFragment
 				orders.add(order);
 		// Replace list "orders" with the list of orders returned
 		setListAdapter(new OrderQueueAdapter(getActivity(), R.layout.order_row,
-				orders, mClickListener));
+				orders, onDeleteOrderClickListener));
 		return rootView;
 	}
 

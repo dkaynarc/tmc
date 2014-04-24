@@ -25,12 +25,12 @@ import android.widget.TextView;
 public class OrderQueueAdapter extends ArrayAdapter<Order>
 {
 	ArrayList<Order> mObjects = null;
-	OnClickListener mClickListener;
+	OnClickListener mOnClickListener;
 
 	/**
 	 * Initializes the Order adapter's order items.
 	 * 
-	 * @param mClickListener
+	 * @param mOnClickListener
 	 */
 
 	public OrderQueueAdapter(Context context, int resource,
@@ -38,7 +38,7 @@ public class OrderQueueAdapter extends ArrayAdapter<Order>
 	{
 		super(context, resource, objects);
 		mObjects = objects;
-		mClickListener = onClickListener;
+		mOnClickListener = onClickListener;
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class OrderQueueAdapter extends ArrayAdapter<Order>
 			}
 			if (delete != null)
 			{
-				delete.setOnClickListener(mClickListener);
+				delete.setOnClickListener(mOnClickListener);
 				delete.setTag(order);
 			}
 		}
