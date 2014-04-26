@@ -2,23 +2,32 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
-using Tmc.WebService.ServiceReference1;
 
-namespace Tmc.WebService
+namespace WebServiceTest
 {
-    class Program
+    static class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        static void Main()
         {
+            ServiceBase[] ServicesToRun;
+            ServicesToRun = new ServiceBase[] 
+            { 
+                new Service1() 
+            };
+            ServiceBase.Run(ServicesToRun);
             //Step 1: Create an instance of the WCF proxy.
             ScadaClient client = new ScadaClient();
 
             // Step 2: Call the service operations.
             // Call the Add service operation.
             double value1 = 100.00D;
-            double value2 = 15.99D;
+            double value2 = 10.00D;
             double result = client.Add(value1, value2);
             Debug.WriteLine("Add({0},{1}) = {2}", value1, value2, result);
 

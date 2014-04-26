@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-using System.ServiceModel;
 
-namespace Tmc.Scada.Core
+namespace ConsoleApplication1
 {
-    [ServiceContract(Namespace = "http://Microsoft.ServiceModel.Samples")] // test without the namespace, seems unneccesary.
-    public interface IScada
+[ServiceContract(Namespace = "http://Microsoft.ServiceModel.Samples")] // test without the namespace, seems unneccesary.
+    public interface IWebService
     {
         [OperationContract]
         double Add(double n1, double n2);
