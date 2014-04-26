@@ -65,6 +65,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TmcDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="TmcRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="TmcDB.edmx">
