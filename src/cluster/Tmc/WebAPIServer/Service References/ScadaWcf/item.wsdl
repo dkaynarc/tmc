@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://Microsoft.ServiceModel.Samples" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://Microsoft.ServiceModel.Samples" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://Microsoft.ServiceModel.Samples/Imports">
+      <xsd:import schemaLocation="http://localhost:8000/TMC/?xsd=xsd0" namespace="http://Microsoft.ServiceModel.Samples" />
+      <xsd:import schemaLocation="http://localhost:8000/TMC/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IScada_Add_InputMessage">
+    <wsdl:part name="parameters" element="tns:Add" />
+  </wsdl:message>
+  <wsdl:message name="IScada_Add_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddResponse" />
+  </wsdl:message>
+  <wsdl:message name="IScada_Start_InputMessage">
+    <wsdl:part name="parameters" element="tns:Start" />
+  </wsdl:message>
+  <wsdl:message name="IScada_Start_OutputMessage">
+    <wsdl:part name="parameters" element="tns:StartResponse" />
+  </wsdl:message>
+  <wsdl:message name="IScada_Stop_InputMessage">
+    <wsdl:part name="parameters" element="tns:Stop" />
+  </wsdl:message>
+  <wsdl:message name="IScada_Stop_OutputMessage">
+    <wsdl:part name="parameters" element="tns:StopResponse" />
+  </wsdl:message>
+  <wsdl:message name="IScada_Resume_InputMessage">
+    <wsdl:part name="parameters" element="tns:Resume" />
+  </wsdl:message>
+  <wsdl:message name="IScada_Resume_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ResumeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IScada_EmergencyStop_InputMessage">
+    <wsdl:part name="parameters" element="tns:EmergencyStop" />
+  </wsdl:message>
+  <wsdl:message name="IScada_EmergencyStop_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EmergencyStopResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IScada">
+    <wsdl:operation name="Add">
+      <wsdl:input wsaw:Action="http://Microsoft.ServiceModel.Samples/IScada/Add" message="tns:IScada_Add_InputMessage" />
+      <wsdl:output wsaw:Action="http://Microsoft.ServiceModel.Samples/IScada/AddResponse" message="tns:IScada_Add_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Start">
+      <wsdl:input wsaw:Action="http://Microsoft.ServiceModel.Samples/IScada/Start" message="tns:IScada_Start_InputMessage" />
+      <wsdl:output wsaw:Action="http://Microsoft.ServiceModel.Samples/IScada/StartResponse" message="tns:IScada_Start_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Stop">
+      <wsdl:input wsaw:Action="http://Microsoft.ServiceModel.Samples/IScada/Stop" message="tns:IScada_Stop_InputMessage" />
+      <wsdl:output wsaw:Action="http://Microsoft.ServiceModel.Samples/IScada/StopResponse" message="tns:IScada_Stop_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Resume">
+      <wsdl:input wsaw:Action="http://Microsoft.ServiceModel.Samples/IScada/Resume" message="tns:IScada_Resume_InputMessage" />
+      <wsdl:output wsaw:Action="http://Microsoft.ServiceModel.Samples/IScada/ResumeResponse" message="tns:IScada_Resume_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="EmergencyStop">
+      <wsdl:input wsaw:Action="http://Microsoft.ServiceModel.Samples/IScada/EmergencyStop" message="tns:IScada_EmergencyStop_InputMessage" />
+      <wsdl:output wsaw:Action="http://Microsoft.ServiceModel.Samples/IScada/EmergencyStopResponse" message="tns:IScada_EmergencyStop_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

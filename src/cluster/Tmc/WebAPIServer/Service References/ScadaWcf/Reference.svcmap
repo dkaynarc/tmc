@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="778cfff2-ac29-4f6d-85e8-dd504834d666" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c12cff6d-2128-4f3c-88ac-7682ca1f1663" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -22,11 +22,11 @@
     <MetadataSource Address="http://localhost:8000/TMC/" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="item.wsdl" MetadataType="Wsdl" ID="1358a87e-ce95-465b-b1f0-a0c84d34b554" SourceId="1" SourceUrl="http://localhost:8000/TMC/?wsdl=wsdl0" />
-    <MetadataFile FileName="ScadaEngine.wsdl" MetadataType="Wsdl" ID="45dd7c6f-a81f-4863-83c2-8defc654b6df" SourceId="1" SourceUrl="http://localhost:8000/TMC/?wsdl" />
-    <MetadataFile FileName="item.disco" MetadataType="Disco" ID="41aa4155-45cf-46a5-b83b-a8bed5e6fa7d" SourceId="1" SourceUrl="http://localhost:8000/TMC/?disco" />
-    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="513e248e-86f3-42e7-bee4-eb2424e2b6c9" SourceId="1" SourceUrl="http://localhost:8000/TMC/?xsd=xsd1" />
-    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="073997e0-1b12-4d15-9a45-12ef0716973b" SourceId="1" SourceUrl="http://localhost:8000/TMC/?xsd=xsd0" />
+    <MetadataFile FileName="item.wsdl" MetadataType="Wsdl" ID="9e8b7c3a-df07-4272-a7af-6eccfde8a4bb" SourceId="1" SourceUrl="http://localhost:8000/TMC/?wsdl=wsdl0" />
+    <MetadataFile FileName="ScadaEngine.wsdl" MetadataType="Wsdl" ID="ed843d57-903e-4022-ac55-910fe81334f1" SourceId="1" SourceUrl="http://localhost:8000/TMC/?wsdl" />
+    <MetadataFile FileName="item.disco" MetadataType="Disco" ID="5cddc9f9-b11d-40dd-9de2-126b385755b5" SourceId="1" SourceUrl="http://localhost:8000/TMC/?disco" />
+    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="d097b879-ee59-41d4-90e0-d4aa44934e38" SourceId="1" SourceUrl="http://localhost:8000/TMC/?xsd=xsd1" />
+    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="e86aec4a-a45a-4b29-9bc6-8f2b8f3a6198" SourceId="1" SourceUrl="http://localhost:8000/TMC/?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

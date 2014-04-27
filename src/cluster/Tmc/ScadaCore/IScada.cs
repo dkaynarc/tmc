@@ -11,11 +11,16 @@ namespace Tmc.Scada.Core
     public interface IScada
     {
         [OperationContract]
+        // TODO: Remove the "add" test function
         double Add(double n1, double n2);
-        //void Initialise();
-        //void Start();
-        //void Stop();
-        //void Resume();
-        //void EmergencyStop();
+        void Initialise();
+        [OperationContract]
+        void Start();
+        [OperationContract]
+        void Stop();
+        [OperationContract]
+        void Resume();
+        [OperationContract]
+        void EmergencyStop();
     }
 }

@@ -19,12 +19,10 @@ namespace Tmc.Scada.App
         {
             InitializeComponent();
             this.scadaEngine = scadaEngine;
-
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            textBox1.Text = scadaEngine.Add(Convert.ToDouble(textBox2.Text), Convert.ToDouble(textBox3.Text)).ToString();
         }
     }
 }
