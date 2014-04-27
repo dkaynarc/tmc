@@ -23,34 +23,12 @@ namespace Tmc.Scada.App
             scadaEngine.Name = "Initial";
             scadaEngine.Add(12, 10);
             MainForm mainForm = new MainForm(scadaEngine);
-            // Step 1 Create a URI to serve as the base address.
-            Uri baseAddress = new Uri("http://localhost:8000/TMC/");
+            var wcfHost = new WcfHost(scadaEngine);
+            wcfHost.Open();
 
-            // Step 2 Create a ServiceHost instance
-            ServiceHost selfHost = new ServiceHost(scadaEngine, baseAddress);
+            Application.Run(mainForm);
 
-            try
-            {
-                // Step 3 Add a service endpoint.
-                selfHost.AddServiceEndpoint(typeof(IScada), new WSHttpBinding(), "ScadaEngine");
-                // Step 4 Enable metadata exchange.
-                ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
-                smb.HttpGetEnabled = true;
-                selfHost.Description.Behaviors.Add(smb);
-
-                // Step 5 Start the service.
-                selfHost.Open();
-                mainForm.textBox1.Text = "The service is ready.";
-
-                Application.Run(mainForm);
-                // Close the ServiceHostBase to shutdown the service.
-                selfHost.Close();
-             }
-            catch (CommunicationException ce)
-            {
-                selfHost.Abort();
-                MessageBox.Show(ce.Message);
-            }
+            wcfHost.Close();
         }
     }
 }
