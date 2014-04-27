@@ -15,6 +15,7 @@ namespace Tmc.Scada.Core
         private ISequencer _sequencer;
         private HardwareMonitor _hardwareMonitor;
         private EnvironmentMonitor _environmentMonitor;
+        private HardwareStatus _hardwareStatus;
 
         public ScadaEngine()
         {
@@ -45,6 +46,11 @@ namespace Tmc.Scada.Core
         public void EmergencyStop()
         {
             throw new NotImplementedException();
+        }
+
+        public HardwareStatus GetStatus()
+        {
+            return _hardwareStatus;
         }
     }
 }
