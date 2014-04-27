@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tmc.Scada.Core
 {
-    public class Sorter : ControllerBase
+    public sealed class Sorter : ControllerBase
     {
         public Sorter(ClusterConfig config) : base(config)
         {

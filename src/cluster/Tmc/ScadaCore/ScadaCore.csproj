@@ -76,7 +76,6 @@
     <Compile Include="Controllers\Sorter.cs" />
     <Compile Include="Sequencing\State.cs" />
     <Compile Include="TabletMagazine.cs" />
-    <Compile Include="Tray.cs" />
     <Compile Include="Controllers\TrayVerifier.cs" />
     <Compile Include="XmlFactory.cs" />
   </ItemGroup>

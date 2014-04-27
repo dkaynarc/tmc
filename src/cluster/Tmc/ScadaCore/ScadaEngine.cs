@@ -12,7 +12,6 @@ namespace Tmc.Scada.Core
     public class ScadaEngine : IScada
     {
         public ClusterConfig ClusterConfig { get; set; }
-        private ISequencer _sequencer;
         private HardwareMonitor _hardwareMonitor;
         private EnvironmentMonitor _environmentMonitor;
         private HardwareStatus _hardwareStatus;
@@ -25,27 +24,22 @@ namespace Tmc.Scada.Core
 
         public void Initialise()
         {
-            throw new NotImplementedException();
         }
 
         public void Start()
         {
-            throw new NotImplementedException();
         }
 
         public void Stop()
         {
-            throw new NotImplementedException();
         }
 
         public void Resume()
         {
-            throw new NotImplementedException();
         }
 
         public void EmergencyStop()
         {
-            throw new NotImplementedException();
         }
 
         public HardwareStatus GetStatus()
