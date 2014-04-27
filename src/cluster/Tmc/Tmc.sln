@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TmcTest", "TmcTest\TmcTest.csproj", "{87CA9FC1-0480-44DB-8346-E5D8B963E35F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiServer", "WebApiServer\WebApiServer\WebApiServer.csproj", "{7DA3DC7C-D6B3-4E2B-894E-CA871D735656}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiServer", "WebAPIServer\WebApiServer.csproj", "{1E2FAA51-57A7-4327-8136-A7FD5B08DBC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +53,10 @@ Global
 		{87CA9FC1-0480-44DB-8346-E5D8B963E35F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87CA9FC1-0480-44DB-8346-E5D8B963E35F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87CA9FC1-0480-44DB-8346-E5D8B963E35F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7DA3DC7C-D6B3-4E2B-894E-CA871D735656}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DA3DC7C-D6B3-4E2B-894E-CA871D735656}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DA3DC7C-D6B3-4E2B-894E-CA871D735656}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DA3DC7C-D6B3-4E2B-894E-CA871D735656}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E2FAA51-57A7-4327-8136-A7FD5B08DBC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E2FAA51-57A7-4327-8136-A7FD5B08DBC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E2FAA51-57A7-4327-8136-A7FD5B08DBC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E2FAA51-57A7-4327-8136-A7FD5B08DBC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
