@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,6 @@ namespace Tmc.Sensors
 {
     public interface ISensor : IHardware
     {
+        string ConnectionString { get; set; }
     }
 }
