@@ -2,10 +2,10 @@
 
 package ViewAdapters;
 
-import Fragments.CompletedOrderFragment;
-import Fragments.LogoutFragment;
-import Fragments.MachineStatusFragment;
-import Fragments.OrderQueueFragment;
+import fragments.CompletedOrderFragment;
+import fragments.LogoutFragment;
+import fragments.MachineStatusFragment;
+import fragments.OrderQueueFragment;
 import Model.Constants;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

@@ -1,11 +1,8 @@
-package Fragments;
+package fragments;
 
 import java.util.ArrayList;
 
 import com.ictdesign.tmc.R;
-import com.ictdesign.tmc.R.id;
-import com.ictdesign.tmc.R.layout;
-
 import Model.Constants;
 import Model.Order;
 import ViewAdapters.CompletedOrderAdapter;

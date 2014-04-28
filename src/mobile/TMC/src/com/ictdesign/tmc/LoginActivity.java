@@ -2,9 +2,14 @@
 
 package com.ictdesign.tmc;
 
+import services.SynchService;
 import Model.Constants;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -18,7 +23,10 @@ import android.widget.Toast;
 public class LoginActivity extends Activity
 {
 
+	private static final String FEEDBACK = "FEEDBACK";
 	static boolean turnedOn = false;
+	private ResultReceiver receiver;
+	private ProgressDialog pd;
 
 	/**
 	 * Sets the layout and starts the next activity once during start-up for
@@ -35,6 +43,13 @@ public class LoginActivity extends Activity
 			// Replace this with something you might want to do only once during
 			// startup.
 			startActivity(intent);
+		
+		//////////////////
+		IntentFilter filter = new IntentFilter(FEEDBACK);
+		receiver = new ResultReceiver();
+		this.registerReceiver(receiver, filter);
+		/////////////////
+		
 		turnedOn = true;
 	}
 
@@ -47,10 +62,15 @@ public class LoginActivity extends Activity
 
 	public void onLoginClicked(View v)
 	{
+		//////////////////////
+		makeLoginService(((EditText) findViewById(R.id.loginactivity_username_et)).getText().toString(),
+				((EditText) findViewById(R.id.loginactivity_password_et)).getText().toString());
+		//////////////////////
 		// Replace condition with function that takes in the username and
 		// password,performs the necessary confidentiality enforcements
 		// and returns a boolean whether or not it is the correct details.
-		if (((EditText) findViewById(R.id.loginactivity_username_et)).getText()
+		
+		/*if(false((EditText) findViewById(R.id.loginactivity_username_et)).getText()
 				.toString().equals(Constants.USERNAME)
 				&& ((EditText) findViewById(R.id.loginactivity_password_et))
 						.getText().toString().equals(Constants.PASSWORD))
@@ -60,6 +80,83 @@ public class LoginActivity extends Activity
 		}
 		else
 			Toast.makeText(this, Constants.WRONGINFO, Toast.LENGTH_SHORT)
-					.show();
+					.show();*/
 	}
+
+	private void makeLoginService(String userName, String password) {
+		
+		Intent service = new Intent(this, services.SynchService.class);
+		Bundle parcel = new Bundle();
+		parcel.putString("userName",userName);
+		parcel.putString("password", password);
+		parcel.putString("command","1");
+		service.putExtra("parcel", parcel);
+		
+		// stop any already running services associated with this activity
+		stopService(service);
+		pd = ProgressDialog.show(this, null, "Contacting server");
+		startService(service);
+		
+	}
+
+	
+	
+	
+	
+	@Override
+	protected void onStop() 
+	{
+	   super.onStop();
+	}
+    
+	
+	
+	
+	
+	
+// private class
+private class ResultReceiver extends BroadcastReceiver
+{
+	@Override
+	public void onReceive(Context context, Intent intent) 
+	{
+	   pd.dismiss();
+		
+	   String command = intent.getStringExtra("command");
+	   String response = intent.getStringExtra("result"); 
+	   
+	   // convert command value into an integer and do "switch"
+	   switch(Integer.decode(command))
+		{
+		  case 1:
+           handleAuthenticationResult(response, context);
+		  break;
+				 
+		  case 2:
+		 // handleSaveDataResp(command,intent);
+		  break;
+
+		}
+	}
+
+	
+	
+	
+	
+	private void handleAuthenticationResult(String response, Context context) {
+		
+		if((response).equalsIgnoreCase("\"success\""))
+		{		
+			unregisterReceiver(receiver);
+			Intent intent = new Intent(LoginActivity.this, ModuleActivity.class);
+			startActivity(intent);
+		}
+		else
+			Toast.makeText(context, Constants.WRONGINFO, Toast.LENGTH_SHORT)
+					.show();
+	}    
+  }
+
+
+
 }

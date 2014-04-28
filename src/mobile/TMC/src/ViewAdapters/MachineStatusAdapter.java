@@ -5,10 +5,6 @@ package ViewAdapters;
 import java.util.ArrayList;
 
 import com.ictdesign.tmc.R;
-import com.ictdesign.tmc.R.drawable;
-import com.ictdesign.tmc.R.id;
-import com.ictdesign.tmc.R.layout;
-
 import Model.Constants;
 import Model.Machine;
 import android.content.Context;
