@@ -55,7 +55,8 @@ namespace Tmc.Scada.Core
                     //OnCompleted(new OnVerificationCompleteEventArgs
                     //    {
                     //        DetectedTray = detected,
-                    //        IsValid = isValid
+                    //        IsValid = isValid,
+                    //        OperationStatus = ControllerOperationStatus.Succeeded
                     //    })
                 });
             task.Start();
@@ -67,7 +68,7 @@ namespace Tmc.Scada.Core
         public Tray TraySpecification { get; set; }
     }
 
-    public class OnVerificationCompleteEventArgs : EventArgs
+    public class OnVerificationCompleteEventArgs : ControllerEventArgs
     {
         public Tray DetectedTray;
         public bool IsValid;

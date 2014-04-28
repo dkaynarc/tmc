@@ -9,14 +9,14 @@ namespace Tmc.Scada.Core
     public interface IController
     {
         bool IsRunning { get; set; }
-        event EventHandler<EventArgs> Completed;
+        event EventHandler<ControllerEventArgs> Completed;
         void Begin(ControllerParams parameters);
         void Cancel();
     }
 
     public abstract class ControllerBase : IController
     {
-        public event EventHandler<EventArgs> Completed;
+        public event EventHandler<ControllerEventArgs> Completed;
         public bool IsRunning { get; set; }
         private ClusterConfig _config;
         public ControllerBase(ClusterConfig _config)
@@ -26,9 +26,10 @@ namespace Tmc.Scada.Core
         }
 
         public abstract void Begin(ControllerParams parameters);
+
         public abstract void Cancel();
 
-        protected virtual void OnCompleted(EventArgs e)
+        protected virtual void OnCompleted(ControllerEventArgs e)
         {
             var handler = Completed;
             if (handler != null)
@@ -42,5 +43,17 @@ namespace Tmc.Scada.Core
     public class ControllerParams
     {
         public object Sender { get; set; }
+    }
+
+    public enum ControllerOperationStatus
+    {
+        Succeeded,
+        Cancelled,
+        Failed
+    }
+
+    public class ControllerEventArgs : EventArgs
+    {
+        public ControllerOperationStatus OperationStatus;
     }
 }

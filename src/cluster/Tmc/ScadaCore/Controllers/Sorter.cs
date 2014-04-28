@@ -56,6 +56,7 @@ namespace Tmc.Scada.Core
             {
                 _cancelTokenSource.Cancel();
                 IsRunning = false;
+                OnCompleted(new ControllerEventArgs() { OperationStatus = ControllerOperationStatus.Cancelled });
             }
         }
 
@@ -64,41 +65,51 @@ namespace Tmc.Scada.Core
             var ct = _cancelTokenSource.Token;
             Task.Run(() => 
                 {
-                    Sort(mag, ct);
+                    var status = Sort(mag, ct);
                     IsRunning = false;
-                    OnCompleted(new EventArgs());
+                    OnCompleted(new ControllerEventArgs() { OperationStatus = status });
                 }, ct);
         }
 
-        private void Sort(TabletMagazine mag, CancellationToken ct)
+        private ControllerOperationStatus Sort(TabletMagazine mag, CancellationToken ct)
         {
-            var visibleTablets = _vision.GetVisibleTablets();
-            while (ShakeRetryAttempts < MaxShakeRetryAttempts)
+            var status = ControllerOperationStatus.Succeeded;
+            try
             {
-                if (ct.IsCancellationRequested)
+                var visibleTablets = _vision.GetVisibleTablets();
+                while (ShakeRetryAttempts < MaxShakeRetryAttempts)
                 {
-                    return;
+                    if (ct.IsCancellationRequested)
+                    {
+                        status = ControllerOperationStatus.Cancelled;
+                        return status;
+                    }
+                    if (visibleTablets.Count == 0)
+                    {
+                        //_robot.Shake();
+                        visibleTablets = _vision.GetVisibleTablets();
+                        break;
+                    }
+                    ShakeRetryAttempts++;
                 }
-                if (visibleTablets.Count == 0)
+                foreach (var tablet in visibleTablets)
                 {
-                    //_robot.Shake();
-                    visibleTablets = _vision.GetVisibleTablets();
-                    break;
+                    if (mag.IsFull() || ct.IsCancellationRequested)
+                    {
+                        break;
+                    }
+                    if (!mag.GetFullSlots().Contains(tablet.Color))
+                    {
+                        PlaceTablet(tablet, mag);
+                    }
                 }
-                ShakeRetryAttempts++;
             }
-            foreach (var tablet in visibleTablets)
+            catch (Exception ex)
             {
-                if (mag.IsFull() || ct.IsCancellationRequested)
-                {
-                    break;
-                }
-                if (!mag.GetFullSlots().Contains(tablet.Color))
-                {
-                    PlaceTablet(tablet, mag);
-                }
+                Logger.Instance.Write(new LogEntry(ex));
+                status = ControllerOperationStatus.Failed;
             }
-            IsRunning = false;
+            return status;
         }
 
         private void PlaceTablet(Tablet tablet, TabletMagazine mag)

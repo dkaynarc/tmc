@@ -33,15 +33,29 @@ namespace Tmc.Scada.Core
         {
         }
 
+        private ControllerOperationStatus Palletise()
+        {
+            var status = ControllerOperationStatus.Succeeded;
+            try
+            {
+                _palletiserRobot.Palletise();
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Write(new LogEntry(ex));
+                status = ControllerOperationStatus.Failed;
+            }
+            return status;
+        }
+
         private void PalletiseAsync()
         {
-            var task = new Task(() =>
+            Task.Run(() =>
                 {
-                    _palletiserRobot.Palletise();
+                    var status = Palletise();
                     IsRunning = false;
-                    OnCompleted(new EventArgs());
+                    OnCompleted(new ControllerEventArgs() { OperationStatus = status });
                 });
-            task.Start();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 using Tmc.Robotics;
 
 namespace Tmc.Scada.Core
@@ -14,8 +15,24 @@ namespace Tmc.Scada.Core
 
     public sealed class Loader : ControllerBase
     {
+        //TODO: Remove this class when the PLC is implemented place.
+        private class MockPlc
+        {
+            public Dictionary<int, bool> TrayMagazine { get; private set; }
+
+            public MockPlc()
+            {
+                TrayMagazine = new Dictionary<int, bool>();
+                for (int i = 0; i < 6; i++)
+                {
+                    TrayMagazine.Add(i, (i % 2) == 0);
+                }
+            }
+        }
+
         private LoaderRobot _loaderRobot;
         //private PlcSensor _traySensor;
+        private MockPlc _traySensor;
         private Dictionary<LoaderAction, Action> _actionMap;
 
         public Loader(ClusterConfig config) : base(config)
@@ -52,45 +69,91 @@ namespace Tmc.Scada.Core
         {
         }
 
-        private int SelectShelf()
+        /// <summary>
+        /// Attempts to select a shelf from the Tray Magazine
+        /// </summary>
+        /// <param name="shelfIndex">The selected shelf. -1 if no shelf could be selected</param>
+        /// <returns>false if no shelf could be selected</returns>
+        private bool TrySelectShelf(out int shelfIndex)
         {
-            // TODO: write an algorithm to select the first available tray in the magazine
-            // Requires the PLC
-            return 0;
+            shelfIndex = -1;
+            var availableTrays = _traySensor.TrayMagazine.Where(x => x.Value == true).Select(y => y.Key).ToList();
+            if (availableTrays.Count == 0)
+            {
+                return false;
+            }
+
+            shelfIndex = availableTrays[0];
+            return true;
+        }
+
+        private ControllerOperationStatus LoadTray()
+        {
+            int shelf;
+            var status = ControllerOperationStatus.Succeeded;
+            if (TrySelectShelf(out shelf))
+            {
+                try
+                {
+                    _loaderRobot.GetTray(shelf);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Instance.Write(new LogEntry(ex));
+                    status = ControllerOperationStatus.Failed;
+                }
+            }
+            else
+            {
+                Logger.Instance.Write("No trays available in Tray Magazine", LogType.Warning);
+                status = ControllerOperationStatus.Failed;
+            }
+            return status;
+        }
+
+        private ControllerOperationStatus Palletise()
+        {
+            var status = ControllerOperationStatus.Succeeded;
+            try
+            {
+                _loaderRobot.Palletise();
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Write(new LogEntry(ex));
+                status = ControllerOperationStatus.Failed;
+            }
+            return status;
         }
 
         private void LoadToConveyorAsync()
         {
-            var task = new Task(() =>
+            Task.Run(() =>
                 {
-                    var shelf = SelectShelf();
-                    _loaderRobot.GetTray(shelf);
+                    var status = LoadTray();
                     IsRunning = false;
-                    OnCompleted(new EventArgs());
+                    OnCompleted(new ControllerEventArgs() { OperationStatus = status });
                 });
-            task.Start();
         }
 
         private void LoadToAccpetedBufferAsync()
         {
-            var task = new Task(() =>
+            Task.Run(() =>
                 {
-                    _loaderRobot.Palletise();
+                    var status = Palletise();
                     IsRunning = false;
-                    OnCompleted(new EventArgs());
+                    OnCompleted(new ControllerEventArgs() { OperationStatus = status });
                 });
-            task.Start();
         }
 
         private void LoadToRejectedBufferAsync()
         {
-            var task = new Task(() =>
+            Task.Run(() =>
                 {
-                    _loaderRobot.Palletise();
+                    var status = Palletise();
                     IsRunning = false;
-                    OnCompleted(new EventArgs());
+                    OnCompleted(new ControllerEventArgs() { OperationStatus = status });
                 });
-            task.Start();
         }
     }
     public class LoaderParams : ControllerParams

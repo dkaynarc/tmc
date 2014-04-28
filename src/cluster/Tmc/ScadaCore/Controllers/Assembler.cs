@@ -17,7 +17,7 @@ namespace Tmc.Scada.Core
             var p = parameters as AssemblerParams;
             if (p != null)
             {
-                OnCompleted(new EventArgs());
+                OnCompleted(new ControllerEventArgs() { OperationStatus = ControllerOperationStatus.Succeeded });
             }
         }
 
