@@ -72,6 +72,10 @@ namespace Tmc.Scada.Core
             }
         }
 
+        public override void Cancel()
+        {
+        }
+
         public ConveyorPosition GetCurrentPosition(ConveyorType type)
         {
             return _conveyorPositionMap[type];

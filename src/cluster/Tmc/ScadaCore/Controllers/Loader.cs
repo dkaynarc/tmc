@@ -48,6 +48,10 @@ namespace Tmc.Scada.Core
             }
         }
 
+        public override void Cancel()
+        {
+        }
+
         private int SelectShelf()
         {
             // TODO: write an algorithm to select the first available tray in the magazine

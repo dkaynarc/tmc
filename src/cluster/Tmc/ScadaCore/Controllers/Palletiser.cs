@@ -29,6 +29,10 @@ namespace Tmc.Scada.Core
             }
         }
 
+        public override void Cancel()
+        {
+        }
+
         private void PalletiseAsync()
         {
             var task = new Task(() =>

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Tmc.Common;
 using Tmc.Robotics;
 using Tmc.Vision;
+using System.Drawing;
+using System.Threading;
 
 namespace Tmc.Scada.Core
 {
@@ -15,12 +17,15 @@ namespace Tmc.Scada.Core
         public int ShakeRetryAttempts { get; private set; }
         private SorterVision _vision;
         private SorterRobot _robot;
+        private CancellationTokenSource _cancelTokenSource; 
+
         public Sorter(ClusterConfig config) : base(config)
         {
             this.MaxShakeRetryAttempts = 1;
             this.ShakeRetryAttempts = 0;
             this._vision = new SorterVision(config.Cameras["SorterCamera"] as Camera);
             this._robot = config.Robots[typeof(SorterRobot)] as SorterRobot;
+            this._cancelTokenSource = new CancellationTokenSource();
 
             if (_vision == null)
             {
@@ -45,22 +50,35 @@ namespace Tmc.Scada.Core
             }
         }
 
-        private void SortAsync(TabletMagazine mag)
+        public override void Cancel()
         {
-            var task = new Task(() => 
-                {
-                    Sort(mag);
-                    IsRunning = false;
-                    OnCompleted(new EventArgs());
-                });
-            task.Start();
+            if (IsRunning && _cancelTokenSource != null)
+            {
+                _cancelTokenSource.Cancel();
+                IsRunning = false;
+            }
         }
 
-        private void Sort(TabletMagazine mag)
+        private void SortAsync(TabletMagazine mag)
+        {
+            var ct = _cancelTokenSource.Token;
+            Task.Run(() => 
+                {
+                    Sort(mag, ct);
+                    IsRunning = false;
+                    OnCompleted(new EventArgs());
+                }, ct);
+        }
+
+        private void Sort(TabletMagazine mag, CancellationToken ct)
         {
             var visibleTablets = _vision.GetVisibleTablets();
             while (ShakeRetryAttempts < MaxShakeRetryAttempts)
             {
+                if (ct.IsCancellationRequested)
+                {
+                    return;
+                }
                 if (visibleTablets.Count == 0)
                 {
                     //_robot.Shake();
@@ -69,15 +87,31 @@ namespace Tmc.Scada.Core
                 }
                 ShakeRetryAttempts++;
             }
-
-            if (visibleTablets.Count > 0)
+            foreach (var tablet in visibleTablets)
             {
+                if (mag.IsFull() || ct.IsCancellationRequested)
+                {
+                    break;
+                }
+                if (!mag.GetFullSlots().Contains(tablet.Color))
+                {
+                    PlaceTablet(tablet, mag);
+                }
             }
+            IsRunning = false;
         }
 
-        private void PlaceTablets(List<Tablet> tablets, TabletMagazine mag)
+        private void PlaceTablet(Tablet tablet, TabletMagazine mag)
         {
+            var p = TransformToRobotSpace(tablet.LocationPoint);
+            _robot.GetTablet(p.X, p.Y, mag.GetSlotIndex(tablet.Color));
+            mag.AddTablet(tablet.Color);
+        }
 
+        private Point TransformToRobotSpace(Point p)
+        {
+            //TODO: add logic to transform from camera space to sorter robot space.
+            return p;
         }
     }
 

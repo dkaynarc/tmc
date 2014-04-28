@@ -36,6 +36,10 @@ namespace Tmc.Scada.Core
             }
         }
 
+        public override void Cancel()
+        {
+        }
+
         private bool DetermineValidity(Tray t1, Tray t2)
         {
             return (t1 == t2);

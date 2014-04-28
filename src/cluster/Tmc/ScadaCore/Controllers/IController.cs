@@ -11,6 +11,7 @@ namespace Tmc.Scada.Core
         bool IsRunning { get; set; }
         event EventHandler<EventArgs> Completed;
         void Begin(ControllerParams parameters);
+        void Cancel();
     }
 
     public abstract class ControllerBase : IController
@@ -25,6 +26,7 @@ namespace Tmc.Scada.Core
         }
 
         public abstract void Begin(ControllerParams parameters);
+        public abstract void Cancel();
 
         protected virtual void OnCompleted(EventArgs e)
         {

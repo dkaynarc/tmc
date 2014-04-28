@@ -20,6 +20,10 @@ namespace Tmc.Scada.Core
                 OnCompleted(new EventArgs());
             }
         }
+
+        public override void Cancel()
+        {
+        }
     }
 
     public class AssemblerParams : ControllerParams
