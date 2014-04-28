@@ -68,7 +68,15 @@ namespace Tmc.Sensors
         {
             try
             {
-                _tcpClient = new TcpClient(this.IPAddress, Convert.ToInt32(this.PortName)); 
+                int number;
+                if (Int32.TryParse(this.PortName, out number))
+                {
+                    _tcpClient = new TcpClient(this.IPAddress, number); 
+                }
+                else
+                {
+                    throw new Exception("Error: Portname is not an integer on initialise");
+                }
                 _networkStream = _tcpClient.GetStream();
                 _streamWriter = new StreamWriter(_networkStream);
                 _streamReader = new StreamReader(_networkStream);
@@ -101,70 +109,58 @@ namespace Tmc.Sensors
             }
             else
             {
-                throw new InvalidOperationException("No connection IP address passed to sensors");
+                throw new InvalidOperationException("Error: No sensor channel passed to sensors");
             }
-
-
-
-
-
 
             if (parameters.TryGetValue("IPAddress", out s))
             {
-                this.ConnectionIP = s;
+                this.IPAddress = s;
             }
             else
             {
-                throw new InvalidOperationException("No connection IP address passed to sensors");
+                throw new InvalidOperationException("Error: No connection IP address passed to sensors");
             }
 
             if (parameters.TryGetValue("ConnectionPort", out s))
             {
-                this.ConnectionPort = Convert.ToInt32(s); // make sure use try parse
+                this.PortName = s; 
             }
             else
             {
-                throw new InvalidOperationException("No connection Port number passed to sensors");
+                throw new InvalidOperationException("Error: No connection Port number passed to sensors");
             }
             
         }
-/*
-        public float getData(SensorDevices sensors)
+
+        /// <summary>
+        /// Communicate with the TCP server (Raspberry Pi) to obtain sensory data information.
+        /// The result is specific to the channel of the sensor as defined in setparameters()
+        /// </summary>
+        /// <returns>float: sensor data</returns>
+
+        public float getData()
         {
-            float data = -100;                                          //Arbitary large negative float to indicate an error from sensory devices
+            float data = 0;                                       
             try
             {   
-                switch(sensors)
-                {
-                    case SensorDevices.Temperature:
-                        streamWriter.WriteLine("temperature");
-                        break;
-                    case SensorDevices.Ambience:
-                        streamWriter.WriteLine("ambience");
-                        break;
-                    case SensorDevices.DustParticle:
-                        streamWriter.WriteLine("dust");
-                        break;
-                    case SensorDevices.Humidity:
-                        streamWriter.WriteLine("humidity");
-                        break;
-                    case SensorDevices.Sound:
-                        streamWriter.WriteLine("sound");
-                        break;
-                    default:
-                        streamWriter.WriteLine("unknown");              
-                        return data;
-                        
-                }
-
-                streamWriter.Flush();                               // Flush WriterStream data to network stream (i.e. sending to Raspberry Pi)        
+                _streamWriter.Write(this.Channel);
+                _streamWriter.Flush();                               // Flush WriterStream data to network stream (i.e. sending to Raspberry Pi)        
 
                 string result = null;
-                result = streamReader.ReadLine();                   // Reading input data from Raspberry Pi
+                result = _streamReader.ReadLine();                   
 
                 if (result != null)                                 
                 {
-                    data = Convert.ToSingle(result);                
+                    float number;
+                    if (Single.TryParse(result, out number))
+                    {
+                        data = number; 
+                    }
+                    else
+                    {
+                        throw new Exception("Error: The result is not a float");
+                    }
+
                     _hardwareStatus = HardwareStatus.Operational;
                     return data;
                 }
@@ -175,16 +171,15 @@ namespace Tmc.Sensors
 
                 }
 
-
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error recieved: " + e);
+                Console.WriteLine("Error: Exception in getting data:" + e);
                 return data;
             }
 
         }
- * */
+
     }
 }
 
