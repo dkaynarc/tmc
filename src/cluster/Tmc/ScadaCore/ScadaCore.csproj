@@ -75,7 +75,6 @@
     <Compile Include="Sequencing\State.cs" />
     <Compile Include="TabletMagazine.cs" />
     <Compile Include="Controllers\TrayVerifier.cs" />
-    <Compile Include="XmlFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

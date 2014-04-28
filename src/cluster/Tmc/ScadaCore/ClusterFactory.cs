@@ -160,10 +160,10 @@ namespace Tmc.Scada.Core
         {
             var typeSwitch = new Dictionary<Type, Func<IHardware>>
             {
-                { typeof(ICamera),      () => { return CreateCamera(); }},
-                { typeof(ISensor),      () => { return CreateSensor(); }},
-                { typeof(IRobot),       () => { return CreateRobot(type); }},
-                { typeof(IConveyor),    () => { return CreateConveyor(type); }}
+                { typeof(ICamera),      () => { return CreateCamera() as IHardware; }},
+                { typeof(ISensor),      () => { return CreateSensor() as IHardware; }},
+                { typeof(IRobot),       () => { return CreateRobot(type) as IHardware; }},
+                { typeof(IConveyor),    () => { return CreateConveyor(type) as IHardware; }}
             };
 
             var interfaces = type.GetInterfaces();

@@ -12,6 +12,7 @@ namespace Tmc.Scada.Core
     public class ScadaEngine : IScada
     {
         public ClusterConfig ClusterConfig { get; set; }
+        internal TabletMagazine TabletMagazine { get; set; }
         private HardwareMonitor _hardwareMonitor;
         private EnvironmentMonitor _environmentMonitor;
 
@@ -20,6 +21,7 @@ namespace Tmc.Scada.Core
             //this._hardwareMonitor = new HardwareMonitor(this);
             //this._environmentMonitor = new EnvironmentMonitor(this);
             this.ClusterConfig = ClusterFactory.Instance.CreateCluster("./Configuration/ClusterConfig.xml");
+            this.TabletMagazine = new TabletMagazine(); 
         }
 
         public void Initialise()
