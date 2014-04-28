@@ -10,6 +10,7 @@ namespace Tmc.Sensors
 {
     public interface ISensor : IHardware
     {
-        string ConnectionString { get; set; }
+        string ConnectionIP { get; set; }
+        int ConnectionPort { get; set; }
     }
 }
