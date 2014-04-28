@@ -30,11 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ABB.Robotics.Controllers.PC">
-      <HintPath>Service References\ABB.Robotics.Controllers.PC.dll</HintPath>
+    <Reference Include="ABB.Robotics.Controllers.PC, Version=5.60.5733.84, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\ABB.Robotics.Controllers.PC.dll</HintPath>
     </Reference>
-    <Reference Include="Conveyor">
-      <HintPath>..\..\..\..\..\..\Users\Shale\Documents\TMC Old\Conveyor\Code Samples\Conveyor Code Samples\Conveyorw\Debug\Conveyor.dll</HintPath>
+    <Reference Include="Conveyor, Version=1.0.5225.28878, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\Conveyor.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
