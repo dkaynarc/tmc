@@ -13,8 +13,8 @@ namespace Tmc.Scada.Core
     {
         public ClusterConfig ClusterConfig { get; set; }
         internal TabletMagazine TabletMagazine { get; set; }
-        private HardwareMonitor _hardwareMonitor;
-        private EnvironmentMonitor _environmentMonitor;
+        //private HardwareMonitor _hardwareMonitor;
+        //private EnvironmentMonitor _environmentMonitor;
 
         public ScadaEngine()
         {

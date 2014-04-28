@@ -45,6 +45,7 @@ namespace Tmc.Scada.Core
             };
 
             _loaderRobot = config.Robots[typeof(LoaderRobot)] as LoaderRobot;
+            _traySensor = new MockPlc();
 
             if (_loaderRobot == null)
             {
