@@ -23,4 +23,16 @@
     <Name>TrayVerifierCamera</Name>
     <ConnectionString>http://www.google.com</ConnectionString>
   </Hardware>-->
+  <!--<Hardware Type="Sensor">
+    <Name>TemperatureSensor</Name>
+    <Channel>temperature</Channel>
+    <IPAddress>127.0.0.1</IPAddress>
+    <PortName>10001</PortName>
+  </Hardware>
+  <Hardware Type="Sensor">
+    <Name>LightSensor</Name>
+    <Channel>light</Channel>
+    <IPAddress>127.0.0.1</IPAddress>
+    <PortName>10001</PortName>
+  </Hardware>-->
 </Cluster>
