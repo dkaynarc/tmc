@@ -8,13 +8,17 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WebApiServer.Authentication;
-using WebApiServer.ScadaWcf;
+using Tmc.Scada.Core;
+using System.ServiceModel.Description;
+using System.ServiceModel;
+using System.Configuration;
 
 namespace WebApiServer
 {
     public class ServerController : ApiController
     {
-        private ScadaClient _scadaClient;
+        //private ScadaClient _scadaClient;
+        private IScada _scadaClient;
 
         public ServerController()
         {
@@ -24,7 +28,10 @@ namespace WebApiServer
 
             // TODO: Handle the case where the ScadaClient service reference cannot be resolved.
             // This will support the use case of the API Server running when the SCADA is not.
-            _scadaClient = new ScadaClient();
+            var pipeFactory = new ChannelFactory<IScada>(
+                new NetNamedPipeBinding(),
+                new EndpointAddress(ConfigurationManager.AppSettings["ScadaWcfPipe"]));
+            _scadaClient = pipeFactory.CreateChannel();
         }
 
         public SCADAUserManager UserManager
@@ -32,9 +39,9 @@ namespace WebApiServer
             get { return new SCADAUserManager(); }
         }
 
-        public string Get()
+        public string Get(string request)
         {
-            return "response";
+            return request + "Acknowledged";
         }
 
         public string Authenticate(string userName, string password)
@@ -107,7 +114,6 @@ namespace WebApiServer
         public string GetUserOrders()
         {
             return "response";
-
         }
 
     }

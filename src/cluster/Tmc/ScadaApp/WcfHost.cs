@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using System.ServiceModel.Description;
 using System.ServiceModel;
 using Tmc.Scada.Core;
+using System.Configuration;
 
 namespace Tmc.Scada.App
 {
     public class WcfHost
     {
-        private readonly Uri _baseAddress = new Uri("http://localhost:8000/TMC/");
         private ServiceHost _serviceHost;
 
         public bool IsConnected { get; private set; }
@@ -24,7 +24,9 @@ namespace Tmc.Scada.App
                 throw new ArgumentNullException("engine was null");
             }
             
-            this._serviceHost = new ServiceHost(engine, _baseAddress);
+            this._serviceHost = new ServiceHost(engine, new Uri(ConfigurationManager.AppSettings["ScadaWcfPipeBase"]));
+
+            this._serviceHost.AddServiceEndpoint(typeof(IScada), new NetNamedPipeBinding(), ConfigurationManager.AppSettings["ScadaWcfPipeEndpoint"]);
         }
 
         public void Open()
@@ -33,10 +35,6 @@ namespace Tmc.Scada.App
             {
                 try
                 {
-                    this._serviceHost.AddServiceEndpoint(typeof(IScada), new WSHttpBinding(), "ScadaEngine");
-                    var smb = new ServiceMetadataBehavior();
-                    smb.HttpGetEnabled = true;
-                    this._serviceHost.Description.Behaviors.Add(smb);
                     this._serviceHost.Open();
                 }
                 catch (Exception ex)
