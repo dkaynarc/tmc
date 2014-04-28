@@ -13,67 +13,78 @@ namespace Tmc.Sensors
 {
     class Sensor : ISensor
     {
-        public enum SensorDevices
-        {
-            Temperature,
-            Ambience,
-            Sound,
-            DustParticle,
-            Humidity
-        }
         public string Name { get; set; }
-        public string ConnectionIP { get; set; }
-        public int ConnectionPort { get; set; }
+        public string Channel { get; set; }
+        public string IPAddress { get; set; }
+        public string PortName { get; set; }
 
         private HardwareStatus _hardwareStatus;
 
-        TcpClient tcpClient;
-        NetworkStream networkStream;
-        StreamWriter streamWriter;
-        StreamReader streamReader;
+        TcpClient _tcpClient;
 
+        NetworkStream _networkStream;
+
+        StreamWriter _streamWriter;
+
+        StreamReader _streamReader;
+
+        /// <summary>
+        ///  Creates a new Sensor class with hardware status to be 'Offline' as default
+        /// </summary>
         public Sensor()
         {
             _hardwareStatus = HardwareStatus.Offline;
         }
 
-
+        /// <summary>
+        /// Shutdown TCP client connections with the Raspberry Pi
+        /// </summary>
         public void Shutdown()
         {
             try
             {
-                tcpClient.Close();
+                _tcpClient.Close();
                 _hardwareStatus = HardwareStatus.Offline;
             }
             catch (SocketException e)
             {
-                Console.WriteLine(e);
                 _hardwareStatus = HardwareStatus.Failed;
+                throw new Exception("Error: Unable to shutdown TCP client: " + e);
             }
         }
-
+        /// <summary>
+        /// Return hardware status of the connectivity between SCADA and Raspberry Pi
+        /// </summary>
+        /// <returns>HardwareStatus as either Operational, Offline or Failed</returns>
         public HardwareStatus GetStatus()
         {
             return _hardwareStatus;
         }
 
+        /// <summary>
+        /// Initialises the network connection between SCADA and Raspberry Pi server with the 
+        /// </summary>
         public void Initialise()
         {
             try
             {
-                tcpClient = new TcpClient(this.ConnectionIP, this.ConnectionPort); 
-                networkStream = tcpClient.GetStream();
-                streamWriter = new StreamWriter(networkStream);
-                streamReader = new StreamReader(networkStream);
+                _tcpClient = new TcpClient(this.IPAddress, Convert.ToInt32(this.PortName)); 
+                _networkStream = _tcpClient.GetStream();
+                _streamWriter = new StreamWriter(_networkStream);
+                _streamReader = new StreamReader(_networkStream);
                 _hardwareStatus = HardwareStatus.Operational;
             }
             catch (SocketException ex)
             {
-                Console.WriteLine(ex);
                 _hardwareStatus = HardwareStatus.Failed;
+                throw new Exception("Error: Unable to initialise TCP client: " + ex);
             }
         }
 
+        /// <summary>
+        /// Parse sensor configurations to sensor name, channel, IP address and Port number 
+        /// </summary>
+        /// <param name="parameters"></param>
         public void SetParameters(Dictionary<string, string> parameters)
         {
             
@@ -84,7 +95,21 @@ namespace Tmc.Sensors
                 this.Name = s;
             }
 
-            if (parameters.TryGetValue("ConnectionIP", out s))
+            if (parameters.TryGetValue("Channel", out s))
+            {
+                this.Channel = s;
+            }
+            else
+            {
+                throw new InvalidOperationException("No connection IP address passed to sensors");
+            }
+
+
+
+
+
+
+            if (parameters.TryGetValue("IPAddress", out s))
             {
                 this.ConnectionIP = s;
             }
@@ -95,7 +120,7 @@ namespace Tmc.Sensors
 
             if (parameters.TryGetValue("ConnectionPort", out s))
             {
-                this.ConnectionPort = Convert.ToInt32(s);
+                this.ConnectionPort = Convert.ToInt32(s); // make sure use try parse
             }
             else
             {
@@ -103,7 +128,7 @@ namespace Tmc.Sensors
             }
             
         }
-
+/*
         public float getData(SensorDevices sensors)
         {
             float data = -100;                                          //Arbitary large negative float to indicate an error from sensory devices
@@ -159,6 +184,7 @@ namespace Tmc.Sensors
             }
 
         }
+ * */
     }
 }
 
