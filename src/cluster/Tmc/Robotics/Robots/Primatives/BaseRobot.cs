@@ -19,7 +19,7 @@ namespace Tmc.Robotics
         protected Controller Controller;
         protected Mastership Mastership;
 
-        private EventWaitHandle eventWait = new AutoResetEvent(false);
+        private EventWaitHandle _eventWait = new AutoResetEvent(false);
 
         public BaseRobot() { }
 
@@ -103,7 +103,7 @@ namespace Tmc.Robotics
 
             this.EndControl();
 
-            this.eventWait.WaitOne();
+            this._eventWait.WaitOne();
 
             this.Controller.FileSystem.RemoveFile(filename);
         }
@@ -126,7 +126,7 @@ namespace Tmc.Robotics
         {
             if (args.Status == ExecutionStatus.Stopped)
             {
-                this.eventWait.Set();
+                this._eventWait.Set();
             }
         }
     }

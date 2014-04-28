@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Tmc.Common;
 
@@ -10,6 +11,8 @@ namespace Tmc.Robotics
     public class SerialConveyor : IConveyor
     {
         public string Name { get; set; }
+        private string _portName;
+        private int _position;
 
         public HardwareStatus GetStatus()
         {
@@ -18,7 +21,11 @@ namespace Tmc.Robotics
 
         public void Initialise()
         {
-            throw new NotImplementedException();
+            _position = 0;
+
+            Conveyor.initialisePLC();
+            Thread.Sleep(500);
+            Conveyor.start(_portName);
         }
 
         public void Shutdown()
@@ -33,16 +40,49 @@ namespace Tmc.Robotics
             {
                 this.Name = s;
             }
+
+            if(!parameters.TryGetValue("PortName", out s))
+            {
+                throw new Exception("Serial Conveyor requires a portname.");
+            }
+            else
+            {
+                _portName = s;
+            }
         }
 
         public void MoveForward()
         {
-            throw new NotImplementedException();
+            switch(_position)
+            {
+                case 0:
+                    Conveyor.rightToMiddle();
+                    _position++;
+                    break;
+                case 1:
+                    Conveyor.middleToLeft();
+                    _position++;
+                    break;
+                case 2:
+                    throw new Exception("Conveyor is at its most forward position");
+            }
         }
 
         public void MoveBackward()
         {
-            throw new NotImplementedException();
+            switch(_position)
+            {
+                case 0:
+                    throw new Exception("Conveyor is at its most backward position");
+                case 1:
+                    Conveyor.middleToRight();
+                    _position--;
+                    break;
+                case 2:
+                    Conveyor.leftToMiddle();
+                    _position--;
+                    break;
+            }
         }
     }
 }
