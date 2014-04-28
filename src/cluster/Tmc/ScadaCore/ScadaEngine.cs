@@ -17,8 +17,9 @@ namespace Tmc.Scada.Core
 
         public ScadaEngine()
         {
-            this._hardwareMonitor = new HardwareMonitor(this);
-            this._environmentMonitor = new EnvironmentMonitor(this);
+            //this._hardwareMonitor = new HardwareMonitor(this);
+            //this._environmentMonitor = new EnvironmentMonitor(this);
+            this.ClusterConfig = ClusterFactory.Instance.CreateCluster("./Configuration/ClusterConfig.xml");
         }
 
         public void Initialise()

@@ -8,6 +8,7 @@ using Tmc.Common;
 
 namespace Tmc.Robotics
 {
+    [Name("SerialConveyor")]
     public class SerialConveyor : IConveyor
     {
         public string Name { get; set; }

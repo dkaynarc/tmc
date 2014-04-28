@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Tmc.Scada.App</RootNamespace>
-    <AssemblyName>ScadaApp</AssemblyName>
+    <AssemblyName>Tmc.Scada.App</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -84,10 +84,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Robotics\Robotics.csproj">
-      <Project>{df66d143-d5cc-4ba7-a277-d0e76779b062}</Project>
-      <Name>Robotics</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ScadaCore\ScadaCore.csproj">
       <Project>{5b8926dd-dd25-4531-ac23-2b31cb9774d4}</Project>
       <Name>ScadaCore</Name>

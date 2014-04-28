@@ -1,21 +1,45 @@
-﻿using System;
+﻿#region Header
+/// FileName: ClusterFactory.cs
+/// Author: Denis Kaynarca (denis@dkaynarca.com)
+#endregion
+
+#region UsingStatements
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using Tmc.Common;
 using Tmc.Robotics;
 using Tmc.Sensors;
 using Tmc.Vision;
+using System.Reflection;
+using System.IO;
+#endregion
 
 namespace Tmc.Scada.Core
 {
-    internal static class ClusterFactory
+    internal sealed class ClusterFactory
     {
-        private static readonly Dictionary<string, Type> HardwareMapping;
-        
-        static ClusterFactory()
+        private readonly Dictionary<string, Type> TypeMap;
+
+        private static ClusterFactory _instance;
+
+        public static ClusterFactory Instance
         {
-            HardwareMapping = new Dictionary<string, Type>();
-            BuildMappings();
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ClusterFactory();
+                }
+                return _instance;
+            }
+        }
+
+        private ClusterFactory()
+        {
+            TypeMap = new Dictionary<string, Type>();
+            BuildTypeMap();
         }
 
         /// <summary>
@@ -24,18 +48,28 @@ namespace Tmc.Scada.Core
         /// </summary>
         /// <param name="fileName">Path to an XML file to parse</param>
         /// <returns>Cluster Configuration object encapsulating the created hardware and controllers.</returns>
-        public static ClusterConfig CreateCluster(string fileName)
+        public ClusterConfig CreateCluster(string fileName)
         {
             var doc = XDocument.Load(fileName);
             var root = doc.Element("Cluster");
-            var templateName = root.Attribute("Name").Value;
             var clusterTemplate = LoadClusterTemplate(root);
             return CreateClusterConfig(clusterTemplate);
         }
 
-        private static void BuildMappings()
+        private List<Assembly> LoadAllAssemblies()
         {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
+            var loadedPaths = loadedAssemblies.Select(a => a.Location).ToArray();
+
+            var referencedPaths = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll");
+            var toLoad = referencedPaths.Where(r => !loadedPaths.Contains(r, StringComparer.InvariantCultureIgnoreCase)).ToList();
+            toLoad.ForEach(path => loadedAssemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path))));
+            return loadedAssemblies;
+        }
+
+        private void BuildTypeMap()
+        {
+            var assemblies = LoadAllAssemblies();
             foreach (var assembly in assemblies)
             {
                 if (assembly.FullName.Contains("Tmc"))
@@ -44,9 +78,9 @@ namespace Tmc.Scada.Core
                     foreach (var type in types)
                     {
                         var isHardware = typeof(IHardware).IsAssignableFrom(type);
-                        if (isHardware)
+                        if (isHardware && !(type.IsInterface || type.IsAbstract))
                         {
-                            string name = type.FullName;
+                            string name = type.Name.ToLower();
                             var attribs = type.GetCustomAttributes(typeof(NameAttribute), false);
                             if (attribs.Length > 0)
                             {
@@ -55,16 +89,16 @@ namespace Tmc.Scada.Core
                                 {
                                     name = attrib.Name.ToLower();
                                 }
-
-                                HardwareMapping.Add(name, type);
                             }
+
+                            TypeMap.Add(name, type);
                         }
                     }
                 }
             }
         }
 
-        private static ClusterConfig CreateClusterConfig(ClusterTemplate template)
+        private ClusterConfig CreateClusterConfig(ClusterTemplate template)
         {
             ClusterConfig config = new ClusterConfig();
 
@@ -72,28 +106,35 @@ namespace Tmc.Scada.Core
             {
                 var hw = CreateHardware(hwTemplate.Type);
 
+                try
+                {
+                    hw.SetParameters(hwTemplate.Parameters);
+                    hw.Initialise();
+                }
+                catch(Exception ex)
+                {
+                    Logger.Instance.Write(new LogEntry(ex));
+                    throw new InvalidOperationException(
+                        String.Format("Failed to initialise hardware item Type: {0}, Name: {1}",
+                        hw.GetType().ToString(), hw.Name));
+                }
+
                 if (hw is IRobot)
                 {
                     config.Robots.Add(hw.GetType(), hw as IRobot);
                 }
-
-                if (hw is IConveyor)
+                else if (hw is IConveyor)
                 {
                     config.Conveyors.Add(hw.GetType(), hw as IConveyor);
                 }
-
-                if (hw is ISensor)
+                else if (hw is ISensor)
                 {
                     config.Sensors.Add(hw.GetType(), hw as ISensor);
                 }
-
-                if (hw is ICamera)
+                else if (hw is ICamera)
                 {
                     config.Cameras.Add(hw.Name, hw as ICamera);
                 }
-                
-                hw.SetParameters(hwTemplate.Parameters);
-                hw.Initialise();
             }
 
             config.Controllers = CreateControllers(config);
@@ -101,7 +142,7 @@ namespace Tmc.Scada.Core
             return config;
         }
 
-        private static Dictionary<Type, IController> CreateControllers(ClusterConfig config)
+        private Dictionary<Type, IController> CreateControllers(ClusterConfig config)
         {
             var controllers = new Dictionary<Type, IController>();
 
@@ -115,41 +156,51 @@ namespace Tmc.Scada.Core
             return controllers;
         }
 
-        private static IHardware CreateHardware(Type type)
+        private IHardware CreateHardware(Type type)
         {
             var typeSwitch = new Dictionary<Type, Func<IHardware>>
             {
                 { typeof(ICamera),      () => { return CreateCamera(); }},
                 { typeof(ISensor),      () => { return CreateSensor(); }},
                 { typeof(IRobot),       () => { return CreateRobot(type); }},
-                { typeof(IConveyor),    () => { return CreateConveyor(); }}
+                { typeof(IConveyor),    () => { return CreateConveyor(type); }}
             };
 
-            return typeSwitch[type]();
+            var interfaces = type.GetInterfaces();
+            IHardware hwInstance = null;
+            foreach (var iface in interfaces)
+            {
+                Func<IHardware> factory;
+                if (typeSwitch.TryGetValue(iface, out factory))
+                {
+                    hwInstance = factory();
+                }
+            }
+
+            return hwInstance;
         }
 
-        private static ICamera CreateCamera()
+        private ICamera CreateCamera()
         {
-            // return new Camera();
+            return new Camera();
+        }
+
+        private ISensor CreateSensor()
+        {
             throw new NotImplementedException();
         }
 
-        private static ISensor CreateSensor()
-        {
-            throw new NotImplementedException();
-        }
-
-        private static IRobot CreateRobot(Type type)
+        private IRobot CreateRobot(Type type)
         {
             return RobotFactory.CreateRobot(type);
         }
 
-        private static IConveyor CreateConveyor()
+        private IConveyor CreateConveyor(Type type)
         {
-            throw new NotImplementedException();
+            return ConveyorFactory.CreateConveyor(type);
         }
 
-        private static ClusterTemplate LoadClusterTemplate(XElement xElement)
+        private ClusterTemplate LoadClusterTemplate(XElement xElement)
         {
             string name = null;
             var xmlName = xElement.Attribute("Name");
@@ -159,16 +210,16 @@ namespace Tmc.Scada.Core
             }
 
             var clusterTemplate = new ClusterTemplate(name);
-            var hardwareTemplates = LoadHardwareTemplates(xElement.Elements("Hardware"));
+            clusterTemplate.Hardware = LoadHardwareTemplates(xElement.Elements("Hardware"));
             return clusterTemplate;
         }
 
-        private static List<HardwareTemplate> LoadHardwareTemplates(IEnumerable<XElement> xHardwareElements)
+        private List<HardwareTemplate> LoadHardwareTemplates(IEnumerable<XElement> xHardwareElements)
         {
             var templates = new List<HardwareTemplate>();
             foreach (var xHardwareElement in xHardwareElements)
             {
-                var type = HardwareMapping[xHardwareElement.Attribute("Type").Value.ToLower()];
+                var type = TypeMap[xHardwareElement.Attribute("Type").Value.ToLower()];
                 var hardwareTemplate = new HardwareTemplate(type);
                 var attribParams = xHardwareElement.Attributes();
                 foreach (var param in attribParams)
