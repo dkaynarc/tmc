@@ -4,8 +4,8 @@ package com.ictdesign.tmc;
 
 
 
-import Model.Constants;
-import Model.Order;
+import model.Constants;
+import model.Order;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;

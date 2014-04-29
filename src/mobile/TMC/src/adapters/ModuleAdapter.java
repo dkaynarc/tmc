@@ -1,12 +1,12 @@
 /* COPYRIGHT (C) 2014 Carlo Chumroonridhi. All Rights Reserved. */
 
-package ViewAdapters;
+package adapters;
 
+import model.Constants;
 import fragments.CompletedOrderFragment;
 import fragments.LogoutFragment;
 import fragments.MachineStatusFragment;
 import fragments.OrderQueueFragment;
-import Model.Constants;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

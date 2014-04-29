@@ -2,10 +2,12 @@ package fragments;
 
 import java.util.ArrayList;
 
+import model.Constants;
+import model.Order;
+
 import com.ictdesign.tmc.R;
-import Model.Constants;
-import Model.Order;
-import ViewAdapters.CompletedOrderAdapter;
+
+import adapters.CompletedOrderAdapter;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;

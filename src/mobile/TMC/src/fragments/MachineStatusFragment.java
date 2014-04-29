@@ -2,10 +2,12 @@
 
 package fragments;
 
+import model.Constants;
+import model.Machine;
+
 import com.ictdesign.tmc.R;
-import Model.Constants;
-import Model.Machine;
-import ViewAdapters.MachineStatusAdapter;
+
+import adapters.MachineStatusAdapter;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;

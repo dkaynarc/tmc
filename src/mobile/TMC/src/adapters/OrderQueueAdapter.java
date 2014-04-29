@@ -1,15 +1,18 @@
 /* COPYRIGHT (C) 2014 Carlo Chumroonridhi. All Rights Reserved. */
 
-package ViewAdapters;
+package adapters;
 
 import java.util.ArrayList;
 
+import model.Constants;
+import model.Order;
+
 import com.ictdesign.tmc.R;
-import Model.Constants;
-import Model.Order;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -17,25 +20,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Implements the OrderAdapter
+ * Implements the OrderQueueAdapter
  * 
  * Overrides only absolute necessary methods including constructor and
  * getView().
  */
 
-public class CompletedOrderAdapter extends ArrayAdapter<Order>
+public class OrderQueueAdapter extends ArrayAdapter<Order>
 {
 	ArrayList<Order> mObjects = null;
+	OnClickListener mOnClickListener;
 
 	/**
 	 * Initializes the Order adapter's order items.
+	 * 
+	 * @param mOnClickListener
 	 */
 
-	public CompletedOrderAdapter(Context context, int resource,
-			ArrayList<Order> objects)
+	public OrderQueueAdapter(Context context, int resource,
+			ArrayList<Order> objects, OnClickListener onClickListener)
 	{
 		super(context, resource, objects);
 		mObjects = objects;
+		mOnClickListener = onClickListener;
 	}
 
 	/**
@@ -47,8 +54,9 @@ public class CompletedOrderAdapter extends ArrayAdapter<Order>
 	 * fields in the layout.
 	 * 
 	 * Main inconsistency is checking the order type to determine which picture
-	 * goes into the OrderType ImageView and removing the delete button because
-	 * completed orders shouldn't be deleted.
+	 * goes into the OrderType ImageView as well as setting the onClickListener
+	 * to the Delete ImageButton while storing the order in its tag for future
+	 * reference.
 	 */
 
 	@Override
@@ -74,7 +82,6 @@ public class CompletedOrderAdapter extends ArrayAdapter<Order>
 					.findViewById(R.id.orderrow_orderstatus_iv);
 			ImageButton delete = (ImageButton) v
 					.findViewById(R.id.orderrow_deleteorder_ib);
-			delete.setVisibility(View.GONE);
 			if (name != null)
 				name.setText(order.getOrderName());
 			if (number != null)
@@ -89,6 +96,11 @@ public class CompletedOrderAdapter extends ArrayAdapter<Order>
 					picture.setImageResource(R.drawable.active);
 				else if (order.getOrderStatus().equals(Constants.COMPLETE))
 					picture.setImageResource(R.drawable.complete);
+			}
+			if (delete != null)
+			{
+				delete.setOnClickListener(mOnClickListener);
+				delete.setTag(order);
 			}
 		}
 		else

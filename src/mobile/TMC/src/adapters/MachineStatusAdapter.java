@@ -1,12 +1,14 @@
 /* COPYRIGHT (C) 2014 Carlo Chumroonridhi. All Rights Reserved. */
 
-package ViewAdapters;
+package adapters;
 
 import java.util.ArrayList;
 
+import model.Constants;
+import model.Machine;
+
 import com.ictdesign.tmc.R;
-import Model.Constants;
-import Model.Machine;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

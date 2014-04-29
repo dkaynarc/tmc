@@ -1,6 +1,6 @@
 /* COPYRIGHT (C) 2014 Carlo Chumroonridhi. All Rights Reserved. */
 
-package Model;
+package model;
 
 import java.util.ArrayList;
 import java.util.Arrays;

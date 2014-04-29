@@ -2,8 +2,10 @@
 
 package fragments;
 
+import model.Constants;
+
 import com.ictdesign.tmc.R;
-import Model.Constants;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;

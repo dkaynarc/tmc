@@ -2,7 +2,7 @@
 
 package com.ictdesign.tmc;
 
-import ViewAdapters.ModuleAdapter;
+import adapters.ModuleAdapter;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;

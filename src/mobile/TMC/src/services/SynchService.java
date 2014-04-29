@@ -5,7 +5,7 @@ import java.io.BufferedInputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import Model.Constants;
+import model.Constants;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;

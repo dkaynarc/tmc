@@ -4,12 +4,14 @@ package fragments;
 
 import java.util.ArrayList;
 
+import model.Constants;
+import model.Order;
+
 import com.ictdesign.tmc.CreateOrderActivity;
 import com.ictdesign.tmc.ModifyOrderActivity;
 import com.ictdesign.tmc.R;
-import Model.Constants;
-import Model.Order;
-import ViewAdapters.OrderQueueAdapter;
+
+import adapters.OrderQueueAdapter;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;

@@ -2,7 +2,7 @@
 
 package com.ictdesign.tmc;
 
-import Model.Constants;
+import model.Constants;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
