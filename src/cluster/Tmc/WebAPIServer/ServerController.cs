@@ -63,7 +63,7 @@ namespace WebApiServer
 
         public string StopScada()
         {
-            _scadaClient.Start();
+            _scadaClient.Stop();
             return "response";
         }
 
