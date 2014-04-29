@@ -40,7 +40,7 @@ namespace Tmc.Scada.Core
         public bool IsFull()
         {
             bool isFull = true;
-            Slots.Values.ToList().ForEach(x => isFull = (x == SlotCapacity));
+            Slots.Values.ToList().ForEach(x => isFull &= (x == SlotCapacity));
             return isFull;
         }
 
