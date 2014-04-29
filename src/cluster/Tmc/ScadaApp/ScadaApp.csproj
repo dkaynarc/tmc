@@ -88,6 +88,10 @@
       <Project>{5b8926dd-dd25-4531-ac23-2b31cb9774d4}</Project>
       <Name>ScadaCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TmcData\TmcData.csproj">
+      <Project>{4a0d0977-fae7-47af-88a6-7779f6ead528}</Project>
+      <Name>TmcData</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

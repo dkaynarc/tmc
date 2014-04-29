@@ -99,6 +99,10 @@
       <Project>{125603ec-d10e-49c4-b10d-fac6e5496f03}</Project>
       <Name>Sensors</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TmcData\TmcData.csproj">
+      <Project>{4a0d0977-fae7-47af-88a6-7779f6ead528}</Project>
+      <Name>TmcData</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Vision\Vision.csproj">
       <Project>{d1a527cb-5bdc-4483-a24f-21d6263a41ce}</Project>
       <Name>Vision</Name>
