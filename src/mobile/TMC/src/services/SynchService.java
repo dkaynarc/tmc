@@ -4,6 +4,8 @@ package services;
 import java.io.BufferedInputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import Model.Constants;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,10 +13,7 @@ import android.os.Bundle;
 
 public class SynchService extends IntentService 
 {
-	public static final String FEEDBACK = "FEEDBACK";
-
-
-    private String urlString = "http://192.168.1.3:9000/api/Server/";
+    private String urlString = "http://192.168.1.5:9000/api/Server/";
     private int command;
 
     public SynchService()
@@ -31,15 +30,21 @@ public class SynchService extends IntentService
 
 	    switch(command)
 	    {
-	      case 1:
+	      
+	    case 1:
 	    	  authenticate(parcel);
 	          break;
+	      
 	      case 2:
+	    	  placeNewOrder(parcel);
 	          break;
+	      
 	      case 3:
 	    	  break;
+	     
 	      case 4:
 	    	  break;
+	     
 	      default:
 	    	break;
 	    
@@ -53,11 +58,23 @@ public class SynchService extends IntentService
 
 	
 	
+private void placeNewOrder(Bundle parcel) 
+{
+    urlString +=  "PlaceOrder/" + parcel.getString("orderName") + "/" + parcel.getString("itemsNumber"); 
+    
+    String response =  connect(urlString);	
+    
+    notifyCaller(response);
+	
+
+	
+	
+}
+
+
 private void authenticate(Bundle parcel) 
 {
-    String userName = parcel.getString("userName");
-    String password = parcel.getString("password");   
-    urlString +=  "Authenticate/" + userName + "/" + password; 
+    urlString +=  "Authenticate/" + parcel.getString("userName") + "/" + parcel.getString("password"); 
     
     String response =  connect(urlString);	
     
@@ -92,7 +109,7 @@ private void authenticate(Bundle parcel)
 	    }
 	 catch(Exception exc)
 	 {
-	   String excStr = exc.toString();	    
+	   System.out.print("Exception: " + exc.toString());
 	 }	
      
      return str.toString();
@@ -109,7 +126,7 @@ private void authenticate(Bundle parcel)
 private void notifyCaller(String response) 
 {
 	   Intent intent = new Intent();
-	   intent.setAction(FEEDBACK);
+	   intent.setAction(Constants.FEEDBACK);
 	   intent.putExtra("command", Integer.toString(command));
 	   intent.putExtra("result", response);	   
 	   sendBroadcast(intent);

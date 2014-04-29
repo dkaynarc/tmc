@@ -9,7 +9,7 @@
     tools:context=".CreateOrderActivity" >
 
     <TextView
-        android:id="@+id/createorder_title_tv"
+       android:id="@+id/createorder_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -17,6 +17,8 @@
         android:text="@string/createorder_title_tv"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
+    
+    <!-- 
     <TextView
         android:id="@+id/createorder_ordername_tv"
         android:layout_width="wrap_content"
@@ -54,13 +56,36 @@
         android:layout_alignBaseline="@+id/createorder_ordernumber_tv"
         android:ems="10"
         android:inputType="number" />
-
+ -->
+ <!-- Sergei -->
+       <TextView
+        android:id="@+id/createorder_items_number_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/createorder_title_tv"
+        android:layout_marginTop="20dp"
+        android:text="@string/createorder_items_number_tv"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <EditText
+        android:id="@+id/createorder_items_number_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/createorder_items_number_tv"
+        android:layout_alignBaseline="@+id/createorder_items_number_tv"
+        android:ems="10"
+        android:inputType="number" />
+ <!-- Sergei -->    
+ 
+ 
+ 
     <Button
         android:id="@+id/createorder_createorder_b"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/createorder_ordernumber_tv"
+        android:layout_below="@+id/createorder_items_number_tv"
         android:layout_marginTop="30dp"
         android:onClick="onCreateOrderClicked"
         android:text="@string/createorder_createorder_b" />

@@ -2,7 +2,6 @@
 
 package com.ictdesign.tmc;
 
-import services.SynchService;
 import Model.Constants;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -19,11 +18,8 @@ import android.widget.Toast;
  * Implements the initial login activity that checks for the correct user
  * details.
  */
-
 public class LoginActivity extends Activity
 {
-
-	private static final String FEEDBACK = "FEEDBACK";
 	static boolean turnedOn = false;
 	private ResultReceiver receiver;
 	private ProgressDialog pd;
@@ -33,6 +29,8 @@ public class LoginActivity extends Activity
 	 * testing purposes.
 	 */
 
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -45,7 +43,7 @@ public class LoginActivity extends Activity
 			startActivity(intent);
 		
 		//////////////////
-		IntentFilter filter = new IntentFilter(FEEDBACK);
+		IntentFilter filter = new IntentFilter(Constants.FEEDBACK);
 		receiver = new ResultReceiver();
 		this.registerReceiver(receiver, filter);
 		/////////////////
@@ -53,6 +51,9 @@ public class LoginActivity extends Activity
 		turnedOn = true;
 	}
 
+	
+	
+	
 	/**
 	 * Checks to see if the username and password match up. Outputs a toast if
 	 * the details are incorrect, otherwise the next activity is started up.
@@ -89,7 +90,7 @@ public class LoginActivity extends Activity
 		Bundle parcel = new Bundle();
 		parcel.putString("userName",userName);
 		parcel.putString("password", password);
-		parcel.putString("command","1");
+		parcel.putString("command",Constants.AUTHENTICATE_COMMAND);
 		service.putExtra("parcel", parcel);
 		
 		// stop any already running services associated with this activity
@@ -99,18 +100,7 @@ public class LoginActivity extends Activity
 		
 	}
 
-	
-	
-	
-	
-	@Override
-	protected void onStop() 
-	{
-	   super.onStop();
-	}
-    
-	
-	
+		
 	
 	
 	
@@ -143,7 +133,8 @@ private class ResultReceiver extends BroadcastReceiver
 	
 	
 	
-	private void handleAuthenticationResult(String response, Context context) {
+	private void handleAuthenticationResult(String response, Context context) 
+	{
 		
 		if((response).equalsIgnoreCase("\"success\""))
 		{		
@@ -154,7 +145,9 @@ private class ResultReceiver extends BroadcastReceiver
 		else
 			Toast.makeText(context, Constants.WRONGINFO, Toast.LENGTH_SHORT)
 					.show();
-	}    
+	}
+	
+	
   }
 
 

@@ -28,6 +28,7 @@
     <string name="createorder_title_tv">Create Order</string>
     <string name="createorder_ordername_tv">Order Name:</string>
     <string name="createorder_ordernumber_tv">Order Number:</string>
+    <string name="createorder_items_number_tv">Number of items:</string> 
     <string name="createorder_createorder_b">Create</string>
     <string name="createorder_cancel_b">Cancel</string>
     <string name="controller_shutdown_b">Shutdown</string>
