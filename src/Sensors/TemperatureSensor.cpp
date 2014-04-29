@@ -1,31 +1,31 @@
-#include <iostream>
-#include <stdlib.h>
-#include <stdio.h>
-#include <sstream>
-#include <stdint.h>
-#include <unistd.h>
+#include "TemperatureSensor.h"
 
 using namespace std;
 
-uint16_t get_i2c_temperature(int address);
-string getTemperature(double temperature);
+//uint16_t get_i2c_temperature(int address);
+//string getTemperature(double temperature);
 
-int main()
+TemperatureSensor::TemperatureSensor()
 {
-	for (;;)
-	{
-		double a = get_i2c_temperature(0x48);
-		//string s = getTemperature(a);
-		//cout << a << endl;
-		cout << a * 0.0626 << endl;
-		//cout << s << endl;
-		//sleep(1);
-	}
-	
-	return 0;
 }
 
-string getTemperature(double temperature)
+
+string TemperatureSensor::getData()
+{
+	double a = get_i2c_temperature(0x48);
+	
+	string s = getTemperature(a);
+	//cout << a << endl;
+	//cout << a * 0.0626 << endl; <--last known to work
+	//cout << s << endl;
+	//sleep(1);
+	
+	return s;
+	
+}
+
+
+string TemperatureSensor::getTemperature(double temperature)
 {
 	temperature *= 0.0625;
 	ostringstream strs;
@@ -34,7 +34,7 @@ string getTemperature(double temperature)
 	return str;
 }
 
-uint16_t get_i2c_temperature(int address)
+uint16_t TemperatureSensor::get_i2c_temperature(int address)
 {
 	// Setup the command to access i2c port
 	stringstream ss;

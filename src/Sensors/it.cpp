@@ -3,15 +3,29 @@
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include <boost/make_shared.hpp>
+#include <algorithm>
+#include "TemperatureSensor.cpp"
 
 using namespace std;
 
+std::vector<boost::shared_ptr<boost::asio::ip::tcp::socket> > established_connections;
+
+/// <summary>
+/// Removes socket from <vector> established_connections before close()
+/// </summary>
+
+
+void removeSocket(boost::shared_ptr<boost::asio::ip::tcp::socket> socket)
+{
+	established_connections.erase(std::remove(established_connections.begin(), established_connections.end(), socket),established_connections.end());
+	(*socket).close();
+}
 
 /// <summary>
 /// Worker method to handle each independent socket from listener_loop. 
 /// This method handles all communication data between the hardware sensors within the Raspberry Pi
 ///
-/// TO-DO: implement and include all hardware sensors into this method
+/// TO-DO: implement and include all hardware sensors into this method + header file to include all the sensor classes
 /// </summary>
 
 void worker(boost::shared_ptr<boost::asio::ip::tcp::socket> socket)
@@ -23,7 +37,7 @@ void worker(boost::shared_ptr<boost::asio::ip::tcp::socket> socket)
 			char data_in[100];
 			boost::system::error_code error;
 			size_t length = (*socket).read_some(boost::asio::buffer(data_in), error);
-			
+			string connections;
 			if (error == boost::asio::error::eof)
 			{
 				break; // Connection closed by user
@@ -39,34 +53,41 @@ void worker(boost::shared_ptr<boost::asio::ip::tcp::socket> socket)
 			
 			if (sdata_in == "temperature")
 			{
-				message = "temperature\n";
+				TemperatureSensor temperature;
+				string data = temperature.getData() + "\n";
+				message = data;
 			}
-			else if(sdata_in == "ambience")
+			
+			if(sdata_in == "ambience")
 			{
 				message = "ambience\n";
 			}
-			else if(sdata_in == "sound")
+			
+			if(sdata_in == "sound")
 			{
 				message = "sound\n";
 			}
-			else if(sdata_in == "humidity")
+			
+			if(sdata_in == "humidity")
 			{
 				message = "humidity\n";
 			}
-			else if(sdata_in == "dust")
+			
+			if(sdata_in == "dust")
 			{
 				message = "dust\n";
 			}
-
-			std::cout << sdata_in << std:: endl;	
+	
             boost::asio::write(*socket, boost::asio::buffer(message));
-            //socket.close();
+            
         }
+		
+		removeSocket(socket);
 	} 
 	catch(std::exception& e)
 	{
-		std::cerr << "Exception: " << e.what() << std::endl;
-		//socket.close();
+		//std::cerr << "Exception: " << e.what() << std::endl;
+		removeSocket(socket);
 	}
 }
 
@@ -83,7 +104,7 @@ void listener_loop(int port_number)
 	boost::asio::io_service io_service;
 	boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::tcp::v4(), port_number);
 	boost::asio::ip::tcp::acceptor acceptor(io_service, endpoint);
-	std::vector<boost::shared_ptr<boost::asio::ip::tcp::socket> > established_connections;
+
 	
 	while(true)
 	{
@@ -92,11 +113,11 @@ void listener_loop(int port_number)
 
 			boost::shared_ptr<boost::asio::ip::tcp::socket> socket = boost::make_shared<boost::asio::ip::tcp::socket>(boost::ref(io_service));
 			established_connections.push_back(socket);
-			std::cout << "Server is ready" << std::endl;
+			std::cout << "TCP server ready and listening ... " << std::endl;
 			acceptor.accept(*established_connections.back());	
 			std::cout << established_connections.size() << std::endl;
 			
-			boost::thread workerThread2(worker,socket);
+			boost::thread workerThread2(worker,established_connections.back());
 			
 		}
 		catch(std::exception& e)
