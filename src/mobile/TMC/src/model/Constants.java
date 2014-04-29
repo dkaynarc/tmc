@@ -75,9 +75,9 @@ public class Constants
 	public static final int CREATE_ORDER = 4;
 	public static final int MODIFY_ORDER = 5;
 	public static final String ID = "ID";
-	public static final String ENTER_ITEMS_QUANTITY = "Enter number of items required";
-	public static final String FEEDBACK = "FEEDBACK";
+	public static final CharSequence NEW_ORDER_FAIL = "Placing new order failed";
 	public static final String NEW_ORDER_COMMAND = "2";
+	public static final CharSequence ENTER_ITEMS_QUANTITY = "Enter number of items required";
+	public static final String FEEDBACK = "FEEDBACK";
 	public static final String AUTHENTICATE_COMMAND = "1";
-	public static final CharSequence NEW_ORDER_FAIL = "Placement of a new  order failed";
 }

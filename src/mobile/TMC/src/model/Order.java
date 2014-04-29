@@ -13,15 +13,12 @@ public class Order
 	private String mOrderName = "";
 	private String mOrderNumber = "";
 	private String mOrderStatus = "";
-	////////////////////////
 	private int numberOfItems;
-    ////////////////////////
-	
+
 	/**
 	 * Constructor to initialize all the variables.
 	 */
-    
-	//to be removed
+
 	public Order(String orderName, String orderNumber, String orderStatus)
 	{
 		mOrderName = orderName;
@@ -29,15 +26,14 @@ public class Order
 		mOrderStatus = orderStatus;
 	}
 
-	////////////////////////////////////////
-	public Order(String mOrderName, int numberOfItems)
+	
+	
+	public Order(String mOrderName, int numberOfItems) 
 	{
-	   this.mOrderName = mOrderName;
-       this.numberOfItems = numberOfItems;
+		this.mOrderName = mOrderName;
+		this.numberOfItems = numberOfItems;
 	}
-	////////////////////////////////////
-	
-	
+
 	/**
 	 * Set the order name.
 	 */
@@ -93,13 +89,7 @@ public class Order
 	}
 
 	public int getNumberOfItems() {
-		
+	
 		return numberOfItems;
 	}
-	
-	public void setNumberOfItems(int number)
-	{
-		numberOfItems = number;
-	}
-	
 }

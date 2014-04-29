@@ -1,7 +1,6 @@
 /* COPYRIGHT (C) 2014 Carlo Chumroonridhi. All Rights Reserved. */
 
 package com.ictdesign.tmc;
-
 import model.Constants;
 import android.app.Activity;
 import android.app.ProgressDialog;

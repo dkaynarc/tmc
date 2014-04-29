@@ -8,7 +8,6 @@ import model.Constants;
 import model.Order;
 
 import com.ictdesign.tmc.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
