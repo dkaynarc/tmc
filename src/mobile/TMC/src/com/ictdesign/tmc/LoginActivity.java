@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -42,7 +43,7 @@ public class LoginActivity extends Activity
 			startActivity(intent);
 		
 		//////////////////
-		IntentFilter filter = new IntentFilter(Constants.FEEDBACK);
+		IntentFilter filter = new IntentFilter(Constants.AUTHENTICATE_RESULT);
 		receiver = new ResultReceiver();
 		this.registerReceiver(receiver, filter);
 		/////////////////
@@ -83,13 +84,13 @@ public class LoginActivity extends Activity
 					.show();*/
 	}
 
-	private void makeLoginService(String userName, String password) {
-		
+	private void makeLoginService(String userName, String password) 
+	{	
 		Intent service = new Intent(this, services.SynchService.class);
 		Bundle parcel = new Bundle();
-		parcel.putString("userName",userName);
+		parcel.putString("userName", userName);
 		parcel.putString("password", password);
-		parcel.putString("command",Constants.AUTHENTICATE_COMMAND);
+		parcel.putString("command", Constants.AUTHENTICATE_COMMAND);
 		service.putExtra("parcel", parcel);
 		
 		// stop any already running services associated with this activity
@@ -110,45 +111,56 @@ private class ResultReceiver extends BroadcastReceiver
 	public void onReceive(Context context, Intent intent) 
 	{
 	   pd.dismiss();
-		
-	   String command = intent.getStringExtra("command");
+
 	   String response = intent.getStringExtra("result"); 
-	   
-	   // convert command value into an integer and do "switch"
-	   switch(Integer.decode(command))
-		{
-		  case 1:
-           handleAuthenticationResult(response, context);
-		  break;
-				 
-		  case 2:
-		 // handleSaveDataResp(command,intent);
-		  break;
+
+       handleAuthenticationResult(response);
+
 
 		}
 	}
 
+
 	
+
+   @Override
+   public void onStop() 
+  {
+    //unregisterReceiver(receiver);
+    super.onStop();
+  }
 	
+   
+   
 	
-	
-	private void handleAuthenticationResult(String response, Context context) 
+	private void handleAuthenticationResult(String response) 
 	{
 		
-		if((response).equalsIgnoreCase("\"success\""))
+		if((response).equalsIgnoreCase("success"))
 		{		
-			unregisterReceiver(receiver);
+		    String	userName = "getUserNameSomewhow";// get user name from the respnse
+            saveToSharedPref(Constants.USERNAME_KEY, userName);
+			
+            unregisterReceiver(receiver);
 			Intent intent = new Intent(LoginActivity.this, ModuleActivity.class);
 			startActivity(intent);
 		}
 		else
-			Toast.makeText(context, Constants.WRONGINFO, Toast.LENGTH_SHORT)
+			Toast.makeText(this, Constants.WRONGINFO, Toast.LENGTH_SHORT)
 					.show();
+
+		
+ }
+
+
+
+	private void saveToSharedPref(String usernameKey, String userName)
+	{
+		SharedPreferences preferences = getSharedPreferences(Constants.APP_PERSISTANCE, 0);
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putString(usernameKey, userName);
+		editor.commit();	
 	}
 	
-	
-  }
-
-
-
 }
+

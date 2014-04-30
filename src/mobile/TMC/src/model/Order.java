@@ -14,11 +14,19 @@ public class Order
 	private String mOrderNumber = "";
 	private String mOrderStatus = "";
 	private int numberOfItems;
-
+    private int black;
+    private int blue;
+    private int red;
+    private int green;
+    private int white;
+   	
 	/**
 	 * Constructor to initialize all the variables.
 	 */
-
+    
+    
+   
+   
 	public Order(String orderName, String orderNumber, String orderStatus)
 	{
 		mOrderName = orderName;
@@ -27,12 +35,34 @@ public class Order
 	}
 
 	
-	
+	////////////////////////////////////////////
 	public Order(String mOrderName, int numberOfItems) 
 	{
 		this.mOrderName = mOrderName;
 		this.numberOfItems = numberOfItems;
 	}
+	
+	
+	 public void setColourNumber(String colourName, int quantity )
+	    {
+	    	if(colourName.equalsIgnoreCase("black"))black = quantity;
+	    	if(colourName.equalsIgnoreCase("blue"))blue = quantity;
+	    	if(colourName.equalsIgnoreCase("red"))red = quantity;
+	    	if(colourName.equalsIgnoreCase("white"))white = quantity;
+	    	if(colourName.equalsIgnoreCase("green"))green = quantity; 	
+	    }
+
+	   
+	   public int getColourNumber(String colourName)
+	   {
+	   	 if(colourName.equalsIgnoreCase("black"))return black;
+	   	 if(colourName.equalsIgnoreCase("blue")) return blue;
+	   	 if(colourName.equalsIgnoreCase("red"))return red;
+	   	 if(colourName.equalsIgnoreCase("white"))return white;
+	   	 if(colourName.equalsIgnoreCase("green"))return green;
+		 return 0; 	
+	   }
+	////////////////////////////////////////////
 
 	/**
 	 * Set the order name.

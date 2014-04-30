@@ -17,6 +17,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 
 /**
  * Implements the CreateOrderActivity. Basically fires up a form to create a new
@@ -41,8 +42,9 @@ public class CreateOrderActivity extends Activity
 		setContentView(R.layout.activity_create_order);
 	   
 		////////////////////////////
+		String userName = readCurrentUserName();// <-- display this to the user
 		numberOfItemsEditText = (EditText)findViewById(R.id.createorder_items_number_et);
-        IntentFilter filter = new IntentFilter(Constants.FEEDBACK);
+        IntentFilter filter = new IntentFilter(Constants.NEW_ORDER_RESULT);
         receiver = new ResultReceiver();
         this.registerReceiver(receiver, filter);
         /////////////////
@@ -95,8 +97,11 @@ public class CreateOrderActivity extends Activity
 		finish();*/
 	}
 
-///////////////////////////////////////////////////////	
-private void makeNewOrderService(Order newOrder) {
+     
+	
+	///////////////////////////////////////////////////////	
+     private void makeNewOrderService(Order newOrder) 
+     {
 		
 		Intent service = new Intent(this, services.SynchService.class);
 		Bundle parcel = new Bundle();
@@ -112,21 +117,48 @@ private void makeNewOrderService(Order newOrder) {
 		
 	}
 
+     
+     
+     
+     
+     
 //private class
+private class ResultReceiver extends BroadcastReceiver
+{
+	@Override
+	public void onReceive(Context context, Intent intent) 
+	{
+	   pd.dismiss();	  
+	   String response = intent.getStringExtra("result"); 
+	   
+	   // convert command value into an integer and do "switch"
+	   switch(Integer.decode(intent.getStringExtra("command")))
+		{
+		  case 1:
+          /////do authentication
+		  break;
+				 
+		  case 2:
+		  handleNewOrderResult(response, context);
+		  break;
+
+		}
+	}
+}
 
 
 
 
 
 
-private void handleNewOrderResult(String response, Context context) {
+private void handleNewOrderResult(String response, Context context) 
+{
 		
 		if((response).equalsIgnoreCase("\"success\""))
 		{		
-			unregisterReceiver(receiver);
 			Intent intent = getIntent();
-			intent.putExtra(Constants.NAME, "vas");// update user name
-		    intent.putExtra(Constants.NUMBER, "6767");// update order number
+			intent.putExtra(Constants.NAME, readCurrentUserName());
+		    intent.putExtra(Constants.NUMBER, "6767");// update order number to real one
 			setResult(Constants.CREATE_ORDER, intent);
 			finish();
 		}
@@ -134,8 +166,29 @@ private void handleNewOrderResult(String response, Context context) {
 			Toast.makeText(context, Constants.NEW_ORDER_FAIL, Toast.LENGTH_SHORT)
 					.show();
 	}   
-/////////////////////////////////////////////////////////////////
 
+
+	
+	private String readCurrentUserName() 
+	{
+		SharedPreferences preferences = getSharedPreferences(Constants.APP_PERSISTANCE, 0);
+	    String userName = preferences.getString(Constants.USERNAME_KEY, null);
+	    return userName;
+    }
+	
+	
+	@Override
+	protected void onStop() 
+	{
+	   unregisterReceiver(receiver);
+	   super.onStop();
+	}
+	
+	
+/////////////////////////////////////////////////////////////////
+	
+	
+	
 	
 	/**
 	 * Quits the activity without data submission when the "Cancel" button is

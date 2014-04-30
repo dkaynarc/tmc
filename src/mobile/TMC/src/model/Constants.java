@@ -80,4 +80,10 @@ public class Constants
 	public static final CharSequence ENTER_ITEMS_QUANTITY = "Enter number of items required";
 	public static final String FEEDBACK = "FEEDBACK";
 	public static final String AUTHENTICATE_COMMAND = "1";
+	public static final String APP_PERSISTANCE = "USER_PERSISTANCE";
+	public static final String USERNAME_KEY = "userName";
+	public static final String UPDATE_ORDERS = "3";
+	public static final String AUTHENTICATE_RESULT = "AUTHENTICATE_RESULT";
+	public static final String NEW_ORDER_RESULT = "NEW_ORDER_RESULT";
+	public static final String ORDER_UPDATE_RESULT = "ORDER_UPDATE_RESULT";
 }
