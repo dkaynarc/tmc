@@ -13,8 +13,8 @@ import android.os.Bundle;
 
 public class SynchService extends IntentService 
 {
-    //private String urlString = "http://192.168.1.5:9000/api/Server/";
-	 private String urlString = "http://172.19.14.183:9000/api/Server/";    
+    private String urlString = "http://192.168.1.5:9000/api/Server/";
+	// private String urlString = "http://172.19.14.183:9000/api/Server/";    
      private int command;
 
  
@@ -102,13 +102,13 @@ private void authenticate(Bundle parcel)
     private String connect(String urlStr) 
 	{
     	StringBuilder str = new StringBuilder();
-     /*
+     
     	try{
 		  
 		  URL url = new URL(urlStr);
 		  HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 		  urlConnection.setRequestMethod("GET");
-	      //BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
+	      BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
    
 	      // read result
 		  byte[] contents = new byte[1024];
@@ -125,9 +125,9 @@ private void authenticate(Bundle parcel)
 	   System.out.print("Exception: " + exc.toString());
 	 }	
      
-     return str.toString();*/
+     return str.toString();
     	
-		  return "success";
+		 
 }
 
 

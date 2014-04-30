@@ -136,7 +136,7 @@ private class ResultReceiver extends BroadcastReceiver
 	private void handleAuthenticationResult(String response) 
 	{
 		
-		if((response).equalsIgnoreCase("success"))
+		if((response).equalsIgnoreCase("\"success\""))
 		{		
 		    String	userName = "getUserNameSomewhow";// get user name from the respnse
             saveToSharedPref(Constants.USERNAME_KEY, userName);

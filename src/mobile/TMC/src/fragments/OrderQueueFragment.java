@@ -109,14 +109,6 @@ public class OrderQueueFragment extends ListFragment
 			Bundle savedInstanceState)
 	{
 		
-		//////////////////
-		IntentFilter filter = new IntentFilter(Constants.ORDER_UPDATE_RESULT);
-		receiver = new ResultReceiver();
-		getActivity().registerReceiver(receiver, filter);
-		//////////////////
-		
-		
-		
 		View rootView = inflater.inflate(R.layout.list_queue, container, false);
 		((Button) rootView.findViewById(R.id.queuelist_createorder_b))
 				.setOnClickListener(onCreateOrderClickListener);
@@ -126,16 +118,19 @@ public class OrderQueueFragment extends ListFragment
 		/*for (Order order : Constants.ORDERS)
 			if (!order.getOrderStatus().equals(Constants.COMPLETE))
 				orders.add(order);*/
-		
-		
-		// this will prefill incompleteOrders araylist
-		///////////////////////////////
-		//makeUpdateOrdersService();
-		//////////////////////////////
+	
 		
 		// Replace list "orders" with the list of orders returned
 		setListAdapter(new OrderQueueAdapter(getActivity(), R.layout.order_row,
-				incompleteOrders, onDeleteOrderClickListener));
+			    incompleteOrders, onDeleteOrderClickListener));	
+		
+		// this will prefill incompleteOrders araylist
+		///////////////////////////////
+		makeUpdateOrdersService();
+		//////////////////////////////
+		
+
+		
 		return rootView;
 	}
 
@@ -298,36 +293,37 @@ public class OrderQueueFragment extends ListFragment
   
 	private void handleOdersUpdate(String response) 
 	{
-	 ArrayList<Order> orders = Constants.ORDERS;// change this to the orders received from the network
+		OrderQueueAdapter adapter = (OrderQueueAdapter)getListView().getAdapter();		
+		adapter.clear();
+	 
+		ArrayList<Order> orders = Constants.ORDERS;// change this to the orders received from the network
 	 
 		for (Order order : orders)
 			if (!order.getOrderStatus().equals(Constants.COMPLETE))
-				incompleteOrders.add(order);
+				incompleteOrders.add(order);		
 
-		
-		OrderQueueAdapter adapter = (OrderQueueAdapter)getListView().getAdapter();
-		
-		for(Order order : incompleteOrders)
-		{
-		  adapter.add(order);
-		  adapter.notifyDataSetChanged();
-		}
+        //adapter.addAll(incompleteOrders);
+		adapter.addAll(incompleteOrders);
+        adapter.notifyDataSetChanged();
 	}
 
 	
-	
-	
+
 	@Override
-	public void onPause() 
+	public void onStart()
 	{
-	   getActivity().unregisterReceiver(receiver);
-	   super.onStop();
+		IntentFilter filter = new IntentFilter(Constants.ORDER_UPDATE_RESULT);
+		receiver = new ResultReceiver();
+		getActivity().registerReceiver(receiver, filter);
+		super.onStart();
 	}
+	
+	
 	
 	@Override
 	public void onStop() 
 	{
-	//   getActivity().unregisterReceiver(receiver);
+	   getActivity().unregisterReceiver(receiver);
 	   super.onStop();
 	}
 	

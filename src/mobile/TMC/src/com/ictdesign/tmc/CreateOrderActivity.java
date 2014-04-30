@@ -5,6 +5,7 @@ package com.ictdesign.tmc;
 
 
 
+
 import model.Constants;
 import model.Order;
 import android.os.Bundle;
@@ -44,9 +45,6 @@ public class CreateOrderActivity extends Activity
 		////////////////////////////
 		String userName = readCurrentUserName();// <-- display this to the user
 		numberOfItemsEditText = (EditText)findViewById(R.id.createorder_items_number_et);
-        IntentFilter filter = new IntentFilter(Constants.NEW_ORDER_RESULT);
-        receiver = new ResultReceiver();
-        this.registerReceiver(receiver, filter);
         /////////////////
 	}
 
@@ -85,7 +83,7 @@ public class CreateOrderActivity extends Activity
 					Toast.LENGTH_SHORT).show();	
 	    	return;
 	    }
-		Order newOrder = new Order("vas",Integer.decode(itemsNumber)); // the user name is to be changed to a real user name
+		Order newOrder = new Order(readCurrentUserName(), Integer.decode(itemsNumber)); // the user name is to be changed to a real user name
 		makeNewOrderService(newOrder);
 		///////////////////////////		
 		
@@ -175,6 +173,18 @@ private void handleNewOrderResult(String response, Context context)
 	    String userName = preferences.getString(Constants.USERNAME_KEY, null);
 	    return userName;
     }
+	
+	
+	
+	@Override
+	public void onStart()
+	{
+        IntentFilter filter = new IntentFilter(Constants.NEW_ORDER_RESULT);
+        receiver = new ResultReceiver();
+        this.registerReceiver(receiver, filter);
+        super.onStart();
+	}
+	
 	
 	
 	@Override
