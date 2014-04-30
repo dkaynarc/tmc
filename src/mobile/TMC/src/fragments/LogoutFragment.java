@@ -5,8 +5,11 @@ package fragments;
 import model.Constants;
 
 import com.ictdesign.tmc.R;
+
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
@@ -37,6 +40,7 @@ public class LogoutFragment extends Fragment
 					android.R.drawable.ic_dialog_alert);
 			ColorFilter filter = new LightingColorFilter(Color.RED, Color.RED);
 			myIcon.setColorFilter(filter);
+			
 			new AlertDialog.Builder(getActivity())
 					.setIcon(myIcon)
 					.setTitle(Constants.LOGOUT)
@@ -49,6 +53,13 @@ public class LogoutFragment extends Fragment
 									playSound(R.raw.bye);
 									getActivity().finish();
 									// Add possible logout code here?
+									//////////////////////////////////
+									SharedPreferences preferences =  getActivity().getSharedPreferences(Constants.APP_PERSISTANCE, 0);
+								    SharedPreferences.Editor ed = preferences.edit();
+								    ed.remove(Constants.USERNAME_KEY);//watch out for null reference exception
+								    ed.commit();
+									//////////////////////////////////
+									
 								}
 							})
 					.setNegativeButton(Constants.CANCEL,

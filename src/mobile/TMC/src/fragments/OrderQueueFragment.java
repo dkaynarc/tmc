@@ -6,15 +6,17 @@ import java.util.ArrayList;
 
 import model.Constants;
 import model.Order;
-
 import com.ictdesign.tmc.CreateOrderActivity;
 import com.ictdesign.tmc.ModifyOrderActivity;
 import com.ictdesign.tmc.R;
-
 import adapters.OrderQueueAdapter;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -25,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * Sets the layout for the activity.
@@ -37,8 +40,13 @@ import android.widget.ListView;
 public class OrderQueueFragment extends ListFragment
 {
 	MediaPlayer mMediaPlayer = new MediaPlayer();
-
-	/**
+    private ResultReceiver receiver;
+    ArrayList<Order> incompleteOrders = new ArrayList<Order>();
+    private ProgressDialog pd;
+	
+    
+    
+    /**
 	 * Implements the order's delete button.
 	 */
 
@@ -89,6 +97,8 @@ public class OrderQueueFragment extends ListFragment
 		}
 	};
 
+	
+
 	/**
 	 * Sets the layout for the activity.
 	 * 
@@ -98,17 +108,34 @@ public class OrderQueueFragment extends ListFragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
 	{
+		
+		//////////////////
+		IntentFilter filter = new IntentFilter(Constants.ORDER_UPDATE_RESULT);
+		receiver = new ResultReceiver();
+		getActivity().registerReceiver(receiver, filter);
+		//////////////////
+		
+		
+		
 		View rootView = inflater.inflate(R.layout.list_queue, container, false);
 		((Button) rootView.findViewById(R.id.queuelist_createorder_b))
 				.setOnClickListener(onCreateOrderClickListener);
-		ArrayList<Order> orders = new ArrayList<Order>();
+		
+		/*ArrayList<Order> orders = new ArrayList<Order>();*/
 		// Get list of orders that are either active and pending
-		for (Order order : Constants.ORDERS)
+		/*for (Order order : Constants.ORDERS)
 			if (!order.getOrderStatus().equals(Constants.COMPLETE))
-				orders.add(order);
+				orders.add(order);*/
+		
+		
+		// this will prefill incompleteOrders araylist
+		///////////////////////////////
+		//makeUpdateOrdersService();
+		//////////////////////////////
+		
 		// Replace list "orders" with the list of orders returned
 		setListAdapter(new OrderQueueAdapter(getActivity(), R.layout.order_row,
-				orders, onDeleteOrderClickListener));
+				incompleteOrders, onDeleteOrderClickListener));
 		return rootView;
 	}
 
@@ -174,7 +201,7 @@ public class OrderQueueFragment extends ListFragment
 		switch (resultCode)
 		{
 		case Constants.CREATE_ORDER:
-			if (data.hasExtra(Constants.NAME)
+			/*if (data.hasExtra(Constants.NAME)
 					&& data.hasExtra(Constants.NUMBER))
 			{
 				// Here is where we plug in the values of the new order.
@@ -182,10 +209,13 @@ public class OrderQueueFragment extends ListFragment
 						.getAdapter();
 				adapter.add(new Order(data.getStringExtra(Constants.NAME), data
 						.getStringExtra(Constants.NUMBER), Constants.PENDING));
-				adapter.notifyDataSetChanged();
+				adapter.notifyDataSetChanged();*/
 				// Up until here.
 				playSound(R.raw.createorder);
-			}
+				////////////////////////////
+				makeUpdateOrdersService();		
+				////////////////////////////
+			//}
 			break;
 
 		case Constants.MODIFY_ORDER:
@@ -210,6 +240,8 @@ public class OrderQueueFragment extends ListFragment
 		}
 	}
 
+
+
 	/**
 	 * Plays the sound of the id given.
 	 * 
@@ -224,4 +256,82 @@ public class OrderQueueFragment extends ListFragment
 		mMediaPlayer.setLooping(false);
 		mMediaPlayer.start();
 	}
+
+
+/////////////////////////////////////////////////////////////////////////////
+	private void makeUpdateOrdersService() 
+	{
+		Intent service = new Intent(getActivity(), services.SynchService.class);
+		Bundle parcel = new Bundle();
+		parcel.putString("command", Constants.UPDATE_ORDERS);
+		service.putExtra("parcel", parcel);
+
+		// stop any already running services associated with this activity
+		getActivity().stopService(service);
+		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
+		getActivity().startService(service);
+	}
+
+	
+
+
+
+
+
+
+
+
+//private class
+  private class ResultReceiver extends BroadcastReceiver
+  {
+    @Override
+    public void onReceive(Context context, Intent intent) 
+    {
+      pd.dismiss();	  
+      String response = intent.getStringExtra("result"); 
+
+      handleOdersUpdate(response);    
+    }
+ }
+
+  
+  
+	private void handleOdersUpdate(String response) 
+	{
+	 ArrayList<Order> orders = Constants.ORDERS;// change this to the orders received from the network
+	 
+		for (Order order : orders)
+			if (!order.getOrderStatus().equals(Constants.COMPLETE))
+				incompleteOrders.add(order);
+
+		
+		OrderQueueAdapter adapter = (OrderQueueAdapter)getListView().getAdapter();
+		
+		for(Order order : incompleteOrders)
+		{
+		  adapter.add(order);
+		  adapter.notifyDataSetChanged();
+		}
+	}
+
+	
+	
+	
+	@Override
+	public void onPause() 
+	{
+	   getActivity().unregisterReceiver(receiver);
+	   super.onStop();
+	}
+	
+	@Override
+	public void onStop() 
+	{
+	//   getActivity().unregisterReceiver(receiver);
+	   super.onStop();
+	}
+	
+	
+///////////////////////////////////////////////////////	
+
 }
