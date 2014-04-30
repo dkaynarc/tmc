@@ -9,7 +9,7 @@
     tools:context=".CreateOrderActivity" >
 
     <TextView
-       android:id="@+id/createorder_title_tv"
+        android:id="@+id/createorder_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -17,86 +17,190 @@
         android:text="@string/createorder_title_tv"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    
-    <!-- 
-    <TextView
-        android:id="@+id/createorder_ordername_tv"
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/createorder_buttons_ll"
+        android:layout_marginTop="10dp"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/createorder_title_tv"
-        android:layout_marginTop="20dp"
-        android:text="@string/createorder_ordername_tv"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    
-    <EditText
-        android:id="@+id/createorder_ordername_et"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/createorder_ordername_tv"
-        android:layout_alignBaseline="@+id/createorder_ordername_tv"
-        android:ems="10"
-        android:inputType="text" />
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/createorder_title_tv" >
 
-    <TextView
-        android:id="@+id/createorder_ordernumber_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/createorder_ordername_tv"
-        android:layout_marginTop="20dp"
-        android:text="@string/createorder_ordernumber_tv"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    
-    <EditText
-        android:id="@+id/createorder_ordernumber_et"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/createorder_ordernumber_tv"
-        android:layout_alignBaseline="@+id/createorder_ordernumber_tv"
-        android:ems="10"
-        android:inputType="number" />
- -->
- <!-- Sergei -->
-       <TextView
-        android:id="@+id/createorder_items_number_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/createorder_title_tv"
-        android:layout_marginTop="20dp"
-        android:text="@string/createorder_items_number_tv"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    
-    <EditText
-        android:id="@+id/createorder_items_number_et"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/createorder_items_number_tv"
-        android:layout_alignBaseline="@+id/createorder_items_number_tv"
-        android:ems="10"
-        android:inputType="number" />
- <!-- Sergei -->    
- 
- 
- 
-    <Button
-        android:id="@+id/createorder_createorder_b"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/createorder_items_number_tv"
-        android:layout_marginTop="30dp"
-        android:onClick="onCreateOrderClicked"
-        android:text="@string/createorder_createorder_b" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/createorder_cancel_b"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/createorder_black_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/createorder_black_tv"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Spinner
+                    android:id="@+id/createorder_black_s"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/createorder_blue_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/createorder_blue_tv"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Spinner
+                    android:id="@+id/createorder_blue_s"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/createorder_red_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/createorder_red_tv"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Spinner
+                    android:id="@+id/createorder_red_s"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/createorder_green_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/createorder_green_tv"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Spinner
+                    android:id="@+id/createorder_green_s"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/createorder_white_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/createorder_white_tv"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Spinner
+                    android:id="@+id/createorder_white_s"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/createorder_quantity_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/createorder_quantity_tv"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/createorder_quantity_et"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="number" >
+
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/createorder_ownerlabel_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/createorder_ownerlabel_tv"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/createorder_ownername_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/createorder_ownername_tv"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/createorder_buttons_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onCancelOrderClicked"
-        android:layout_alignBaseline="@+id/createorder_createorder_b"
-        android:layout_toRightOf="@+id/createorder_createorder_b"
-        android:text="@string/createorder_cancel_b" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true" >
+
+        <Button
+            android:id="@+id/createorder_createorder_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:onClick="onCreateOrderClicked"
+            style="?android:attr/button"
+            android:text="@string/createorder_createorder_b" />
+
+        <Button
+            android:id="@+id/createorder_cancel_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:onClick="onCancelOrderClicked"
+            style="?android:attr/button"
+            android:text="@string/createorder_cancel_b" />
+    </LinearLayout>
 
 </RelativeLayout>

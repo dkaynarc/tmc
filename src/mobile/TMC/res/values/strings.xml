@@ -47,5 +47,13 @@
     <string name="modifyorder_ordernumber_tv">Order Number:</string>
     <string name="modifyorder_modifyorder_b">Modify</string>
     <string name="modifyorder_cancel_b">Cancel</string>
+    <string name="createorder_black_tv">Black:</string>
+    <string name="createorder_blue_tv">Blue:</string>
+    <string name="createorder_red_tv">Red:</string>
+    <string name="createorder_green_tv">Green:</string>
+    <string name="createorder_white_tv">White:</string>
+    <string name="createorder_quantity_tv">Quantity:</string>
+    <string name="createorder_ownerlabel_tv">Owner:</string>
+    <string name="createorder_ownername_tv">error</string>
 
 </resources>
