@@ -10,7 +10,10 @@ import model.Constants;
 import model.Order;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -31,6 +34,7 @@ public class CreateOrderActivity extends Activity
 	private EditText numberOfItemsEditText;
 	private ProgressDialog pd;
 	private ResultReceiver receiver;
+	
 
 	/**
 	 * Sets the layout.
@@ -42,9 +46,23 @@ public class CreateOrderActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_order);
 	   
+		Integer[] items = new Integer[]{0,1,2,3,4};
+		ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,android.R.layout.simple_spinner_item, items);
+		((Spinner) findViewById(R.id.createorder_black_s)).setAdapter(adapter);
+		((Spinner) findViewById(R.id.createorder_blue_s)).setAdapter(adapter);
+		((Spinner) findViewById(R.id.createorder_green_s)).setAdapter(adapter);
+		((Spinner) findViewById(R.id.createorder_red_s)).setAdapter(adapter);
+		((Spinner) findViewById(R.id.createorder_white_s)).setAdapter(adapter);
+	
 		////////////////////////////
 		String userName = readCurrentUserName();// <-- display this to the user
-		numberOfItemsEditText = (EditText)findViewById(R.id.createorder_items_number_et);
+		// I think this is what you're trying to achieve --- CARLO
+		((TextView) findViewById(R.id.createorder_ownername_tv)).setText(userName);
+		numberOfItemsEditText = (EditText)findViewById(R.id.createorder_quantity_et);
+        IntentFilter filter = new IntentFilter(Constants.NEW_ORDER_RESULT);
+        receiver = new ResultReceiver();
+        this.registerReceiver(receiver, filter);
+
         /////////////////
 	}
 
@@ -129,18 +147,10 @@ private class ResultReceiver extends BroadcastReceiver
 	   pd.dismiss();	  
 	   String response = intent.getStringExtra("result"); 
 	   
-	   // convert command value into an integer and do "switch"
-	   switch(Integer.decode(intent.getStringExtra("command")))
-		{
-		  case 1:
-          /////do authentication
-		  break;
-				 
-		  case 2:
-		  handleNewOrderResult(response, context);
-		  break;
 
-		}
+		  handleNewOrderResult(response, context);
+		
+		
 	}
 }
 
