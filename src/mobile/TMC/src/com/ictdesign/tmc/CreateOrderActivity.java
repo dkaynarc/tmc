@@ -113,28 +113,6 @@ private void makeNewOrderService(Order newOrder) {
 	}
 
 //private class
-private class ResultReceiver extends BroadcastReceiver
-{
-	@Override
-	public void onReceive(Context context, Intent intent) 
-	{
-	   pd.dismiss();	  
-	   String response = intent.getStringExtra("result"); 
-	   
-	   // convert command value into an integer and do "switch"
-	   switch(Integer.decode(intent.getStringExtra("command")))
-		{
-		  case 1:
-          /////do authentication
-		  break;
-				 
-		  case 2:
-		  handleNewOrderResult(response, context);
-		  break;
-
-		}
-	}
-}
 
 
 
