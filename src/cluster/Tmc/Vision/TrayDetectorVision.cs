@@ -30,7 +30,7 @@ namespace Tmc.Vision
             f.Show();
             this.camera = camera;
 
-            this.camera.ConnectionString = new Uri(@"http://www.wwrd.com.au/images/P/2260248_Fable%20s-4%2016cm%20Accent%20Plates-652383734586-co.jpg");
+            this.camera.ConnectionString = new Uri(@"http://192.168.0.190:8080/photoaf.jpg");
         }
 
         public void RunTrayDetectionVision()
@@ -58,7 +58,7 @@ namespace Tmc.Vision
             rect.Y = 220;
             rect.Width = 420+100;
             rect.Height= 400;
-            imgTray = img;//.GetSubRect(rect);
+            imgTray = img.GetSubRect(rect);
             return true;
         }
 

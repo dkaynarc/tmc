@@ -25,8 +25,7 @@ namespace Tmc.Vision
             //CircleF[] circle  = ;
             string win1 = "Test Window"; //The name of the window
             CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
-
-            Image<Gray, Byte> graySoft = src.Convert<Gray, Byte>();//.PyrDown().PyrUp().Clone();
+   Image<Gray, Byte> graySoft = src.Convert<Gray, Byte>();//.PyrDown().PyrUp().Clone();
             Image<Gray, Byte> gray = graySoft;//.SmoothGaussian(3);
             //gray = gray.AddWeighted(graySoft, 1.5, -0.5, 0);
 
@@ -38,6 +37,7 @@ namespace Tmc.Vision
 
             Image<Gray, Byte> cannyEdges = gray.Canny(cannyThreshold.Intensity, cannyThresholdLinking.Intensity);
 
+         
             //CvInvoke.cvShowImage(win1, gray); //Show the image
             //CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
 
@@ -79,6 +79,17 @@ namespace Tmc.Vision
             f.pictureBox2_draw(a);
             CvInvoke.cvWaitKey(40);
             return circles;
+        }
+
+        public void calibration(Image<Bgr, byte> src)
+        {
+            const int width     = 9;
+            const int height = 6;
+            Size patternSize = new Size(width, height);
+            Bgr[] line_colour_array = new Bgr[width * height]; // just for displaying coloured lines of detected chessboard
+            Image<Gray, Byte>[] Frame_array_buffer = new Image<Gray,byte>[100];
+            MCvPoint3D32f[][] corners_object_list = new MCvPoint3D32f[Frame_array_buffer.Length][];
+            PointF[][] corners_points_list = new PointF[Frame_array_buffer.Length][];
         }
 
         public void DetectTabletType()

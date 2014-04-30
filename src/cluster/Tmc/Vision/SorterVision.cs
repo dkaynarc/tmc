@@ -27,19 +27,22 @@ namespace Tmc.Vision
             this.camera = camera;
         }
 
-        public List<Tablet> GetVisibleTablets()
+        /*public List<Tablet> GetVisibleTablets()
         {
             var tablets = new List<Tablet>();
             return tablets;
-        }
+        }*/
         
-        public void RunSorterCamera()
+        public List<Tablet> RunSorterCamera()
         {
+            List<Tablet> tablet = new List<Tablet>();           
             img = camera.GetImage();
             CircleF[] circles = DetectTablets(img, minCircle, maxCircle, par3, par4, cannyThresh, cannyAccumThresh, f);
             DetectOverLap();
             DetectDamagedTablet();
             GetXYZForTablets();
+             
+            return tablet;
         }
         
         private void DetectOverLap()
