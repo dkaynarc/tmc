@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="ConveyorFactory.cs" />
     <Compile Include="Conveyors\BluetoothConveyor.cs" />
+    <Compile Include="Conveyors\SerialConveyor.cs" />
     <Compile Include="Robots\AssemblerRobot.cs" />
     <Compile Include="Contracts\IConveyor.cs" />
     <Compile Include="Contracts\IRobot.cs" />
