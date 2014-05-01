@@ -23,7 +23,7 @@ namespace Tmc.Scada.Core
             public MockPlc()
             {
                 TrayMagazine = new Dictionary<int, bool>();
-                for (int i = 0; i < 6; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     TrayMagazine.Add(i, (i % 2) == 0);
                 }
