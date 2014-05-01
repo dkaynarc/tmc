@@ -13,7 +13,6 @@ public class Order
 	private int mOrderId = 0;
 	private String mOrderOwner = "";
 	private String mOrderStatus = "";
-	private int mQuantity = 0;
 	private int mBlack = 0;
 	private int mBlue = 0;
 	private int mRed = 0;
@@ -38,10 +37,9 @@ public class Order
 	}
 
 	// //////////////////////////////////////////
-	public Order(String orderOwner, int quantity)
+	public Order(String orderOwner)
 	{
 		mOrderOwner = orderOwner;
-		mQuantity = quantity;
 	}
 
 	public Order(int orderId, String orderOwner, String orderStatus)
@@ -137,7 +135,7 @@ public class Order
 
 	public int getQuantity()
 	{
-
-		return mQuantity;
+		int quantity = mBlack + mBlue + mGreen + mRed +mWhite;
+		return quantity;
 	}
 }

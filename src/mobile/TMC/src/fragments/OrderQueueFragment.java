@@ -268,11 +268,11 @@ public class OrderQueueFragment extends ListFragment
 			pd.dismiss();
 			String response = intent.getStringExtra("result");
 
-			handleOdersUpdate(response);
+			handleOrdersUpdate(response);
 		}
 	}
 
-	private void handleOdersUpdate(String response)
+	private void handleOrdersUpdate(String response)
 	{
 		OrderQueueAdapter adapter = (OrderQueueAdapter) getListView()
 				.getAdapter();
