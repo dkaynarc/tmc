@@ -124,13 +124,6 @@ public class OrderQueueFragment extends ListFragment
 		setListAdapter(new OrderQueueAdapter(getActivity(), R.layout.order_row,
 			    incompleteOrders, onDeleteOrderClickListener));	
 		
-		// this will prefill incompleteOrders araylist
-		///////////////////////////////
-		makeUpdateOrdersService();
-		//////////////////////////////
-		
-
-		
 		return rootView;
 	}
 
@@ -317,6 +310,16 @@ public class OrderQueueFragment extends ListFragment
 		getActivity().registerReceiver(receiver, filter);
 		super.onStart();
 	}
+	
+
+	@Override
+	public void onResume()
+	{
+		// this will prefill incompleteOrders araylist
+		makeUpdateOrdersService();	
+		super.onResume();
+	}
+	
 	
 	
 	
