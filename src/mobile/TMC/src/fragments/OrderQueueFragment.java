@@ -268,10 +268,15 @@ public class OrderQueueFragment extends ListFragment
 		}
 	}
 
+	
+	
+	
+	
+	
+	
 	private void handleOrdersUpdate(String response)
 	{
-		OrderQueueAdapter adapter = (OrderQueueAdapter) getListView()
-				.getAdapter();
+		OrderQueueAdapter adapter = (OrderQueueAdapter) getListView().getAdapter();
 		adapter.clear();
 
 		ArrayList<Order> orders = Constants.ORDERS;// change this to the orders
@@ -286,6 +291,12 @@ public class OrderQueueFragment extends ListFragment
 		adapter.notifyDataSetChanged();
 	}
 
+	
+	
+	
+	
+	
+	
 	@Override
 	public void onStart()
 	{

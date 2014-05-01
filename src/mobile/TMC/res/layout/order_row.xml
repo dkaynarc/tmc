@@ -21,8 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/orderrow_orderstatus_iv"
-        android:layout_marginLeft="5dp"
-        android:text="@string/orderrow_orderidlabel_tv" />
+        android:layout_marginLeft="5dp"/>
+        android:text="@string/orderrow_orderidlabel_tv" 
     
     <TextView
         android:id="@+id/orderrow_orderid_tv"
@@ -31,7 +31,7 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/orderrow_orderidlabel_tv"
         android:layout_marginLeft="5dp"
-        android:text="@string/error" />
+        android:text="@string/error"/>
 
     <TextView
         android:id="@+id/orderrow_orderownerlabel_tv"
@@ -40,7 +40,7 @@
         android:layout_below="@+id/orderrow_orderidlabel_tv"
         android:layout_toRightOf="@+id/orderrow_orderstatus_iv"
         android:layout_marginLeft="5dp"
-        android:text="@string/orderrow_orderownerlabel_tv" />
+        android:text="@string/orderrow_orderownerlabel_tv"  />
     
     <TextView
         android:id="@+id/orderrow_orderowner_tv"
@@ -49,7 +49,7 @@
         android:layout_below="@+id/orderrow_orderidlabel_tv"
         android:layout_toRightOf="@+id/orderrow_orderownerlabel_tv"
         android:layout_marginLeft="5dp"
-        android:text="@string/error" />
+        android:text="@string/error"/> 
 
     <TextView
         android:id="@+id/orderrow_orderstatuslabel_tv"
