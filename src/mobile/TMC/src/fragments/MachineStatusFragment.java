@@ -5,7 +5,7 @@ package fragments;
 import model.Constants;
 import model.Machine;
 
-import com.ictdesign.tmc.R;
+import ictd.activities.R;
 
 import adapters.MachineStatusAdapter;
 import android.annotation.SuppressLint;

@@ -2,12 +2,12 @@
 
 package adapters;
 
+import ictd.activities.R;
+
 import java.util.ArrayList;
 
 import model.Constants;
 import model.Machine;
-
-import com.ictdesign.tmc.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

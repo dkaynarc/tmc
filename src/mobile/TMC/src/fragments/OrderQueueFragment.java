@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 import model.Constants;
 import model.Order;
-import com.ictdesign.tmc.CreateOrderActivity;
-import com.ictdesign.tmc.ModifyOrderActivity;
-import com.ictdesign.tmc.R;
+import ictd.activities.CreateOrderActivity;
+import ictd.activities.ModifyOrderActivity;
+import ictd.activities.R;
 import adapters.OrderQueueAdapter;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;

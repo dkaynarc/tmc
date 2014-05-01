@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import model.Constants;
 import model.Order;
 
-import com.ictdesign.tmc.R;
+import ictd.activities.R;
 
 import adapters.CompletedOrderAdapter;
 import android.app.AlertDialog;

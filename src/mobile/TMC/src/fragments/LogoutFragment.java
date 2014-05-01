@@ -4,7 +4,7 @@ package fragments;
 
 import model.Constants;
 
-import com.ictdesign.tmc.R;
+import ictd.activities.R;
 
 import android.app.AlertDialog;
 import android.content.Context;
