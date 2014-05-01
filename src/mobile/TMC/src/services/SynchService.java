@@ -106,10 +106,14 @@ private void authenticate(Bundle parcel)
     	try{
 		  
 		  URL url = new URL(urlStr);
-		  HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-		  urlConnection.setRequestMethod("GET");
-	      BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
+		  HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		  con.setRequestMethod("GET");
+		  con.setConnectTimeout(10000); // times out after 10 seconds
+		  //con.setRequestProperty("Content-Type","application/json");
+		  con.setRequestProperty("Accept", "application/json");
+	      BufferedInputStream in = new BufferedInputStream(con.getInputStream());
    
+	   
 	      // read result
 		  byte[] contents = new byte[1024];
 		  int flag;
