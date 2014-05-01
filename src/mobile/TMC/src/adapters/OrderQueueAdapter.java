@@ -72,9 +72,9 @@ public class OrderQueueAdapter extends ArrayAdapter<Order>
 		if (order != null)
 		{
 			TextView name = (TextView) v
-					.findViewById(R.id.orderrow_ordername_tv);
+					.findViewById(R.id.orderrow_orderowner_tv);
 			TextView number = (TextView) v
-					.findViewById(R.id.orderrow_ordernumber_tv);
+					.findViewById(R.id.orderrow_orderid_tv);
 			TextView type = (TextView) v
 					.findViewById(R.id.orderrow_orderstatus_tv);
 			ImageView picture = (ImageView) v

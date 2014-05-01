@@ -171,7 +171,7 @@ public final class R {
         public static final int robot=0x7f020005;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0035;
+        public static final int action_settings=0x7f0a0038;
         public static final int controller_emergencystop_b=0x7f0a0022;
         public static final int controller_shutdown_b=0x7f0a0020;
         public static final int controller_startup_b=0x7f0a0021;
@@ -216,15 +216,18 @@ public final class R {
         public static final int modifyorder_ordernumber_tv=0x7f0a001b;
         public static final int modifyorder_title_tv=0x7f0a0018;
         public static final int orderrow_deleteorder_ib=0x7f0a002e;
-        public static final int orderrow_ordername_tv=0x7f0a002f;
-        public static final int orderrow_ordernumber_tv=0x7f0a0030;
+        public static final int orderrow_orderid_tv=0x7f0a0030;
+        public static final int orderrow_orderidlabel_tv=0x7f0a002f;
+        public static final int orderrow_orderowner_tv=0x7f0a0032;
+        public static final int orderrow_orderownerlabel_tv=0x7f0a0031;
         public static final int orderrow_orderstatus_iv=0x7f0a002d;
-        public static final int orderrow_orderstatus_tv=0x7f0a0031;
+        public static final int orderrow_orderstatus_tv=0x7f0a0034;
+        public static final int orderrow_orderstatuslabel_tv=0x7f0a0033;
         public static final int pager=0x7f0a001f;
         public static final int queuelist_createorder_b=0x7f0a0028;
-        public static final int selection_logout_b=0x7f0a0032;
-        public static final int selection_operations_b=0x7f0a0033;
-        public static final int selection_orders_b=0x7f0a0034;
+        public static final int selection_logout_b=0x7f0a0035;
+        public static final int selection_operations_b=0x7f0a0036;
+        public static final int selection_orders_b=0x7f0a0037;
     }
     public static final class layout {
         public static final int activity_create_order=0x7f030000;
@@ -277,6 +280,7 @@ public final class R {
         public static final int createorder_red_tv=0x7f070030;
         public static final int createorder_title_tv=0x7f070018;
         public static final int createorder_white_tv=0x7f070032;
+        public static final int error=0x7f070039;
         public static final int hello_world=0x7f070017;
         public static final int list_nodata=0x7f070012;
         public static final int loginactivity_login_b=0x7f070005;
@@ -296,10 +300,13 @@ public final class R {
         public static final int modifyorder_ordernumber_tv=0x7f07002b;
         public static final int modifyorder_title_tv=0x7f070029;
         public static final int orderrow_deleteorder_ib=0x7f07000b;
+        public static final int orderrow_orderidlabel_tv=0x7f070036;
         public static final int orderrow_ordername_tv=0x7f070013;
         public static final int orderrow_ordernumber_tv=0x7f070014;
+        public static final int orderrow_orderownerlabel_tv=0x7f070037;
         public static final int orderrow_orderstatus_iv=0x7f07000a;
         public static final int orderrow_orderstatus_tv=0x7f070015;
+        public static final int orderrow_orderstatuslabel_tv=0x7f070038;
         public static final int queuelist_createorder_b=0x7f070009;
         public static final int selection_logout_b=0x7f070008;
         public static final int selection_operations_b=0x7f070006;
