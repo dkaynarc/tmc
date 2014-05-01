@@ -84,7 +84,7 @@ public class OrderQueueAdapter extends ArrayAdapter<Order>
 			if (name != null)
 				name.setText(order.getOrderName());
 			if (number != null)
-				number.setText(order.getOrderNumber());
+				number.setText(order.getOrderId());
 			if (type != null)
 				type.setText(order.getOrderStatus());
 			if (picture != null)

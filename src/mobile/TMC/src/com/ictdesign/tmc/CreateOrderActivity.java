@@ -121,7 +121,7 @@ public class CreateOrderActivity extends Activity
 		
 		Intent service = new Intent(this, services.SynchService.class);
 		Bundle parcel = new Bundle();
-		parcel.putString("itemsNumber", Integer.toString(newOrder.getNumberOfItems()));
+		parcel.putString("itemsNumber", Integer.toString(newOrder.getQuantity()));
 		parcel.putString("orderName", newOrder.getOrderName());
 		parcel.putString("command", Constants.NEW_ORDER_COMMAND);
 		service.putExtra("parcel", parcel);

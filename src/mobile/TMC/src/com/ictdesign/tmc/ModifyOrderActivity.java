@@ -72,7 +72,7 @@ public class ModifyOrderActivity extends Activity
 		}
 		Intent intent = getIntent();
 		intent.putExtra(Constants.NAME, name);
-		intent.putExtra(Constants.NUMBER, number);
+		intent.putExtra(Constants.NUMBER, Integer.parseInt(number));
 		intent.putExtra(Constants.ID, mId);
 		setResult(Constants.MODIFY_ORDER, intent);
 		finish();

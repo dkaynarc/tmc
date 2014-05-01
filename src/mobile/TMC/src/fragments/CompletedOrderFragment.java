@@ -71,7 +71,7 @@ public class CompletedOrderFragment extends ListFragment
 				.setMessage(
 						String.format("%s: %s\n%s: %s\n%s: %s", Constants.NAME,
 								order.getOrderName(), Constants.NUMBER,
-								order.getOrderNumber(), Constants.STATUS,
+								order.getOrderId(), Constants.STATUS,
 								order.getOrderStatus()))
 				.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id)
