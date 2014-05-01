@@ -20,9 +20,10 @@ namespace Tmc.Vision
         //private int[] Xarray;
         //private int[] Yarray;
         private Camera camera;
-        private Point[] trayPoints;
+        private Point[] trayPoints = new Point[4];
         private Image<Bgr, Byte> img;
         private Image<Bgr, Byte> imgTray;
+        private CircleF[] tablets;
 
         private Hsv[,] HSVTabletColoursRanges = new Hsv[5,2];//{{76,54}};
 
@@ -73,6 +74,7 @@ namespace Tmc.Vision
         public void RunTrayDetectionVision()
         {
             //img = camera.GetImage();
+            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/belt sort/belt mid.jpg");
             //img = camera.GetImageHttp(new Uri(@"http://www.wwrd.com.au/images/P/2260248_Fable%20s-4%2016cm%20Accent%20Plates-652383734586-co.jpg"));
             string win1 = "Test Window"; //The name of the window
             CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
@@ -85,17 +87,24 @@ namespace Tmc.Vision
             CvInvoke.cvShowImage(win1, imgTray); //Show the image
             CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
             DetectTabletsInTray();
+            DetectTabletType();
             CvInvoke.cvDestroyWindow(win1); //Destory the window
         }
 
-        private bool DetectTray()
+        private bool DetectTray()                
         {
             Rectangle rect = new Rectangle();
-            rect.X = 360;
-            rect.Y = 220;
-            rect.Width = 420+100;
-            rect.Height= 400;
-            //imgTray = img.GetSubRect(rect);
+
+            trayPoints[0].X = 92;//92/65, 271,227
+            trayPoints[0].Y = 65;
+            trayPoints[3].X = 271;
+            trayPoints[3].Y = 227;
+
+            rect.X = trayPoints[0].X;//Math.Min(trayPoints[0].X,trayPoints[2].X);//360;
+            rect.Y = trayPoints[0].Y;//Math.Min(trayPoints[0].Y,trayPoints[1].Y);//220;
+            rect.Width = trayPoints[3].X - trayPoints[0].X;//420+100;
+            rect.Height = trayPoints[3].Y - trayPoints[0].Y;//400;
+            imgTray = img.GetSubRect(rect);
             return true;
         }
 
@@ -112,14 +121,14 @@ namespace Tmc.Vision
             rect.Height = 10;
             Image<Bgr, byte> tab = abc.GetSubRect(rect);
             CvInvoke.cvShowImage("Test Window", tab); //Show the image
-            detectColour(tab, HSVTabletColoursRanges);
-             while (true)
-            {
+            //detectColour(tab, HSVTabletColoursRanges);
+             //while (true)
+            //{
                 CvInvoke.cvWaitKey(10); 
 
-                //f.getValue(ref minCircle, ref maxCircle, ref par3, ref par4, ref cannyThresh,ref cannyAccumThresh);
-                //DetectTablets(imgTray, minCircle, maxCircle, par3, par4, cannyThresh, cannyAccumThresh, f);
-            }
+                f.getValue(ref minCircle, ref maxCircle, ref par3, ref par4, ref cannyThresh,ref cannyAccumThresh);
+                tablets = DetectTablets(imgTray, minCircle, maxCircle, par3, par4, cannyThresh, cannyAccumThresh, f);
+            //}
         }
 
         /// <summary>
@@ -127,7 +136,35 @@ namespace Tmc.Vision
         /// </summary>
         private void DetectTabletType()
         {
+            Rectangle rect = new Rectangle();
+            Image<Bgr, byte> oneTablet;
+            double rad = 0.607;
+            foreach (CircleF tablet in tablets)
+            {
 
+                rect.X      = (int)(tablet.Center.X - (tablet.Radius * rad)); //Math.Min(trayPoints[0].X,trayPoints[2].X);//360;
+                rect.Y      = (int)(tablet.Center.Y - (tablet.Radius * rad));//Math.Min(trayPoints[0].Y,trayPoints[1].Y);//220;
+                rect.Width  = (int)((tablet.Radius * rad) * 2);//420+100;
+                rect.Height = (int)((tablet.Radius * rad) * 2);//400;
+
+                if (rect.X < 0) rect.X = 0;
+                if (rect.Y < 0) rect.Y = 0;
+                if ((rect.X + rect.Width) > imgTray.Cols)
+                { 
+                    rect.Width -= (rect.X + rect.Width) - imgTray.Cols;
+                }
+                if ((rect.Y + rect.Height) > imgTray.Rows)
+                {
+                    rect.Height -= (rect.Y + rect.Height) - imgTray.Rows;
+                }
+
+                oneTablet = imgTray.GetSubRect(rect);
+                CvInvoke.cvShowImage("Test Window", oneTablet); //Show the image
+                detectColour(oneTablet, HSVTabletColoursRanges);
+                
+                CvInvoke.cvWaitKey(0); 
+                //a.Draw(circle, new Bgr(Color.Red), 2);
+            }
         }
 
         /*private void DetectTrayType()

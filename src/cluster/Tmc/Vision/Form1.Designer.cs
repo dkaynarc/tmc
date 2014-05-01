@@ -68,7 +68,7 @@
             this.Npar1.Size = new System.Drawing.Size(120, 22);
             this.Npar1.TabIndex = 1;
             this.Npar1.Value = new decimal(new int[] {
-            6,
+            7,
             0,
             0,
             0});
@@ -85,7 +85,7 @@
             this.Npar2.Size = new System.Drawing.Size(120, 22);
             this.Npar2.TabIndex = 2;
             this.Npar2.Value = new decimal(new int[] {
-            24,
+            35,
             0,
             0,
             0});
@@ -102,7 +102,7 @@
             this.Nmin.Size = new System.Drawing.Size(120, 22);
             this.Nmin.TabIndex = 3;
             this.Nmin.Value = new decimal(new int[] {
-            31,
+            14,
             0,
             0,
             0});
@@ -119,7 +119,7 @@
             this.Nmax.Size = new System.Drawing.Size(120, 22);
             this.Nmax.TabIndex = 4;
             this.Nmax.Value = new decimal(new int[] {
-            33,
+            16,
             0,
             0,
             0});
