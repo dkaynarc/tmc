@@ -27,11 +27,8 @@ namespace Tmc.Vision
             //CircleF[] circle  = ;
             string win1 = "Test Window"; //The name of the window
             CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
-   Image<Gray, Byte> graySoft = src.Convert<Gray, Byte>();//.PyrDown().PyrUp().Clone();
-            Image<Gray, Byte> gray = graySoft;//.SmoothGaussian(3);
-            //gray = gray.AddWeighted(graySoft, 1.5, -0.5, 0);
-
-            //Image<Gray, Byte> bin = gray.ThresholdBinary(new Gray(0), new Gray(255));
+            Image<Gray, Byte> graySoft = src.Convert<Gray, Byte>();
+            Image<Gray, Byte> gray = graySoft;
 
             Gray cannyThreshold = new Gray(cannyThresh);
             Gray cannyThresholdLinking = new Gray(100);
@@ -39,47 +36,24 @@ namespace Tmc.Vision
 
             Image<Gray, Byte> cannyEdges = gray.Canny(cannyThreshold.Intensity, cannyThresholdLinking.Intensity);
 
-         
-            //CvInvoke.cvShowImage(win1, gray); //Show the image
-            //CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
-
-            //CvInvoke.cvShowImage(win1, cannyEdges); //Show the image
-            //CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
-            //pictureBox1.Image = cannyEdges.ToBitmap();
-            //Form1 f = new Form1();
-            //f.Show();
             f.pictureBox1_draw(gray);
-            //pictureBox1.Image = cannyEdges.ToBitmap();
-            //Circles
-            //cannyEdges.Height = par2;
             CircleF[] circles = gray.HoughCircles(
-                cannyThreshold,//new Gray(150),
-                circleAccumulatorThreshold,//new Gray(75),
+                cannyThreshold,
+                circleAccumulatorThreshold,
                 par3,
                 par4,
-                minCircle,//5,
-                maxCircle//60
-                //cannyThreshold,
-                //circleAccumulatorThreshold,
-                //par1,//1.0, //Resolution of the accumulator used to detect centers of the circles
-                //par2 / 8, //min distance  cannyEdges.Height
-                //min, //min radius
-                //max //max radius
+                minCircle,
+                maxCircle
                 )[0]; //Get the circles from the first channel
-           // if (max == 60)
-            //{
-              //  max = 60;
-            //}
-            //draw circles (on original image)
+           
             Image<Bgr,Byte> a= src.Clone();
             foreach (CircleF circle in circles)
             {
                 a.Draw(circle, new Bgr(Color.Red), 2);
             }
             CvInvoke.cvShowImage(win1, a); //Show the image
-            //CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
             f.pictureBox2_draw(a);
-            CvInvoke.cvWaitKey(40);
+            CvInvoke.cvWaitKey(40);//remove move later
             return circles;
         }
 
