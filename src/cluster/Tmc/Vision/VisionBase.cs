@@ -10,11 +10,13 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.GPU;
 
+
 namespace Tmc.Vision
 {
     public abstract class VisionBase
     {
-
+        public enum ColourTablets { Green = 0, Red, White, Blue, Black, Unknown };
+        public enum HSVRange { Low = 0, High };
        // VisionBase()
         //{ 
             
@@ -92,9 +94,46 @@ namespace Tmc.Vision
             PointF[][] corners_points_list = new PointF[Frame_array_buffer.Length][];
         }
 
-        public void DetectTabletType()
+        public ColourTablets detectColour(Image<Bgr, byte> src, Hsv[,] HSVTabletColourRange)
         {
-            
+            int ol = 5;
+            int oh = 5;
+            MCvScalar srcScalar;
+
+            Image<Hsv, byte> hsv = src.Convert<Hsv, byte>();
+            Hsv abc;
+            hsv.AvgSdv(out abc,out srcScalar);
+
+            if (true == InHSVRange(abc,HSVTabletColourRange,ColourTablets.Green, ol, oh))
+            {//green
+                return ColourTablets.Green;
+            }
+            else if (true == InHSVRange(abc, HSVTabletColourRange,ColourTablets.Red, ol, oh))
+            {//red
+                return ColourTablets.Red;
+            }
+            else if (true == InHSVRange(abc, HSVTabletColourRange,ColourTablets.White, ol, oh))
+            {//white
+                return ColourTablets.White;
+            }
+            else if (true == InHSVRange(abc, HSVTabletColourRange,ColourTablets.Blue, ol, oh))
+            {//blue
+                return ColourTablets.Blue;
+            }
+            else if (true == InHSVRange(abc, HSVTabletColourRange,ColourTablets.Black, ol, oh))
+            {//black
+                return ColourTablets.Black;
+            }
+            else 
+            {
+                return ColourTablets.Unknown;
+            }
+        }
+
+        public bool InHSVRange(Hsv srcHsv, Hsv[,] targetHsv,ColourTablets colour, int lowerLimitExtra,int higherLimitExtra)
+        {
+            return ((srcHsv.Hue >= (targetHsv[(int)colour,(int)HSVRange.Low].Hue - lowerLimitExtra)) && (srcHsv.Satuation >= (targetHsv[(int)colour,(int)HSVRange.Low].Satuation - lowerLimitExtra)) && (srcHsv.Value >= (targetHsv[(int)colour,(int)HSVRange.Low].Value - lowerLimitExtra)) &&
+                (srcHsv.Hue <= (targetHsv[(int)colour,(int)HSVRange.High].Hue + higherLimitExtra)) && (srcHsv.Satuation <= (targetHsv[(int)colour,(int)HSVRange.High].Satuation + higherLimitExtra)) && (srcHsv.Value <= (targetHsv[(int)colour,(int)HSVRange.High].Value + higherLimitExtra)));
         }
     }
 }
