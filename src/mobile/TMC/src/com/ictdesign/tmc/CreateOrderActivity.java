@@ -58,7 +58,6 @@ public class CreateOrderActivity extends Activity
 		String userName = readCurrentUserName();// <-- display this to the user
 		// I think this is what you're trying to achieve --- CARLO
 		((TextView) findViewById(R.id.createorder_ownername_tv)).setText(userName);
-		numberOfItemsEditText = (EditText)findViewById(R.id.createorder_quantity_et);
         IntentFilter filter = new IntentFilter(Constants.NEW_ORDER_RESULT);
         receiver = new ResultReceiver();
         this.registerReceiver(receiver, filter);
@@ -101,7 +100,8 @@ public class CreateOrderActivity extends Activity
 					Toast.LENGTH_SHORT).show();	
 	    	return;
 	    }
-		Order newOrder = new Order(readCurrentUserName(), Integer.decode(itemsNumber)); // the user name is to be changed to a real user name
+		Order newOrder = new Order(readCurrentUserName()); // the user name is to be changed to a real user name
+		newOrder.setColourNumber("black", Integer.parseInt(itemsNumber));
 		makeNewOrderService(newOrder);
 		///////////////////////////		
 		
@@ -121,7 +121,6 @@ public class CreateOrderActivity extends Activity
 		
 		Intent service = new Intent(this, services.SynchService.class);
 		Bundle parcel = new Bundle();
-		parcel.putString("itemsNumber", Integer.toString(newOrder.getNumberOfItems()));
 		parcel.putString("orderName", newOrder.getOrderName());
 		parcel.putString("command", Constants.NEW_ORDER_COMMAND);
 		service.putExtra("parcel", parcel);

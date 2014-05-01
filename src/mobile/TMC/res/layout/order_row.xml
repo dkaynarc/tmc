@@ -16,31 +16,58 @@
         android:src="@drawable/active" />
 
     <TextView
-        android:id="@+id/orderrow_ordername_tv"
+        android:id="@+id/orderrow_orderidlabel_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/orderrow_orderstatus_iv"
         android:layout_marginLeft="5dp"
-        android:text="@string/orderrow_ordername_tv" />
-
+        android:text="@string/orderrow_orderidlabel_tv" />
+    
     <TextView
-        android:id="@+id/orderrow_ordernumber_tv"
+        android:id="@+id/orderrow_orderid_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/orderrow_ordername_tv"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/orderrow_orderidlabel_tv"
+        android:layout_marginLeft="5dp"
+        android:text="@string/error" />
+
+    <TextView
+        android:id="@+id/orderrow_orderownerlabel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/orderrow_orderidlabel_tv"
         android:layout_toRightOf="@+id/orderrow_orderstatus_iv"
         android:layout_marginLeft="5dp"
-        android:text="@string/orderrow_ordernumber_tv" />
+        android:text="@string/orderrow_orderownerlabel_tv" />
+    
+    <TextView
+        android:id="@+id/orderrow_orderowner_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/orderrow_orderidlabel_tv"
+        android:layout_toRightOf="@+id/orderrow_orderownerlabel_tv"
+        android:layout_marginLeft="5dp"
+        android:text="@string/error" />
 
+    <TextView
+        android:id="@+id/orderrow_orderstatuslabel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/orderrow_orderownerlabel_tv"
+        android:layout_toRightOf="@+id/orderrow_orderstatus_iv"
+        android:layout_marginLeft="5dp"
+        android:text="@string/orderrow_orderstatuslabel_tv" />
+    
     <TextView
         android:id="@+id/orderrow_orderstatus_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/orderrow_ordernumber_tv"
-        android:layout_toRightOf="@+id/orderrow_orderstatus_iv"
+        android:layout_below="@+id/orderrow_orderownerlabel_tv"
+        android:layout_toRightOf="@+id/orderrow_orderstatuslabel_tv"
         android:layout_marginLeft="5dp"
-        android:text="@string/orderrow_orderstatus_tv" />
+        android:text="@string/error" />
 
     <ImageButton
         android:id="@+id/orderrow_deleteorder_ib"

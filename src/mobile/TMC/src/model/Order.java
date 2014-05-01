@@ -10,76 +10,91 @@ package model;
 
 public class Order
 {
-	private String mOrderName = "";
-	private String mOrderNumber = "";
+	private int mOrderId = 0;
+	private String mOrderOwner = "";
 	private String mOrderStatus = "";
-	private int numberOfItems;
-    private int black;
-    private int blue;
-    private int red;
-    private int green;
-    private int white;
-   	
+	private int mBlack = 0;
+	private int mBlue = 0;
+	private int mRed = 0;
+	private int mGreen = 0;
+	private int mWhite = 0;
+
 	/**
 	 * Constructor to initialize all the variables.
 	 */
-    
-    
-   
-   
-	public Order(String orderName, String orderNumber, String orderStatus)
+
+	public Order(int orderId, String orderOwner, String orderStatus, int black,
+			int blue, int green, int red, int white, int quantity)
 	{
-		mOrderName = orderName;
-		mOrderNumber = orderNumber;
+		mOrderId = orderId;
+		mOrderOwner = orderOwner;
+		mOrderStatus = orderStatus;
+		mBlack = black;
+		mBlue = blue;
+		mGreen = green;
+		mRed = red;
+		mWhite = white;
+	}
+
+	// //////////////////////////////////////////
+	public Order(String orderOwner)
+	{
+		mOrderOwner = orderOwner;
+	}
+
+	public Order(int orderId, String orderOwner, String orderStatus)
+	{
+		mOrderId = orderId;
+		mOrderOwner = orderOwner;
 		mOrderStatus = orderStatus;
 	}
 
-	
-	////////////////////////////////////////////
-	public Order(String mOrderName, int numberOfItems) 
+	public void setColourNumber(String colourName, int quantity)
 	{
-		this.mOrderName = mOrderName;
-		this.numberOfItems = numberOfItems;
+		if (colourName.equalsIgnoreCase("black"))
+			mBlack = quantity;
+		if (colourName.equalsIgnoreCase("blue"))
+			mBlue = quantity;
+		if (colourName.equalsIgnoreCase("green"))
+			mGreen = quantity;
+		if (colourName.equalsIgnoreCase("red"))
+			mRed = quantity;
+		if (colourName.equalsIgnoreCase("white"))
+			mWhite = quantity;
 	}
-	
-	
-	 public void setColourNumber(String colourName, int quantity )
-	    {
-	    	if(colourName.equalsIgnoreCase("black"))black = quantity;
-	    	if(colourName.equalsIgnoreCase("blue"))blue = quantity;
-	    	if(colourName.equalsIgnoreCase("red"))red = quantity;
-	    	if(colourName.equalsIgnoreCase("white"))white = quantity;
-	    	if(colourName.equalsIgnoreCase("green"))green = quantity; 	
-	    }
 
-	   
-	   public int getColourNumber(String colourName)
-	   {
-	   	 if(colourName.equalsIgnoreCase("black"))return black;
-	   	 if(colourName.equalsIgnoreCase("blue")) return blue;
-	   	 if(colourName.equalsIgnoreCase("red"))return red;
-	   	 if(colourName.equalsIgnoreCase("white"))return white;
-	   	 if(colourName.equalsIgnoreCase("green"))return green;
-		 return 0; 	
-	   }
-	////////////////////////////////////////////
+	public int getColourNumber(String colourName)
+	{
+		if (colourName.equalsIgnoreCase("black"))
+			return mBlack;
+		if (colourName.equalsIgnoreCase("blue"))
+			return mBlue;
+		if (colourName.equalsIgnoreCase("green"))
+			return mGreen;
+		if (colourName.equalsIgnoreCase("red"))
+			return mRed;
+		if (colourName.equalsIgnoreCase("white"))
+			return mWhite;
+		return 0;
+	}
+
 
 	/**
 	 * Set the order name.
 	 */
 
-	public void setOrderName(String orderName)
+	public void setOrderOwner(String orderOwner)
 	{
-		mOrderName = orderName;
+		mOrderOwner = orderOwner;
 	}
 
 	/**
 	 * Set the order number.
 	 */
 
-	public void setOrderNumber(String orderNumber)
+	public void setOrderId(int orderId)
 	{
-		mOrderNumber = orderNumber;
+		mOrderId = orderId;
 	}
 
 	/**
@@ -97,16 +112,16 @@ public class Order
 
 	public String getOrderName()
 	{
-		return mOrderName;
+		return mOrderOwner;
 	}
 
 	/**
 	 * Get the order number.
 	 */
 
-	public String getOrderNumber()
+	public int getOrderId()
 	{
-		return mOrderNumber;
+		return mOrderId;
 	}
 
 	/**
@@ -118,8 +133,9 @@ public class Order
 		return mOrderStatus;
 	}
 
-	public int getNumberOfItems() {
-	
-		return numberOfItems;
+	public int getQuantity()
+	{
+		int quantity = mBlack + mBlue + mGreen + mRed +mWhite;
+		return quantity;
 	}
 }
