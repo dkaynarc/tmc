@@ -9,12 +9,12 @@ namespace Tmc.Robotics
     {
         public void GetMagazine()
         {
-            this.RunRapidProgram("this is a stub");
+            this.RunRapidProgram("AssemblerGetMagazine.mod");
         }
 
         public void ReturnMagazine()
         {
-            this.RunRapidProgram("this is a stub");
+            this.RunRapidProgram("AssemblerReturnMagazine.mod");
         }
 
         public void PlaceTablet(int magazineIndex, int trayIndex)

@@ -10,7 +10,7 @@ using Tmc.Common;
 
 namespace Tmc.Robotics
 {
-    public class BaseRobot : IRobot
+    public abstract class BaseRobot : IRobot
     {
         public string Name { get; set; }
         public IPAddress RobotIPAddress { get; set; }
@@ -110,14 +110,15 @@ namespace Tmc.Robotics
 
         protected void RunRapidProgram(string filename, IDictionary<string, string> parameters)
         {
-            var text = File.ReadAllText("\\mod\\" + filePath);
+            var directory = Directory.GetCurrentDirectory() + "\\mod\\";
+            var text = File.ReadAllText(directory + filename);
 
             foreach(var parameter in parameters)
             {
                 text = text.Replace(parameter.Key, parameter.Value);
             }
 
-            File.WriteAllText("\\mod\\_temp.mod", text);
+            File.WriteAllText(directory + "_temp.mod", text);
 
             this.RunRapidProgram("_temp.mod");
         }

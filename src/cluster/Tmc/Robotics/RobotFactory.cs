@@ -33,22 +33,22 @@
 
         private static AssemblerRobot BuildAssembler()
         {
-            return new AssemblerRobot() { Name = "Assembler" };
+            return new AssemblerRobot() { };
         }
 
         private static LoaderRobot BuildLoader()
         {
-            return new LoaderRobot() { Name = "Loader" };
+            return new LoaderRobot() { };
         }
 
         private static PalletiserRobot BuildPalletiser()
         {
-            return new PalletiserRobot() { Name = "Palletiser" };
+            return new PalletiserRobot() { };
         }
 
         private static SorterRobot BuildSorter()
         {
-            return new SorterRobot() { Name = "Sorter" };
+            return new SorterRobot() { };
         }
     }
 }
