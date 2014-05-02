@@ -9,13 +9,14 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.GPU;
+using Tmc.Common;
 
 
 namespace Tmc.Vision
 {
     public abstract class VisionBase
     {
-        public enum ColourTablets { Green, Red, White, Blue, Black, Unknown, None };
+        //public enum TabletColors { Green, Red, White, Blue, Black, Unknown, None };
         public enum HSVRange { Low = 0, High };
 
         public CircleF[] DetectTablets(Image<Bgr, Byte> src, int minCircle, int maxCircle, double par3, double par4, int cannyThresh, int cannyAccumThresh, Form1 f)
@@ -64,7 +65,7 @@ namespace Tmc.Vision
             PointF[][] corners_points_list = new PointF[Frame_array_buffer.Length][];
         }
 
-        public ColourTablets detectColour(Image<Bgr, byte> src, Hsv[,] HSVTabletColourRange)
+        public TabletColors detectColour(Image<Bgr, byte> src, Hsv[,] HSVTabletColourRange)
         {
             int ol = 5;
             int oh = 5;
@@ -73,34 +74,34 @@ namespace Tmc.Vision
             Image<Hsv, byte> hsv = src.Convert<Hsv, byte>();
             Hsv abc;
             hsv.AvgSdv(out abc,out srcScalar);
-
-            if (true == InHSVRange(abc,HSVTabletColourRange,ColourTablets.Green, ol, oh))
+            //TabletColors
+            if (true == InHSVRange(abc, HSVTabletColourRange, TabletColors.Green, ol, oh))
             {//green
-                return ColourTablets.Green;
+                return TabletColors.Green;
             }
-            else if (true == InHSVRange(abc, HSVTabletColourRange,ColourTablets.Red, ol, oh))
+            else if (true == InHSVRange(abc, HSVTabletColourRange,TabletColors.Red, ol, oh))
             {//red
-                return ColourTablets.Red;
+                return TabletColors.Red;
             }
-            else if (true == InHSVRange(abc, HSVTabletColourRange,ColourTablets.White, ol, oh))
+            else if (true == InHSVRange(abc, HSVTabletColourRange,TabletColors.White, ol, oh))
             {//white
-                return ColourTablets.White;
+                return TabletColors.White;
             }
-            else if (true == InHSVRange(abc, HSVTabletColourRange,ColourTablets.Blue, ol, oh))
+            else if (true == InHSVRange(abc, HSVTabletColourRange,TabletColors.Blue, ol, oh))
             {//blue
-                return ColourTablets.Blue;
+                return TabletColors.Blue;
             }
-            else if (true == InHSVRange(abc, HSVTabletColourRange,ColourTablets.Black, ol, oh))
+            else if (true == InHSVRange(abc, HSVTabletColourRange,TabletColors.Black, ol, oh))
             {//black
-                return ColourTablets.Black;
+                return TabletColors.Black;
             }
             else 
             {
-                return ColourTablets.Unknown;
+                return TabletColors.Unknown;
             }
         }
 
-        public bool InHSVRange(Hsv srcHsv, Hsv[,] targetHsv,ColourTablets colour, int lowerLimitExtra,int higherLimitExtra)
+        public bool InHSVRange(Hsv srcHsv, Hsv[,] targetHsv, TabletColors colour, int lowerLimitExtra,int higherLimitExtra)
         {
             return ((srcHsv.Hue >= (targetHsv[(int)colour,(int)HSVRange.Low].Hue - lowerLimitExtra)) && (srcHsv.Satuation >= (targetHsv[(int)colour,(int)HSVRange.Low].Satuation - lowerLimitExtra)) && (srcHsv.Value >= (targetHsv[(int)colour,(int)HSVRange.Low].Value - lowerLimitExtra)) &&
                 (srcHsv.Hue <= (targetHsv[(int)colour,(int)HSVRange.High].Hue + higherLimitExtra)) && (srcHsv.Satuation <= (targetHsv[(int)colour,(int)HSVRange.High].Satuation + higherLimitExtra)) && (srcHsv.Value <= (targetHsv[(int)colour,(int)HSVRange.High].Value + higherLimitExtra)));

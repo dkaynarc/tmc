@@ -13,6 +13,8 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.GPU;
 
+using Tmc.Common;
+
 namespace Tmc.Vision
 {
     public partial class Form1 : Form
@@ -50,29 +52,23 @@ namespace Tmc.Vision
             //par2 = (double)Npar2.Value;
         }
 
-        public void trayFill(int[] tabletColour)
+        public void trayFill(Tray<Tablet> trayList)
         {
-            cell0.Text = colToString(tabletColour[0]);
-            cell1.Text = colToString(tabletColour[1]);
-            cell2.Text = colToString(tabletColour[2]);
-            cell3.Text = colToString(tabletColour[3]);
-            cell4.Text = colToString(tabletColour[4]);
-            cell5.Text = colToString(tabletColour[5]);
-            cell6.Text = colToString(tabletColour[6]);
-            cell7.Text = colToString(tabletColour[7]);
-            cell8.Text = colToString(tabletColour[8]);
+            cell0.Text = colToString(trayList.Cells[0]);
+            cell1.Text = colToString(trayList.Cells[1]);
+            cell2.Text = colToString(trayList.Cells[2]);
+            cell3.Text = colToString(trayList.Cells[3]);
+            cell4.Text = colToString(trayList.Cells[4]);
+            cell5.Text = colToString(trayList.Cells[5]);
+            cell6.Text = colToString(trayList.Cells[6]);
+            cell7.Text = colToString(trayList.Cells[7]);
+            cell8.Text = colToString(trayList.Cells[8]);
             //textBox1.Text = b;
         }
-        public string colToString(int num)
+        public string colToString(Tablet tablet)
         {
-            if (num == 0) return "green";
-            else if (num == 1) return "red";
-            else if (num == 2) return "white";
-            else if (num == 3) return "blue";
-            else if (num == 4) return "black";
-            else if (num == 5) return "BAD";
-            else if (num == 6) return "none";
-            else return "NA";
+            if (tablet == null) return "none";
+            else return tablet.Color.ToString();
             
 
         }
