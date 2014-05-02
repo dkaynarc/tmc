@@ -15,7 +15,7 @@ namespace Tmc.Vision
 {
     public abstract class VisionBase
     {
-        public enum ColourTablets { Green = 0, Red, White, Blue, Black, Unknown };
+        public enum ColourTablets { Green, Red, White, Blue, Black, Unknown, None };
         public enum HSVRange { Low = 0, High };
 
         public CircleF[] DetectTablets(Image<Bgr, Byte> src, int minCircle, int maxCircle, double par3, double par4, int cannyThresh, int cannyAccumThresh, Form1 f)

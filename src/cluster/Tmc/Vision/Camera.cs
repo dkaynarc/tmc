@@ -7,8 +7,12 @@ using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using Tmc.Common;
 using System.Drawing;
+using Tmc.Common;
+//<<<<<<< HEAD
+using System.Drawing;
+//=======
+//>>>>>>> a3890c445a582410972443f08269dc0984ceffa2
 using System.Net;
 
 namespace Tmc.Vision
@@ -63,6 +67,21 @@ namespace Tmc.Vision
                 emguImg = new Image<Bgr, byte>(img);
             }
             return emguImg;
+        }
+
+        public Bitmap GetImageFromUrl()
+        {
+            Bitmap b = null;
+
+            var request = WebRequest.Create(ConnectionString);
+
+            using(var response = request.GetResponse())
+            using(var stream = response.GetResponseStream())
+            {
+                b = Bitmap.FromStream(stream) as Bitmap;
+            }
+
+            return b;
         }
 
         public void Shutdown()

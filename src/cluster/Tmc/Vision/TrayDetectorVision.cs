@@ -9,6 +9,7 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.GPU;
+using Tmc.Common;
 
 namespace Tmc.Vision
 {
@@ -24,6 +25,8 @@ namespace Tmc.Vision
         private Image<Bgr, Byte> img;
         private Image<Bgr, Byte> imgTray;
         private CircleF[] tablets;
+        //List<T> 
+        Tray<ColourTablets> trayList = new Tray<ColourTablets>();
 
         private Hsv[,] HSVTabletColoursRanges = new Hsv[5,2];//{{76,54}};
 
@@ -33,6 +36,7 @@ namespace Tmc.Vision
             f = new Form1();
             f.Show();
             this.camera = camera;
+            
             HSVTabletColoursRanges[(int)ColourTablets.Green,(int)HSVRange.Low].Hue         = 76;
             HSVTabletColoursRanges[(int)ColourTablets.Green,(int)HSVRange.Low].Satuation   = 24;
             HSVTabletColoursRanges[(int)ColourTablets.Green,(int)HSVRange.Low].Value       = 139;
@@ -132,13 +136,18 @@ namespace Tmc.Vision
         }
 
         /// <summary>
-        /// Used to detect the colour of the tablet, only recognises good tablets
+        /// Used to detect the colour of the tablet, only recognises good tablets and assemble the tray list
         /// </summary>
         private void DetectTabletType()
         {
             Rectangle rect = new Rectangle();
             Image<Bgr, byte> oneTablet;
             double rad = 0.607;
+            ColourTablets tabletColour;
+            int cellInTray;
+
+            int[] cellsTablets = {0,0,0,0,0,0,0,0,0}; 
+
             foreach (CircleF tablet in tablets)
             {
 
@@ -160,13 +169,76 @@ namespace Tmc.Vision
 
                 oneTablet = imgTray.GetSubRect(rect);
                 CvInvoke.cvShowImage("Test Window", oneTablet); //Show the image
-                detectColour(oneTablet, HSVTabletColoursRanges);
-                
-                CvInvoke.cvWaitKey(0); 
+                tabletColour    = detectColour(oneTablet, HSVTabletColoursRanges);
+                cellInTray      = FindCellInTray(imgTray.Cols, imgTray.Rows, tablet);
+                cellsTablets[cellInTray] = (int)tabletColour;
+                CvInvoke.cvWaitKey(10); 
                 //a.Draw(circle, new Bgr(Color.Red), 2);
             }
+            f.trayFill(cellsTablets);
+            CvInvoke.cvWaitKey(0);
         }
+        private int FindCellInTray(int cols, int rows, CircleF circle)
+        {
+            int[] lineX = { 0, (int)(cols / 3), (int)((cols / 3) * 2), cols};//change this so it can have angled lines
+            int[] lineY = { 0, (int)(rows / 3), (int)((rows / 3) * 2), rows};
+            int a;
+            if ((circle.Center.X < lineX[1]) && (circle.Center.Y < lineY[3]) &&
+                (circle.Center.X > lineX[0]) && (circle.Center.Y > lineY[2]))
+            {//cell 0
+                return 0;
+            }
+            else if ((circle.Center.X < lineX[1]) && (circle.Center.Y < lineY[2]) &&
+                (circle.Center.X > lineX[0]) && (circle.Center.Y > lineY[1]))
+            {//cell 1
+                return 1;
+            }
+            else if ((circle.Center.X < lineX[1]) && (circle.Center.Y < lineY[1]) &&
+                (circle.Center.X > lineX[0]) && (circle.Center.Y > lineY[0]))
+            {//cell 2
+                return 2;
+            }
+            else if ((circle.Center.X < lineX[2]) && (circle.Center.Y < lineY[3]) &&
+                (circle.Center.X > lineX[1]) && (circle.Center.Y > lineY[2]))
+            {//cell 3
+                return 3;
+            }
+            else if ((circle.Center.X < lineX[2]) && (circle.Center.Y < lineY[2]) &&
+                (circle.Center.X > lineX[1]) && (circle.Center.Y > lineY[1]))
+            {//cell 4
+                return 4;
+            }
+            else if ((circle.Center.X < lineX[2]) && (circle.Center.Y < lineY[1]) &&
+                (circle.Center.X > lineX[1]) && (circle.Center.Y > lineY[0]))
+            {//cell 5
+                return 5;
+            }
+            else if ((circle.Center.X < lineX[3]) && (circle.Center.Y < lineY[3]) &&
+                (circle.Center.X > lineX[2]) && (circle.Center.Y > lineY[2]))
+            {//cell 6
+                return 6;
+            }
+            else if ((circle.Center.X < lineX[3]) && (circle.Center.Y < lineY[2]) &&
+                (circle.Center.X > lineX[2]) && (circle.Center.Y > lineY[1]))
+            {//cell 7
+                return 7;
+            }
+            else if ((circle.Center.X < lineX[3]) && (circle.Center.Y < lineY[1]) &&
+                (circle.Center.X > lineX[2]) && (circle.Center.Y > lineY[0]))
+            {//cell 8
+                return 8;
+            }
+            else
+            {
+                return 9;
+            }
+            
 
+            //trayList.cells[0] = 1;
+            //cell[0] = 1;
+            //Cells[1] = 1;
+
+        }
         /*private void DetectTrayType()
         {
             

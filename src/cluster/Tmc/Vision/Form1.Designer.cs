@@ -28,16 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.Npar1 = new System.Windows.Forms.NumericUpDown();
             this.Npar2 = new System.Windows.Forms.NumericUpDown();
             this.Nmin = new System.Windows.Forms.NumericUpDown();
             this.Nmax = new System.Windows.Forms.NumericUpDown();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.Npar3 = new System.Windows.Forms.NumericUpDown();
             this.Npar4 = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.cell2 = new System.Windows.Forms.TextBox();
+            this.cell5 = new System.Windows.Forms.TextBox();
+            this.cell8 = new System.Windows.Forms.TextBox();
+            this.cell1 = new System.Windows.Forms.TextBox();
+            this.cell4 = new System.Windows.Forms.TextBox();
+            this.cell7 = new System.Windows.Forms.TextBox();
+            this.cell0 = new System.Windows.Forms.TextBox();
+            this.cell3 = new System.Windows.Forms.TextBox();
+            this.cell6 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.Npar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Npar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Nmin)).BeginInit();
@@ -46,15 +52,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.Npar3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Npar4)).BeginInit();
             this.SuspendLayout();
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(538, 385);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // Npar1
             // 
@@ -132,13 +129,6 @@
             this.pictureBox2.TabIndex = 5;
             this.pictureBox2.TabStop = false;
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(626, 438);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(98, 22);
-            this.textBox1.TabIndex = 6;
-            // 
             // Npar3
             // 
             this.Npar3.DecimalPlaces = 2;
@@ -195,23 +185,92 @@
             0,
             131072});
             // 
+            // cell2
+            // 
+            this.cell2.Location = new System.Drawing.Point(79, 50);
+            this.cell2.Name = "cell2";
+            this.cell2.Size = new System.Drawing.Size(98, 22);
+            this.cell2.TabIndex = 9;
+            // 
+            // cell5
+            // 
+            this.cell5.Location = new System.Drawing.Point(244, 50);
+            this.cell5.Name = "cell5";
+            this.cell5.Size = new System.Drawing.Size(98, 22);
+            this.cell5.TabIndex = 10;
+            // 
+            // cell8
+            // 
+            this.cell8.Location = new System.Drawing.Point(407, 50);
+            this.cell8.Name = "cell8";
+            this.cell8.Size = new System.Drawing.Size(98, 22);
+            this.cell8.TabIndex = 11;
+            // 
+            // cell1
+            // 
+            this.cell1.Location = new System.Drawing.Point(79, 140);
+            this.cell1.Name = "cell1";
+            this.cell1.Size = new System.Drawing.Size(98, 22);
+            this.cell1.TabIndex = 12;
+            // 
+            // cell4
+            // 
+            this.cell4.Location = new System.Drawing.Point(244, 140);
+            this.cell4.Name = "cell4";
+            this.cell4.Size = new System.Drawing.Size(98, 22);
+            this.cell4.TabIndex = 13;
+            // 
+            // cell7
+            // 
+            this.cell7.Location = new System.Drawing.Point(407, 140);
+            this.cell7.Name = "cell7";
+            this.cell7.Size = new System.Drawing.Size(98, 22);
+            this.cell7.TabIndex = 14;
+            // 
+            // cell0
+            // 
+            this.cell0.Location = new System.Drawing.Point(79, 229);
+            this.cell0.Name = "cell0";
+            this.cell0.Size = new System.Drawing.Size(98, 22);
+            this.cell0.TabIndex = 15;
+            // 
+            // cell3
+            // 
+            this.cell3.Location = new System.Drawing.Point(244, 229);
+            this.cell3.Name = "cell3";
+            this.cell3.Size = new System.Drawing.Size(98, 22);
+            this.cell3.TabIndex = 16;
+            // 
+            // cell6
+            // 
+            this.cell6.Location = new System.Drawing.Point(407, 229);
+            this.cell6.Name = "cell6";
+            this.cell6.Size = new System.Drawing.Size(98, 22);
+            this.cell6.TabIndex = 17;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1152, 557);
+            this.Controls.Add(this.cell6);
+            this.Controls.Add(this.cell3);
+            this.Controls.Add(this.cell0);
+            this.Controls.Add(this.cell7);
+            this.Controls.Add(this.cell4);
+            this.Controls.Add(this.cell1);
+            this.Controls.Add(this.cell8);
+            this.Controls.Add(this.cell5);
+            this.Controls.Add(this.cell2);
             this.Controls.Add(this.Npar4);
             this.Controls.Add(this.Npar3);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.Nmax);
             this.Controls.Add(this.Nmin);
             this.Controls.Add(this.Npar2);
             this.Controls.Add(this.Npar1);
-            this.Controls.Add(this.pictureBox1);
             this.Name = "Form1";
             this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Npar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Npar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Nmin)).EndInit();
@@ -226,14 +285,21 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.NumericUpDown Npar1;
         private System.Windows.Forms.NumericUpDown Npar2;
         private System.Windows.Forms.NumericUpDown Nmin;
         private System.Windows.Forms.NumericUpDown Nmax;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.NumericUpDown Npar3;
         private System.Windows.Forms.NumericUpDown Npar4;
+        private System.Windows.Forms.TextBox cell2;
+        private System.Windows.Forms.TextBox cell5;
+        private System.Windows.Forms.TextBox cell8;
+        private System.Windows.Forms.TextBox cell1;
+        private System.Windows.Forms.TextBox cell4;
+        private System.Windows.Forms.TextBox cell7;
+        private System.Windows.Forms.TextBox cell0;
+        private System.Windows.Forms.TextBox cell3;
+        private System.Windows.Forms.TextBox cell6;
     }
 }

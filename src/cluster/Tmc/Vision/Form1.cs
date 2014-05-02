@@ -29,7 +29,7 @@ namespace Tmc.Vision
 
         public void pictureBox1_draw(Image<Gray, Byte> src)
         {
-            pictureBox1.Image = src.ToBitmap();
+           // pictureBox1.Image = src.ToBitmap();
         }
 
         public void pictureBox2_draw(Image<Bgr, Byte> src)
@@ -50,9 +50,31 @@ namespace Tmc.Vision
             //par2 = (double)Npar2.Value;
         }
 
-        public void textb(int b)
+        public void trayFill(int[] tabletColour)
         {
+            cell0.Text = colToString(tabletColour[0]);
+            cell1.Text = colToString(tabletColour[1]);
+            cell2.Text = colToString(tabletColour[2]);
+            cell3.Text = colToString(tabletColour[3]);
+            cell4.Text = colToString(tabletColour[4]);
+            cell5.Text = colToString(tabletColour[5]);
+            cell6.Text = colToString(tabletColour[6]);
+            cell7.Text = colToString(tabletColour[7]);
+            cell8.Text = colToString(tabletColour[8]);
             //textBox1.Text = b;
+        }
+        public string colToString(int num)
+        {
+            if (num == 0) return "green";
+            else if (num == 1) return "red";
+            else if (num == 2) return "white";
+            else if (num == 3) return "blue";
+            else if (num == 4) return "black";
+            else if (num == 5) return "BAD";
+            else if (num == 6) return "none";
+            else return "NA";
+            
+
         }
     }
 }
