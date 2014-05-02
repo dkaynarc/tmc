@@ -86,7 +86,7 @@ namespace Tmc.Robotics
                 throw new Exception(string.Format("Robot {0} is not in autonomous mode", this.RobotIPAddress));
             }
 
-            var filePath = Controller.FileSystem.LocalDirectory + "\\modFiles\\" + filename;
+            var filePath = Controller.FileSystem.LocalDirectory + "\\mod\\" + filename;
 
             if (!File.Exists(filePath))
             {
@@ -106,6 +106,20 @@ namespace Tmc.Robotics
             this._eventWait.WaitOne();
 
             this.Controller.FileSystem.RemoveFile(filename);
+        }
+
+        protected void RunRapidProgram(string filename, IDictionary<string, string> parameters)
+        {
+            var text = File.ReadAllText("\\mod\\" + filePath);
+
+            foreach(var parameter in parameters)
+            {
+                text = text.Replace(parameter.Key, parameter.Value);
+            }
+
+            File.WriteAllText("\\mod\\_temp.mod", text);
+
+            this.RunRapidProgram("_temp.mod");
         }
 
         private void BeginControl()
