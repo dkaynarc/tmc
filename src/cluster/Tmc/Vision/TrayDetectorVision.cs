@@ -10,6 +10,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.GPU;
 using Tmc.Common;
+using Emgu.CV.Features2D;
 
 namespace Tmc.Vision
 {
@@ -18,14 +19,11 @@ namespace Tmc.Vision
         private int minCircle, maxCircle;
         private int cannyThresh, cannyAccumThresh;
         double par3, par4;
-        //private int[] Xarray;
-        //private int[] Yarray;
         private Camera camera;
         private Point[] trayPoints = new Point[4];
         private Image<Bgr, Byte> img;
         private Image<Bgr, Byte> imgTray;
         private CircleF[] tablets;
-        //List<T> 
         Tray<ColourTablets> trayList = new Tray<ColourTablets>();
 
         private Hsv[,] HSVTabletColoursRanges = new Hsv[5,2];//{{76,54}};
@@ -73,12 +71,13 @@ namespace Tmc.Vision
             HSVTabletColoursRanges[(int)ColourTablets.Black,(int)HSVRange.High].Value      = 167;
 
             //this.camera.ConnectionString = new Uri(@"http://192.168.0.190:8080/photoaf.jpg");
+            //this.camera.ConnectionString = new Uri(@"http://192.168.0.243/ci-bin/video.jpg?size=2");
         }
 
         public void RunTrayDetectionVision()
         {
             //img = camera.GetImage();
-            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/belt sort/belt mid.jpg");
+            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/belt sort/video.jpg");
             //img = camera.GetImageHttp(new Uri(@"http://www.wwrd.com.au/images/P/2260248_Fable%20s-4%2016cm%20Accent%20Plates-652383734586-co.jpg"));
             string win1 = "Test Window"; //The name of the window
             CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
@@ -98,7 +97,7 @@ namespace Tmc.Vision
         private bool DetectTray()                
         {
             Rectangle rect = new Rectangle();
-
+            
             trayPoints[0].X = 92;//92/65, 271,227
             trayPoints[0].Y = 65;
             trayPoints[3].X = 271;
@@ -116,16 +115,7 @@ namespace Tmc.Vision
         /// Ussed to detect tablets in the tray
         /// </summary>
         private void DetectTabletsInTray()
-        {
-            //Image<Bgr, byte> abc = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/belt sort/belt mid.jpg");
-            //Rectangle rect = new Rectangle();
-            //rect.X = 232;
-            //rect.Y = 83;
-            //rect.Width = 10;
-            //rect.Height = 10;
-            //Image<Bgr, byte> tab = abc.GetSubRect(rect);
-            //CvInvoke.cvShowImage("Test Window", tab); //Show the image
-            //detectColour(tab, HSVTabletColoursRanges);
+        {         
              //while (true)
             //{
                 //CvInvoke.cvWaitKey(10); 
@@ -142,19 +132,19 @@ namespace Tmc.Vision
         {
             Rectangle rect = new Rectangle();
             Image<Bgr, byte> oneTablet;
-            double rad = 0.607;
+            double dotAngle = 0.607;//result of of cos(ang) which use to multiply radius to give us the dot product
             ColourTablets tabletColour;
             int cellInTray;
 
-            int[] cellsTablets = {0,0,0,0,0,0,0,0,0}; 
+            int[] cellsTablets = {6,6,6,6,6,6,6,6,6};//6 is defualt means nothing is in the cell 
 
             foreach (CircleF tablet in tablets)
             {
 
-                rect.X      = (int)(tablet.Center.X - (tablet.Radius * rad)); //Math.Min(trayPoints[0].X,trayPoints[2].X);//360;
-                rect.Y      = (int)(tablet.Center.Y - (tablet.Radius * rad));//Math.Min(trayPoints[0].Y,trayPoints[1].Y);//220;
-                rect.Width  = (int)((tablet.Radius * rad) * 2);//420+100;
-                rect.Height = (int)((tablet.Radius * rad) * 2);//400;
+                rect.X      = (int)(tablet.Center.X - (tablet.Radius * dotAngle)); 
+                rect.Y      = (int)(tablet.Center.Y - (tablet.Radius * dotAngle));
+                rect.Width  = (int)((tablet.Radius * dotAngle) * 2);
+                rect.Height = (int)((tablet.Radius * dotAngle) * 2);
 
                 if (rect.X < 0) rect.X = 0;
                 if (rect.Y < 0) rect.Y = 0;
@@ -170,7 +160,7 @@ namespace Tmc.Vision
                 oneTablet = imgTray.GetSubRect(rect);
                 CvInvoke.cvShowImage("Test Window", oneTablet); //Show the image
                 tabletColour    = detectColour(oneTablet, HSVTabletColoursRanges);
-                cellInTray      = FindCellInTray(imgTray.Cols, imgTray.Rows, tablet);
+                cellInTray      = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
                 cellsTablets[cellInTray] = (int)tabletColour;
                 CvInvoke.cvWaitKey(10); 
                 //a.Draw(circle, new Bgr(Color.Red), 2);
@@ -178,7 +168,11 @@ namespace Tmc.Vision
             f.trayFill(cellsTablets);
             CvInvoke.cvWaitKey(0);
         }
-        private int FindCellInTray(int cols, int rows, CircleF circle)
+
+        /// <summary>
+        /// This Function gives us the cell a tablet is in givent it's location in the tray
+        /// </summary>
+        private int FindCellInTrayForTablet(int cols, int rows, CircleF circle)
         {
             int[] lineX = { 0, (int)(cols / 3), (int)((cols / 3) * 2), cols};//change this so it can have angled lines
             int[] lineY = { 0, (int)(rows / 3), (int)((rows / 3) * 2), rows};
@@ -234,9 +228,6 @@ namespace Tmc.Vision
             }
             
 
-            //trayList.cells[0] = 1;
-            //cell[0] = 1;
-            //Cells[1] = 1;
 
         }
         /*private void DetectTrayType()

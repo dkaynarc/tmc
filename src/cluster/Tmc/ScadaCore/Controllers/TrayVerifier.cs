@@ -40,12 +40,12 @@ namespace Tmc.Scada.Core
         {
         }
 
-        private bool DetermineValidity(Tray t1, Tray t2)
+        private bool DetermineValidity(Tray<Tablet> t1, Tray<Tablet> t2)
         {
             return (t1 == t2);
         }
 
-        private void VerifyTrayAsync(Tray tray)
+        private void VerifyTrayAsync(Tray<Tablet> tray)
         {
             var task = new Task(() =>
                 {
@@ -65,12 +65,12 @@ namespace Tmc.Scada.Core
 
     public class TrayVerifierParams : ControllerParams
     {
-        public Tray TraySpecification { get; set; }
+        public Tray<Tablet> TraySpecification { get; set; }
     }
 
     public class OnVerificationCompleteEventArgs : ControllerEventArgs
     {
-        public Tray DetectedTray;
+        public Tray<Tablet> DetectedTray;
         public bool IsValid;
     }
 }

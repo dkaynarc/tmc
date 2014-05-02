@@ -27,13 +27,7 @@ namespace Tmc.Vision
             this.camera = camera;
         }
 
-        /*public List<Tablet> GetVisibleTablets()
-        {
-            var tablets = new List<Tablet>();
-            return tablets;
-        }*/
-        
-        public List<Tablet> RunSorterCamera()
+        public List<Tablet> GetVisibleTablets()
         {
             List<Tablet> tablet = new List<Tablet>();           
             img = camera.GetImage();
