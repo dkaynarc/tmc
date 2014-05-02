@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Tmc.Robotics")]
+[assembly: AssemblyTitle("TmcData")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Robotics")]
+[assembly: AssemblyProduct("TmcData")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("e4ad5fe0-513c-4e33-9a0a-5e6e0c17478d")]
+[assembly: Guid("86ae47e3-2f8a-459a-85c4-7a93a3dd2921")]
 
 // Version information for an assembly consists of the following four values:
 //

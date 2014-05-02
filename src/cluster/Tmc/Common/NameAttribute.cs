@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Tmc.Scada.Core
+namespace Tmc.Common
 {
-    public class NameAttribute
+    public class NameAttribute : Attribute
     {
         public string Name { get; set; }
 

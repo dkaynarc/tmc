@@ -117,18 +117,18 @@ namespace Tmc.Vision
         /// </summary>
         private void DetectTabletsInTray()
         {
-            Image<Bgr, byte> abc = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/belt sort/belt mid.jpg");
-            Rectangle rect = new Rectangle();
-            rect.X = 232;
-            rect.Y = 83;
-            rect.Width = 10;
-            rect.Height = 10;
-            Image<Bgr, byte> tab = abc.GetSubRect(rect);
-            CvInvoke.cvShowImage("Test Window", tab); //Show the image
+            //Image<Bgr, byte> abc = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/belt sort/belt mid.jpg");
+            //Rectangle rect = new Rectangle();
+            //rect.X = 232;
+            //rect.Y = 83;
+            //rect.Width = 10;
+            //rect.Height = 10;
+            //Image<Bgr, byte> tab = abc.GetSubRect(rect);
+            //CvInvoke.cvShowImage("Test Window", tab); //Show the image
             //detectColour(tab, HSVTabletColoursRanges);
              //while (true)
             //{
-                CvInvoke.cvWaitKey(10); 
+                //CvInvoke.cvWaitKey(10); 
 
                 f.getValue(ref minCircle, ref maxCircle, ref par3, ref par4, ref cannyThresh,ref cannyAccumThresh);
                 tablets = DetectTablets(imgTray, minCircle, maxCircle, par3, par4, cannyThresh, cannyAccumThresh, f);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tmc.Scada.Core
 {
-    public class Assembler : ControllerBase
+    public sealed class Assembler : ControllerBase
     {
         public Assembler(ClusterConfig config) : base(config)
         {
@@ -17,8 +17,12 @@ namespace Tmc.Scada.Core
             var p = parameters as AssemblerParams;
             if (p != null)
             {
-                OnCompleted(new EventArgs());
+                OnCompleted(new ControllerEventArgs() { OperationStatus = ControllerOperationStatus.Succeeded });
             }
+        }
+
+        public override void Cancel()
+        {
         }
     }
 

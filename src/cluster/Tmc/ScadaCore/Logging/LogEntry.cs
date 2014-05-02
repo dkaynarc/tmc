@@ -19,6 +19,13 @@ namespace Tmc.Scada.Core
             this.TimeStamp = DateTime.Now;
         }
 
+        public LogEntry(Exception ex, LogType level = LogType.Error)
+        {
+            this.Message = ex.Message;
+            this.Level = level;
+            this.TimeStamp = DateTime.Now;
+        }
+
         public override string ToString()
         {
             return string.Format("[{0} {1}] - {2} - {3}", 
