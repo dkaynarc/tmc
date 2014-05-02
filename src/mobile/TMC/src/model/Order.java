@@ -37,10 +37,17 @@ public class Order
 	}
 
 	// //////////////////////////////////////////
-	public Order(String orderOwner)
+	public Order(String orderOwner, int black,
+			int blue, int green, int red, int white)
 	{
 		mOrderOwner = orderOwner;
+		mBlack = black;
+		mBlue = blue;
+		mGreen = green;
+		mRed = red;
+		mWhite = white;
 	}
+	/////////////////////////////////////////////////////////////////////
 
 	public Order(int orderId, String orderOwner, String orderStatus)
 	{

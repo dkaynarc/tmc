@@ -65,7 +65,7 @@ public class Constants
 	public static final String ID = "ID";
 	public static final CharSequence NEW_ORDER_FAIL = "Placing new order failed";
 	public static final String NEW_ORDER_COMMAND = "2";
-	public static final CharSequence ENTER_ITEMS_QUANTITY = "Enter number of items required";
+	public static final String ENTER_ITEMS_QUANTITY = "Select some number of items";
 	public static final String FEEDBACK = "FEEDBACK";
 	public static final String AUTHENTICATE_COMMAND = "1";
 	public static final String APP_PERSISTANCE = "USER_PERSISTANCE";
@@ -74,4 +74,5 @@ public class Constants
 	public static final String AUTHENTICATE_RESULT = "AUTHENTICATE_RESULT";
 	public static final String NEW_ORDER_RESULT = "NEW_ORDER_RESULT";
 	public static final String ORDER_UPDATE_RESULT = "ORDER_UPDATE_RESULT";
+	public static final String TOTAL_NUMBER_ERROR = "Total number of items can't be greater than 8";
 }

@@ -1,7 +1,7 @@
 package services;
 
 
-import java.io.BufferedInputStream;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -16,8 +16,8 @@ import android.os.Bundle;
 public class SynchService extends IntentService 
 {
     private String urlString = "http://192.168.1.5:9000/api/Server/";
-	// private String urlString = "http://172.19.14.183:9000/api/Server/";    
-     private int command;
+    //private String urlString = "http://172.19.14.150:9000/api/Server/";    
+    private int command;
 
  
      
@@ -79,7 +79,12 @@ private void getOrdersUpdate()
 
 private void placeNewOrder(Bundle parcel) 
 {
-    urlString +=  "PlaceOrder/" + parcel.getString("orderName") + "/" + parcel.getString("itemsNumber"); 
+    urlString +=  "PlaceOrder/" + parcel.getString("orderName") + "/" 
+          + parcel.getString("black")+ "/" 
+    	  + parcel.getString("blue")+ "/" 
+          + parcel.getString("green")+ "/" 
+    	  + parcel.getString("red")+ "/" 
+          + parcel.getString("white"); 
     
     String response =  connect(urlString);	
     
