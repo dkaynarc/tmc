@@ -67,7 +67,6 @@ namespace Tmc.Sensors
             try
             {
                 this._plc = CreatePlcControl();
-                ConnectToPlc();
             }
             catch (Exception)
             {
@@ -107,12 +106,24 @@ namespace Tmc.Sensors
 
         private void UpdateAllSwitchStates()
         {
+            this._plc.Function = enumAsadtcpFunction.ASADTCP_FUNC_READ;
+            this._plc.MemStart = "Y0";
+            this._plc.MemQty = 1;
             this._plc.SyncRefresh();
-            var switchKeysArray = _switchStates.Keys.ToArray();
-            for (int i = 0; i < switchKeysArray.Count(); i++)
+
+            if (this._plc.Result == 0)
             {
-                var switchKey = switchKeysArray[i];
-                _switchStates[switchKey] = this._plc.GetDataBitM((short)switchKey);
+                var switchKeysArray = _switchStates.Keys.ToArray();
+                for (int i = 0; i < switchKeysArray.Count(); i++)
+                {
+                    var switchKey = switchKeysArray[i];
+                    _switchStates[switchKey] = this._plc.GetDataBitM((short)switchKey);
+                }
+            }
+            else
+            {
+                this._hwStatus = HardwareStatus.Failed;
+                throw new Exception("Unable to retrieve state from PLC");
             }
         }
 
@@ -127,12 +138,6 @@ namespace Tmc.Sensors
             ((System.ComponentModel.ISupportInitialize)(control)).EndInit();
             
             return control;
-        }
-
-        private void ConnectToPlc()
-        {
-            this._plc.MemStart = "Y0";
-            this._plc.MemQty = 1;
         }
     }
 }
