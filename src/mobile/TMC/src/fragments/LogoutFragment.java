@@ -7,7 +7,6 @@ import model.Constants;
 import ictd.activities.R;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;

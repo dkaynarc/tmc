@@ -15,7 +15,7 @@ import android.os.Bundle;
 
 public class SynchService extends IntentService 
 {
-    private String urlString = "http://192.168.1.3:9000/api/Server/";
+    private String urlString = "http://192.168.1.5:9000/api/Server/";
     //private String urlString = "http://172.19.14.150:9000/api/Server/";    
     private int command;
 
@@ -67,7 +67,7 @@ public class SynchService extends IntentService
 	
 private void getOrdersUpdate()
 {
-    urlString +=  "GetOrders" ; 
+    urlString +=  "GetIncompleteOrders" ; 
     
     String response =  connect(urlString);	
     

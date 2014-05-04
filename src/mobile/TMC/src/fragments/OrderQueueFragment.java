@@ -3,10 +3,9 @@
 package fragments;
 
 import java.util.ArrayList;
-
-import com.google.gson.Gson;
-
-import model.AllOrdersMessage;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import model.Constants;
 import model.Order;
 import ictd.activities.CreateOrderActivity;
@@ -23,6 +22,7 @@ import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,7 +30,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
+
 
 /**
  * Sets the layout for the activity.
@@ -176,6 +176,13 @@ public class OrderQueueFragment extends ListFragment
 						}).show();
 	}
 
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Handles the return of the create and modify order activities.
 	 * 
@@ -226,6 +233,8 @@ public class OrderQueueFragment extends ListFragment
 		}
 	}
 
+	
+	
 	/**
 	 * Plays the sound of the id given.
 	 * 
@@ -241,6 +250,11 @@ public class OrderQueueFragment extends ListFragment
 		mMediaPlayer.start();
 	}
 
+	
+	
+	
+	
+	
 	// ///////////////////////////////////////////////////////////////////////////
 	private void makeUpdateOrdersService()
 	{
@@ -255,6 +269,10 @@ public class OrderQueueFragment extends ListFragment
 		getActivity().startService(service);
 	}
 
+	
+	
+	
+	
 	// private class
 	private class ResultReceiver extends BroadcastReceiver
 	{
@@ -276,21 +294,36 @@ public class OrderQueueFragment extends ListFragment
 	
 	private void handleOrdersUpdate(String response)
 	{
-		Gson gsn = new Gson();
-		AllOrdersMessage lst =  gsn.fromJson(response, AllOrdersMessage.class);
+		Log.v("MAD", response);
 		
-		OrderQueueAdapter adapter = (OrderQueueAdapter) getListView().getAdapter();
+		//Gson gsn = new Gson();	
+		//AllOrdersMessage ordersmsg =  gsn.fromJson(response, AllOrdersMessage.class);
+		//LinkedList<Order> orderrrs = ordersmsg.getAllOrders();
+	    OrderQueueAdapter adapter = (OrderQueueAdapter) getListView().getAdapter();
 		adapter.clear();
-
-		ArrayList<Order> orders = Constants.ORDERS;// change this to the orders
+		
+		ArrayList<Order> orders = new ArrayList<Order>();// = Constants.ORDERS;// change this to the orders
 													// received from the network
-
-		for (Order order : orders)
-			if (!order.getOrderStatus().equals(Constants.COMPLETE))
-				incompleteOrders.add(order);
+		JSONArray jArray;
+		try {
+			   jArray = new JSONArray(response);
+				
+		        for(int i = 0; i < jArray.length(); i ++)
+		        {
+		        	JSONObject jObj = jArray.getJSONObject(i);
+			       
+		        	orders.add(new Order(jObj.getInt("mOrderId"),
+					                       jObj.getString("mOrderOwner"), 
+					                         jObj.getString("mOrderStatus")));			
+		         }
+		      }
+		 catch (JSONException e) 
+		 {	
+			Log.v("MAD", e.toString());
+		 }		
 
 		// adapter.addAll(incompleteOrders);
-		adapter.addAll(incompleteOrders);
+		adapter.addAll(orders);
 		adapter.notifyDataSetChanged();
 	}
 
@@ -305,7 +338,9 @@ public class OrderQueueFragment extends ListFragment
 	{
 		receiver = new ResultReceiver();
 		getActivity().registerReceiver(receiver, new IntentFilter(Constants.ORDER_UPDATE_RESULT));
-	    makeUpdateOrdersService();	
+	   
+		// update orders here
+		makeUpdateOrdersService();	
 		super.onStart();
 	}
 
