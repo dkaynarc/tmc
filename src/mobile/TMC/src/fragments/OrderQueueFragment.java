@@ -4,6 +4,9 @@ package fragments;
 
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
+
+import model.AllOrdersMessage;
 import model.Constants;
 import model.Order;
 import ictd.activities.CreateOrderActivity;
@@ -198,9 +201,6 @@ public class OrderQueueFragment extends ListFragment
 			 */
 			// Up until here.
 			playSound(R.raw.createorder);
-			// //////////////////////////
-			makeUpdateOrdersService();
-			// //////////////////////////
 			// }
 			break;
 
@@ -276,6 +276,9 @@ public class OrderQueueFragment extends ListFragment
 	
 	private void handleOrdersUpdate(String response)
 	{
+		Gson gsn = new Gson();
+		AllOrdersMessage lst =  gsn.fromJson(response, AllOrdersMessage.class);
+		
 		OrderQueueAdapter adapter = (OrderQueueAdapter) getListView().getAdapter();
 		adapter.clear();
 
@@ -300,21 +303,15 @@ public class OrderQueueFragment extends ListFragment
 	@Override
 	public void onStart()
 	{
-		IntentFilter filter = new IntentFilter(Constants.ORDER_UPDATE_RESULT);
 		receiver = new ResultReceiver();
-		getActivity().registerReceiver(receiver, filter);
+		getActivity().registerReceiver(receiver, new IntentFilter(Constants.ORDER_UPDATE_RESULT));
+	    makeUpdateOrdersService();	
 		super.onStart();
 	}
 
 	
 
-	@Override
-	public void onResume()
-	{
-		// this will prefill incompleteOrders araylist
-		makeUpdateOrdersService();	
-		super.onResume();
-	}
+
 	
 	
 	

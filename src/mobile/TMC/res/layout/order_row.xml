@@ -21,8 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/orderrow_orderstatus_iv"
-        android:layout_marginLeft="5dp"/>
-        android:text="@string/orderrow_orderidlabel_tv" 
+        android:layout_marginLeft="5dp"
+        android:text="@string/orderrow_orderidlabel_tv" />
     
     <TextView
         android:id="@+id/orderrow_orderid_tv"

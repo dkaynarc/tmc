@@ -15,7 +15,7 @@ import android.os.Bundle;
 
 public class SynchService extends IntentService 
 {
-    private String urlString = "http://192.168.1.5:9000/api/Server/";
+    private String urlString = "http://192.168.1.3:9000/api/Server/";
     //private String urlString = "http://172.19.14.150:9000/api/Server/";    
     private int command;
 
@@ -116,7 +116,7 @@ private void authenticate(Bundle parcel)
 		  HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		  con.setRequestMethod("GET");
 		  con.setConnectTimeout(100000); // times out after 10 seconds
-		  //con.setRequestProperty("Content-Type","application/json");
+		  con.setRequestProperty("Content-Type","application/json");
 		  con.setRequestProperty("Accept", "application/json");
 	      BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
    
