@@ -21,7 +21,7 @@ namespace Tmc.Sensors
         ScadaEmergencyStop
     }
 
-    public class Plc : IHardware
+    public sealed class Plc : IHardware, IDisposable
     {
         private HardwareStatus _hwStatus;
         private string _nodeIpAddress;
@@ -34,6 +34,24 @@ namespace Tmc.Sensors
             foreach (var item in (PlcAttachedSwitch[])Enum.GetValues(typeof(PlcAttachedSwitch)))
             {
                 _switchStates.Add(item, false);
+            }
+        }
+
+        ~Plc()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing && _plc != null)
+            {
+                _plc.Dispose();
             }
         }
 
