@@ -51,10 +51,10 @@ namespace Tmc.Sensors
                 this._plc = CreatePlcControl();
                 ConnectToPlc();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 this._hwStatus = HardwareStatus.Failed;
-                throw e;
+                throw new Exception("PLC initialisation failed");
             }
             this._hwStatus = HardwareStatus.Operational;
         }
