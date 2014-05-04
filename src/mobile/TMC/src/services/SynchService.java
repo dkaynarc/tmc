@@ -115,7 +115,7 @@ private void authenticate(Bundle parcel)
 		  URL url = new URL(urlStr);
 		  HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		  con.setRequestMethod("GET");
-		  con.setConnectTimeout(100000); // times out after 10 seconds
+		  con.setConnectTimeout(10000); // times out after 10 seconds
 		  con.setRequestProperty("Content-Type","application/json");
 		  con.setRequestProperty("Accept", "application/json");
 	      BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
