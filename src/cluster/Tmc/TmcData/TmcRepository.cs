@@ -14,9 +14,31 @@ namespace TmcData
             return new ICTDEntities().OrderLists.ToList();
         }
 
-        public static void AddNewOrder(int userID, int black, int blue, int red, int green, int white )
+        public static void AddNewOrder(Guid userID, int black, int blue, int red, int green, int white )
         {
             new ICTDEntities().AddNewOrder(userID, black, blue, red, green, white);
         }
+
+        public static void CompleteOrder(int orderId)
+        {
+            new ICTDEntities().CompleteOrder(orderId);
+        }
+
+        public static void UpdateNumberOfProducts(int orderId, int numberOfTrays)
+        {
+            new ICTDEntities().UpdateProductProduced(orderId, numberOfTrays);
+        }
+
+        public static void UpdateOrderStatus(int orderId, string status)
+        {
+            new ICTDEntities().UpdateOrderStatus(orderId, status);
+        }
+
+        public static void UpdateOrderStatus(int orderId, int statusId)
+        {
+            new ICTDEntities().UpdateOrderStatusByID(orderId, statusId);
+        }
+
+
     }
 }

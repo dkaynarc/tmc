@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ICTDModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ICTDModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="ICTDModelStoreContainer">
           <EntitySet Name="OrderList" EntityType="ICTDModel.Store.OrderList" store:Type="Views" store:Schema="dbo" store:Name="OrderList">
             <DefiningQuery>SELECT 
@@ -46,27 +46,56 @@
           <Property Name="NumberOfProducts" Type="int" />
         </EntityType>
         <Function Name="AddNewOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="UserID" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="Black" Type="int" Mode="In" />
           <Parameter Name="Blue" Type="int" Mode="In" />
           <Parameter Name="Red" Type="int" Mode="In" />
           <Parameter Name="Green" Type="int" Mode="In" />
           <Parameter Name="White" Type="int" Mode="In" />
         </Function>
-      </Schema>
-    </edmx:StorageModels>
+        <Function Name="CompleteOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="OrderID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateOrderStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="OrderID" Type="int" Mode="In" />
+          <Parameter Name="OrderStatus" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="UpdateOrderStatusByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="OrderID" Type="int" Mode="In" />
+          <Parameter Name="OrderStatus" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateProductProduced" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="OrderID" Type="int" Mode="In" />
+          <Parameter Name="ProductNumber" Type="int" Mode="In" />
+        </Function>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ICTDModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="ICTDEntities" p1:LazyLoadingEnabled="true">
           <EntitySet Name="OrderLists" EntityType="ICTDModel.OrderList" />
           <FunctionImport Name="AddNewOrder">
-            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="UserID" Mode="In" Type="Guid" />
             <Parameter Name="Black" Mode="In" Type="Int32" />
             <Parameter Name="Blue" Mode="In" Type="Int32" />
             <Parameter Name="Red" Mode="In" Type="Int32" />
             <Parameter Name="Green" Mode="In" Type="Int32" />
             <Parameter Name="White" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="CompleteOrder">
+            <Parameter Name="OrderID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateOrderStatus">
+            <Parameter Name="OrderID" Mode="In" Type="Int32" />
+            <Parameter Name="OrderStatus" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateOrderStatusByID">
+            <Parameter Name="OrderID" Mode="In" Type="Int32" />
+            <Parameter Name="OrderStatus" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateProductProduced">
+            <Parameter Name="OrderID" Mode="In" Type="Int32" />
+            <Parameter Name="ProductNumber" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="OrderList">
@@ -113,6 +142,10 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="AddNewOrder" FunctionName="ICTDModel.Store.AddNewOrder" />
+          <FunctionImportMapping FunctionImportName="CompleteOrder" FunctionName="ICTDModel.Store.CompleteOrder" />
+          <FunctionImportMapping FunctionImportName="UpdateOrderStatus" FunctionName="ICTDModel.Store.UpdateOrderStatus" />
+          <FunctionImportMapping FunctionImportName="UpdateOrderStatusByID" FunctionName="ICTDModel.Store.UpdateOrderStatusByID" />
+          <FunctionImportMapping FunctionImportName="UpdateProductProduced" FunctionName="ICTDModel.Store.UpdateProductProduced" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
