@@ -31,6 +31,11 @@ namespace Tmc.Scada.Core
         {
             Slots[slot] += count;
         }
+
+        public void TakeTablet(TabletColors slot, int count = 1)
+        {
+            Slots[slot] -= count;
+        }
         
         public int GetSlotIndex(TabletColors slotColor)
         {
@@ -42,6 +47,11 @@ namespace Tmc.Scada.Core
             bool isFull = true;
             Slots.Values.ToList().ForEach(x => isFull &= (x == SlotCapacity));
             return isFull;
+        }
+
+        public bool IsSlotEmpty(TabletColors slotColor)
+        {
+            return (Slots[GetSlotIndex(slotColor)] == 0);
         }
 
         public List<TabletColors> GetFullSlots()
