@@ -46,7 +46,7 @@ public class LoginActivity extends Activity
 		
 		//////////////////		
 		receiver = new ResultReceiver();
-		this.registerReceiver(receiver, new IntentFilter(Constants.AUTHENTICATE_RESULT));
+		this.registerReceiver(receiver, new IntentFilter(Constants.AUTHENTICATE_COMMAND));
 		/////////////////
 		
 		turnedOn = true;

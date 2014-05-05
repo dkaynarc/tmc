@@ -15,7 +15,7 @@ import android.os.Bundle;
 
 public class SynchService extends IntentService 
 {
-    private String urlString = "http://192.168.1.5:9000/api/Server/";
+    private String urlString = "http://192.168.1.3:9000/api/Server/";
     //private String urlString = "http://172.19.14.150:9000/api/Server/";    
     private int command;
 
@@ -45,11 +45,12 @@ public class SynchService extends IntentService
 	    	  placeNewOrder(parcel);
 	          break;
 	      
-	      case 3:
+	      case 3://UPDATE_ORDER_COMMAND
 	    	  getOrdersUpdate();
 	    	  break;
 	     
-	      case 4:
+	      case 4://DELETE_ORDER_COMMAND
+	    	  deleteOrder(parcel);
 	    	  break;
 	     
 	      default:
@@ -65,6 +66,18 @@ public class SynchService extends IntentService
 
 	
 	
+private void deleteOrder(Bundle parcel) 
+{
+    urlString +=  "DeleteOrder/" + parcel.getString("orderId") ; 
+    
+    String response =  connect(urlString);	
+    
+    notifyCaller(response);
+		
+}
+
+
+
 private void getOrdersUpdate()
 {
     urlString +=  "GetIncompleteOrders" ; 
@@ -157,15 +170,19 @@ private void notifyCaller(String response)
 	switch(command)
 	{
 	case 1:
-		intent.setAction(Constants.AUTHENTICATE_RESULT);
+		intent.setAction(Constants.AUTHENTICATE_COMMAND);
 		break;
 		
 		case 2:
-			intent.setAction(Constants.NEW_ORDER_RESULT);
+			intent.setAction(Constants.NEW_ORDER_COMMAND);
 			break;
 	
 		case 3:
-			intent.setAction(Constants.ORDER_UPDATE_RESULT);
+			intent.setAction(Constants.UPDATE_ORDERS_COMMAND);
+			break;
+			
+		case 4:
+			intent.setAction(Constants.DELETE_ORDER_COMMAND);
 			break;
 	}
 

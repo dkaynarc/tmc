@@ -213,7 +213,7 @@ private void handleNewOrderResult(String response, Context context)
 	@Override
 	public void onStart()
 	{
-        IntentFilter filter = new IntentFilter(Constants.NEW_ORDER_RESULT);
+        IntentFilter filter = new IntentFilter(Constants.NEW_ORDER_COMMAND);
         receiver = new ResultReceiver();
         this.registerReceiver(receiver, filter);
         super.onStart();

@@ -70,9 +70,9 @@ public class Constants
 	public static final String AUTHENTICATE_COMMAND = "1";
 	public static final String APP_PERSISTANCE = "USER_PERSISTANCE";
 	public static final String USERNAME_KEY = "userName";
-	public static final String UPDATE_ORDERS = "3";
-	public static final String AUTHENTICATE_RESULT = "AUTHENTICATE_RESULT";
-	public static final String NEW_ORDER_RESULT = "NEW_ORDER_RESULT";
-	public static final String ORDER_UPDATE_RESULT = "ORDER_UPDATE_RESULT";
+	public static final String UPDATE_ORDERS_COMMAND = "3";	
 	public static final String TOTAL_NUMBER_ERROR = "Total number of items can't be greater than 8";
+	public static final String DELETE_ORDER_COMMAND = "4";
+	public static final CharSequence DELETE_ORDER_FAIL = "DELETION OF THE ORDER FAILED";
+	
 }

@@ -3,9 +3,11 @@
 package fragments;
 
 import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import model.Constants;
 import model.Order;
 import ictd.activities.CreateOrderActivity;
@@ -30,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 /**
@@ -47,6 +50,10 @@ public class OrderQueueFragment extends ListFragment
 	ArrayList<Order> incompleteOrders = new ArrayList<Order>();
 	private ProgressDialog pd;
 
+	
+	
+	
+	
 	/**
 	 * Implements the order's delete button.
 	 */
@@ -59,19 +66,17 @@ public class OrderQueueFragment extends ListFragment
 					.setTitle(Constants.DELETE_TITLE)
 					.setMessage(Constants.DELETE_CONFIRM)
 					.setPositiveButton(Constants.OK,
+							
 							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int id)
+								public void onClick(DialogInterface dialog, int id)
 								{
-									OrderQueueAdapter adapter = (OrderQueueAdapter) getListView()
-											.getAdapter();
-									// Remove the order obtained by
-									// "view.getTag()" from the database
-									// will be able to implement a
-									// "Order.getId()" method, to pass to it.
-									adapter.remove((Order) view.getTag());
+									/*OrderQueueAdapter adapter = (OrderQueueAdapter) getListView().getAdapter();*/
+                                    /////////////////////////////////
+									makeService(Constants.DELETE_ORDER_COMMAND, ((Order)view.getTag()).getOrderId());
+                                    /////////////////////////////////									
+									/*adapter.remove((Order) view.getTag());
 									adapter.notifyDataSetChanged();
-									playSound(R.raw.deleteorder);
+									playSound(R.raw.deleteorder);*/
 								}
 							})
 					.setNegativeButton(Constants.CANCEL,
@@ -84,6 +89,11 @@ public class OrderQueueFragment extends ListFragment
 							}).show();
 		}
 	};
+	
+	
+	
+	
+	
 
 	/**
 	 * Implements the create order onClick Listener which starts up the new
@@ -256,11 +266,12 @@ public class OrderQueueFragment extends ListFragment
 	
 	
 	// ///////////////////////////////////////////////////////////////////////////
-	private void makeUpdateOrdersService()
+	private void makeService(String command, int orderId)
 	{
 		Intent service = new Intent(getActivity(), services.SynchService.class);
 		Bundle parcel = new Bundle();
-		parcel.putString("command", Constants.UPDATE_ORDERS);
+		parcel.putString("command", command);
+		parcel.putString("orderId", Integer.toString(orderId));// this value will only be used if command is DELETE
 		service.putExtra("parcel", parcel);
 
 		// stop any already running services associated with this activity
@@ -282,12 +293,58 @@ public class OrderQueueFragment extends ListFragment
 			pd.dismiss();
 			String response = intent.getStringExtra("result");
 
-			handleOrdersUpdate(response);
+			switch(Integer.decode(intent.getStringExtra("command")))
+			  {
+			    case 3:
+			    handleOrdersUpdate(response);
+			    break;
+			
+			    case 4:
+			    handleOrderDelete(response);
+			    break;
+			    
+			  }
+			
+			
 		}
 	}
 
 	
+
 	
+	
+	private void handleOrderDelete(String response)
+	{
+		try{
+		     JSONObject jsObj = new JSONObject(response);
+		
+		     String result = jsObj.getString("result");
+		   
+		     if(result.equalsIgnoreCase("success"))
+		     {
+		         int orderId = jsObj.getInt("orderId");
+		
+		         OrderQueueAdapter adapter = (OrderQueueAdapter) getListView().getAdapter();
+		         for(int i = 0; i < adapter.getCount(); i ++)
+		         {
+		    	   Order order = adapter.getItem(i);
+			       if(order.getOrderId() == orderId) 
+				   adapter.remove(order);
+		         }	
+		           adapter.notifyDataSetChanged();
+		           playSound(R.raw.deleteorder);
+		           return;
+		    }
+
+		 }
+		
+		catch(JSONException exc)
+		 { 
+			Log.v("MAD", exc.toString());
+		 }
+		
+		Toast.makeText(this.getActivity(), Constants.DELETE_ORDER_FAIL, Toast.LENGTH_SHORT).show();
+	}
 	
 	
 	
@@ -295,10 +352,7 @@ public class OrderQueueFragment extends ListFragment
 	private void handleOrdersUpdate(String response)
 	{
 		Log.v("MAD", response);
-		
-		//Gson gsn = new Gson();	
-		//AllOrdersMessage ordersmsg =  gsn.fromJson(response, AllOrdersMessage.class);
-		//LinkedList<Order> orderrrs = ordersmsg.getAllOrders();
+
 	    OrderQueueAdapter adapter = (OrderQueueAdapter) getListView().getAdapter();
 		adapter.clear();
 		
@@ -337,10 +391,10 @@ public class OrderQueueFragment extends ListFragment
 	public void onStart()
 	{
 		receiver = new ResultReceiver();
-		getActivity().registerReceiver(receiver, new IntentFilter(Constants.ORDER_UPDATE_RESULT));
-	   
+		getActivity().registerReceiver(receiver, new IntentFilter(Constants.UPDATE_ORDERS_COMMAND));
+		getActivity().registerReceiver(receiver, new IntentFilter(Constants.DELETE_ORDER_COMMAND));
 		// update orders here
-		makeUpdateOrdersService();	
+		makeService(Constants.UPDATE_ORDERS_COMMAND, 0);	
 		super.onStart();
 	}
 
