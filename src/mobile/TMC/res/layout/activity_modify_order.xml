@@ -27,14 +27,13 @@
         android:text="@string/modifyorder_ordername_tv"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
-    <EditText
+    <TextView
         android:id="@+id/modifyorder_ordername_et"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/modifyorder_ordername_tv"
         android:layout_alignBaseline="@+id/modifyorder_ordername_tv"
-        android:ems="10"
-        android:inputType="text" />
+        android:ems="30"/>
 
     <TextView
         android:id="@+id/modifyorder_ordernumber_tv"
@@ -46,32 +45,170 @@
         android:text="@string/modifyorder_ordernumber_tv"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
-    <EditText
+    <TextView
         android:id="@+id/modifyorder_ordernumber_et"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/modifyorder_ordernumber_tv"
         android:layout_alignBaseline="@+id/modifyorder_ordernumber_tv"
-        android:ems="10"
-        android:inputType="number" />
+        android:ems="30"/>
 
-    <Button
-        android:id="@+id/modifyorder_modifyorder_b"
+    
+    <!-- Sergei -->
+    <ScrollView
+        android:id="@+id/modify_order_scroll_v"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/modifyorder_buttons_ll"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/modifyorder_ordernumber_tv" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/createorder_black_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/createorder_black_tv"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Spinner
+                    android:id="@+id/createorder_black_s"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/createorder_blue_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/createorder_blue_tv"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Spinner
+                    android:id="@+id/createorder_blue_s"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/createorder_green_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/createorder_green_tv"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Spinner
+                    android:id="@+id/createorder_green_s"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/createorder_red_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/createorder_red_tv"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Spinner
+                    android:id="@+id/createorder_red_s"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/createorder_white_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/createorder_white_tv"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Spinner
+                    android:id="@+id/createorder_white_s"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+    
+    <!-- Sergei -->
+    
+    
+    
+    
+    
+
+
+       
+
+    
+    
+    
+    
+    
+    <LinearLayout
+        android:id="@+id/modifyorder_buttons_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/modifyorder_ordernumber_tv"
-        android:layout_marginTop="30dp"
+        android:layout_alignParentRight="true" >
+        
+      <Button
+        android:id="@+id/modifyorder_modifyorder_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"     
+        android:layout_weight="0.50"
         android:onClick="onModifyOrderClicked"
-        android:text="@string/modifyorder_modifyorder_b" />
+        android:text="@string/modifyorder_modifyorder_b"
+        style="?android:attr/button" />
 
     <Button
         android:id="@+id/modifyorder_cancel_b"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="0.50"
         android:onClick="onCancelOrderClicked"
-        android:layout_alignBaseline="@+id/modifyorder_modifyorder_b"
-        android:layout_toRightOf="@+id/modifyorder_modifyorder_b"
-        android:text="@string/modifyorder_cancel_b" />
-
+        android:text="@string/modifyorder_cancel_b" 
+        style="?android:attr/button"/>
+</LinearLayout>
 </RelativeLayout>

@@ -93,7 +93,6 @@ public class OrderQueueFragment extends ListFragment
 	
 	
 	
-	
 
 	/**
 	 * Implements the create order onClick Listener which starts up the new
@@ -122,14 +121,6 @@ public class OrderQueueFragment extends ListFragment
 		((Button) rootView.findViewById(R.id.queuelist_createorder_b))
 				.setOnClickListener(onCreateOrderClickListener);
 
-		/* ArrayList<Order> orders = new ArrayList<Order>(); */
-		// Get list of orders that are either active and pending
-		/*
-		 * for (Order order : Constants.ORDERS) if
-		 * (!order.getOrderStatus().equals(Constants.COMPLETE))
-		 * orders.add(order);
-		 */
-
 		// Replace list "orders" with the list of orders returned
 		setListAdapter(new OrderQueueAdapter(getActivity(), R.layout.order_row,
 			    incompleteOrders, onDeleteOrderClickListener));	
@@ -138,6 +129,8 @@ public class OrderQueueFragment extends ListFragment
 		return rootView;
 	}
 
+	
+	
 	/**
 	 * Implements each order's onClick listener, displaying its current values
 	 * and providing the option to modify the order.
@@ -166,21 +159,24 @@ public class OrderQueueFragment extends ListFragment
 								dialog.cancel();
 							}
 						})
+						
 				.setNegativeButton(Constants.MODIFY,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id)
 							{
-								Intent intent = new Intent(getActivity(),
-										ModifyOrderActivity.class);
+								Intent intent = new Intent(getActivity(), ModifyOrderActivity.class);
 								// Passes the order's ID and current values for
 								// modification.
-								intent.putExtra(Constants.ID, position);
-								intent.putExtra(Constants.NAME,
-										order.getOrderName());
-								intent.putExtra(Constants.NUMBER,
-										order.getOrderId());
-								startActivityForResult(intent,
-										Constants.REQUEST_CODE);
+								////////////////////////////////////////////////
+								intent.putExtra(Constants.ID, Integer.toString(order.getOrderId()));
+								intent.putExtra(Constants.NAME, order.getOrderName());
+								intent.putExtra("black", order.getColourNumber("black"));
+								intent.putExtra("blue", order.getColourNumber("blue"));
+								intent.putExtra("green", order.getColourNumber("green"));
+								intent.putExtra("red", order.getColourNumber("red"));
+								intent.putExtra("white", order.getColourNumber("white"));
+								/////////////////////////////////////////////////
+								startActivityForResult(intent, Constants.REQUEST_CODE);
 								dialog.cancel();
 							}
 						}).show();
@@ -206,40 +202,13 @@ public class OrderQueueFragment extends ListFragment
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (resultCode)
 		{
-		case Constants.CREATE_ORDER:
-			/*
-			 * if (data.hasExtra(Constants.NAME) &&
-			 * data.hasExtra(Constants.NUMBER)) { // Here is where we plug in
-			 * the values of the new order. OrderQueueAdapter adapter =
-			 * (OrderQueueAdapter) getListView() .getAdapter(); adapter.add(new
-			 * Order(data.getStringExtra(Constants.NAME), data
-			 * .getStringExtra(Constants.NUMBER), Constants.PENDING));
-			 * adapter.notifyDataSetChanged();
-			 */
-			// Up until here.
-			playSound(R.raw.createorder);
-			// }
-			break;
+		  case Constants.CREATE_ORDER:
+			  playSound(R.raw.createorder);
+		  break;
 
-		case Constants.MODIFY_ORDER:
-			if (data.hasExtra(Constants.ID))
-				if (data.hasExtra(Constants.NAME))
-					if (data.hasExtra(Constants.NUMBER))
-					{
-						// Here is where we modify the values of an existing
-						// order.
-						OrderQueueAdapter adapter = (OrderQueueAdapter) getListView()
-								.getAdapter();
-						Order order = adapter.getItem(data.getIntExtra(
-								Constants.ID, 0));
-						order.setOrderOwner(data.getStringExtra(Constants.NAME));
-						order.setOrderId(data
-								.getIntExtra(Constants.NUMBER, 0));
-						adapter.notifyDataSetChanged();
-						// Up until here.
-						playSound(R.raw.modifyorder);
-					}
-			break;
+		  case Constants.MODIFY_ORDER:
+			  playSound(R.raw.modifyorder);				
+		  break;
 		}
 	}
 
@@ -303,9 +272,7 @@ public class OrderQueueFragment extends ListFragment
 			    handleOrderDelete(response);
 			    break;
 			    
-			  }
-			
-			
+			  }		
 		}
 	}
 
@@ -368,7 +335,12 @@ public class OrderQueueFragment extends ListFragment
 			       
 		        	orders.add(new Order(jObj.getInt("mOrderId"),
 					                       jObj.getString("mOrderOwner"), 
-					                         jObj.getString("mOrderStatus")));			
+					                         jObj.getString("mOrderStatus"),
+					                           jObj.getInt("black"),
+					                             jObj.getInt("blue"),
+					                               jObj.getInt("green"),
+					                                 jObj.getInt("red"),
+					                                   jObj.getInt("white")));			
 		         }
 		      }
 		 catch (JSONException e) 
@@ -385,8 +357,6 @@ public class OrderQueueFragment extends ListFragment
 	
 	
 	
-	
-	
 	@Override
 	public void onStart()
 	{
@@ -397,9 +367,6 @@ public class OrderQueueFragment extends ListFragment
 		makeService(Constants.UPDATE_ORDERS_COMMAND, 0);	
 		super.onStart();
 	}
-
-	
-
 
 	
 	

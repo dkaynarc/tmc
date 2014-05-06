@@ -53,6 +53,10 @@ public class SynchService extends IntentService
 	    	  deleteOrder(parcel);
 	    	  break;
 	     
+	      case 5: //MODIFY_ORDER_COMMAND
+	    	  modifyOrder(parcel);
+	    	  break;
+	    	  
 	      default:
 	    	break;
 	    
@@ -66,6 +70,28 @@ public class SynchService extends IntentService
 
 	
 	
+private void modifyOrder(Bundle parcel) 
+{
+    urlString +=  "ModifyOrder/" 
+            + parcel.getString("orderName") + "/" 
+    		+ parcel.getString("orderId")+ "/"
+    		+ parcel.getString("status")+ "/"
+    		+ parcel.getString("command")+ "/"
+    		
+    		+ parcel.getString("black")+ "/" 
+      	    + parcel.getString("blue")+ "/" 
+            + parcel.getString("green")+ "/" 
+      	    + parcel.getString("red")+ "/" 
+            + parcel.getString("white"); 
+      
+      String response =  connect(urlString);	
+      
+      notifyCaller(response);
+		
+}
+
+
+
 private void deleteOrder(Bundle parcel) 
 {
     urlString +=  "DeleteOrder/" + parcel.getString("orderId") ; 
@@ -164,14 +190,12 @@ private void authenticate(Bundle parcel)
 
 private void notifyCaller(String response) 
 {
-	Intent intent = new Intent();
-	
-	
+	Intent intent = new Intent();	
 	switch(command)
 	{
-	case 1:
-		intent.setAction(Constants.AUTHENTICATE_COMMAND);
-		break;
+	    case 1:
+		    intent.setAction(Constants.AUTHENTICATE_COMMAND);
+		    break;
 		
 		case 2:
 			intent.setAction(Constants.NEW_ORDER_COMMAND);
@@ -183,6 +207,10 @@ private void notifyCaller(String response)
 			
 		case 4:
 			intent.setAction(Constants.DELETE_ORDER_COMMAND);
+			break;
+			
+		case 5:
+			intent.setAction(Constants.MODIFY_ORDER_COMMAND);
 			break;
 	}
 

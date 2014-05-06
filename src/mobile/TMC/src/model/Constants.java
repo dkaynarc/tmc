@@ -74,5 +74,6 @@ public class Constants
 	public static final String TOTAL_NUMBER_ERROR = "Total number of items can't be greater than 8";
 	public static final String DELETE_ORDER_COMMAND = "4";
 	public static final CharSequence DELETE_ORDER_FAIL = "DELETION OF THE ORDER FAILED";
+	public static final String MODIFY_ORDER_COMMAND = "5";
 	
 }

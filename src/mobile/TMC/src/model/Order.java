@@ -24,7 +24,7 @@ public class Order
 	 */
 
 	public Order(int orderId, String orderOwner, String orderStatus, int black,
-			int blue, int green, int red, int white, int quantity)
+			int blue, int green, int red, int white)
 	{
 		mOrderId = orderId;
 		mOrderOwner = orderOwner;
@@ -38,7 +38,7 @@ public class Order
 
 	// //////////////////////////////////////////
 	public Order(String orderOwner, int black,
-			int blue, int green, int red, int white)
+			   int blue, int green, int red, int white)
 	{
 		mOrderOwner = orderOwner;
 		mBlack = black;
