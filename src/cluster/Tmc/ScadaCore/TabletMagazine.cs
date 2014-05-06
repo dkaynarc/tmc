@@ -32,9 +32,16 @@ namespace Tmc.Scada.Core
             Slots[slot] += count;
         }
 
-        public void TakeTablet(TabletColors slot, int count = 1)
+        public void RemoveTablet(TabletColors slot, int count = 1)
         {
-            Slots[slot] -= count;
+            if ((Slots[slot] - count) > -1)
+            {
+                Slots[slot] -= count;
+            }
+            else
+            {
+                throw new InvalidOperationException("Tablet count cannot be less than zero");
+            }
         }
         
         public int GetSlotIndex(TabletColors slotColor)
@@ -51,7 +58,7 @@ namespace Tmc.Scada.Core
 
         public bool IsSlotEmpty(TabletColors slotColor)
         {
-            return (Slots[GetSlotIndex(slotColor)] == 0);
+            return (Slots[slotColor] == 0);
         }
 
         public List<TabletColors> GetFullSlots()
