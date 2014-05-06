@@ -9,6 +9,10 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System.Drawing;
 using Tmc.Common;
+//<<<<<<< HEAD
+using System.Drawing;
+//=======
+//>>>>>>> a3890c445a582410972443f08269dc0984ceffa2
 using System.Net;
 
 namespace Tmc.Vision
@@ -16,7 +20,7 @@ namespace Tmc.Vision
     public class Camera : ICamera
     {
         public string Name { get; set; }
-        public string ConnectionString { get; set; }
+        public Uri ConnectionString { get; set; }
 
         public Capture CaptureDevice { get { return _capture; } private set { _capture = value; } }
 
@@ -28,15 +32,41 @@ namespace Tmc.Vision
             _hardwareStatus = HardwareStatus.Offline;
         }
 
+        //public Image<Bgr, byte> GetImage()
+        //{
+        //    Image<Bgr, Byte> img = new Image<Bgr, byte>("../../sort.jpg");//var img = _capture.QueryFrame();
+        //    if (img == null)
+        //    {
+        //        _hardwareStatus = HardwareStatus.Failed;
+        //        throw new InvalidOperationException("Could not get image from capture device");
+        //    }
+        //    return img;
+        //}
+
         public Image<Bgr, byte> GetImage()
         {
-            var img = _capture.QueryFrame();
-            if (img == null)
+            var image = GetImageHttp(ConnectionString);
+
+            if (image == null)
             {
                 _hardwareStatus = HardwareStatus.Failed;
                 throw new InvalidOperationException("Could not get image from capture device");
             }
-            return img;
+
+            return image;
+        }
+
+        public Image<Bgr, byte> GetImageHttp(Uri uri)
+        {
+            Image<Bgr, byte> emguImg = null;
+            var request = WebRequest.Create(uri);
+            using (var response = request.GetResponse())
+            using (var stream = response.GetResponseStream())
+            {
+                var img = Bitmap.FromStream(stream) as Bitmap;
+                emguImg = new Image<Bgr, byte>(img);
+            }
+            return emguImg;
         }
 
         public Bitmap GetImageFromUrl()
@@ -56,7 +86,7 @@ namespace Tmc.Vision
 
         public void Shutdown()
         {
-            _capture.Dispose();
+            //_capture.Dispose();
         }
 
         public HardwareStatus GetStatus()
@@ -68,7 +98,15 @@ namespace Tmc.Vision
         {
             try
             {
-                _capture = new Capture(ConnectionString);
+                //_capture = new Capture("http://192.168.0.11:8080/photo.jpg");//ConnectionString);
+                //string win1 = "Test Window"; //The name of the window
+                //CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
+                //BitmapImage image = new BitmapImage(new Uri("http://192.168.0.11:8080/photo.jpg"));
+
+                Image<Bgr, Byte> img = new Image<Bgr, byte>("../../tray.jpg"); //Create an image of 400x200 of Blue color
+                //CvInvoke.cvShowImage(win1, img); //Show the image
+                //CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
+                //CvInvoke.cvDestroyWindow(win1); //Destory the window
             }
             catch (Exception)
             {
@@ -83,14 +121,16 @@ namespace Tmc.Vision
             {
                 this.Name = s;
             }
+
             if (parameters.TryGetValue("ConnectionString", out s))
             {
-                this.ConnectionString = s;
+                this.ConnectionString = new Uri(s);
             }
             else
             {
                 throw new InvalidOperationException("No connection string passed to camera");
             }
+            
         }
     }
 }
