@@ -76,30 +76,28 @@ namespace Tmc.Scada.Core
             {
                 int shakeRetryAttempts = 0;
                 var visibleTablets = _vision.GetVisibleTablets();
-                while (shakeRetryAttempts < MaxShakeRetryAttempts)
+                while ((_vision.GetVisibleTablets().Count() > 0) && (shakeRetryAttempts < MaxShakeRetryAttempts))
                 {
                     if (ct.IsCancellationRequested)
                     {
                         status = ControllerOperationStatus.Cancelled;
                         return status;
                     }
-                    if (visibleTablets.Count == 0)
-                    {
-                        //_robot.Shake();
-                        visibleTablets = _vision.GetVisibleTablets();
-                        break;
-                    }
+                    //_robot.Shake();
+                    visibleTablets = _vision.GetVisibleTablets();
                     shakeRetryAttempts++;
                 }
                 foreach (var tablet in visibleTablets)
                 {
                     if (mag.IsFull() || ct.IsCancellationRequested)
                     {
-                        break;
+                        status = ControllerOperationStatus.Cancelled;
+                        return status;
                     }
-                    if (!mag.GetFullSlots().Contains(tablet.Color))
+                    if (!mag.IsSlotFull(tablet.Color))
                     {
                         PlaceTablet(tablet, mag);
+                        visibleTablets = _vision.GetVisibleTablets();
                     }
                 }
             }

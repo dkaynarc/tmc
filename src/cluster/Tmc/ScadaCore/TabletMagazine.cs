@@ -56,6 +56,11 @@ namespace Tmc.Scada.Core
             return isFull;
         }
 
+        public bool IsSlotFull(TabletColors slotColor)
+        {
+            return (Slots[slotColor] == SlotCapacity);
+        }
+
         public bool IsSlotEmpty(TabletColors slotColor)
         {
             return (Slots[slotColor] == 0);
