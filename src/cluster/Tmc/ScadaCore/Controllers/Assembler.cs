@@ -85,7 +85,7 @@ namespace Tmc.Scada.Core
                 foreach(var pair in order.Tablets.Where(x => x.Value > 0))
                 {
                     var numTablets = pair.Value;
-                    for (int i = 0; i < 0; i++)
+                    for (int i = 0; i < numTablets; i++)
                     {
                         if (ct.IsCancellationRequested)
                         {
