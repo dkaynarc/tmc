@@ -13,6 +13,7 @@ MODULE MainModule
         MoveAbsJ above2, v200, fine, tool0;
         MoveAbsJ touching2, v200, fine, tool0;
         Reset DO10_6;
+		waittime 0.5;
         MoveAbsJ above2, v200, fine, tool0;
         MoveAbsJ central, v200, fine, tool0;
     ENDPROC
