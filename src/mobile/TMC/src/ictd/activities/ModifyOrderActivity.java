@@ -49,13 +49,7 @@ public class ModifyOrderActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_modify_order);
-		mOrderName = (TextView) findViewById(R.id.modifyorder_ordername_et);
-		mOrderNumber = (TextView) findViewById(R.id.modifyorder_ordernumber_et);
-
-	    mOrderName.setText(getIntent().getStringExtra(Constants.NAME));
-		mOrderNumber.setText(getIntent().getStringExtra(Constants.ID));
 		
-		///////////////////////////////////////
 		Integer[] items = new Integer[]{ 0,1,2,3,4 };
 		ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,android.R.layout.simple_spinner_item, items);
 		
@@ -64,8 +58,18 @@ public class ModifyOrderActivity extends Activity
 		(spGreen = (Spinner) findViewById(R.id.createorder_green_s)).setAdapter(adapter);
 		(spRed =   (Spinner) findViewById(R.id.createorder_red_s)).setAdapter(adapter);
 		(spWhite = (Spinner) findViewById(R.id.createorder_white_s)).setAdapter(adapter);
+		mOrderName = (TextView) findViewById(R.id.modifyorder_ordername_et);
+		mOrderNumber = (TextView) findViewById(R.id.modifyorder_ordernumber_et);
 
-		//////////////////////////////////////
+		spBlack.setSelection(getIntent().getIntExtra("black", 0));
+		spBlue.setSelection(getIntent().getIntExtra("blue", 0));  
+		spGreen.setSelection(getIntent().getIntExtra("green", 0));
+		spRed.setSelection(getIntent().getIntExtra("red", 0));
+		spWhite.setSelection(getIntent().getIntExtra("white", 0));
+			
+	    mOrderName.setText(getIntent().getStringExtra(Constants.NAME));
+		mOrderNumber.setText(getIntent().getStringExtra(Constants.ID));
+		
 	}
 
 	/**
@@ -83,7 +87,7 @@ public class ModifyOrderActivity extends Activity
 		Order newOrder = new Order(
 				Integer.decode(mOrderNumber.getText().toString()),
 				        mOrderName.getText().toString(),
-				        "pending",
+				        "Pending",
 				        Integer.decode(spBlack.getSelectedItem().toString()),
 				        Integer.decode(spBlue.getSelectedItem().toString()),
 				        Integer.decode(spGreen.getSelectedItem().toString()),
@@ -170,7 +174,7 @@ public class ModifyOrderActivity extends Activity
      		finish();
          }
          else
-            Toast.makeText(context, Constants.NEW_ORDER_FAIL, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, Constants.MODIFY_ORDER_FAIL, Toast.LENGTH_SHORT).show();
          }   
 
 
@@ -179,7 +183,7 @@ public class ModifyOrderActivity extends Activity
       @Override
       public void onStart()
       {
-         IntentFilter filter = new IntentFilter(Constants.NEW_ORDER_COMMAND);
+         IntentFilter filter = new IntentFilter(Constants.MODIFY_ORDER_COMMAND);
          receiver = new ResultReceiver();
          this.registerReceiver(receiver, filter);
          super.onStart();

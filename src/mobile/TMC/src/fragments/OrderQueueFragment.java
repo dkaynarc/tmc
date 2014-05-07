@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -164,28 +165,39 @@ public class OrderQueueFragment extends ListFragment
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id)
 							{
-								Intent intent = new Intent(getActivity(), ModifyOrderActivity.class);
-								// Passes the order's ID and current values for
-								// modification.
-								////////////////////////////////////////////////
-								intent.putExtra(Constants.ID, Integer.toString(order.getOrderId()));
-								intent.putExtra(Constants.NAME, order.getOrderName());
-								intent.putExtra("black", order.getColourNumber("black"));
-								intent.putExtra("blue", order.getColourNumber("blue"));
-								intent.putExtra("green", order.getColourNumber("green"));
-								intent.putExtra("red", order.getColourNumber("red"));
-								intent.putExtra("white", order.getColourNumber("white"));
-								/////////////////////////////////////////////////
-								startActivityForResult(intent, Constants.REQUEST_CODE);
-								dialog.cancel();
-							}
+								
+								if(order.getOrderName().equalsIgnoreCase(readCurrentUserName()))
+								{
+								   Intent intent = new Intent(getActivity(), ModifyOrderActivity.class);
+								   ////////////////////////////////////////////////
+								   intent.putExtra(Constants.ID, Integer.toString(order.getOrderId()));
+								   intent.putExtra(Constants.NAME, order.getOrderName());
+								   intent.putExtra("black", order.getColourNumber("black"));
+								   intent.putExtra("blue", order.getColourNumber("blue"));
+								   intent.putExtra("green", order.getColourNumber("green"));
+								   intent.putExtra("red", order.getColourNumber("red"));
+								   intent.putExtra("white", order.getColourNumber("white"));
+								   /////////////////////////////////////////////////
+								   startActivityForResult(intent, Constants.REQUEST_CODE);
+								   dialog.cancel();
+						        }
+								else
+								{
+									Toast.makeText(getActivity(), Constants.NOT_AUTHORIZED, Toast.LENGTH_SHORT).show();
+								}
+						  }
 						}).show();
 	}
 
 	
 	
 	
-	
+	private String readCurrentUserName() 
+	{
+		SharedPreferences preferences = getActivity().getSharedPreferences(Constants.APP_PERSISTANCE, 0);
+	    String userName = preferences.getString(Constants.USERNAME_KEY, null);
+	    return userName;
+    }
 	
 	
 	
@@ -244,7 +256,7 @@ public class OrderQueueFragment extends ListFragment
 		service.putExtra("parcel", parcel);
 
 		// stop any already running services associated with this activity
-		getActivity().stopService(service);
+		//getActivity().stopService(service);
 		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
 		getActivity().startService(service);
 	}

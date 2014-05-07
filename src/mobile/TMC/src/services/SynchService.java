@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import model.Constants;
 import android.app.IntentService;
 import android.content.Intent;
@@ -15,16 +14,16 @@ import android.os.Bundle;
 
 public class SynchService extends IntentService 
 {
-    private String urlString = "http://192.168.1.3:9000/api/Server/";
+    private String urlString = "http://192.168.1.6:9000/api/Server/";
     //private String urlString = "http://172.19.14.150:9000/api/Server/";    
     private int command;
 
  
      
      public SynchService()
-    {
+     {
 		super("SynchService");
-	}
+	 }
     
 
      
@@ -46,7 +45,7 @@ public class SynchService extends IntentService
 	          break;
 	      
 	      case 3://UPDATE_ORDER_COMMAND
-	    	  getOrdersUpdate();
+	    	  getOrders("incomplete");
 	    	  break;
 	     
 	      case 4://DELETE_ORDER_COMMAND
@@ -55,6 +54,10 @@ public class SynchService extends IntentService
 	     
 	      case 5: //MODIFY_ORDER_COMMAND
 	    	  modifyOrder(parcel);
+	    	  break;
+
+	      case 6: //UPDATE_COMPLETED_ORDERS_COMMAND
+	    	  getOrders("complete");
 	    	  break;
 	    	  
 	      default:
@@ -70,18 +73,21 @@ public class SynchService extends IntentService
 
 	
 	
+
+
+
+
 private void modifyOrder(Bundle parcel) 
 {
     urlString +=  "ModifyOrder/" 
             + parcel.getString("orderName") + "/" 
-    		+ parcel.getString("orderId")+ "/"
-    		+ parcel.getString("status")+ "/"
-    		+ parcel.getString("command")+ "/"
+    		+ parcel.getString("orderId") + "/"
+    		+ parcel.getString("status") + "/"
     		
-    		+ parcel.getString("black")+ "/" 
-      	    + parcel.getString("blue")+ "/" 
-            + parcel.getString("green")+ "/" 
-      	    + parcel.getString("red")+ "/" 
+    		+ parcel.getString("black") + "/" 
+      	    + parcel.getString("blue") + "/" 
+            + parcel.getString("green") + "/" 
+      	    + parcel.getString("red") + "/" 
             + parcel.getString("white"); 
       
       String response =  connect(urlString);	
@@ -104,14 +110,13 @@ private void deleteOrder(Bundle parcel)
 
 
 
-private void getOrdersUpdate()
+private void getOrders(String orderStatus)
 {
-    urlString +=  "GetIncompleteOrders" ; 
+    urlString +=  "GetOrders/" + orderStatus; 
     
     String response =  connect(urlString);	
     
-    notifyCaller(response);
-	
+    notifyCaller(response);	
 }
 
 
@@ -211,6 +216,10 @@ private void notifyCaller(String response)
 			
 		case 5:
 			intent.setAction(Constants.MODIFY_ORDER_COMMAND);
+			break;
+			
+		case 6:
+			intent.setAction(Constants.UPDATE_COMPLETED_ORDERS_COMMAND);
 			break;
 	}
 

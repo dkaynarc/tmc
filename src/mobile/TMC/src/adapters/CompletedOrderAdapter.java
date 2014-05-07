@@ -1,12 +1,8 @@
 /* COPYRIGHT (C) 2014 Carlo Chumroonridhi. All Rights Reserved. */
 
 package adapters;
-
 import ictd.activities.R;
-
 import java.util.ArrayList;
-
-import model.Constants;
 import model.Order;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -83,15 +79,8 @@ public class CompletedOrderAdapter extends ArrayAdapter<Order>
 			if (type != null)
 				type.setText(order.getOrderStatus());
 			if (picture != null)
-			{
-				if (order.getOrderStatus().equals(Constants.PENDING))
-					picture.setImageResource(R.drawable.pending);
-				else if (order.getOrderStatus().equals(Constants.ACTIVE))
-					picture.setImageResource(R.drawable.active);
-				else if (order.getOrderStatus().equals(Constants.COMPLETE))
-					picture.setImageResource(R.drawable.complete);
-			}
-		}
+			   picture.setImageResource(R.drawable.complete);		
+     		}
 		else
 			v = convertView;
 		return v;

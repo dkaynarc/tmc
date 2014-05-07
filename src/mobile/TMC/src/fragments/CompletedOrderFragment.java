@@ -2,16 +2,23 @@ package fragments;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import model.Constants;
 import model.Order;
-
 import ictd.activities.R;
-
 import adapters.CompletedOrderAdapter;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +34,13 @@ import android.widget.ListView;
 
 public class CompletedOrderFragment extends ListFragment
 {
+	private ResultReceiver receiver;
+	private ProgressDialog pd;
+
+
+
+
+
 
 	/**
 	 * Sets the layouts of the fragment and rows, places the list of completed
@@ -37,22 +51,20 @@ public class CompletedOrderFragment extends ListFragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
 	{
-		View rootView = inflater.inflate(R.layout.list_completed, container,
-				false);
-		// In setListAdapter, replace the list "orders" with a function that
-		// returns
-		// a list of the completed orders. You can then remove the 4 lines of
-		// code
-		// below that set up the dummy "orders" list.
+		View rootView = inflater.inflate(R.layout.list_completed, container, false);
+
 		ArrayList<Order> orders = new ArrayList<Order>();
-		for (Order order : Constants.ORDERS)
-			if (order.getOrderStatus().equals(Constants.COMPLETE))
-				orders.add(order);
 		setListAdapter(new CompletedOrderAdapter(getActivity(),
 				R.layout.order_row, orders));
 		return rootView;
 	}
 
+	
+	
+	
+	
+	
+	
 	/**
 	 * Implements the clicking of each order. Displays their information in a
 	 * dialog.
@@ -80,4 +92,123 @@ public class CompletedOrderFragment extends ListFragment
 					}
 				}).show();
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// private class
+		private class ResultReceiver extends BroadcastReceiver
+		{
+			@Override
+			public void onReceive(Context context, Intent intent)
+			{
+				pd.dismiss();
+				String response = intent.getStringExtra("result");
+                handleCompletedOrders(response);
+			}
+		}
+
+		
+		
+			
+		private void handleCompletedOrders(String response) 	
+		{
+			Log.v("MAD", response);
+
+		    CompletedOrderAdapter adapter = (CompletedOrderAdapter) getListView().getAdapter();
+			adapter.clear();
+			
+			ArrayList<Order> orders = new ArrayList<Order>();
+			JSONArray jArray;
+			try {
+				   jArray = new JSONArray(response);
+					
+			        for(int i = 0; i < jArray.length(); i ++)
+			        {
+			        	JSONObject jObj = jArray.getJSONObject(i);
+				       
+			        	orders.add(new Order(jObj.getInt("mOrderId"),
+						                       jObj.getString("mOrderOwner"), 
+						                         jObj.getString("mOrderStatus"),
+						                           jObj.getInt("black"),
+						                             jObj.getInt("blue"),
+						                               jObj.getInt("green"),
+						                                 jObj.getInt("red"),
+						                                   jObj.getInt("white")));			
+			         }
+			      }
+			 catch (JSONException e) 
+			 {	
+				Log.v("MAD", e.toString());
+			 }		
+			
+			adapter.addAll(orders);
+			adapter.notifyDataSetChanged();
+
+		}
+
+
+
+
+
+
+
+	public void onStart()
+	{
+		receiver = new ResultReceiver();
+		getActivity().registerReceiver(receiver, new IntentFilter(Constants.UPDATE_COMPLETED_ORDERS_COMMAND));
+
+		// update completed orders here
+		makeService(Constants.UPDATE_COMPLETED_ORDERS_COMMAND);	
+		super.onStart();
+	}
+
+	
+	
+	
+	
+
+	@Override
+	public void onStop()
+	{
+		getActivity().unregisterReceiver(receiver);
+		super.onStop();
+	}
+
+
+
+
+
+
+	private void makeService(String command)
+	{
+		Intent service = new Intent(getActivity(), services.SynchService.class);
+		Bundle parcel = new Bundle();
+		parcel.putString("command", command);
+		service.putExtra("parcel", parcel);
+
+		// stop any already running services associated with this activity
+		//getActivity().stopService(service);
+		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
+		getActivity().startService(service);
+	}
+
+
+
 }

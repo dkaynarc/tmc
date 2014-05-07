@@ -13,16 +13,18 @@ import java.util.Arrays;
 
 public class Constants
 {
-	public static final String PENDING = "PENDING";
-	public static final String ACTIVE = "ACTIVE";
-	public static final String COMPLETE = "COMPLETE";
+	public static final String PENDING = "Pending";
+	public static final String ASSEMBLY = "Assembly";
+	public static final String CANCELLED = "Cancelled";
+	/*public static final String ACTIVE = "ACTIVE";*/
+	public static final String COMPLETE = "Complete";
 	public static final String ON = "ON";
 	public static final String OFF = "OFF";
 	public static final String ROBOT = "ROBOT";
 	public static final String CONVEYOR = "CONVEYOR";
 	public static final ArrayList<Order> ORDERS = new ArrayList<Order>(
 			Arrays.asList(new Order(1029231, "Carlo", COMPLETE),
-					new Order(2294714, "Joel", ACTIVE), new Order(3129214, "Siarhei",PENDING),
+					///new Order(2294714, "Joel", ACTIVE), new Order(3129214, "Siarhei",PENDING),
 					new Order(2294714, "Joel", PENDING), new Order(3129214, "Siarhei", PENDING),
 					new Order(2294714, "Joel",PENDING),	new Order(3129214, "Siarhei", PENDING),
 					new Order(2294714, "Joel", PENDING), new Order(3129214, "Siarhei", PENDING),
@@ -75,5 +77,8 @@ public class Constants
 	public static final String DELETE_ORDER_COMMAND = "4";
 	public static final CharSequence DELETE_ORDER_FAIL = "DELETION OF THE ORDER FAILED";
 	public static final String MODIFY_ORDER_COMMAND = "5";
+	public static final CharSequence MODIFY_ORDER_FAIL = "Failed to modify selected order";
+	public static final String UPDATE_COMPLETED_ORDERS_COMMAND = "6";
+	public static final CharSequence NOT_AUTHORIZED = "You are not authorized to change this order";
 	
 }
