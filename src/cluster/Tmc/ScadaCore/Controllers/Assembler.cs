@@ -46,6 +46,9 @@ namespace Tmc.Scada.Core
             var p = parameters as AssemblerParams;
             if (p != null)
             {
+                //TODO Do check whether enough tablets exist to complete the order
+                //If not make a log entry
+                
                 if (!IsRunning)
                 {
                     IsRunning = true;
@@ -91,11 +94,6 @@ namespace Tmc.Scada.Core
                         {
                             status = ControllerOperationStatus.Cancelled;
                             return status;
-                        }
-
-                        if (mag.IsSlotEmpty(pair.Key))
-                        {
-                            // TODO handle the magazine being empty
                         }
                         else
                         {

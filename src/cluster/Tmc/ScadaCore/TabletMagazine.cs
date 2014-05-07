@@ -61,6 +61,7 @@ namespace Tmc.Scada.Core
             return (Slots[slotColor] == SlotCapacity);
         }
 
+        //TODO Check whether this method is required anywhere
         public bool IsSlotEmpty(TabletColors slotColor)
         {
             return (Slots[slotColor] == 0);
