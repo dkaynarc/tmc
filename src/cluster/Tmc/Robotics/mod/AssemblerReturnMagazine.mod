@@ -18,6 +18,8 @@ MODULE MainModule
 		MoveAbsJ touchingconveyor2, v200, fine, tool0;
         MoveAbsJ touchingconveyor, v200, fine, tool0;
         Reset DO10_6;
-		
+		waittime 0.5;
+		MoveAbsJ midpoint, v200, fine, tool0;
+
     ENDPROC
 ENDMODULE

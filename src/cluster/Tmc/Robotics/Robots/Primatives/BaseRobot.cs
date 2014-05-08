@@ -21,7 +21,7 @@ namespace Tmc.Robotics
 
         private EventWaitHandle _eventWait = new AutoResetEvent(false);
 
-        public BaseRobot() { }
+        protected BaseRobot() { }
 
         public HardwareStatus GetStatus()
         {
@@ -83,7 +83,12 @@ namespace Tmc.Robotics
         {
             if (this.Controller.OperatingMode != ControllerOperatingMode.Auto)
             {
-                throw new Exception(string.Format("Robot {0} is not in autonomous mode", this.RobotIPAddress));
+                throw new Exception(string.Format("Robot {0} is not in autonomous mode. Rotate the Mode switch on the robot controller into Autonomous Mode", this.Name));
+            }
+
+            if (this.Controller.State != ControllerState.MotorsOn)
+            {
+                throw new Exception(string.Format("Robot {0} motors are not on. Press the white flashing button on the robot controller to enable motors", this.Name));
             }
 
             var filePath = Controller.FileSystem.LocalDirectory + "\\mod\\" + filename;

@@ -7,7 +7,13 @@ namespace Tmc.Robotics
     {
         public void GetTray(int trayNumber)
         {
-            this.RunRapidProgram("this is a stub");
+            if(trayNumber < 1 || trayNumber > 6)
+            {
+                throw new ArgumentException("Tray Number must be between 1 and 6 inclusive");
+            }
+
+            var fileName = string.Format("Grab_Tray_{0}.mod", trayNumber);
+            this.RunRapidProgram(fileName);
         }
 
         public void Palletise()
