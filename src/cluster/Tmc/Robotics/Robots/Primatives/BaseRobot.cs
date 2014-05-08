@@ -21,7 +21,7 @@ namespace Tmc.Robotics
 
         private EventWaitHandle _eventWait = new AutoResetEvent(false);
 
-        protected BaseRobot() { }
+        internal BaseRobot() { }
 
         public HardwareStatus GetStatus()
         {

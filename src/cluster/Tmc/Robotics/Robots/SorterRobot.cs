@@ -8,7 +8,7 @@ namespace Tmc.Robotics
         private string[] _magazinePoints;
         private string[] _magazineHeights;
 
-        protected SorterRobot() : base()
+        internal SorterRobot() : base()
         {
             var directory = Directory.GetCurrentDirectory() + "\\mod\\";
             var magazinePoints = directory + "SorterMagazinePoints.mod";

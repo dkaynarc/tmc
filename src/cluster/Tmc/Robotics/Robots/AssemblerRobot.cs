@@ -11,7 +11,7 @@ namespace Tmc.Robotics
         private string[] _magazineHeights;
         private string[] _dropPositions;
 
-        protected AssemblerRobot() : base()
+        internal AssemblerRobot() : base()
         {
             var directory = Directory.GetCurrentDirectory() + "\\mod\\";
             var magazinePoints = directory + "AssemblerMagazinePoints.mod";
