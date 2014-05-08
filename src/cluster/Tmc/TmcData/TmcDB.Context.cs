@@ -28,7 +28,6 @@ namespace TmcData
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<OrderList> OrderLists { get; set; }
         public DbSet<ComponentCycleLogView> ComponentCycleLogViews { get; set; }
         public DbSet<ComponentEventLogView> ComponentEventLogViews { get; set; }
         public DbSet<OrderListView> OrderListViews { get; set; }

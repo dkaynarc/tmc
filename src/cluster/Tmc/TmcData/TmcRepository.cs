@@ -9,9 +9,9 @@ namespace TmcData
 {
     public static class TmcRepository
     {
-        public static IList<OrderList> OrderInfo()
+        public static IList<OrderListView> OrderInfo()
         {
-            return new ICTDEntities().OrderLists.ToList();
+            return new ICTDEntities().OrderListViews.ToList();
         }
 
         public static void AddNewOrder(Guid userID, int black, int blue, int red, int green, int white )

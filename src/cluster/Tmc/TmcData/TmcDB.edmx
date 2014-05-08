@@ -149,7 +149,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="ICTDModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="ICTDEntities" p1:LazyLoadingEnabled="true">
-          <EntitySet Name="OrderLists" EntityType="ICTDModel.OrderList" />
           <FunctionImport Name="AddNewOrder">
             <Parameter Name="UserID" Mode="In" Type="Guid" />
             <Parameter Name="Black" Mode="In" Type="Int32" />
@@ -187,45 +186,24 @@
             <Parameter Name="SourceID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="CancelOrder">
-            <Parameter Name="OrderID" Mode="In" Type="Int32" />
+          <Parameter Name="OrderID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="FiltCompCyclLogBySour" ReturnType="Collection(ICTDModel.FiltCompCyclLogBySour_Result)">
-            <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          <Parameter Name="SourceID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="FiltCompEvenLogBySour" ReturnType="Collection(ICTDModel.FiltCompEvenLogBySour_Result)">
-            <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          <Parameter Name="SourceID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="FiltOrdeList" ReturnType="Collection(ICTDModel.FiltOrdeList_Result)">
-            <Parameter Name="StatusID" Mode="In" Type="Int32" />
+          <Parameter Name="StatusID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="zFilterComponentCycleLogBySourceID" ReturnType="Collection(ICTDModel.zFilterComponentCycleLogBySourceID_Result)">
-            <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          <Parameter Name="SourceID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="zFilterComponentEventLogBySourceID" ReturnType="Collection(ICTDModel.zFilterComponentEventLogBySourceID_Result)">
-            <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          <Parameter Name="SourceID" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
-        <EntityType Name="OrderList">
-          <Key>
-            <PropertyRef Name="OrderID" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Black" />
-            <PropertyRef Name="Blue" />
-            <PropertyRef Name="Red" />
-            <PropertyRef Name="Green" />
-            <PropertyRef Name="White" />
-          </Key>
-          <Property Name="OrderID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Black" Type="Int32" Nullable="false" />
-          <Property Name="Blue" Type="Int32" Nullable="false" />
-          <Property Name="Red" Type="Int32" Nullable="false" />
-          <Property Name="Green" Type="Int32" Nullable="false" />
-          <Property Name="White" Type="Int32" Nullable="false" />
-          <Property Name="StartTime" Type="DateTime" Precision="0" />
-          <Property Name="EndTime" Type="DateTime" Precision="0" />
-          <Property Name="NumberOfProducts" Type="Int32" />
-        </EntityType>
         <EntityType Name="ComponentCycleLogView">
           <Key>
             <PropertyRef Name="ID" />
