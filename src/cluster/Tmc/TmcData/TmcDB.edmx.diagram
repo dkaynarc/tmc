@@ -6,6 +6,9 @@
     <edmx:Diagrams>
       <Diagram DiagramId="85f98bf1f5e64d3a9464ae8fef7fb0db" Name="Diagram1">
         <EntityTypeShape EntityType="ICTDModel.OrderList" Width="1.5" PointX="3.875" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ICTDModel.ComponentCycleLogView" Width="1.5" PointX="3.75" PointY="5.625" />
+        <EntityTypeShape EntityType="ICTDModel.ComponentEventLogView" Width="1.5" PointX="6.5" PointY="3" />
+        <EntityTypeShape EntityType="ICTDModel.OrderListView" Width="1.5" PointX="5.9402639334743208" PointY="27.548884166194537" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
