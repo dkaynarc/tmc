@@ -132,12 +132,39 @@ namespace Tmc.Sensors
             var control = new AxAsadtcp();
 
             ((System.ComponentModel.ISupportInitialize)(control)).BeginInit();
+            
+            CloseDemoWindowAsync();
             control.CreateControl();
+
             control.Visible = false;
             control.NodeAddress = _nodeIpAddress;
             ((System.ComponentModel.ISupportInitialize)(control)).EndInit();
             
             return control;
+        }
+
+        /// <summary>
+        /// Closes the PLC ActiveX control's demo notification.
+        /// TODO: Add a cancellation token so that this thread has no chance
+        /// of running forever.
+        /// </summary>
+        private void CloseDemoWindowAsync()
+        {
+            Task.Run(() =>
+            {
+                IEnumerable<IntPtr> demoWindows = null;
+                // HACK
+                do
+                {
+                    var windows = Win32Helpers.GetOpenWindows();
+                    demoWindows = windows.Where(x => x.Value.Contains("Automated Solutions Demo"))
+                                    .Select(x => x.Key);
+                    System.Threading.Thread.Sleep(10);
+                }
+                while (demoWindows == null || demoWindows.Count() == 0);
+                // END HACK
+                Win32Helpers.CloseWindow(demoWindows.ToArray()[0]);
+            });
         }
     }
 }
