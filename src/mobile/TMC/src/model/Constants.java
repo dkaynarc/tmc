@@ -80,5 +80,6 @@ public class Constants
 	public static final CharSequence MODIFY_ORDER_FAIL = "Failed to modify selected order";
 	public static final String UPDATE_COMPLETED_ORDERS_COMMAND = "6";
 	public static final CharSequence NOT_AUTHORIZED = "You are not authorized to change this order";
+	public static final String ENVIRONMENT = "ENVIRONMENT";
 	
 }
