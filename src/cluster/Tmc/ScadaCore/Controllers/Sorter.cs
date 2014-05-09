@@ -74,19 +74,7 @@ namespace Tmc.Scada.Core
             var status = ControllerOperationStatus.Succeeded;
             try
             {
-                int shakeRetryAttempts = 0;
-                var visibleTablets = _vision.GetVisibleTablets();
-                while ((_vision.GetVisibleTablets().Count() > 0) && (shakeRetryAttempts < MaxShakeRetryAttempts))
-                {
-                    if (ct.IsCancellationRequested)
-                    {
-                        status = ControllerOperationStatus.Cancelled;
-                        return status;
-                    }
-                    //_robot.Shake();
-                    visibleTablets = _vision.GetVisibleTablets();
-                    shakeRetryAttempts++;
-                }
+                var visibleTablets = GetVisibleTablets();
                 foreach (var tablet in visibleTablets)
                 {
                     if (mag.IsFull() || ct.IsCancellationRequested)
@@ -99,6 +87,10 @@ namespace Tmc.Scada.Core
                         PlaceTablet(tablet, mag);
                         visibleTablets = _vision.GetVisibleTablets();
                     }
+                    else
+                    {
+                        continue;
+                    }
                 }
             }
             catch (Exception ex)
@@ -107,6 +99,19 @@ namespace Tmc.Scada.Core
                 status = ControllerOperationStatus.Failed;
             }
             return status;
+        }
+
+        private List<Tablet> GetVisibleTablets()
+        {
+            int shakeRetryAttempts = 0;
+            var visibleTablets = _vision.GetVisibleTablets();
+            while ((visibleTablets.Count() < 0) && (shakeRetryAttempts < MaxShakeRetryAttempts))
+            {
+                //_robot.Shake();
+                visibleTablets = _vision.GetVisibleTablets();
+                shakeRetryAttempts++;
+            }
+            return visibleTablets;
         }
 
         private void PlaceTablet(Tablet tablet, TabletMagazine mag)
