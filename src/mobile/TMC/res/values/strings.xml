@@ -59,5 +59,6 @@
     <string name="orderrow_orderownerlabel_tv">Owner:</string>
     <string name="orderrow_orderstatuslabel_tv">Status:</string>
     <string name="error">error</string>
+    <string name="module_logout">LOGOUT</string>
 
 </resources>
