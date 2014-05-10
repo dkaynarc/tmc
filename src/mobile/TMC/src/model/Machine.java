@@ -11,17 +11,15 @@ package model;
 public class Machine
 {
 	private String mMachineName = "";
-	private String mMachineType = "";
 	private String mMachineStatus = "";
 
 	/**
 	 * Constructor to initialize all the variables.
 	 */
 
-	public Machine(String machineName, String machineType, String machineStatus)
+	public Machine(String machineName, String machineStatus)
 	{
 		mMachineName = machineName;
-		mMachineType = machineType;
 		mMachineStatus = machineStatus;
 	}
 
@@ -34,18 +32,7 @@ public class Machine
 		mMachineName = machineName;
 	}
 
-	/**
-	 * Set the machine number.
-	 */
 
-	public void setMachineType(String machineType)
-	{
-		mMachineType = machineType;
-	}
-
-	/**
-	 * Set the machine type.
-	 */
 
 	public void setMachineStatus(String machineStatus)
 	{
@@ -61,14 +48,6 @@ public class Machine
 		return mMachineName;
 	}
 
-	/**
-	 * Get the machine type.
-	 */
-
-	public String getMachineType()
-	{
-		return mMachineType;
-	}
 
 	/**
 	 * Get the machine status.

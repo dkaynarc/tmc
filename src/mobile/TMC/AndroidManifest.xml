@@ -64,7 +64,10 @@
               android:enabled="true" 
               android:name="services.SynchService">
           </service>
-            
+          <service 
+              android:enabled="true" 
+              android:name="services.MachineUpdateService">
+          </service>            
        
     </application>
 

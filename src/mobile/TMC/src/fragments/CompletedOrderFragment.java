@@ -53,9 +53,8 @@ public class CompletedOrderFragment extends ListFragment
 	{
 		View rootView = inflater.inflate(R.layout.list_completed, container, false);
 
-		ArrayList<Order> orders = new ArrayList<Order>();
 		setListAdapter(new CompletedOrderAdapter(getActivity(),
-				R.layout.order_row, orders));
+				R.layout.order_row, new ArrayList<Order>()));
 		return rootView;
 	}
 
@@ -172,7 +171,7 @@ public class CompletedOrderFragment extends ListFragment
 	public void onStart()
 	{
 		receiver = new ResultReceiver();
-		getActivity().registerReceiver(receiver, new IntentFilter(Constants.UPDATE_COMPLETED_ORDERS_COMMAND));
+		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.UPDATE_COMPLETED_ORDERS_COMMAND)));
 
 		// update completed orders here
 		makeService(Constants.UPDATE_COMPLETED_ORDERS_COMMAND);	
@@ -196,11 +195,11 @@ public class CompletedOrderFragment extends ListFragment
 
 
 
-	private void makeService(String command)
+	private void makeService(int command)
 	{
 		Intent service = new Intent(getActivity(), services.SynchService.class);
 		Bundle parcel = new Bundle();
-		parcel.putString("command", command);
+		parcel.putInt("command", command);
 		service.putExtra("parcel", parcel);
 
 		// stop any already running services associated with this activity

@@ -48,7 +48,6 @@ public class OrderQueueFragment extends ListFragment
 {
 	MediaPlayer mMediaPlayer = new MediaPlayer();
 	private ResultReceiver receiver;
-	ArrayList<Order> incompleteOrders = new ArrayList<Order>();
 	private ProgressDialog pd;
 
 	
@@ -124,7 +123,7 @@ public class OrderQueueFragment extends ListFragment
 
 		// Replace list "orders" with the list of orders returned
 		setListAdapter(new OrderQueueAdapter(getActivity(), R.layout.order_row,
-			    incompleteOrders, onDeleteOrderClickListener));	
+			    new ArrayList<Order>(), onDeleteOrderClickListener));	
 		
 
 		return rootView;
@@ -247,11 +246,11 @@ public class OrderQueueFragment extends ListFragment
 	
 	
 	// ///////////////////////////////////////////////////////////////////////////
-	private void makeService(String command, int orderId)
+	private void makeService(int command, int orderId)
 	{
 		Intent service = new Intent(getActivity(), services.SynchService.class);
 		Bundle parcel = new Bundle();
-		parcel.putString("command", command);
+		parcel.putInt("command", command);
 		parcel.putString("orderId", Integer.toString(orderId));// this value will only be used if command is DELETE
 		service.putExtra("parcel", parcel);
 
@@ -339,7 +338,7 @@ public class OrderQueueFragment extends ListFragment
 													// received from the network
 		JSONArray jArray;
 		try {
-			   jArray = new JSONArray(response);
+			    jArray = new JSONArray(response);
 				
 		        for(int i = 0; i < jArray.length(); i ++)
 		        {
@@ -373,8 +372,8 @@ public class OrderQueueFragment extends ListFragment
 	public void onStart()
 	{
 		receiver = new ResultReceiver();
-		getActivity().registerReceiver(receiver, new IntentFilter(Constants.UPDATE_ORDERS_COMMAND));
-		getActivity().registerReceiver(receiver, new IntentFilter(Constants.DELETE_ORDER_COMMAND));
+		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.UPDATE_ORDERS_COMMAND)));
+		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.DELETE_ORDER_COMMAND)));
 		// update orders here
 		makeService(Constants.UPDATE_ORDERS_COMMAND, 0);	
 		super.onStart();

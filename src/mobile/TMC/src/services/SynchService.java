@@ -14,7 +14,7 @@ import android.os.Bundle;
 
 public class SynchService extends IntentService 
 {
-    private String urlString = "http://192.168.1.6:9000/api/Server/";
+    private String urlString = Constants.SERVER_URL;
     //private String urlString = "http://172.19.14.150:9000/api/Server/";    
     private int command;
 
@@ -31,33 +31,45 @@ public class SynchService extends IntentService
 	protected void onHandleIntent(Intent intent) 
 	{
 		Bundle parcel = intent.getBundleExtra("parcel");
-	    command = Integer.decode(parcel.getString("command"));
+	    command = parcel.getInt("command", 0);
 
 	    switch(command)
 	    {
 	      
-	    case 1://AUTHENTICATE
+	    case Constants.AUTHENTICATE_COMMAND:
 	    	  authenticate(parcel);
 	          break;
 	      
-	      case 2://NEW_ORDER
+	      case Constants.NEW_ORDER_COMMAND:
 	    	  placeNewOrder(parcel);
 	          break;
 	      
-	      case 3://UPDATE_ORDER_COMMAND
+	      case Constants.UPDATE_ORDERS_COMMAND:
 	    	  getOrders("incomplete");
 	    	  break;
 	     
-	      case 4://DELETE_ORDER_COMMAND
+	      case Constants.DELETE_ORDER_COMMAND:
 	    	  deleteOrder(parcel);
 	    	  break;
 	     
-	      case 5: //MODIFY_ORDER_COMMAND
+	      case Constants.MODIFY_ORDER_COMMAND:
 	    	  modifyOrder(parcel);
 	    	  break;
 
-	      case 6: //UPDATE_COMPLETED_ORDERS_COMMAND
+	      case Constants.UPDATE_COMPLETED_ORDERS_COMMAND:
 	    	  getOrders("complete");
+	    	  break;
+	    	  
+	     case Constants.EMERGENCY_STOP_COMMAND:
+	    	  emergencyStop();
+	    	  break;
+
+	     case Constants.START_COMMAND:
+	    	  machineStart();
+	    	  break;
+	    	  
+	     case Constants.STOP_COMMAND:
+	    	  machineStop();
 	    	  break;
 	    	  
 	      default:
@@ -74,6 +86,39 @@ public class SynchService extends IntentService
 	
 	
 
+
+
+
+   private void machineStop() 
+   {
+	   urlString +=  "StopScada" ; 
+	    
+	   String response =  connect(urlString);	
+	    
+	   notifyCaller(response);	
+   }
+
+
+
+   private void machineStart() 
+   {
+	   urlString +=  "StartScada" ; 
+	    
+	   String response =  connect(urlString);	
+	    
+	   notifyCaller(response); 	
+   }
+
+
+
+private void emergencyStop() 
+   {
+	   urlString +=  "EmergencyStopScada" ; 
+	    
+	   String response =  connect(urlString);	
+	    
+	   notifyCaller(response);
+   }
 
 
 
@@ -159,7 +204,7 @@ private void authenticate(Bundle parcel)
 		  URL url = new URL(urlStr);
 		  HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		  con.setRequestMethod("GET");
-		  con.setConnectTimeout(10000); // times out after 10 seconds
+		  con.setConnectTimeout(100000); // times out after 10 seconds
 		  con.setRequestProperty("Content-Type","application/json");
 		  con.setRequestProperty("Accept", "application/json");
 	      BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -196,34 +241,8 @@ private void authenticate(Bundle parcel)
 private void notifyCaller(String response) 
 {
 	Intent intent = new Intent();	
-	switch(command)
-	{
-	    case 1:
-		    intent.setAction(Constants.AUTHENTICATE_COMMAND);
-		    break;
-		
-		case 2:
-			intent.setAction(Constants.NEW_ORDER_COMMAND);
-			break;
-	
-		case 3:
-			intent.setAction(Constants.UPDATE_ORDERS_COMMAND);
-			break;
-			
-		case 4:
-			intent.setAction(Constants.DELETE_ORDER_COMMAND);
-			break;
-			
-		case 5:
-			intent.setAction(Constants.MODIFY_ORDER_COMMAND);
-			break;
-			
-		case 6:
-			intent.setAction(Constants.UPDATE_COMPLETED_ORDERS_COMMAND);
-			break;
-	}
 
-	
+    intent.setAction(Integer.toString(command));// sets broadcast receiver to which the message is to be sent		  	
 	intent.putExtra("command", Integer.toString(command));
 	intent.putExtra("result", response);	   
 	sendBroadcast(intent);

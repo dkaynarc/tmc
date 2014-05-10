@@ -46,7 +46,7 @@ public class LoginActivity extends Activity
 		
 		//////////////////		
 		receiver = new ResultReceiver();
-		this.registerReceiver(receiver, new IntentFilter(Constants.AUTHENTICATE_COMMAND));
+		this.registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.AUTHENTICATE_COMMAND)));
 		/////////////////
 		
 		turnedOn = true;
@@ -91,7 +91,7 @@ public class LoginActivity extends Activity
 		Bundle parcel = new Bundle();
 		parcel.putString("userName", userName);
 		parcel.putString("password", password);
-		parcel.putString("command", Constants.AUTHENTICATE_COMMAND);
+		parcel.putInt("command", Constants.AUTHENTICATE_COMMAND);
 		service.putExtra("parcel", parcel);
 		
 		// stop any already running services associated with this activity

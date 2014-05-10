@@ -2,6 +2,10 @@
 
 package ictd.activities;
 
+
+
+
+
 import adapters.ModuleAdapter;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -9,6 +13,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+
 
 /**
  * Implements the main activity, which is the module activity. It contains many
@@ -20,6 +25,7 @@ public class ModuleActivity extends FragmentActivity implements
 {
 	ModuleAdapter mModuleAdapter;
 	ViewPager mViewPager;
+	
 
 	/**
 	 * Sets the layout, action bar and pager adapter which is used to scroll
@@ -103,4 +109,5 @@ public class ModuleActivity extends FragmentActivity implements
 	{
 	}
 
+	
 }

@@ -126,7 +126,7 @@ public class ModifyOrderActivity extends Activity
       parcel.putString("orderName", order.getOrderName());
       parcel.putString("orderId", Integer.toString(order.getOrderId()));
       parcel.putString("status", order.getOrderStatus());
-      parcel.putString("command", Constants.MODIFY_ORDER_COMMAND);
+      parcel.putInt("command", Constants.MODIFY_ORDER_COMMAND);
       parcel.putString("black", Integer.toString(order.getColourNumber("black")));
       parcel.putString("blue", Integer.toString(order.getColourNumber("blue")));
       parcel.putString("green", Integer.toString(order.getColourNumber("green")));
@@ -183,7 +183,7 @@ public class ModifyOrderActivity extends Activity
       @Override
       public void onStart()
       {
-         IntentFilter filter = new IntentFilter(Constants.MODIFY_ORDER_COMMAND);
+         IntentFilter filter = new IntentFilter(Integer.toString(Constants.MODIFY_ORDER_COMMAND));
          receiver = new ResultReceiver();
          this.registerReceiver(receiver, filter);
          super.onStart();

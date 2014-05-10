@@ -2,23 +2,29 @@
 
 package fragments;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import model.Constants;
 import model.Machine;
-
 import ictd.activities.R;
-
 import adapters.MachineStatusAdapter;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +33,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
+
 
 /**
  * Sets the layout for the activity.
@@ -39,7 +47,9 @@ import android.widget.ListView;
 public class MachineStatusFragment extends ListFragment
 {
 	MediaPlayer mMediaPlayer = new MediaPlayer();
-
+	private ResultReceiver receiver;
+		private ProgressDialog pd;
+	
 	private OnClickListener onEmergencyStopClickListener = new OnClickListener() {
 		public void onClick(View view)
 		{
@@ -93,11 +103,12 @@ public class MachineStatusFragment extends ListFragment
 		}
 	};
 
+
 	/**
 	 * Implements the handler for the new threads created by the startup and
 	 * shutdown buttons. Only necessary for demonstration purposes.
 	 */
-	
+	/*
 	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
 		@Override
@@ -114,6 +125,9 @@ public class MachineStatusFragment extends ListFragment
 			}
 		}
 	};
+	*/
+
+
 
 	/**
 	 * Sets the layout for the activity.
@@ -134,8 +148,14 @@ public class MachineStatusFragment extends ListFragment
 				.setOnClickListener(onShutdownClickListener);
 		((Button) rootView.findViewById(R.id.machinelist_emergencystop_b))
 				.setOnClickListener(onEmergencyStopClickListener);
-		setListAdapter(new MachineStatusAdapter(getActivity(),
-				R.layout.machine_row, Constants.MACHINES));
+		
+		/*setListAdapter(new MachineStatusAdapter(getActivity(),
+				R.layout.machine_row, Constants.MACHINES));*/
+		
+		
+		/////////////////////////////////////////////////////////
+		setListAdapter(new MachineStatusAdapter(getActivity(), R.layout.machine_row, new ArrayList<Machine>()/*dummy array*/ ));
+		////////////////////////////////////////////////////////
 		return rootView;
 	}
 
@@ -172,9 +192,11 @@ public class MachineStatusFragment extends ListFragment
 	 * when sound finishes playing. Only used for demonstrative purposes, will
 	 * need some further implementation.
 	 */
+
 	
+		
 	public void startup()
-	{
+	{	
 		new Thread() {
 			@Override
 			public void run()
@@ -184,10 +206,13 @@ public class MachineStatusFragment extends ListFragment
 				while (mMediaPlayer.isPlaying())
 				{
 				}
-				mHandler.sendEmptyMessage(Constants.STARTUP);
+				/*mHandler.sendEmptyMessage(Constants.STARTUP);*/
 			}
 		}.start();
-	}
+			
+		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
+		makeMachineService(Constants.START_COMMAND);
+	}						
 
 	/**
 	 * Creates a new thread, plays the shutdown sound and then turns machines
@@ -206,9 +231,12 @@ public class MachineStatusFragment extends ListFragment
 				while (mMediaPlayer.isPlaying())
 				{
 				}
-				mHandler.sendEmptyMessage(Constants.SHUTDOWN);
+				/*mHandler.sendEmptyMessage(Constants.SHUTDOWN);*/
 			}
 		}.start();
+		
+		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
+		makeMachineService(Constants.STOP_COMMAND);		
 	}
 
 	/**
@@ -238,6 +266,7 @@ public class MachineStatusFragment extends ListFragment
 	{
 		MachineStatusAdapter adapter = (MachineStatusAdapter) getListView()
 				.getAdapter();
+		
 		Machine machine;
 		for (int i = 0; i < adapter.getCount(); i++)
 		{
@@ -255,7 +284,11 @@ public class MachineStatusFragment extends ListFragment
 	public void emergencyStop()
 	{
 		// Replace turnOff() with emergencyStop() method
-		turnOff();
+		/*turnOff();*/
+		///////////////
+		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
+		makeMachineService(Constants.EMERGENCY_STOP_COMMAND);
+		///////////////
 		playSound(R.raw.stop);
 	}
 
@@ -269,8 +302,270 @@ public class MachineStatusFragment extends ListFragment
 	{
 		if (mMediaPlayer.isPlaying())
 			mMediaPlayer.stop();
-		mMediaPlayer = MediaPlayer.create(getActivity(), soundId);
-		mMediaPlayer.setLooping(false);
-		mMediaPlayer.start();
+		    mMediaPlayer = MediaPlayer.create(getActivity(), soundId);
+		    mMediaPlayer.setLooping(false);
+		    mMediaPlayer.start();
 	}
+	
+	
+	
+   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   // private class 
+   private class ResultReceiver extends BroadcastReceiver
+   {
+     @Override
+     public void onReceive(Context context, Intent intent)
+     {
+    	 if(pd != null)
+    		 pd.dismiss();
+    	 
+    	 String response = intent.getStringExtra("result");
+         switch(Integer.decode(intent.getStringExtra("command")))
+          {
+            case 7:
+             handleMachineStatus(response);
+             break;
+          
+            case 8:
+        	  handleEmergencyStop(response);
+              break;
+              
+            case 9:
+            	handleStart(response);
+                break;
+            
+            case 10:
+        	  handleStop(response);
+              break;
+              
+              
+          }
+       }
+     }
+
+	
+	private void handleStop(String response) 
+	{
+		  if(response.equalsIgnoreCase("\"success\""))
+		  {
+			  Toast.makeText(getActivity(), Constants.STOP_SUCCESS, Toast.LENGTH_SHORT).show();
+		      turnOff();
+		  }  
+		  
+		  else
+		   Toast.makeText(getActivity(), Constants.STOP_FAIL, Toast.LENGTH_SHORT).show();	  
+
+	}
+
+	private void handleStart(String response) 
+	{
+		  if(response.equalsIgnoreCase("\"success\""))
+		  {
+			  Toast.makeText(getActivity(), Constants.START_SUCCESS, Toast.LENGTH_SHORT).show();
+		      turnOn();
+		  }  
+		  
+		  else
+		   Toast.makeText(getActivity(), Constants.START_FAIL, Toast.LENGTH_SHORT).show();	  
+	}
+   
+   
+   private void handleEmergencyStop(String response) 
+	{
+	  if(response.equalsIgnoreCase("\"success\""))
+	  {
+		  Toast.makeText(getActivity(), Constants.STOP_SUCCESS, Toast.LENGTH_SHORT).show();
+	      turnOff();
+	  }  
+	  
+	  else
+	   Toast.makeText(getActivity(), Constants.STOP_FAIL, Toast.LENGTH_SHORT).show();	  
+	}
+
+
+     private void handleMachineStatus(String response) 
+     {
+       ArrayList<Machine> newStats = new ArrayList<Machine>();
+       try 
+       {
+             JSONArray arr = new JSONArray(response);
+
+             for(int i = 0; i < arr.length(); i ++)
+             {
+                JSONObject jObj = arr.getJSONObject(i);
+
+                newStats.add(new Machine(jObj.getString("Name"), 
+                                                 jObj.getString("Status")));
+            } 
+         } 
+         
+       catch (JSONException e) 
+         {
+             e.printStackTrace();
+             return;
+         }
+      
+       // check whether status of any machine changed
+             
+      MachineStatusAdapter adapter = (MachineStatusAdapter)getListView().getAdapter();
+
+      if(adapter.getCount() != 0 && newStats.size() != 0)
+      {
+            doStatusCheck(adapter,newStats);       
+            Toast.makeText(getActivity(), "Updated machine status", Toast.LENGTH_SHORT).show();// to be removed
+      }
+      
+      adapter.clear();
+      adapter.addAll(newStats);
+      adapter.notifyDataSetChanged();
+}
+
+
+
+
+
+  private void doStatusCheck(MachineStatusAdapter adapter, ArrayList<Machine> newStats) 
+  {
+	  ArrayList<Machine> changedMach = new ArrayList<Machine>();
+      
+      for(int i = 0; i < adapter.getCount(); i++ )
+       {
+    	 if(! newStats.get(i).getMachineStatus().equalsIgnoreCase(
+    			                                  ((Machine)adapter.getItem(i)).getMachineStatus()))
+    	 {
+    		 changedMach.add(adapter.getItem(i));    		 
+    	 }
+    	   
+       }
+       
+      if(changedMach.size() != 0)
+         showAlertDialog(buildMessage(changedMach));
+  }
+
+  
+  
+  
+  private String buildMessage(ArrayList<Machine> changedMach) 
+  {
+    StringBuilder message = new StringBuilder();
+	for(Machine mach : changedMach)
+	{
+		message.append("\n\r" + mach.getMachineName());
+	}
+	
+		return message.toString();
+	}
+
+  
+      @Override
+      public void onStart()
+      {
+         super.onStart();
+         receiver = new ResultReceiver();
+         getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.MACHINE_STATUS_COMMAND)));		
+         getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.STOP_COMMAND)));
+         getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.START_COMMAND)));
+         getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.EMERGENCY_STOP_COMMAND)));
+         
+         //initial fill of the view with machine status info
+         makeMachineService(Constants.MACHINE_STATUS_COMMAND);
+         startTimer(Constants.UPDATE_INTERVAL);
+
+      }
+
+
+
+     public void makeMachineService(int command)
+     {
+    	 Intent service;
+		
+    	 if(command == Constants.MACHINE_STATUS_COMMAND)
+           service = new Intent(getActivity(), services.MachineUpdateService.class);
+    	 
+    	 else     	 
+    		 service = new Intent(getActivity(), services.SynchService.class);
+    	 
+         Bundle parcel = new Bundle();
+         parcel.putInt("command", command);
+         service.putExtra("parcel", parcel);
+
+         //getActivity().stopService(service);
+         getActivity().startService(service);	
+     }
+
+
+
+     @Override
+     public void onStop()
+     {
+       super.onStop();
+       getActivity().unregisterReceiver(receiver);
+      
+     }
+
+
+      private void showAlertDialog(String message) 
+      {
+         new AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_delete)
+
+         .setTitle(Constants.ATTENTION).setMessage("The status of the following machinery changed: " + message)
+
+         .setNegativeButton(Constants.OK, new DialogInterface.OnClickListener() {
+             public void onClick(DialogInterface dialog, int id)
+             {
+               dialog.cancel();
+             }
+             }).show();
+       }
+
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+  private void startTimer(long i)
+  {
+	new Timer().execute(i);		
+  }
+
+
+
+private class Timer  extends AsyncTask<Long, Object, Object>
+{ 
+	@Override
+	protected String doInBackground(Long...params)
+	{
+		  try
+	    	{
+		    	Thread.sleep(params[0]);
+		    	return "done";
+	    	 }
+		      
+		  catch (InterruptedException e) 
+		    {
+		        e.printStackTrace();
+		        return "done";
+		    }
+	}
+	
+	
+	
+	@Override
+	protected void onPostExecute(Object result)
+	{
+	   //this creates regular updates of the view
+       makeMachineService(Constants.MACHINE_STATUS_COMMAND);
+       startTimer(Constants.UPDATE_INTERVAL);
+	}
+
+
+}
+
+
 }
