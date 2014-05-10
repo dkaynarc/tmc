@@ -88,4 +88,5 @@ public class Constants
 	public static final int START_COMMAND = 9;
 	public static final int STOP_COMMAND = 10;
 	public static final String SERVER_URL = "http://192.168.1.6:9000/api/Server/";	
+	public static final String ENVIRONMENT = "ENVIRONMENT";
 }

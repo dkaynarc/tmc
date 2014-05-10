@@ -32,7 +32,7 @@
         </activity>
 
          <activity
-            android:name=".LogoutFragment"
+            android:name=".EnvironmentFragment"
             android:label="@string/title_order_list" >
         </activity>
         

@@ -16,15 +16,11 @@
     <string name="title_selection">Selection</string>
     <string name="title_order_list">Order List</string>
     <string name="title_activity_module">TMC</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
     <string name="list_nodata">No Data.</string>
     <string name="orderrow_ordername_tv">Name: </string>
     <string name="orderrow_ordernumber_tv">Number: </string>
     <string name="orderrow_orderstatus_tv">Status: </string>
     <string name="title_activity_create_order">CreateOrderActivity</string>
-    <string name="hello_world">Hello world!</string>
     <string name="createorder_title_tv">Create Order</string>
     <string name="createorder_ordername_tv">Order Name:</string>
     <string name="createorder_ordernumber_tv">Order Number:</string>
@@ -40,7 +36,6 @@
     <string name="machinelist_shutdown_b">Shutdown</string>
     <string name="machinelist_startup_b">Startup</string>
     <string name="machinelist_emergencystop_b">Emergency Stop</string>
-    <string name="logout_logout_b">Logout</string>
     <string name="title_activity_modify_order">ModifyOrderActivity</string>
     <string name="modifyorder_title_tv">Modify Order</string>
     <string name="modifyorder_ordername_tv">Order Name:</string>
@@ -59,5 +54,11 @@
     <string name="orderrow_orderownerlabel_tv">Owner:</string>
     <string name="orderrow_orderstatuslabel_tv">Status:</string>
     <string name="error">error</string>
+    <string name="module_logout">LOGOUT</string>
+    <string name="environment_dustlabel_tv">Dust:</string>
+    <string name="environment_humiditylabel_tv">Humidity:</string>
+    <string name="environment_lightlabel_tv">Light:</string>
+    <string name="environment_soundlabel_tv">Sound:</string>
+    <string name="environment_temperaturelabel_tv">Temperature:</string>
 
 </resources>

@@ -4,7 +4,7 @@ package adapters;
 
 import model.Constants;
 import fragments.CompletedOrderFragment;
-import fragments.LogoutFragment;
+import fragments.EnvironmentFragment;
 import fragments.MachineStatusFragment;
 import fragments.OrderQueueFragment;
 import android.os.Bundle;
@@ -46,7 +46,7 @@ public class ModuleAdapter extends FragmentPagerAdapter
 			fragment = new CompletedOrderFragment();
 			break;
 		default:
-			fragment = new LogoutFragment();
+			fragment = new EnvironmentFragment();
 		}
 		Bundle args = new Bundle();
 		fragment.setArguments(args);
@@ -79,7 +79,7 @@ public class ModuleAdapter extends FragmentPagerAdapter
 		case 2:
 			return Constants.COMPLETED_ORDERS;
 		case 3:
-			return Constants.LOGOUT;
+			return Constants.ENVIRONMENT;
 		}
 		return null;
 	}
