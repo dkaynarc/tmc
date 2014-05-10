@@ -25,6 +25,7 @@ namespace Tmc.Vision
         public SorterVision(Camera camera)
         {
             this.camera = camera;
+            //do calibration
         }
 
         public List<Tablet> GetVisibleTablets()

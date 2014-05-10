@@ -57,7 +57,7 @@
             // 
             this.Npar1.Location = new System.Drawing.Point(43, 420);
             this.Npar1.Maximum = new decimal(new int[] {
-            500,
+            1000,
             0,
             0,
             0});
