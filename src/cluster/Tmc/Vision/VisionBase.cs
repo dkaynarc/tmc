@@ -236,6 +236,16 @@ namespace Tmc.Vision
             return dst;
         }
 
+        public Image<Bgr, Byte> CropImage(Image<Bgr, Byte> src, int x, int y, int width, int height)
+        {
+            Rectangle rect = new Rectangle();
 
+            rect.X = x;
+            rect.Y = y;
+            rect.Width = width;
+            rect.Height = height;
+
+            return src.GetSubRect(rect);
+        }
     }
 }

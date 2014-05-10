@@ -91,19 +91,35 @@ namespace Tmc.Vision
             CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
             
             DetectTray();
-            CvInvoke.cvShowImage(win1, imgTray); //Show the image
+
+            Image<Bgr, Byte> src = CropImage(img, 0, 300, img.Cols, 380);
+
+            foreach (Point traypoint in trayPoints)
+            {
+                Rectangle rect = new Rectangle();
+                rect.X = traypoint.X;
+                rect.Y = traypoint.Y;
+                rect.Width = 2;
+                rect.Height = 2;
+                src.Draw(rect, new Bgr(Color.Red), 6);
+            }
+
+            CvInvoke.cvShowImage(win1, src); //Show the image
+
             CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
             DetectTabletsInTray();
             DetectTabletType();
             CvInvoke.cvDestroyWindow(win1); //Destory the window
         }
 
+        public enum pMinMax { Max = 0, Min };
+
         private bool DetectTray()                
         {
             Rectangle rect = new Rectangle();
             Point[] line = new Point[2];
 
-            Image<Bgr, Byte> src = CropImage(img,0, 350, img.Cols, 320);
+            Image<Bgr, Byte> src = CropImage(img,0, 300, img.Cols, 380);
             //
             Hsv[] HSVT = new Hsv[2];
             HSVT[(int)HSVRange.Low].Hue           = 19.5;
@@ -121,7 +137,21 @@ namespace Tmc.Vision
             double Mag = Math.Sqrt(Math.Pow((line[0].X - line[1].X),2) + Math.Pow((line[0].Y - line[1].Y),2) );
             CvInvoke.cvShowImage("Test Window", col); //Show the image
             CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
-            int a = 0;
+            //int a = 0;
+            int x = line[0].Y - line[1].Y;
+            int y = line[0].X - line[1].X;
+
+            trayPoints[1].X = line[1].X;
+            trayPoints[1].Y = line[1].Y;
+
+            trayPoints[3].X = line[0].X;
+            trayPoints[3].Y = line[0].Y;
+
+            trayPoints[0].X = (line[1].X - x);
+            trayPoints[0].Y = (line[1].Y + y);
+
+            trayPoints[2].X = (line[0].X - x);
+            trayPoints[2].Y = (line[0].Y + y);
                 //350,670
             //trayPoints[0].X = 82;//92/65, 271,227
             //trayPoints[0].Y = 55;
@@ -262,17 +292,7 @@ namespace Tmc.Vision
 
         }
 
-        public Image<Bgr, Byte> CropImage(Image<Bgr, Byte> src, int x, int y, int width, int height)
-        {
-            Rectangle rect = new Rectangle();
-
-            rect.X = x;
-            rect.Y = y;
-            rect.Width = width;
-            rect.Height = height;
-
-            return src.GetSubRect(rect);
-        }
+        
 
      //   public enum Side { Left = 0, Right };
 
@@ -284,33 +304,33 @@ namespace Tmc.Vision
             //int Col;
             Gray gray;
 
-            Point[] line = new Point[2];
-            line[0].X = 0;
-            line[0].Y = 0;
+            Point[] minMax = new Point[2];
+            minMax[0].X = 0;
+            minMax[0].Y = 0;
 
-            line[1].X = src.Cols;
-            line[1].Y = src.Rows;
+            minMax[1].X = src.Cols;
+            minMax[1].Y = src.Rows;
 
             for(int row = 0; row < src.Rows;row++)
             {
                 for(int col = 0; col < src.Cols;col++)
                 {
                     gray = src[row,col];
-                    if((line[0].X < col) && (gray.Intensity == 255))
+                    if((minMax[0].X < col) && (gray.Intensity == 255))
                     {
-                        line[0].X = col;
+                        minMax[0].X = col;
                     }
-                    if((line[0].Y < row) && (gray.Intensity == 255))
+                    if((minMax[0].Y < row) && (gray.Intensity == 255))
                     {
-                        line[0].Y = row;
+                        minMax[0].Y = row;
                     }
-                    if((line[1].X > col) && (gray.Intensity == 255))
+                    if((minMax[1].X > col) && (gray.Intensity == 255))
                     {
-                        line[1].X = col;
+                        minMax[1].X = col;
                     }
-                    if((line[1].Y > row) && (gray.Intensity == 255))
+                    if((minMax[1].Y > row) && (gray.Intensity == 255))
                     {
-                        line[1].Y = row;
+                        minMax[1].Y = row;
                     }
 
                 }
