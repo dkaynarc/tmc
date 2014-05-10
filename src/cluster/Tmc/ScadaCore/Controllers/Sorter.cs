@@ -74,7 +74,7 @@ namespace Tmc.Scada.Core
             var status = ControllerOperationStatus.Succeeded;
             try
             {
-                var visibleTablets = GetVisibleTablets();
+                var visibleTablets = this.GetVisibleTablets();
                 foreach (var tablet in visibleTablets)
                 {
                     if (mag.IsFull() || ct.IsCancellationRequested)
@@ -85,11 +85,7 @@ namespace Tmc.Scada.Core
                     if (!mag.IsSlotFull(tablet.Color))
                     {
                         PlaceTablet(tablet, mag);
-                        visibleTablets = _vision.GetVisibleTablets();
-                    }
-                    else
-                    {
-                        continue;
+                        visibleTablets = this.GetVisibleTablets();
                     }
                 }
             }
