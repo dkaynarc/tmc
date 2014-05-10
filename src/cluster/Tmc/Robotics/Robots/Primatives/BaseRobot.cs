@@ -10,7 +10,7 @@ using Tmc.Common;
 
 namespace Tmc.Robotics
 {
-    public class BaseRobot : IRobot
+    public abstract class BaseRobot : IRobot
     {
         public string Name { get; set; }
         public IPAddress RobotIPAddress { get; set; }
@@ -21,7 +21,7 @@ namespace Tmc.Robotics
 
         private EventWaitHandle _eventWait = new AutoResetEvent(false);
 
-        public BaseRobot() { }
+        internal BaseRobot() { }
 
         public HardwareStatus GetStatus()
         {
@@ -83,10 +83,15 @@ namespace Tmc.Robotics
         {
             if (this.Controller.OperatingMode != ControllerOperatingMode.Auto)
             {
-                throw new Exception(string.Format("Robot {0} is not in autonomous mode", this.RobotIPAddress));
+                throw new Exception(string.Format("Robot {0} is not in autonomous mode. Rotate the Mode switch on the robot controller into Autonomous Mode", this.Name));
             }
 
-            var filePath = Controller.FileSystem.LocalDirectory + "\\modFiles\\" + filename;
+            if (this.Controller.State != ControllerState.MotorsOn)
+            {
+                throw new Exception(string.Format("Robot {0} motors are not on. Press the white flashing button on the robot controller to enable motors", this.Name));
+            }
+
+            var filePath = Controller.FileSystem.LocalDirectory + "\\mod\\" + filename;
 
             if (!File.Exists(filePath))
             {
@@ -106,6 +111,21 @@ namespace Tmc.Robotics
             this._eventWait.WaitOne();
 
             this.Controller.FileSystem.RemoveFile(filename);
+        }
+
+        protected void RunRapidProgram(string filename, IDictionary<string, string> parameters)
+        {
+            var directory = Directory.GetCurrentDirectory() + "\\mod\\";
+            var text = File.ReadAllText(directory + filename);
+
+            foreach(var parameter in parameters)
+            {
+                text = text.Replace(parameter.Key, parameter.Value);
+            }
+
+            File.WriteAllText(directory + "_temp.mod", text);
+
+            this.RunRapidProgram("_temp.mod");
         }
 
         private void BeginControl()
