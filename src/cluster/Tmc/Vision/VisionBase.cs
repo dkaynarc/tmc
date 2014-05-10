@@ -19,11 +19,30 @@ namespace Tmc.Vision
         //public enum TabletColors { Green, Red, White, Blue, Black, Unknown, None };
         public enum HSVRange { Low = 0, High };
 
+
+        /// <summary>
+        /// This Function lets us detect circles in an image
+        /// </summary>
+        /// <returns>
+        /// it return an CircleF[] which is an array of circles which detected in the image
+        /// </returns>
+        /// <param name="src">
+        /// THis is the input image in which we want to find the circles
+        /// </param>
+        /// <param name="minCircle">
+        /// smallest circle diameter that will be detected, note this is in pixcels
+        /// </param>
+        /// <param name="maxCircle">
+        /// biggest circle diameter that will be detected, note this is in pixcels
+        /// </param>
+        /// <param name="cannyThresh">
+        /// 
+        /// </param>
+        /// <param name="cannyAccumThresh">
+        /// 
+        /// </param>
         public CircleF[] DetectTablets(Image<Bgr, Byte> src, int minCircle, int maxCircle, double par3, double par4, int cannyThresh, int cannyAccumThresh, Form1 f)
         {
-            //CircleF[] circle  = ;
-            //string win1 = "Test Window"; //The name of the window
-            //CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
             Image<Gray, Byte> graySoft = src.Convert<Gray, Byte>();
             Image<Gray, Byte> gray = graySoft;
 
@@ -33,82 +52,6 @@ namespace Tmc.Vision
 
             Image<Gray, Byte> cannyEdges = gray.Canny(cannyThreshold.Intensity, cannyThresholdLinking.Intensity);
 
-
-
-            //HaarCascade My_Haar_Cascade = new HaarCascade("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cascade classifier - Copy/tray5.xml");
-            //Image<Gray, byte> img = new Image<Gray, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cascade classifier/to be croped/samp4.jpg");//to be croped/tape9.jpg");
-            //Image<Gray, Byte> cannyEdges2 = img.Canny(cannyThreshold.Intensity, cannyThresholdLinking.Intensity);
-            //CvInvoke.cvSmooth(cannyEdges2, cannyEdges2, SMOOTH_TYPE.CV_GAUSSIAN, 13, 13, 1.5, 1);
-            //cannyEdges2 = cannyEdges2.Resize(cannyEdges2.Cols / 3, cannyEdges2.Rows/3, Emgu.CV.CvEnum.INTER.CV_INTER_LINEAR);//divide by 3
-            //cannyEdges2 = cannyEdges2.Resize(cannyEdges2.Cols*3 , cannyEdges2.Rows*3 , Emgu.CV.CvEnum.INTER.CV_INTER_LINEAR);//divide by 3
-            //cannyEdges2.
-            //wide     187
-            //hirght   167
-            //Point[] left = new Point[180];//40 - 200
-            //int t, b;
-            //for (int i = 0; i < 180; i++)
-            //{
-            //    left[i].Y = 33 + i;
-            //    //left[i].X = scanImg(cannyEdges2, 33 + i, Side.Left);
-            //    if ((left[i].X > 200) && (left[i].Y < 130))
-            //    {
-            //        t = left[i].Y;
-            //    }
-            //    else if ((left[i].X > 200) && (left[i].Y > 130))
-            //    {
-            //        b = left[i].Y;
-            //        break;
-            //    }
-            //    //imgC.Draw(qwe.rect, new Bgr(Color.Blue), 1);
-            //}//cannyEdges2
-            //MCvAvgComp[] trayDetect = My_Haar_Cascade.Detect(img, 1.1, 4, Emgu.CV.CvEnum.HAAR_DETECTION_TYPE.SCALE_IMAGE, new Size(30, 30), new Size(70, 70));
-            // MCvAvgComp[][] trayDetect = img.HaarCascade.Detect(My_Haar_Cascade, 1.01, 5, Emgu.CV.CvEnum.HAAR_DETECTION_TYPE.SCALE_IMAGE, new Size(35, 32));
-
-            //MCvAvgComp[][] trayDetect = img.DetectHaarCascade(My_Haar_Cascade, 1.01, 5, Emgu.CV.CvEnum.HAAR_DETECTION_TYPE.SCALE_IMAGE, new Size(35, 32));
-            //Image<Bgr, byte> imgC = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cascade classifier/to be croped/samp4.jpg");
-            //foreach (MCvAvgComp qwe in trayDetect)
-            //{
-            //    //img.ROI = qwe.rect;
-            //    imgC.Draw(qwe.rect, new Bgr(Color.Blue), 2);
-            //}
-            //img.ROI = trayDetect.rect;
-            //RectanglesMarker marker = new RectanglesMarker(objects, Color.Fuchsia);
-            /*foreach (MCvAvgComp trayDet in trayDetect[0])
-            {
-                img.Draw(traydet, new Bgr(Color.Red), 2);
-            }*/
-
-            //for (int i = 0; i < cannyEdges2.Cols; i++)
-            //{
-            //    for (int j = 0; j < cannyEdges2.Rows; j++)
-            //    {
-            //        Gray grayz = cannyEdges2[j, i];
-            //        if (grayz.Intensity > 50)
-            //        {
-            //            grayz.Intensity = 255;
-            //            cannyEdges2[j, i] = grayz;
-            //        }
-            //        else
-            //        {
-            //            grayz.Intensity = 0;
-            //            cannyEdges2[j, i] = grayz;
-            //        }
-            //    }
-            //}
-            //Hsv[] HSVT = new Hsv[2];
-            //HSVT[(int)HSVRange.Low].Hue           = 19.5;
-            //HSVT[(int)HSVRange.Low].Satuation     = 145.24;
-            //HSVT[(int)HSVRange.Low].Value         = 183.68;
-            //HSVT[(int)HSVRange.High].Hue          = 29;
-            //HSVT[(int)HSVRange.High].Satuation    = 331.92;
-            //HSVT[(int)HSVRange.High].Value        = 360;
-
-            //Image<Bgr, byte> imgC2 = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/trayY2.jpg");
-            //imgC2 = imgC2.Resize(653, 490, Emgu.CV.CvEnum.INTER.CV_INTER_LINEAR);//divide by 3
-
-            //Image<Bgr, Byte> col = RemoveEverythingButRange(src, HSVT);
-            //CvInvoke.cvShowImage(win1, col);
-            //CvInvoke.cvWaitKey(0);
             f.pictureBox1_draw(gray);
             CircleF[] circles = gray.HoughCircles(
                 cannyThreshold,
@@ -129,7 +72,7 @@ namespace Tmc.Vision
             CvInvoke.cvWaitKey(40);//remove move later
             return circles;
         }
-
+        /*
         public void calibration(Image<Bgr, byte> src)
         {
             const int width = 9;
@@ -139,8 +82,24 @@ namespace Tmc.Vision
             Image<Gray, Byte>[] Frame_array_buffer = new Image<Gray, byte>[100];
             MCvPoint3D32f[][] corners_object_list = new MCvPoint3D32f[Frame_array_buffer.Length][];
             PointF[][] corners_points_list = new PointF[Frame_array_buffer.Length][];
-        }
+        }*/
 
+
+        /// <summary>
+        /// This function tells us what color the source image is
+        /// </summary>
+        /// <param name="src">
+        /// Input image of whichw e want to determin the color
+        /// </param>
+        /// <param name="HSVTabletColourRange">
+        /// 2d array containing all the color ranges of tablets also has min and max for each colour, uses HSV color range
+        /// </param>
+        /// <returns>
+        /// Returns the colour of the tablet with enum TabletColors
+        /// </returns>
+        /// <todo>
+        /// add the ol, oh into the function
+        /// </todo>
         public TabletColors detectColour(Image<Bgr, byte> src, Hsv[,] HSVTabletColourRange)
         {
             int ol = 5;
@@ -177,7 +136,30 @@ namespace Tmc.Vision
             }
         }
 
-
+        /// <summary>
+        /// Tells us if the the HSV color is in range
+        /// </summary>
+        /// <param name="srcHsv">
+        /// The HSV values we want to check are in range
+        /// </param>
+        /// <param name="targetHsv">
+        /// The range that we want the color to be in
+        /// </param>
+        /// <param name="colour">
+        /// THe color that we want it to be in range of since the 'targetHsv' can be indexed for colors
+        /// </param>
+        /// <param name="lowerLimitExtra">
+        /// how much extra lower we want se the lower side of the range
+        /// </param>
+        /// <param name="higherLimitExtra">
+        /// How much higher we want o set higer side of the range
+        /// </param>
+        /// <returns>
+        /// returns true if it is in range, false if it is not
+        /// </returns>
+        /// <todo>
+        /// make lowerLimitsExtra in to HSV or make overload for it
+        /// </todo>
         public bool InHSVRange(Hsv srcHsv, Hsv[,] targetHsv, TabletColors colour, int lowerLimitExtra, int higherLimitExtra)
         {
             return ((srcHsv.Hue >= (targetHsv[(int)colour, (int)HSVRange.Low].Hue - lowerLimitExtra)) &&             //lower values
@@ -188,6 +170,24 @@ namespace Tmc.Vision
                 (srcHsv.Value <= (targetHsv[(int)colour, (int)HSVRange.High].Value + higherLimitExtra)));
         }
 
+        /// <summary>
+        /// Tells us if the the HSV color is in range
+        /// </summary>
+        /// <param name="srcHsv">
+        /// The HSV values we want to check are in range
+        /// </param>
+        /// <param name="targetHsv">
+        /// The range that we want the color to be in
+        /// </param>
+        /// <param name="lowerLimitExtra">
+        /// how much extra lower we want se the lower side of the range
+        /// </param>
+        /// <param name="higherLimitExtra">
+        /// How much higher we want o set higer side of the range
+        /// </param>
+        /// <returns>
+        /// returns true if it is in range, false if it is not
+        /// </returns>
         public bool InHSVRange(Hsv srcHsv, Hsv[] targetHsv, int lowerLimitExtra, int higherLimitExtra)
         {
             return ((srcHsv.Hue >= (targetHsv[(int)HSVRange.Low].Hue - lowerLimitExtra)) &&             //lower values
@@ -198,20 +198,30 @@ namespace Tmc.Vision
                 (srcHsv.Value <= (targetHsv[(int)HSVRange.High].Value + higherLimitExtra)));
         }
 
-
+        /// <summary>
+        /// This function allows you to remove everything(change to black) in a image apart from the color you want(change to white)
+        /// </summary>
+        /// <param name="src">
+        /// Image that you want to remove every colour apart from yours
+        /// </param>
+        /// <param name="targetHsv">
+        /// THe color range you don't want to be removed, need specify high and low values, uses HSV color range
+        /// </param>
+        /// <returns>
+        /// Returns the image with everything removed apart from what you wanted
+        /// </returns>
         public Image<Bgr, Byte> RemoveEverythingButRange(Image<Bgr, Byte> src, Hsv[] targetHsv)//, Hsv colorGood, Hsv colorBad)
         {
             Image<Hsv, Byte> temp = src.Convert<Hsv, Byte>();
             Image<Bgr, Byte> dst;
             Hsv currentPixcelHSV;
 
-            Hsv colorGood = new Hsv();
-            //colorGood = new Hsv;
+            Hsv colorGood = new Hsv();//color we use to replace the correct data
             colorGood.Hue = 0;
             colorGood.Value = 255;
             colorGood.Satuation = 0;
 
-            Hsv colorBad = new Hsv();
+            Hsv colorBad = new Hsv();//color we use to replace the not wanted colors
             colorBad.Hue = 0;
             colorBad.Value = 0;
             colorBad.Satuation = 0;
@@ -222,20 +232,43 @@ namespace Tmc.Vision
                 {
                     currentPixcelHSV = temp[j, i];
                     if (InHSVRange(currentPixcelHSV, targetHsv, 10, 20) == true)
-                    {//make colour specified if all true
+                    {//make white if we are in range
                         temp[j, i] = colorGood;
                     }
                     else
-                    {//make black
-                        //temp[j, i].Hue
+                    {//make black otherwise
                         temp[j, i] = colorBad;
                     }
                 }
             }
-            dst = temp.Convert<Bgr, Byte>();
+            dst = temp.Convert<Bgr, Byte>();//covert back to BGR
             return dst;
         }
 
+        /// <summary>
+        /// crops image to wanted size
+        /// </summary>
+        /// <param name="src">
+        /// image that will be croped
+        /// </param>
+        /// <param name="x">
+        /// The starting X location
+        /// </param>
+        /// <param name="y">
+        /// Starting Y location
+        /// </param>
+        /// <param name="width">
+        /// How wide we want to crop from origin that we set
+        /// </param>
+        /// <param name="height">
+        /// How high we want to crop from origin that we set
+        /// </param>
+        /// <returns>
+        /// returns croped image
+        /// </returns>
+        /// <todo>
+        /// add error check if croping is done outside range
+        /// </todo>
         public Image<Bgr, Byte> CropImage(Image<Bgr, Byte> src, int x, int y, int width, int height)
         {
             Rectangle rect = new Rectangle();

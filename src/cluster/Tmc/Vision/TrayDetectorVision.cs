@@ -78,7 +78,13 @@ namespace Tmc.Vision
             //this.camera.ConnectionString = new Uri(@"http://192.168.0.243/ci-bin/video.jpg?size=2");
         }
 
-        public void GetTabletsInTray()
+        /// <summary>
+        /// This function is resoncible for working out the state of trays
+        /// </summary>
+        /// <returns>
+        /// it returns the state of the tray
+        /// </returns>
+        public Tray<Tablet> GetTabletsInTray()
         {
             //img = camera.GetImage();
             img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/trayY4.jpg");
@@ -110,6 +116,8 @@ namespace Tmc.Vision
             DetectTabletsInTray();
             DetectTabletType();
             CvInvoke.cvDestroyWindow(win1); //Destory the window
+
+            return trayList;
         }
 
         public enum pMinMax { Max = 0, Min };
@@ -180,6 +188,7 @@ namespace Tmc.Vision
 
                 f.getValue(ref minCircle, ref maxCircle, ref par3, ref par4, ref cannyThresh,ref cannyAccumThresh);
                 tablets = DetectTablets(imgTray, minCircle, maxCircle, par3, par4, cannyThresh, cannyAccumThresh, f);
+                 
             }
         }
 
@@ -194,9 +203,6 @@ namespace Tmc.Vision
             TabletColors tabletColour;
             int cellInTray;
 
-            //int[] cellsTablets = {6,6,6,6,6,6,6,6,6};//6 is defualt means nothing is in the cell 
-
-            //trayList.Cells[0] = new Tablet { Color = TabletColors.Green };
 
             foreach (CircleF tablet in tablets)
             {
