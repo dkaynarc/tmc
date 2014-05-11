@@ -79,7 +79,7 @@
             // 
             // orderListBindingSource
             // 
-            this.orderListBindingSource.DataSource = typeof(TmcData.OrderList);
+            this.orderListBindingSource.DataSource = typeof(TmcData.OrderListView);
             this.orderListBindingSource.CurrentChanged += new System.EventHandler(this.orderListBindingSource_CurrentChanged);
             // 
             // orderIDDataGridViewTextBoxColumn

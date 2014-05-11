@@ -17,9 +17,9 @@ namespace Tmc.Scada.App
         {
             InitializeComponent();
 
-            orderListBindingSource.DataSource = new List<OrderList>() 
+            orderListBindingSource.DataSource = new List<OrderListView>() 
             {
-                new OrderList()
+                new OrderListView()
                 {
                     OrderID = 1,
                     Name = "User",
