@@ -53,6 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Order.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Order.Designer.cs">
+      <DependentUpon>Order.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -61,6 +67,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Order.resx">
+      <DependentUpon>Order.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -75,6 +84,7 @@
       <Link>App.Config</Link>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\TmcData.OrderList.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -89,6 +99,10 @@
     <ProjectReference Include="..\ScadaCore\ScadaCore.csproj">
       <Project>{5b8926dd-dd25-4531-ac23-2b31cb9774d4}</Project>
       <Name>ScadaCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TmcData\TmcData.csproj">
+      <Project>{4a0d0977-fae7-47af-88a6-7779f6ead528}</Project>
+      <Name>TmcData</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
