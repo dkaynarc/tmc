@@ -16,7 +16,7 @@ namespace Tmc.Vision
 {
     public abstract class VisionBase
     {
-        //public enum TabletColors { Green, Red, White, Blue, Black, Unknown, None };
+        
         public enum HSVRange { Low = 0, High };
 
 
@@ -61,14 +61,18 @@ namespace Tmc.Vision
                 minCircle,
                 maxCircle
                 )[0]; //Get the circles from the first channel
-            CvInvoke.cvWaitKey(0);
+
+            #if true
             Image<Bgr, Byte> a = src.Clone();
+
             foreach (CircleF circle in circles)
             {
                 a.Draw(circle, new Bgr(Color.Red), 2);
             }
-            //CvInvoke.cvShowImage(win1, a); //Show the image
+
             f.pictureBox2_draw(a);
+
+            #endif
             CvInvoke.cvWaitKey(40);//remove move later
             return circles;
         }
@@ -266,9 +270,6 @@ namespace Tmc.Vision
         /// <returns>
         /// returns croped image
         /// </returns>
-        /// <todo>
-        /// add error check if croping is done outside range
-        /// </todo>
         public Image<Bgr, Byte> CropImage(Image<Bgr, Byte> src, int x, int y, int width, int height)
         {
             Rectangle rect = new Rectangle();
@@ -277,6 +278,35 @@ namespace Tmc.Vision
             rect.Y = y;
             rect.Width = width;
             rect.Height = height;
+            if (x < 0 )
+            {
+                rect.X = 0; 
+            }
+            else if (x > src.Cols)
+            {
+                rect.X = src.Cols;
+            }
+
+            if (y < 0)
+            {
+                rect.Y = 0;
+            }
+            else if (y > src.Rows)
+            {
+                rect.Y = src.Rows;
+            }
+
+            if ((rect.X + width) > src.Cols)
+            {
+                rect.Width = src.Cols - rect.X;
+            }
+
+            if ((rect.Y + height) > src.Rows)
+            {
+                rect.Height = src.Rows - rect.Y;
+            }
+            
+                
 
             return src.GetSubRect(rect);
         }

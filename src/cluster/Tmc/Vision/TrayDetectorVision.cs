@@ -170,10 +170,14 @@ namespace Tmc.Vision
             //rect.Y = trayPoints[0].Y;//Math.Min(trayPoints[0].Y,trayPoints[1].Y);//220;
             //rect.Width = trayPoints[3].X - trayPoints[0].X;//420+100;
             //rect.Height = trayPoints[3].Y - trayPoints[0].Y;//400;
+            int xOrig   = Math.Min(Math.Min(trayPoints[0].X, trayPoints[2].X), Math.Min(trayPoints[1].X, trayPoints[3].X));
+            int yOrig   = Math.Min(Math.Min(trayPoints[0].Y, trayPoints[2].Y), Math.Min(trayPoints[1].Y, trayPoints[3].Y));
+            int xWidth  = Math.Max(Math.Max(trayPoints[0].X, trayPoints[2].X), Math.Max(trayPoints[1].X, trayPoints[3].X)) - xOrig;
+            int yHeight = Math.Max(Math.Max(trayPoints[0].Y, trayPoints[2].Y), Math.Max(trayPoints[1].Y, trayPoints[3].Y)) - yOrig;
 
-
-
-            imgTray = src;//img.GetSubRect(rect);
+            imgTray = CropImage(src, xOrig, yOrig, xWidth, yHeight);//src;//img.GetSubRect(rect);
+            CvInvoke.cvShowImage("Test Window", imgTray); //Show the image
+            CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
             return true;
         }
 
@@ -239,6 +243,15 @@ namespace Tmc.Vision
         /// <summary>
         /// This Function gives us the cell a tablet is in givent it's location in the tray
         /// </summary>
+        /// <param name="cols">
+        /// the width
+        /// </param>
+        /// <param name="rows">
+        /// the height
+        /// </param>
+        /// <param name="circle">
+        /// contains the location if the circles
+        /// </param>
         private int FindCellInTrayForTablet(int cols, int rows, CircleF circle)
         {
             int[] lineX = { 0, (int)(cols / 3), (int)((cols / 3) * 2), cols};//change this so it can have angled lines
@@ -310,33 +323,35 @@ namespace Tmc.Vision
             //int Col;
             Gray gray;
 
-            Point[] minMax = new Point[2];
-            minMax[0].X = 0;
-            minMax[0].Y = 0;
+            Point[] line = new Point[2];
+            line[0].X = 0;
+            line[0].Y = 0;
 
-            minMax[1].X = src.Cols;
-            minMax[1].Y = src.Rows;
+            line[1].X = src.Cols;
+            line[1].Y = src.Rows;
 
             for(int row = 0; row < src.Rows;row++)
             {
                 for(int col = 0; col < src.Cols;col++)
                 {
                     gray = src[row,col];
-                    if((minMax[0].X < col) && (gray.Intensity == 255))
+                    //if((line[0].X < col) && (gray.Intensity == 255))
+                    //{
+                    //    line[0].X = col;
+                    //}
+                    if((line[0].Y < row) && (gray.Intensity == 255))
                     {
-                        minMax[0].X = col;
+                        line[0].Y = row;
+                        line[0].X = col;
                     }
-                    if((minMax[0].Y < row) && (gray.Intensity == 255))
+                    //if((line[1].X > col) && (gray.Intensity == 255))
+                    //{
+                    //    line[1].X = col;
+                    //}
+                    if((line[1].Y > row) && (gray.Intensity == 255))
                     {
-                        minMax[0].Y = row;
-                    }
-                    if((minMax[1].X > col) && (gray.Intensity == 255))
-                    {
-                        minMax[1].X = col;
-                    }
-                    if((minMax[1].Y > row) && (gray.Intensity == 255))
-                    {
-                        minMax[1].Y = row;
+                        line[1].Y = row;
+                        line[1].X = col;
                     }
 
                 }
