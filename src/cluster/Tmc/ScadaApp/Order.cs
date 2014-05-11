@@ -17,22 +17,7 @@ namespace Tmc.Scada.App
         {
             InitializeComponent();
 
-            orderListBindingSource.DataSource = new List<OrderListView>() 
-            {
-                new OrderListView()
-                {
-                    OrderID = 1,
-                    Name = "User",
-                    StartTime = new DateTime(),
-                    Black = 1,
-                    Blue = 3,
-                    White = 2,
-                    Red = 5,
-                    Green = 2,
-                    NumberOfProducts = 1,
-                    EndTime = new DateTime()
-                }
-            };
+            orderListBindingSource.DataSource = TmcRepository.OrderInfo();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
