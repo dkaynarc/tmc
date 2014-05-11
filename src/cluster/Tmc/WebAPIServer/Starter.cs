@@ -11,8 +11,10 @@ namespace WebApiServer
     {
         public void Start()
         {
-            var hostname = System.Environment.MachineName;
-            string rootAddress = "http://" + hostname + ":9000/";  // change this to the current ip address of your machine - else - exception
+            var hostName = System.Environment.MachineName;
+            //string hostName = "http://192.168.1.2";
+            string rootAddress = "http://" + hostName + ":9000/";  // change this to the current ip address of your machine - else - exception
+            
             using (WebApp.Start<Startup>(rootAddress))
             {
                 Console.WriteLine("Waiting for clients to connect...");
