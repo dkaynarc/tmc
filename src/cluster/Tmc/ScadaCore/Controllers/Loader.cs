@@ -9,8 +9,7 @@ namespace Tmc.Scada.Core
     public enum LoaderAction
     {
         LoadToConveyor,
-        LoadToAcceptedBuffer,
-        LoadToRejectedBuffer
+        LoadToPalletiser
     }
 
     public sealed class Loader : ControllerBase
@@ -40,8 +39,7 @@ namespace Tmc.Scada.Core
             _actionMap = new Dictionary<LoaderAction, Action>
             {
                 { LoaderAction.LoadToConveyor, () => LoadToConveyorAsync() },
-                { LoaderAction.LoadToAcceptedBuffer, () => LoadToAccpetedBufferAsync() },
-                { LoaderAction.LoadToRejectedBuffer, () => LoadToRejectedBufferAsync() }
+                { LoaderAction.LoadToPalletiser, () => LoadToPalletiserAsync() }
             };
 
             _loaderRobot = config.Robots[typeof(LoaderRobot)] as LoaderRobot;
@@ -137,17 +135,7 @@ namespace Tmc.Scada.Core
                 });
         }
 
-        private void LoadToAccpetedBufferAsync()
-        {
-            Task.Run(() =>
-                {
-                    var status = Palletise();
-                    IsRunning = false;
-                    OnCompleted(new ControllerEventArgs() { OperationStatus = status });
-                });
-        }
-
-        private void LoadToRejectedBufferAsync()
+        private void LoadToPalletiserAsync()
         {
             Task.Run(() =>
                 {

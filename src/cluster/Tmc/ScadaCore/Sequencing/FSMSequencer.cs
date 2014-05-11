@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using System.Diagnostics;
 using Appccelerate.StateMachine;
@@ -59,14 +60,6 @@ namespace Tmc.Scada.Core.Sequencing
             _fsm.In(State.Startup)
                 .On(Trigger.Completed)
                     .Goto(State.Sorting);
-
-            _fsm.In(State.Idle)
-                .On(Trigger.Completed)
-                    .Goto(State.LoadingTray)
-                .On(Trigger.Stop)
-                    .Goto(State.Stopped)
-                .On(Trigger.Shutdown)
-                    .Goto(State.Shutdown);
 
             _fsm.In(State.Shutdown)
                 .On(Trigger.Start)
@@ -173,7 +166,24 @@ namespace Tmc.Scada.Core.Sequencing
 
         private void CreateAssemblingStates()
         {
+            // TODO: Review the necessity of this state.
+            _fsm.In(State.Idle)
+                .On(Trigger.Completed)
+                    .Goto(State.LoadingTray)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
             _fsm.In(State.LoadingTray)
+                .ExecuteOnEntry(() =>
+                    {
+                        _loader.Begin(new LoaderParams
+                            {
+                                Action = LoaderAction.LoadToConveyor,
+                                Sender = this
+                            });
+                    })
                 .On(Trigger.Completed)
                     .Goto(State.AssemblyConveyorMovingForward)
                 .On(Trigger.Stop)
@@ -186,7 +196,8 @@ namespace Tmc.Scada.Core.Sequencing
                     _conveyorController.Begin(new ConveyorControllerParams
                         {
                             ConveyorType = ConveyorType.Assembly,
-                            ConveyorAction = ConveyorAction.MoveForward
+                            ConveyorAction = ConveyorAction.MoveForward,
+                            Sender = this
                         }); })
                 .On(Trigger.Completed)
                     .If(() => _conveyorController.CanMoveForward(ConveyorType.Assembly))
