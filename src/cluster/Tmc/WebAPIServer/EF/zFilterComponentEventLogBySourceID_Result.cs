@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApiServer
+namespace WebApiServer.EF
 {
     using System;
     
-    public partial class zFilterComponentCycleLogBySourceID_Result
+    public partial class zFilterComponentEventLogBySourceID_Result
     {
         public int ID { get; set; }
         public Nullable<System.DateTime> Timestamp { get; set; }

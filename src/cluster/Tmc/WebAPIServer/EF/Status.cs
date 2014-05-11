@@ -7,16 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApiServer
+namespace WebApiServer.EF
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class ComponentEventLog
+    public partial class Status
     {
-        public int ID { get; set; }
-        public Nullable<System.DateTime> Timestamp { get; set; }
-        public string Description { get; set; }
-        public int SourceID { get; set; }
+        public Status()
+        {
+            this.Orders = new HashSet<Order>();
+        }
+    
+        public int StatusID { get; set; }
+        public string Name { get; set; }
+    
+        public virtual ICollection<Order> Orders { get; set; }
+        public virtual Status Status1 { get; set; }
+        public virtual Status Status2 { get; set; }
     }
 }

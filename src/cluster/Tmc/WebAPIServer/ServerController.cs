@@ -16,6 +16,7 @@ using WebApiServer.Parcels;
 using System.Data.Entity.Validation;
 using System.Net.Http;
 using System.Net;
+using WebApiServer.EF;
 
 namespace WebApiServer
 {
@@ -80,7 +81,7 @@ namespace WebApiServer
 
   
 
-       private LinkedList<OrderParcel> CopyOrders(IEnumerable<Order> orders)
+       private LinkedList<OrderParcel> CopyOrders(IEnumerable<WebApiServer.EF.Order> orders)
        {
            try
            {
@@ -115,7 +116,7 @@ namespace WebApiServer
        [ActionName("PlaceOrder")]
        public string PlaceOrder(string name, int var1, int var2, int var3, int var4, int var5)
        {
-           Order order = new Order
+           WebApiServer.EF.Order order = new WebApiServer.EF.Order
             {
                 NumberOfProducts = var1 + var2 + var3 + var4 + var5, 
                 UserID =  Guid.Parse((UserManager.FindByName(name)).Id),
@@ -256,7 +257,7 @@ namespace WebApiServer
        public HttpResponseMessage GetOrders(String orderParam)
        {
 
-           IEnumerable<Order> orders = new LinkedList<Order>();
+           IEnumerable<WebApiServer.EF.Order> orders = new LinkedList<WebApiServer.EF.Order>();
 
            if (orderParam.Equals("complete"))
            {

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApiServer
+namespace WebApiServer.EF
 {
     using System;
     using System.Collections.Generic;

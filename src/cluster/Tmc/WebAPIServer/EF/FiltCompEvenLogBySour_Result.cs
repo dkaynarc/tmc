@@ -7,16 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApiServer
+namespace WebApiServer.EF
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class ComponentCycleLog
+    public partial class FiltCompEvenLogBySour_Result
     {
+        public string Name { get; set; }
         public int ID { get; set; }
         public Nullable<System.DateTime> Timestamp { get; set; }
-        public Nullable<int> CycleTime { get; set; }
+        public string Description { get; set; }
         public int SourceID { get; set; }
     }
 }

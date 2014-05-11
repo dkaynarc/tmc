@@ -7,19 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApiServer
+namespace WebApiServer.EF
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class OrderConfig
+    public partial class ComponentEventLogView
     {
-        public int ConfigID { get; set; }
-        public Nullable<int> OrderID { get; set; }
-        public int Black { get; set; }
-        public int Blue { get; set; }
-        public int Red { get; set; }
-        public int Green { get; set; }
-        public int White { get; set; }
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public Nullable<System.DateTime> Timestamp { get; set; }
+        public string Description { get; set; }
+        public int SourceID { get; set; }
     }
 }

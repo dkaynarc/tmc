@@ -7,22 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApiServer
+namespace WebApiServer.EF
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class FiltOrdeList_Result
+    public partial class OrderConfig
     {
-        public int OrderID { get; set; }
-        public string Name { get; set; }
+        public int ConfigID { get; set; }
+        public Nullable<int> OrderID { get; set; }
         public int Black { get; set; }
         public int Blue { get; set; }
         public int Red { get; set; }
         public int Green { get; set; }
         public int White { get; set; }
-        public Nullable<System.DateTime> StartTime { get; set; }
-        public Nullable<System.DateTime> EndTime { get; set; }
-        public Nullable<int> NumberOfProducts { get; set; }
-        public Nullable<int> StatusID { get; set; }
     }
 }

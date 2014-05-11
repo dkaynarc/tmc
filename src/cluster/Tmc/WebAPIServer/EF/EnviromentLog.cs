@@ -7,17 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApiServer
+namespace WebApiServer.EF
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class ComponentCycleLogView
+    public partial class EnviromentLog
     {
-        public string Name { get; set; }
         public int ID { get; set; }
-        public Nullable<System.DateTime> Timestamp { get; set; }
-        public Nullable<int> CycleTime { get; set; }
+        public System.DateTime Timestamp { get; set; }
         public int SourceID { get; set; }
+        public double Reading { get; set; }
+    
+        public virtual Source Source { get; set; }
     }
 }
