@@ -4,27 +4,74 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ICTDModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ICTDModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="ICTDModelStoreContainer">
-          <EntitySet Name="OrderList" EntityType="ICTDModel.Store.OrderList" store:Type="Views" store:Schema="dbo" store:Name="OrderList">
+          <EntitySet Name="ComponentCycleLogView" EntityType="ICTDModel.Store.ComponentCycleLogView" store:Type="Views" store:Schema="dbo" store:Name="ComponentCycleLogView">
             <DefiningQuery>SELECT 
-      [OrderList].[OrderID] AS [OrderID], 
-      [OrderList].[Name] AS [Name], 
-      [OrderList].[Black] AS [Black], 
-      [OrderList].[Blue] AS [Blue], 
-      [OrderList].[Red] AS [Red], 
-      [OrderList].[Green] AS [Green], 
-      [OrderList].[White] AS [White], 
-      [OrderList].[StartTime] AS [StartTime], 
-      [OrderList].[EndTime] AS [EndTime], 
-      [OrderList].[NumberOfProducts] AS [NumberOfProducts]
-      FROM [dbo].[OrderList] AS [OrderList]</DefiningQuery>
+      [ComponentCycleLogView].[Name] AS [Name], 
+      [ComponentCycleLogView].[ID] AS [ID], 
+      [ComponentCycleLogView].[Timestamp] AS [Timestamp], 
+      [ComponentCycleLogView].[CycleTime] AS [CycleTime], 
+      [ComponentCycleLogView].[SourceID] AS [SourceID]
+      FROM [dbo].[ComponentCycleLogView] AS [ComponentCycleLogView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ComponentEventLogView" EntityType="ICTDModel.Store.ComponentEventLogView" store:Type="Views" store:Schema="dbo" store:Name="ComponentEventLogView">
+            <DefiningQuery>SELECT 
+      [ComponentEventLogView].[Name] AS [Name], 
+      [ComponentEventLogView].[ID] AS [ID], 
+      [ComponentEventLogView].[Timestamp] AS [Timestamp], 
+      [ComponentEventLogView].[Description] AS [Description], 
+      [ComponentEventLogView].[SourceID] AS [SourceID]
+      FROM [dbo].[ComponentEventLogView] AS [ComponentEventLogView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="OrderListView" EntityType="ICTDModel.Store.OrderListView" store:Type="Views" store:Schema="dbo" store:Name="OrderListView">
+            <DefiningQuery>SELECT 
+      [OrderListView].[OrderID] AS [OrderID], 
+      [OrderListView].[Name] AS [Name], 
+      [OrderListView].[Black] AS [Black], 
+      [OrderListView].[Blue] AS [Blue], 
+      [OrderListView].[Red] AS [Red], 
+      [OrderListView].[Green] AS [Green], 
+      [OrderListView].[White] AS [White], 
+      [OrderListView].[StartTime] AS [StartTime], 
+      [OrderListView].[EndTime] AS [EndTime], 
+      [OrderListView].[NumberOfProducts] AS [NumberOfProducts], 
+      [OrderListView].[StatusID] AS [StatusID]
+      FROM [dbo].[OrderListView] AS [OrderListView]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'ICTD.dbo.OrderList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6002: The table/view 'ICTD.dbo.ComponentCycleLogView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
-        <EntityType Name="OrderList">
+        <EntityType Name="ComponentCycleLogView">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="SourceID" />
+          </Key>
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="CycleTime" Type="int" />
+          <Property Name="SourceID" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'ICTD.dbo.ComponentEventLogView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="ComponentEventLogView">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="SourceID" />
+          </Key>
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="SourceID" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="OrderListView">
           <Key>
             <PropertyRef Name="OrderID" />
             <PropertyRef Name="Name" />
@@ -41,35 +88,145 @@
           <Property Name="Red" Type="int" Nullable="false" />
           <Property Name="Green" Type="int" Nullable="false" />
           <Property Name="White" Type="int" Nullable="false" />
-          <Property Name="StartTime" Type="date" />
-          <Property Name="EndTime" Type="date" />
+          <Property Name="StartTime" Type="datetime" />
+          <Property Name="EndTime" Type="datetime" />
           <Property Name="NumberOfProducts" Type="int" />
+          <Property Name="StatusID" Type="int" />
         </EntityType>
+        <Function Name="AddNewCycleLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Timestamp" Type="datetime" Mode="In" />
+          <Parameter Name="CycleTime" Type="int" Mode="In" />
+          <Parameter Name="SourceID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="AddNewEventLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Timestamp" Type="datetime" Mode="In" />
+          <Parameter Name="Description" Type="nvarchar" Mode="In" />
+          <Parameter Name="SourceID" Type="int" Mode="In" />
+        </Function>
         <Function Name="AddNewOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="UserID" Type="int" Mode="In" />
+          <Parameter Name="UserID" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="Black" Type="int" Mode="In" />
           <Parameter Name="Blue" Type="int" Mode="In" />
           <Parameter Name="Red" Type="int" Mode="In" />
           <Parameter Name="Green" Type="int" Mode="In" />
           <Parameter Name="White" Type="int" Mode="In" />
         </Function>
-      </Schema>
-    </edmx:StorageModels>
+        <Function Name="CancelOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="OrderID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="CompleteOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="OrderID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FiltCompCyclLogBySour" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SourceID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FiltCompEvenLogBySour" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SourceID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FiltOrdeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="StatusID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateOrderStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="OrderID" Type="int" Mode="In" />
+          <Parameter Name="OrderStatus" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="UpdateOrderStatusByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="OrderID" Type="int" Mode="In" />
+          <Parameter Name="OrderStatus" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateProductProduced" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="OrderID" Type="int" Mode="In" />
+          <Parameter Name="ProductNumber" Type="int" Mode="In" />
+        </Function>
+        <Function Name="zFilterComponentCycleLogBySourceID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SourceID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="zFilterComponentEventLogBySourceID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SourceID" Type="int" Mode="In" />
+        </Function>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ICTDModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="ICTDEntities" p1:LazyLoadingEnabled="true">
-          <EntitySet Name="OrderLists" EntityType="ICTDModel.OrderList" />
           <FunctionImport Name="AddNewOrder">
-            <Parameter Name="UserID" Mode="In" Type="Int32" />
+            <Parameter Name="UserID" Mode="In" Type="Guid" />
             <Parameter Name="Black" Mode="In" Type="Int32" />
             <Parameter Name="Blue" Mode="In" Type="Int32" />
             <Parameter Name="Red" Mode="In" Type="Int32" />
             <Parameter Name="Green" Mode="In" Type="Int32" />
             <Parameter Name="White" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="CompleteOrder">
+          <Parameter Name="OrderID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateOrderStatus">
+            <Parameter Name="OrderID" Mode="In" Type="Int32" />
+            <Parameter Name="OrderStatus" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateOrderStatusByID">
+            <Parameter Name="OrderID" Mode="In" Type="Int32" />
+            <Parameter Name="OrderStatus" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateProductProduced">
+            <Parameter Name="OrderID" Mode="In" Type="Int32" />
+            <Parameter Name="ProductNumber" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="ComponentCycleLogViews" EntityType="ICTDModel.ComponentCycleLogView" />
+          <EntitySet Name="ComponentEventLogViews" EntityType="ICTDModel.ComponentEventLogView" />
+          <EntitySet Name="OrderListViews" EntityType="ICTDModel.OrderListView" />
+          <FunctionImport Name="AddNewCycleLog">
+            <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
+            <Parameter Name="CycleTime" Mode="In" Type="Int32" />
+            <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AddNewEventLog">
+            <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="CancelOrder">
+          <Parameter Name="OrderID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FiltCompCyclLogBySour" ReturnType="Collection(ICTDModel.FiltCompCyclLogBySour_Result)">
+          <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FiltCompEvenLogBySour" ReturnType="Collection(ICTDModel.FiltCompEvenLogBySour_Result)">
+          <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FiltOrdeList" ReturnType="Collection(ICTDModel.FiltOrdeList_Result)">
+          <Parameter Name="StatusID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="zFilterComponentCycleLogBySourceID" ReturnType="Collection(ICTDModel.zFilterComponentCycleLogBySourceID_Result)">
+          <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="zFilterComponentEventLogBySourceID" ReturnType="Collection(ICTDModel.zFilterComponentEventLogBySourceID_Result)">
+          <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
-        <EntityType Name="OrderList">
+        <EntityType Name="ComponentCycleLogView">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="SourceID" />
+          </Key>
+          <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Timestamp" Precision="3" />
+          <Property Type="Int32" Name="CycleTime" />
+          <Property Type="Int32" Name="SourceID" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ComponentEventLogView">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="SourceID" />
+          </Key>
+          <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Timestamp" Precision="3" />
+          <Property Type="String" Name="Description" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="SourceID" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderListView">
           <Key>
             <PropertyRef Name="OrderID" />
             <PropertyRef Name="Name" />
@@ -79,26 +236,135 @@
             <PropertyRef Name="Green" />
             <PropertyRef Name="White" />
           </Key>
-          <Property Name="OrderID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Black" Type="Int32" Nullable="false" />
-          <Property Name="Blue" Type="Int32" Nullable="false" />
-          <Property Name="Red" Type="Int32" Nullable="false" />
-          <Property Name="Green" Type="Int32" Nullable="false" />
-          <Property Name="White" Type="Int32" Nullable="false" />
-          <Property Name="StartTime" Type="DateTime" Precision="0" />
-          <Property Name="EndTime" Type="DateTime" Precision="0" />
-          <Property Name="NumberOfProducts" Type="Int32" />
+          <Property Type="Int32" Name="OrderID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Black" Nullable="false" />
+          <Property Type="Int32" Name="Blue" Nullable="false" />
+          <Property Type="Int32" Name="Red" Nullable="false" />
+          <Property Type="Int32" Name="Green" Nullable="false" />
+          <Property Type="Int32" Name="White" Nullable="false" />
+          <Property Type="DateTime" Name="StartTime" Precision="3" />
+          <Property Type="DateTime" Name="EndTime" Precision="3" />
+          <Property Type="Int32" Name="NumberOfProducts" />
+          <Property Type="Int32" Name="StatusID" />
         </EntityType>
+        <ComplexType Name="FiltCompCyclLogBySour_Result">
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Timestamp" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="CycleTime" Nullable="true" />
+          <Property Type="Int32" Name="SourceID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="FiltCompEvenLogBySour_Result">
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Timestamp" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="255" />
+          <Property Type="Int32" Name="SourceID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="FiltOrdeList_Result">
+          <Property Type="Int32" Name="OrderID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Black" Nullable="false" />
+          <Property Type="Int32" Name="Blue" Nullable="false" />
+          <Property Type="Int32" Name="Red" Nullable="false" />
+          <Property Type="Int32" Name="Green" Nullable="false" />
+          <Property Type="Int32" Name="White" Nullable="false" />
+          <Property Type="DateTime" Name="StartTime" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="EndTime" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="NumberOfProducts" Nullable="true" />
+          <Property Type="Int32" Name="StatusID" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="zFilterComponentCycleLogBySourceID_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Timestamp" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="CycleTime" Nullable="true" />
+          <Property Type="Int32" Name="SourceID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="zFilterComponentEventLogBySourceID_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Timestamp" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="CycleTime" Nullable="true" />
+          <Property Type="Int32" Name="SourceID" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ICTDModelStoreContainer" CdmEntityContainer="ICTDEntities">
-          <EntitySetMapping Name="OrderLists">
-            <EntityTypeMapping TypeName="ICTDModel.OrderList">
-              <MappingFragment StoreEntitySet="OrderList">
+          <FunctionImportMapping FunctionImportName="AddNewOrder" FunctionName="ICTDModel.Store.AddNewOrder" />
+          <FunctionImportMapping FunctionImportName="CompleteOrder" FunctionName="ICTDModel.Store.CompleteOrder" />
+          <FunctionImportMapping FunctionImportName="UpdateOrderStatus" FunctionName="ICTDModel.Store.UpdateOrderStatus" />
+          <FunctionImportMapping FunctionImportName="UpdateOrderStatusByID" FunctionName="ICTDModel.Store.UpdateOrderStatusByID" />
+          <FunctionImportMapping FunctionImportName="UpdateProductProduced" FunctionName="ICTDModel.Store.UpdateProductProduced" />
+          <EntitySetMapping Name="ComponentCycleLogViews">
+            <EntityTypeMapping TypeName="ICTDModel.ComponentCycleLogView">
+              <MappingFragment StoreEntitySet="ComponentCycleLogView">
+                <ScalarProperty Name="SourceID" ColumnName="SourceID" />
+                <ScalarProperty Name="CycleTime" ColumnName="CycleTime" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComponentEventLogViews">
+            <EntityTypeMapping TypeName="ICTDModel.ComponentEventLogView">
+              <MappingFragment StoreEntitySet="ComponentEventLogView">
+                <ScalarProperty Name="SourceID" ColumnName="SourceID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderListViews">
+            <EntityTypeMapping TypeName="ICTDModel.OrderListView">
+              <MappingFragment StoreEntitySet="OrderListView">
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="NumberOfProducts" ColumnName="NumberOfProducts" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="White" ColumnName="White" />
+                <ScalarProperty Name="Green" ColumnName="Green" />
+                <ScalarProperty Name="Red" ColumnName="Red" />
+                <ScalarProperty Name="Blue" ColumnName="Blue" />
+                <ScalarProperty Name="Black" ColumnName="Black" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AddNewCycleLog" FunctionName="ICTDModel.Store.AddNewCycleLog" />
+          <FunctionImportMapping FunctionImportName="AddNewEventLog" FunctionName="ICTDModel.Store.AddNewEventLog" />
+          <FunctionImportMapping FunctionImportName="CancelOrder" FunctionName="ICTDModel.Store.CancelOrder" />
+          <FunctionImportMapping FunctionImportName="FiltCompCyclLogBySour" FunctionName="ICTDModel.Store.FiltCompCyclLogBySour">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ICTDModel.FiltCompCyclLogBySour_Result">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="CycleTime" ColumnName="CycleTime" />
+                <ScalarProperty Name="SourceID" ColumnName="SourceID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FiltCompEvenLogBySour" FunctionName="ICTDModel.Store.FiltCompEvenLogBySour">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ICTDModel.FiltCompEvenLogBySour_Result">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SourceID" ColumnName="SourceID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FiltOrdeList" FunctionName="ICTDModel.Store.FiltOrdeList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ICTDModel.FiltOrdeList_Result">
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Black" ColumnName="Black" />
@@ -109,10 +375,30 @@
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />
                 <ScalarProperty Name="NumberOfProducts" ColumnName="NumberOfProducts" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="AddNewOrder" FunctionName="ICTDModel.Store.AddNewOrder" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="zFilterComponentCycleLogBySourceID" FunctionName="ICTDModel.Store.zFilterComponentCycleLogBySourceID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ICTDModel.zFilterComponentCycleLogBySourceID_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="CycleTime" ColumnName="CycleTime" />
+                <ScalarProperty Name="SourceID" ColumnName="SourceID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="zFilterComponentEventLogBySourceID" FunctionName="ICTDModel.Store.zFilterComponentEventLogBySourceID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ICTDModel.zFilterComponentEventLogBySourceID_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="CycleTime" ColumnName="CycleTime" />
+                <ScalarProperty Name="SourceID" ColumnName="SourceID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

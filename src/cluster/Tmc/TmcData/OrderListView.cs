@@ -12,7 +12,7 @@ namespace TmcData
     using System;
     using System.Collections.Generic;
     
-    public partial class OrderList
+    public partial class OrderListView
     {
         public int OrderID { get; set; }
         public string Name { get; set; }
@@ -24,5 +24,6 @@ namespace TmcData
         public Nullable<System.DateTime> StartTime { get; set; }
         public Nullable<System.DateTime> EndTime { get; set; }
         public Nullable<int> NumberOfProducts { get; set; }
+        public Nullable<int> StatusID { get; set; }
     }
 }
