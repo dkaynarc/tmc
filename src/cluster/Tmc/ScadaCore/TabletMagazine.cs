@@ -49,6 +49,10 @@ namespace Tmc.Scada.Core
             return _slotIndexMap[slotColor];
         }
 
+        public int GetSlotDepth(TabletColors slotColor)
+        {
+            return Slots[slotColor];
+        }
         public bool IsFull()
         {
             bool isFull = true;

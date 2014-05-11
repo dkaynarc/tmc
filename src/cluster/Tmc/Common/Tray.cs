@@ -20,5 +20,10 @@ namespace Tmc.Common
                 Cells.Add(null);
             }
         }
+
+        public void add(int index, T t)
+        {
+            Cells = t;
+        }
     }
 }

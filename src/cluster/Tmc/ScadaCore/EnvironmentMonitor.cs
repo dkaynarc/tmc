@@ -8,43 +8,63 @@ using System.Threading;
 
 namespace Tmc.Scada.Core
 {
-    public enum Sensors
-    {
-        Humidity,
-        Temperature,
-        Light,
-        Sound,
-        Dust
-    }
+    //public enum Sensors
+    //{
+    //    Humidity,
+    //    Temperature,
+    //    Light,
+    //    Sound,
+    //    Dust
+    //}
 
-    public enum Units
-    {
-        Celsius,
-        //TODO get all the units from the sensor team
-    }
+    //public enum Units
+    //{
+    //    Percentage = "%",
+    //    Celsius = "°C",
+    //    Candela = "cd",
+    //    Decibel = "dB",
+    //    ParticlesPerLitre = "pcs/L"
+    //}
 
     class EnvironmentMonitor
     {
+        private static EnvironmentMonitor _instance;
+        public bool LoggingEnabled { get; set; }
         private ScadaEngine _engine;
         private List<ISensor> _sensors;
 
-        public EnvironmentMonitor(ScadaEngine engine)
+        public static EnvironmentMonitor Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new EnvironmentMonitor();
+                }
+                return _instance;
+            }
+        }
+
+        public void Initialise(ScadaEngine engine)
         {
             this._engine = engine;
             this._sensors = new List<ISensor>();
             var config = engine.ClusterConfig;
-            //_sensors.AddRange();
+            LoggingEnabled = true;
+
+            _sensors.Add(config.Sensors[typeof(AssemblerRobot)] as AssemblerRobot;) //need sensor objects
         }
 
-        // TODO Have to think where the sensors get created
-        //public void startLogging()
-        //{
-        //    while (startLoggingEnabled)
-        //    {
-        //        Logger.Instance.Write(new EnvirontmentLogEntry(Sensors.Temperature + ": " + _sensors.value + Units.Celsius));
-
-        //        Thread.Sleep(1000);
-        //    }
-        //}
+        public void Log()   
+        {
+            while (LoggingEnabled)
+            {
+                foreach (var sensor in _sensors)
+                {
+                    Logger.Instance.Write(new EnvirontmentLogEntry(sensor.Name + ": " + sensor.Value + sensor.Unit));
+                }
+                Thread.Sleep(1000);
+            }
+        }
     }
 }

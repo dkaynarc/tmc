@@ -54,7 +54,7 @@ namespace Tmc.Robotics
         /// <param name="magazineIndex">Index of slot within the tablet magazine (As labeled)</param>
         /// <param name="chipDepth">Current amount of chips in the specified magazine slot. (1 to 10)</param>
         /// <param name="trayIndex">Index of the tray in which to place the tablet.</param>
-        public void PlaceTablet(int magazineIndex, int chipDepth, int trayIndex)
+        public void PlaceTablet(int magazineIndex, int chipDepth, int trayIndex)     //TODO Shouldnt these checks be done in Scada core or atleast get the max values from the classes itself?
         {
             if(magazineIndex < 0 || magazineIndex > 7)
             {

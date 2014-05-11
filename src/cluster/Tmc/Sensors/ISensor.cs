@@ -9,5 +9,9 @@ namespace Tmc.Sensors
 {
     public interface ISensor : IHardware
     {
+        double Name { get; }
+        double Value { get; }
+
+        String Unit { get; }
     }
 }

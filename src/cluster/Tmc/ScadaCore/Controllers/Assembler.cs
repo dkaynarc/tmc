@@ -9,23 +9,9 @@ using Tmc.Common;
 
 namespace Tmc.Scada.Core
 {
-    //TODO: Refactor so that the Assembler retrieves an order from the OrderConsumer.
-    //      The OrderConsumer will be implemented as a singleton. 
     public sealed class Assembler : ControllerBase
     {
-        //TODO: Remove this class when the OrderConfiguration is implemented place.
-        private class MockOrderConfiguration : OrderConfiguration
-        {
-            public MockOrderConfiguration()
-            {
-                this.AddTablet(TabletColors.Green, 2);
-                this.AddTablet(TabletColors.White, 1);
-                this.AddTablet(TabletColors.Blue, 3);
-            }
-        }
-
         private AssemblerRobot _assemblerRobot;
-        private MockOrderConfiguration _orderConfiguration;
         private CancellationTokenSource _cancelTokenSource;
 
         public Assembler(ClusterConfig config) : base(config)
@@ -33,29 +19,34 @@ namespace Tmc.Scada.Core
             _assemblerRobot = config.Robots[typeof(AssemblerRobot)] as AssemblerRobot;
             this._cancelTokenSource = new CancellationTokenSource();
 
-            //TODO: Remove this class when the OrderConfiguration is implemented place.
-            _orderConfiguration = new MockOrderConfiguration();
-
             if (_assemblerRobot == null)
             {
                 throw new ArgumentException("Could not retrieve a AssemblerRobot from ClusterConfig");
             }
         }  
-        public override void Begin(ControllerParams parameters)
+        public override void Begin(ControllerParams parameters) // TODO
         {
             var p = parameters as AssemblerParams;
             if (p != null)
             {
-                //TODO Do check whether enough tablets exist to complete the order
-                //If not make a log entry
-                
+                foreach (var pair in p.OrderConfiguration.Tablets.Where(x => x.Value > 0))
+                {
+                    if(pair.Value > p.Magazine.GetSlotDepth(pair.Key))
+                    {
+                        Logger.Instance.Write(new LogEntry("Not enough tablets to complete the order, Please refill tablet magazine"));
+                        OnCompleted(new ControllerEventArgs() { OperationStatus = ControllerOperationStatus.Failed });
+                    }
+                }
+
                 if (!IsRunning)
                 {
                     IsRunning = true;
-
-                    //TODO: Should change to p.Order
-                    AssembleAsync(p.Magazine, p.Tray, _orderConfiguration);
+                    AssembleAsync(p.Magazine, p.OrderConfiguration);
                 }
+            }
+            else
+            {
+                throw new ArgumentException("Controller Parameters cannot be null");
             }
         }
 
@@ -69,23 +60,24 @@ namespace Tmc.Scada.Core
             }
         }
 
-        private void AssembleAsync(TabletMagazine mag, Tray<Tablet> tray, OrderConfiguration order)
+        private void AssembleAsync(TabletMagazine mag, OrderConfiguration orderConfiguration)
         {
             var ct = _cancelTokenSource.Token;
             Task.Run(() =>
             {
-                var status = Assemble(mag, tray, order, ct);
+                var status = Assemble(mag, orderConfiguration, ct);
                 IsRunning = false;
                 OnCompleted(new ControllerEventArgs() { OperationStatus = status });
             }, ct);
         }
 
-        private ControllerOperationStatus Assemble(TabletMagazine mag, Tray<Tablet> tray, OrderConfiguration order, CancellationToken ct)
+        private ControllerOperationStatus Assemble(TabletMagazine mag, OrderConfiguration orderConfiguration, CancellationToken ct) //TODO Check for tray index outofbound
         {
             var status = ControllerOperationStatus.Succeeded;
             try
             {
-                foreach(var pair in order.Tablets.Where(x => x.Value > 0))
+                int trayIndex = 0;                                                      
+                foreach (var pair in orderConfiguration.Tablets.Where(x => x.Value > 0))
                 {
                     var numTablets = pair.Value;
                     for (int i = 0; i < numTablets; i++)
@@ -97,7 +89,8 @@ namespace Tmc.Scada.Core
                         }
                         else
                         {
-                            PlaceTablet(pair.Key, mag);
+                            _assemblerRobot.PlaceTablet(mag.GetSlotIndex(pair.Key), mag.GetSlotDepth(pair.Key), trayIndex); //TODO check chip depth = 10 or 0 when full?
+                            trayIndex++;
                         }
 
                     }
@@ -110,17 +103,11 @@ namespace Tmc.Scada.Core
             }
             return status;
         }
-
-        private void PlaceTablet(TabletColors tablet, TabletMagazine mag)
-        {
-            // TODO
-        }
     }
 
     public class AssemblerParams : ControllerParams
     {
-        public Tray<Tablet> Tray;
         public TabletMagazine Magazine;
-        // public OrderConfiguration Order;
+        public OrderConfiguration OrderConfiguration;
     }
 }
