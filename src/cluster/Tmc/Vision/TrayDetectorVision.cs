@@ -25,15 +25,23 @@ namespace Tmc.Vision
         private Image<Bgr, Byte> img;
         private Image<Bgr, Byte> imgTray;
         private CircleF[] tablets;
-        private Angle;
+        private double Angle;
         Tray<Tablet> trayList = new Tray<Tablet>();
         
-        private Hsv[,] HSVTabletColoursRanges = new Hsv[5,2];//{{76,54}};
+        private Hsv[,] HSVTabletColoursRanges = new Hsv[5,2];
 
-        public enum Side { Left = 0, Right };
+        public enum Side    { Left  = 0, Right };
+        public enum pMinMax { Max   = 0, Min };
 
 
         Form1 f;
+
+        /// <summary>
+        /// Constructor for this class
+        /// </summary>
+        /// <param name="camera">
+        /// this gives us the camera object which we use to get images from
+        /// </param>
         public TrayDetectorVision(Camera camera)
         {
             f = new Form1();
@@ -75,8 +83,9 @@ namespace Tmc.Vision
             HSVTabletColoursRanges[(int)TabletColors.Black,(int)HSVRange.High].Satuation  = 39;
             HSVTabletColoursRanges[(int)TabletColors.Black,(int)HSVRange.High].Value      = 167;
 
+
             //this.camera.ConnectionString = new Uri(@"http://192.168.0.190:8080/photoaf.jpg");
-            //this.camera.ConnectionString = new Uri(@"http://192.168.0.243/ci-bin/video.jpg?size=2");
+            this.camera.ConnectionString = new Uri(@"https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-ash3/t1.0-9/10247212_10202692742692192_8562559696417032763_n.jpg");
         }
 
         /// <summary>
@@ -87,21 +96,18 @@ namespace Tmc.Vision
         /// </returns>
         public Tray<Tablet> GetTabletsInTray()
         {
-            //img = camera.GetImage();
-            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/trayY4.jpg");
+            img = camera.GetImage();
+            //img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/Image00001.jpg");
             //img = camera.GetImageHttp(new Uri(@"http://www.wwrd.com.au/images/P/2260248_Fable%20s-4%2016cm%20Accent%20Plates-652383734586-co.jpg"));
             string win1 = "Test Window"; //The name of the window
             CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
-            //BitmapImage image = new Bi6tmapImage(new Uri("http://192.168.0.11:8080/photo.jpg"));
-            //img = img.Resize(1088, 816, Emgu.CV.CvEnum.INTER.CV_INTER_LINEAR);//divide by 3
-            //CvInvoke.cvShowImage(win1, img); //Show the image
-            CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
-            
-            DetectTray();
+
+            Image<Bgr, Byte> src = CropImage(img, 0, 300, img.Cols, 400);//reduce the image so we only see the 
+
+            DetectTray(src);//make a ref angle
 
              trayList.Angle = Angle;
 
-            Image<Bgr, Byte> src = CropImage(img, 0, 300, img.Cols, 380);
 
             foreach (Point traypoint in trayPoints)
             {
@@ -123,42 +129,50 @@ namespace Tmc.Vision
             return trayList;
         }
 
-        public enum pMinMax { Max = 0, Min };
-
-        private bool DetectTray()                
+        /// <summary>
+        /// Detects if the tray is there, and works out it's location
+        /// </summary>
+        /// <param name="src">
+        /// image that contains the tray
+        /// </param>
+        /// <returns>true if tray found, false if not</returns>
+        /// <todo>
+        /// do the returns
+        /// </todo>
+        private bool DetectTray(Image<Bgr, Byte> src)                
         {
-            Rectangle rect = new Rectangle();
-            Point[] line = new Point[2];
-            double angle;
+            Point[] line = new Point[2];    //holds the location of the start and end yellow line in the picture
+            double angle;                   //angle of the tray on the conveyor
 
-            Image<Bgr, Byte> src = CropImage(img,0, 300, img.Cols, 380);
-            //
-            Hsv[] HSVT = new Hsv[2];
-            HSVT[(int)HSVRange.Low].Hue           = 19.5;
-            HSVT[(int)HSVRange.Low].Satuation     = 145.24;
-            HSVT[(int)HSVRange.Low].Value         = 183.68;
-            HSVT[(int)HSVRange.High].Hue          = 29;
-            HSVT[(int)HSVRange.High].Satuation    = 331.92;
-            HSVT[(int)HSVRange.High].Value        = 360;
             
-            Image<Bgr, Byte> col = RemoveEverythingButRange(src, HSVT);
-            Image<Gray, Byte> Gsrc = col.Convert<Gray, Byte>();
+            Hsv[] HSVT = new Hsv[2];         //hold the color of the yellow line
+            HSVT[(int)HSVRange.Low].Hue             = 19;
+            HSVT[(int)HSVRange.Low].Satuation       = 80;//108.24;
+            HSVT[(int)HSVRange.Low].Value           = 240;//183.68;
+            HSVT[(int)HSVRange.High].Hue            = 29;
+            HSVT[(int)HSVRange.High].Satuation      = 331.92;
+            HSVT[(int)HSVRange.High].Value          = 360;
+            
+            Image<Bgr, Byte> col = RemoveEverythingButRange(src, HSVT); //we want to remove everything that is not yellow
+            Image<Gray, Byte> Gsrc = col.Convert<Gray, Byte>();         
 
-            line = scanImg(Gsrc);
+            line = scanImgForLine(Gsrc);        //get location of the yellow line
 
-            angle = AngleOfTray(line);
-            angle -= 90;
+            angle = AngleOfTray(line);          //get the angle of the tray
+            angle -= 90;                        //remove 90 so the angle is starting from zero
 
-            Angle = angle;
+            Angle = angle;//make ref 
            
              
-            double Mag = Math.Sqrt(Math.Pow((line[0].X - line[1].X),2) + Math.Pow((line[0].Y - line[1].Y),2) );
+            //double Mag = Math.Sqrt(Math.Pow((line[0].X - line[1].X),2) + Math.Pow((line[0].Y - line[1].Y),2) );
             CvInvoke.cvShowImage("Test Window", col); //Show the image
             CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
-            //int a = 0;
+            
+            
             int x = line[0].Y - line[1].Y;
             int y = line[0].X - line[1].X;
 
+            //work out the points
             trayPoints[1].X = line[1].X;
             trayPoints[1].Y = line[1].Y;
 
@@ -170,22 +184,14 @@ namespace Tmc.Vision
 
             trayPoints[2].X = (line[0].X - x);
             trayPoints[2].Y = (line[0].Y + y);
-                //350,670
-            //trayPoints[0].X = 82;//92/65, 271,227
-            //trayPoints[0].Y = 55;
-            //trayPoints[3].X = 261;
-            //trayPoints[3].Y = 217;
 
-            //rect.X = trayPoints[0].X;//Math.Min(trayPoints[0].X,trayPoints[2].X);//360;
-            //rect.Y = trayPoints[0].Y;//Math.Min(trayPoints[0].Y,trayPoints[1].Y);//220;
-            //rect.Width = trayPoints[3].X - trayPoints[0].X;//420+100;
-            //rect.Height = trayPoints[3].Y - trayPoints[0].Y;//400;
+            //work out the value we need to crop the image 
             int xOrig   = Math.Min(Math.Min(trayPoints[0].X, trayPoints[2].X), Math.Min(trayPoints[1].X, trayPoints[3].X));
             int yOrig   = Math.Min(Math.Min(trayPoints[0].Y, trayPoints[2].Y), Math.Min(trayPoints[1].Y, trayPoints[3].Y));
             int xWidth  = Math.Max(Math.Max(trayPoints[0].X, trayPoints[2].X), Math.Max(trayPoints[1].X, trayPoints[3].X)) - xOrig;
             int yHeight = Math.Max(Math.Max(trayPoints[0].Y, trayPoints[2].Y), Math.Max(trayPoints[1].Y, trayPoints[3].Y)) - yOrig;
 
-            imgTray = CropImage(src, xOrig, yOrig, xWidth, yHeight);//src;//img.GetSubRect(rect);
+            imgTray = CropImage(src, xOrig, yOrig, xWidth, yHeight);//crop the image
             CvInvoke.cvShowImage("Test Window", imgTray); //Show the image
             CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
             return true;
@@ -196,19 +202,16 @@ namespace Tmc.Vision
         /// </summary>
         private void DetectTabletsInTray()
         {         
-             //while (true)
-            //{
-                CvInvoke.cvWaitKey(10); 
-
-                f.getValue(ref minCircle, ref maxCircle, ref par3, ref par4, ref cannyThresh,ref cannyAccumThresh);
-                tablets = DetectTablets(imgTray, minCircle, maxCircle, par3, par4, cannyThresh, cannyAccumThresh, f);
-                 
-            //}
+            f.getValue(ref minCircle, ref maxCircle, ref par3, ref par4, ref cannyThresh,ref cannyAccumThresh);
+            tablets = DetectTablets(imgTray, minCircle, maxCircle, par3, par4, cannyThresh, cannyAccumThresh, f);
         }
 
         /// <summary>
         /// Used to detect the colour of the tablet, only recognises good tablets and assemble the tray list
         /// </summary>
+        /// <todo>
+        /// move to vision base and make it more advance with the color detect
+        /// </todo>
         private void DetectTabletType()
         {
             Rectangle rect = new Rectangle();
@@ -242,12 +245,8 @@ namespace Tmc.Vision
                 tabletColour    = detectColour(oneTablet, HSVTabletColoursRanges);
                 cellInTray      = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
                 trayList.Cells[cellInTray] = new Tablet { Color = tabletColour };
-                //cellsTablets[cellInTray] = (int)tabletColour;
-                CvInvoke.cvWaitKey(10); 
-                //a.Draw(circle, new Bgr(Color.Red), 2);
             }
             f.trayFill(trayList);
-            CvInvoke.cvWaitKey(0);
         }
 
         /// <summary>
@@ -262,11 +261,14 @@ namespace Tmc.Vision
         /// <param name="circle">
         /// contains the location if the circles
         /// </param>
+        /// <todo>
+        /// //change this so it can have angled lines, not sure if needed but
+        /// </todo>
         private int FindCellInTrayForTablet(int cols, int rows, CircleF circle)
         {
-            int[] lineX = { 0, (int)(cols / 3), (int)((cols / 3) * 2), cols};//change this so it can have angled lines
+            int[] lineX = { 0, (int)(cols / 3), (int)((cols / 3) * 2), cols};
             int[] lineY = { 0, (int)(rows / 3), (int)((rows / 3) * 2), rows};
-            //int a;
+
             if ((circle.Center.X < lineX[1]) && (circle.Center.Y < lineY[3]) &&
                 (circle.Center.X > lineX[0]) && (circle.Center.Y > lineY[2]))
             {//cell 0
@@ -321,16 +323,17 @@ namespace Tmc.Vision
 
         }
 
-        
-
-     //   public enum Side { Left = 0, Right };
-
-
-
-
-        public Point[] scanImg(Image<Gray, Byte> src)
+        /// <summary>
+        /// allows us the get the location of the start and end of white in the picture
+        /// </summary>
+        /// <param name="src">
+        /// source image we going to look at fro the line
+        /// </param>
+        /// <returns>
+        /// return the points of the two points of the line
+        /// </returns>
+        public Point[] scanImgForLine(Image<Gray, Byte> src)
         {
-            //int Col;
             Gray gray;
 
             Point[] line = new Point[2];
@@ -347,12 +350,12 @@ namespace Tmc.Vision
                     gray = src[row,col];
 
                     if((line[0].Y < row) && (gray.Intensity == 255))
-                    {
+                    {//get hghest point of the line, double check if this right way around
                         line[0].Y = row;
                         line[0].X = col;
                     }
                     if((line[1].Y > row) && (gray.Intensity == 255))
-                    {
+                    {//get lowest point of the line
                         line[1].Y = row;
                         line[1].X = col;
                     }
@@ -364,11 +367,20 @@ namespace Tmc.Vision
 
         }
 
+        /// <summary>
+        /// work out the angle of the line
+        /// </summary>
+        /// <param name="line">
+        /// the two point on the line
+        /// </param>
+        /// <returns>
+        /// angle is returned
+        /// </returns>
         public double AngleOfTray( Point[] line)
         {
-            double m = (line[0].Y - line[1].Y) / (line[0].X - line[1].X);
+            double m = (line[0].Y - line[1].Y) / (line[0].X - line[1].X);//work out gradient
 
-            double angle = Math.Atan((m-0)/(1+(0*m))) * 180 / Math.PI;
+            double angle = Math.Atan((m-0)/(1+(0*m))) * 180 / Math.PI;//get angle
 
             return angle;
         }
