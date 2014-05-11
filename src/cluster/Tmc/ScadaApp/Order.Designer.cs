@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.orderListBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.orderIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.blackDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -42,6 +41,8 @@
             this.startTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.endTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.numberOfProductsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.orderListBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.Button_AddNewOrder = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.orderListBindingSource)).BeginInit();
@@ -49,6 +50,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.Button_AddNewOrder);
             this.panel1.Controls.Add(this.dataGridView1);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
@@ -57,6 +59,8 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -76,11 +80,6 @@
             this.dataGridView1.Size = new System.Drawing.Size(525, 238);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // orderListBindingSource
-            // 
-            this.orderListBindingSource.DataSource = typeof(TmcData.OrderListView);
-            this.orderListBindingSource.CurrentChanged += new System.EventHandler(this.orderListBindingSource_CurrentChanged);
             // 
             // orderIDDataGridViewTextBoxColumn
             // 
@@ -142,6 +141,21 @@
             this.numberOfProductsDataGridViewTextBoxColumn.HeaderText = "NumberOfProducts";
             this.numberOfProductsDataGridViewTextBoxColumn.Name = "numberOfProductsDataGridViewTextBoxColumn";
             // 
+            // orderListBindingSource
+            // 
+            this.orderListBindingSource.DataSource = typeof(TmcData.OrderListView);
+            this.orderListBindingSource.CurrentChanged += new System.EventHandler(this.orderListBindingSource_CurrentChanged);
+            // 
+            // Button_AddNewOrder
+            // 
+            this.Button_AddNewOrder.Location = new System.Drawing.Point(28, 316);
+            this.Button_AddNewOrder.Name = "Button_AddNewOrder";
+            this.Button_AddNewOrder.Size = new System.Drawing.Size(183, 57);
+            this.Button_AddNewOrder.TabIndex = 1;
+            this.Button_AddNewOrder.Text = "AddNewOrder";
+            this.Button_AddNewOrder.UseVisualStyleBackColor = true;
+            this.Button_AddNewOrder.Click += new System.EventHandler(this.button_AddNewOrder_Click);
+            // 
             // Order
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -172,6 +186,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn endTimeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn numberOfProductsDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource orderListBindingSource;
+        private System.Windows.Forms.Button Button_AddNewOrder;
 
     }
 }

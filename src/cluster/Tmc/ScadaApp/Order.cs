@@ -16,8 +16,7 @@ namespace Tmc.Scada.App
         public Order()
         {
             InitializeComponent();
-
-            orderListBindingSource.DataSource = TmcRepository.OrderInfo();
+            updateOrder();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -28,6 +27,25 @@ namespace Tmc.Scada.App
         private void orderListBindingSource_CurrentChanged(object sender, EventArgs e)
         {
             
+        }
+
+        private void button_AddNewOrder_Click(object sender, EventArgs e)
+        {
+            int black = 1;
+            int blue = 2;
+            int red = 4;
+            int green = 7;
+            int white = 2;
+
+            //Validate Input
+
+            TmcRepository.AddNewOrder(new Guid(), black, blue, red, green, white);
+            updateOrder();
+        }
+
+        private void updateOrder()
+        {
+            orderListBindingSource.DataSource = TmcRepository.OrderInfo();
         }
     }
 }
