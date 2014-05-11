@@ -342,7 +342,12 @@ namespace Tmc.Vision
                 }
              
             }
-            return line;
+
+            // Commented this line out as it wasn't compiling (DK)
+            //return line;
+
+            return minMax;
+
             //if (side == Side.Left) 
             //{
                // Col = 0;
