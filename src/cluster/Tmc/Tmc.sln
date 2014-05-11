@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaApp", "ScadaApp\ScadaApp.csproj", "{2C16F6E8-D131-4CF1-80DB-D460E1D605C2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaCore", "ScadaCore\ScadaCore.csproj", "{5B8926DD-DD25-4531-AC23-2B31CB9774D4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService", "WebService\WebService.csproj", "{B5BCF8FA-9E0E-4C0B-9731-F4AE03CF3434}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Robotics", "Robotics\Robotics.csproj", "{DF66D143-D5CC-4BA7-A277-D0E76779B062}"
 EndProject
@@ -19,15 +17,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TmcTest", "TmcTest\TmcTest.csproj", "{87CA9FC1-0480-44DB-8346-E5D8B963E35F}"
 EndProject
+<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TmcData", "TmcData\TmcData.csproj", "{4A0D0977-FAE7-47AF-88A6-7779F6EAD528}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E346C89D-4F24-4D45-82C3-0A93770BC90A}"
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiServer", "WebAPIServer\WebApiServer.csproj", "{1E2FAA51-57A7-4327-8136-A7FD5B08DBC4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{08ACC515-666B-4442-903F-4B1747EBCB2B}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{987AC1E1-9473-4A3B-B457-CF565F4616AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +45,6 @@ Global
 		{5B8926DD-DD25-4531-AC23-2B31CB9774D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B8926DD-DD25-4531-AC23-2B31CB9774D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B8926DD-DD25-4531-AC23-2B31CB9774D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B5BCF8FA-9E0E-4C0B-9731-F4AE03CF3434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B5BCF8FA-9E0E-4C0B-9731-F4AE03CF3434}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B5BCF8FA-9E0E-4C0B-9731-F4AE03CF3434}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B5BCF8FA-9E0E-4C0B-9731-F4AE03CF3434}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DF66D143-D5CC-4BA7-A277-D0E76779B062}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DF66D143-D5CC-4BA7-A277-D0E76779B062}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF66D143-D5CC-4BA7-A277-D0E76779B062}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -75,6 +73,10 @@ Global
 		{987AC1E1-9473-4A3B-B457-CF565F4616AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{987AC1E1-9473-4A3B-B457-CF565F4616AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{987AC1E1-9473-4A3B-B457-CF565F4616AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E2FAA51-57A7-4327-8136-A7FD5B08DBC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E2FAA51-57A7-4327-8136-A7FD5B08DBC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E2FAA51-57A7-4327-8136-A7FD5B08DBC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E2FAA51-57A7-4327-8136-A7FD5B08DBC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

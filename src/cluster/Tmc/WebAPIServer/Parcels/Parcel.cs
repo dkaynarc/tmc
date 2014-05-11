@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tmc.WebService
+namespace WebApiServer.Parcels
 {
-    public class Placeholder
+
+    public class Parcel
     {
+        public string Result { get; set; }
     }
 }
