@@ -1,0 +1,34 @@
+; Dependency file for setup wizards.
+
+; Dependencies for Asadtcp.ocx
+
+; Default Dependencies ----------------------------------------------
+
+[Asadtcp.OCX]
+Dest=$(WinSysPath)
+Register=$(DLLSelfRegister)
+Uses1=MFC42.DLL
+Uses2=MSVCRT.DLL
+Uses3=OLEAUT32.DLL
+Uses4=HEI32_3.DLL
+Uses5=
+
+[MFC42.DLL]
+Dest=$(WinSysPathSysFile)
+Register=$(DLLSelfRegister)
+Uses1=
+
+[MSVCRT.DLL]
+Dest=$(WinSysPathSysFile)
+Register=
+Uses1=
+
+[OLEAUT32.DLL]
+Dest=$(WinSysPathSysFile)
+Register=$(DLLSelfRegister)
+Uses1=
+
+[HEI32_3.DLL]
+Dest=$(WinSysPathSysFile)
+Register=
+Uses1=
