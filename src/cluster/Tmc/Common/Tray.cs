@@ -11,6 +11,7 @@ namespace Tmc.Common
         public const int MaxCells = 9;
 
         public List<T> Cells { get; set; }
+        public double Angle { get; set; }
 
         public Tray()
         {

@@ -19,12 +19,13 @@ namespace Tmc.Vision
     {
         private int minCircle, maxCircle;
         private int cannyThresh, cannyAccumThresh;
-        double par3, par4;
+        private double par3, par4;
         private Camera camera;
         private Point[] trayPoints = new Point[4];
         private Image<Bgr, Byte> img;
         private Image<Bgr, Byte> imgTray;
         private CircleF[] tablets;
+        private Angle;
         Tray<Tablet> trayList = new Tray<Tablet>();
         
         private Hsv[,] HSVTabletColoursRanges = new Hsv[5,2];//{{76,54}};
@@ -46,12 +47,12 @@ namespace Tmc.Vision
             HSVTabletColoursRanges[(int)TabletColors.Green,(int)HSVRange.High].Satuation  = 96;
             HSVTabletColoursRanges[(int)TabletColors.Green,(int)HSVRange.High].Value      = 226;
 
-            HSVTabletColoursRanges[(int)TabletColors.Red,(int)HSVRange.Low].Hue           = 149;
-            HSVTabletColoursRanges[(int)TabletColors.Red,(int)HSVRange.Low].Satuation     = 93;
-            HSVTabletColoursRanges[(int)TabletColors.Red,(int)HSVRange.Low].Value         = 198;
-            HSVTabletColoursRanges[(int)TabletColors.Red,(int)HSVRange.High].Hue          = 171;
-            HSVTabletColoursRanges[(int)TabletColors.Red,(int)HSVRange.High].Satuation    = 128;
-            HSVTabletColoursRanges[(int)TabletColors.Red,(int)HSVRange.High].Value        = 250;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue          = 0;//149;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 110;//93;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value = 290;//198;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue = 180;//171;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation = 200;//128;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Value = 360;//250;
 
             HSVTabletColoursRanges[(int)TabletColors.White,(int)HSVRange.Low].Hue         = 51;
             HSVTabletColoursRanges[(int)TabletColors.White,(int)HSVRange.Low].Satuation   = 6;
@@ -60,12 +61,12 @@ namespace Tmc.Vision
             HSVTabletColoursRanges[(int)TabletColors.White,(int)HSVRange.High].Satuation  = 12;
             HSVTabletColoursRanges[(int)TabletColors.White,(int)HSVRange.High].Value      = 250;
 
-            HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.Low].Hue          = 111;
+            HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.Low].Hue          = 115;
             HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.Low].Satuation    = 76;
-            HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.Low].Value        = 157;
-            HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.High].Hue         = 120;
-            HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.High].Satuation   = 123;
-            HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.High].Value       = 242;
+            HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.Low].Value        = 69;
+            HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.High].Hue         = 126;
+            HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.High].Satuation   = 125;
+            HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.High].Value       = 213;
 
             HSVTabletColoursRanges[(int)TabletColors.Black,(int)HSVRange.Low].Hue         = 102;
             HSVTabletColoursRanges[(int)TabletColors.Black,(int)HSVRange.Low].Satuation   = 15;
@@ -98,6 +99,8 @@ namespace Tmc.Vision
             
             DetectTray();
 
+             trayList.Angle = Angle;
+
             Image<Bgr, Byte> src = CropImage(img, 0, 300, img.Cols, 380);
 
             foreach (Point traypoint in trayPoints)
@@ -126,6 +129,7 @@ namespace Tmc.Vision
         {
             Rectangle rect = new Rectangle();
             Point[] line = new Point[2];
+            double angle;
 
             Image<Bgr, Byte> src = CropImage(img,0, 300, img.Cols, 380);
             //
@@ -142,6 +146,12 @@ namespace Tmc.Vision
 
             line = scanImg(Gsrc);
 
+            angle = AngleOfTray(line);
+            angle -= 90;
+
+            Angle = angle;
+           
+             
             double Mag = Math.Sqrt(Math.Pow((line[0].X - line[1].X),2) + Math.Pow((line[0].Y - line[1].Y),2) );
             CvInvoke.cvShowImage("Test Window", col); //Show the image
             CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
@@ -186,14 +196,14 @@ namespace Tmc.Vision
         /// </summary>
         private void DetectTabletsInTray()
         {         
-             while (true)
-            {
+             //while (true)
+            //{
                 CvInvoke.cvWaitKey(10); 
 
                 f.getValue(ref minCircle, ref maxCircle, ref par3, ref par4, ref cannyThresh,ref cannyAccumThresh);
                 tablets = DetectTablets(imgTray, minCircle, maxCircle, par3, par4, cannyThresh, cannyAccumThresh, f);
                  
-            }
+            //}
         }
 
         /// <summary>
@@ -335,19 +345,12 @@ namespace Tmc.Vision
                 for(int col = 0; col < src.Cols;col++)
                 {
                     gray = src[row,col];
-                    //if((line[0].X < col) && (gray.Intensity == 255))
-                    //{
-                    //    line[0].X = col;
-                    //}
+
                     if((line[0].Y < row) && (gray.Intensity == 255))
                     {
                         line[0].Y = row;
                         line[0].X = col;
                     }
-                    //if((line[1].X > col) && (gray.Intensity == 255))
-                    //{
-                    //    line[1].X = col;
-                    //}
                     if((line[1].Y > row) && (gray.Intensity == 255))
                     {
                         line[1].Y = row;
@@ -358,49 +361,16 @@ namespace Tmc.Vision
              
             }
             return line;
-            //if (side == Side.Left) 
-            //{
-               // Col = 0;
-            //for(
-            //    for (int i = 0; i < src.Cols; i++)
-            //    {
-            //        gray = src[row, i];
-            //        if (gray.Intensity == 255)
-            //        {
-            //            return i;
-            //        }
 
-            //    }
-            //    return src.Cols;
-            //}
-
-            //else if (side == Side.Right)
-            //{
-            //    Col = src.Cols - 1;
-            //    for (int i = Col; i > 0; i--)
-            //    {
-            //        gray = src[row, i];
-            //        if (gray.Intensity == 255)
-            //        {
-            //            return i;
-            //        }
-
-            //    }
-            //    return 0;
-            //}
-            //else  return 0; //throw
         }
-        //public Image<Gray, byte> ToCannyEdge(Image<Bgr, byte
-    
-        /*private void DetectTrayType()
-        {
-            
-        }*/
 
-        /*private bool CheckTrayEmpty()
+        public double AngleOfTray( Point[] line)
         {
+            double m = (line[0].Y - line[1].Y) / (line[0].X - line[1].X);
 
-            return true;
-        }*/
+            double angle = Math.Atan((m-0)/(1+(0*m))) * 180 / Math.PI;
+
+            return angle;
+        }
     }
 }

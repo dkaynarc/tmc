@@ -67,7 +67,7 @@ namespace Tmc.Vision
 
             foreach (CircleF circle in circles)
             {
-                a.Draw(circle, new Bgr(Color.Red), 2);
+                a.Draw(circle, new Bgr(Color.Red), 1);
             }
 
             f.pictureBox2_draw(a);
