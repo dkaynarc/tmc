@@ -2,7 +2,6 @@
 
 package ictd.activities;
 
-
 import adapters.ModuleAdapter;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -21,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import model.Constants;
 
-
 /**
  * Implements the main activity, which is the module activity. It contains many
  * fragments which the user then scrolls through.
@@ -33,7 +31,6 @@ public class ModuleActivity extends FragmentActivity implements
 	ModuleAdapter mModuleAdapter;
 	ViewPager mViewPager;
 	MediaPlayer mMediaPlayer = new MediaPlayer();
-
 
 	/**
 	 * Sets the layout, action bar and pager adapter which is used to scroll
@@ -103,7 +100,7 @@ public class ModuleActivity extends FragmentActivity implements
 					android.R.drawable.ic_dialog_alert);
 			ColorFilter filter = new LightingColorFilter(Color.RED, Color.RED);
 			myIcon.setColorFilter(filter);
-			
+
 			new AlertDialog.Builder(this)
 					.setIcon(myIcon)
 					.setTitle(Constants.LOGOUT)
@@ -116,13 +113,20 @@ public class ModuleActivity extends FragmentActivity implements
 									playSound(R.raw.bye);
 									finish();
 									// Add possible logout code here?
-									//////////////////////////////////
-									SharedPreferences preferences =  getSharedPreferences(Constants.APP_PERSISTANCE, 0);
-								    SharedPreferences.Editor ed = preferences.edit();
-								    ed.remove(Constants.USERNAME_KEY);//watch out for null reference exception
-								    ed.commit();
-									//////////////////////////////////
-									
+									// ////////////////////////////////
+									SharedPreferences preferences = getSharedPreferences(
+											Constants.APP_PERSISTANCE, 0);
+									SharedPreferences.Editor ed = preferences
+											.edit();
+									ed.remove(Constants.USERNAME_KEY);// watch
+																		// out
+																		// for
+																		// null
+																		// reference
+																		// exception
+									ed.commit();
+									// ////////////////////////////////
+
 								}
 							})
 					.setNegativeButton(Constants.CANCEL,
@@ -162,8 +166,6 @@ public class ModuleActivity extends FragmentActivity implements
 	{
 	}
 
-	
-
 	public void playSound(int soundId)
 	{
 		if (mMediaPlayer.isPlaying())
@@ -173,4 +175,3 @@ public class ModuleActivity extends FragmentActivity implements
 		mMediaPlayer.start();
 	}
 }
-

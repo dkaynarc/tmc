@@ -18,40 +18,40 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/modifyorder_ordername_tv"
+        android:id="@+id/modifyorder_idlabel_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/modifyorder_title_tv"
         android:layout_marginTop="20dp"
-        android:text="@string/modifyorder_ordername_tv"
+        android:text="@string/modifyorder_idlabel_tv"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
     <TextView
-        android:id="@+id/modifyorder_ordername_et"
+        android:id="@+id/modifyorder_id_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/modifyorder_ordername_tv"
-        android:layout_alignBaseline="@+id/modifyorder_ordername_tv"
-        android:ems="30"/>
+        android:layout_toRightOf="@+id/modifyorder_idlabel_tv"
+        android:layout_alignBaseline="@+id/modifyorder_idlabel_tv"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/modifyorder_ordernumber_tv"
+        android:id="@+id/modifyorder_ownerlabel_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/modifyorder_ordername_tv"
+        android:layout_below="@+id/modifyorder_idlabel_tv"
         android:layout_marginTop="20dp"
-        android:text="@string/modifyorder_ordernumber_tv"
+        android:text="@string/modifyorder_ownerlabel_tv"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
     <TextView
-        android:id="@+id/modifyorder_ordernumber_et"
+        android:id="@+id/modifyorder_owner_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/modifyorder_ordernumber_tv"
-        android:layout_alignBaseline="@+id/modifyorder_ordernumber_tv"
-        android:ems="30"/>
+        android:layout_toRightOf="@+id/modifyorder_ownerlabel_tv"
+        android:layout_alignBaseline="@+id/modifyorder_ownerlabel_tv"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     
     <!-- Sergei -->
@@ -63,7 +63,7 @@
         android:layout_marginTop="10dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/modifyorder_ordernumber_tv" >
+        android:layout_below="@+id/modifyorder_ownerlabel_tv" >
 
         <LinearLayout
             android:layout_width="match_parent"

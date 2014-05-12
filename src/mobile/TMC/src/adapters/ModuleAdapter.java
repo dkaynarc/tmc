@@ -13,8 +13,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 /**
- * A FragmentPagerAdapter that returns a fragment corresponding to one of
- * the sections/tabs/pages.
+ * A FragmentPagerAdapter that returns a fragment corresponding to one of the
+ * sections/tabs/pages.
  */
 
 public class ModuleAdapter extends FragmentPagerAdapter
@@ -56,13 +56,13 @@ public class ModuleAdapter extends FragmentPagerAdapter
 	/**
 	 * Returns the amount of fragments in the module activity.
 	 */
-	
+
 	@Override
 	public int getCount()
 	{
 		return 4;
 	}
-	
+
 	/**
 	 * Returns the title of each fragment in respect to its position.
 	 */

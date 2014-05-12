@@ -2,10 +2,6 @@
 
 package ictd.activities;
 
-
-
-
-
 import model.Constants;
 import model.Order;
 import android.os.Bundle;
@@ -36,7 +32,6 @@ public class CreateOrderActivity extends Activity
 	private Spinner spGreen;
 	private Spinner spRed;
 	private Spinner spWhite;
-	
 
 	/**
 	 * Sets the layout.
@@ -47,28 +42,40 @@ public class CreateOrderActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_order);
-	   
-		Integer[] items = new Integer[]{0,1,2,3,4};
-		ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,android.R.layout.simple_spinner_item, items);
-		/*((Spinner) findViewById(R.id.createorder_black_s)).setAdapter(adapter);
-		((Spinner) findViewById(R.id.createorder_blue_s)).setAdapter(adapter);
-		((Spinner) findViewById(R.id.createorder_green_s)).setAdapter(adapter);
-		((Spinner) findViewById(R.id.createorder_red_s)).setAdapter(adapter);
-		((Spinner) findViewById(R.id.createorder_white_s)).setAdapter(adapter);*/
-	
-		////////////////////////////
-		
-		(spBlack = (Spinner) findViewById(R.id.createorder_black_s)).setAdapter(adapter);
-		(spBlue = (Spinner) findViewById(R.id.createorder_blue_s)).setAdapter(adapter);
-		(spGreen = (Spinner) findViewById(R.id.createorder_green_s)).setAdapter(adapter);
-		(spRed = (Spinner) findViewById(R.id.createorder_red_s)).setAdapter(adapter);
-		(spWhite = (Spinner) findViewById(R.id.createorder_white_s)).setAdapter(adapter);
-		
-		
-		
-		((TextView) findViewById(R.id.createorder_ownername_tv)).setText(readCurrentUserName());           
 
-        /////////////////
+		Integer[] items = new Integer[]
+		{ 0, 1, 2, 3, 4 };
+		ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,
+				android.R.layout.simple_spinner_item, items);
+		/*
+		 * ((Spinner)
+		 * findViewById(R.id.createorder_black_s)).setAdapter(adapter);
+		 * ((Spinner)
+		 * findViewById(R.id.createorder_blue_s)).setAdapter(adapter);
+		 * ((Spinner)
+		 * findViewById(R.id.createorder_green_s)).setAdapter(adapter);
+		 * ((Spinner) findViewById(R.id.createorder_red_s)).setAdapter(adapter);
+		 * ((Spinner)
+		 * findViewById(R.id.createorder_white_s)).setAdapter(adapter);
+		 */
+
+		// //////////////////////////
+
+		(spBlack = (Spinner) findViewById(R.id.createorder_black_s))
+				.setAdapter(adapter);
+		(spBlue = (Spinner) findViewById(R.id.createorder_blue_s))
+				.setAdapter(adapter);
+		(spGreen = (Spinner) findViewById(R.id.createorder_green_s))
+				.setAdapter(adapter);
+		(spRed = (Spinner) findViewById(R.id.createorder_red_s))
+				.setAdapter(adapter);
+		(spWhite = (Spinner) findViewById(R.id.createorder_white_s))
+				.setAdapter(adapter);
+
+		((TextView) findViewById(R.id.createorder_ownername_tv))
+				.setText(readCurrentUserName());
+
+		// ///////////////
 	}
 
 	/**
@@ -80,160 +87,147 @@ public class CreateOrderActivity extends Activity
 
 	public void onCreateOrderClicked(View view)
 	{
-		/*String name = ((EditText) findViewById(R.id.createorder_ordername_et))
-				.getText().toString();
-		String number = ((EditText) findViewById(R.id.createorder_ordernumber_et))
-				.getText().toString();
-		
-		if (name.equals(""))
-		{
-			Toast.makeText(getBaseContext(), Constants.ENTER_NAME,
-					Toast.LENGTH_SHORT).show();
-			return;
-		}
-		if (number.equals(""))
-		{
-			Toast.makeText(getBaseContext(), Constants.ENTER_NUMBER,
-					Toast.LENGTH_SHORT).show();
-			return;}*/
-		
-		
-		/////////////////////		
-	   
-		
+		/*
+		 * String name = ((EditText)
+		 * findViewById(R.id.createorder_ordername_et)) .getText().toString();
+		 * String number = ((EditText)
+		 * findViewById(R.id.createorder_ordernumber_et)) .getText().toString();
+		 * 
+		 * if (name.equals("")) { Toast.makeText(getBaseContext(),
+		 * Constants.ENTER_NAME, Toast.LENGTH_SHORT).show(); return; } if
+		 * (number.equals("")) { Toast.makeText(getBaseContext(),
+		 * Constants.ENTER_NUMBER, Toast.LENGTH_SHORT).show(); return;}
+		 */
+
+		// ///////////////////
+
 		Order newOrder = new Order(readCurrentUserName(),
 				Integer.decode(spBlack.getSelectedItem().toString()),
 				Integer.decode(spBlue.getSelectedItem().toString()),
 				Integer.decode(spGreen.getSelectedItem().toString()),
 				Integer.decode(spRed.getSelectedItem().toString()),
-				Integer.decode(spWhite.getSelectedItem().toString())); // the user name is to be changed to a real user name
-		
-		
-		if(newOrder.getQuantity() < 1)
+				Integer.decode(spWhite.getSelectedItem().toString())); // the
+																		// user
+																		// name
+																		// is to
+																		// be
+																		// changed
+																		// to a
+																		// real
+																		// user
+																		// name
+
+		if (newOrder.getQuantity() < 1)
 		{
-		    Toast.makeText(getBaseContext(), Constants.ENTER_ITEMS_QUANTITY, Toast.LENGTH_SHORT).show();	
-	    	return;
-	    }
-		
-	    if (newOrder.getQuantity() > 8)
-		{
-	      Toast.makeText(getBaseContext(), Constants.TOTAL_NUMBER_ERROR, Toast.LENGTH_SHORT).show();				
-		  return;
+			Toast.makeText(getBaseContext(), Constants.ENTER_ITEMS_QUANTITY,
+					Toast.LENGTH_SHORT).show();
+			return;
 		}
-	    
+
+		if (newOrder.getQuantity() > 8)
+		{
+			Toast.makeText(getBaseContext(), Constants.TOTAL_NUMBER_ERROR,
+					Toast.LENGTH_SHORT).show();
+			return;
+		}
+
 		// get here only if validation is ok
 		makeNewOrderService(newOrder);
-		///////////////////////////		
-		
-		
-		/*Intent intent = getIntent();
-		intent.putExtra(Constants.NAME, name);
-		intent.putExtra(Constants.NUMBER, number);
-		setResult(Constants.CREATE_ORDER, intent);
-		finish();*/
+		// /////////////////////////
+
+		/*
+		 * Intent intent = getIntent(); intent.putExtra(Constants.NAME, name);
+		 * intent.putExtra(Constants.NUMBER, number);
+		 * setResult(Constants.CREATE_ORDER, intent); finish();
+		 */
 	}
 
-     
-	
-	///////////////////////////////////////////////////////	
-     private void makeNewOrderService(Order newOrder) 
-     {	
+	// /////////////////////////////////////////////////////
+	private void makeNewOrderService(Order newOrder)
+	{
 		Intent service = new Intent(this, services.SynchService.class);
 		Bundle parcel = new Bundle();
-		parcel.putString("orderName", newOrder.getOrderName());
-		parcel.putInt("command", Constants.NEW_ORDER_COMMAND);
-		parcel.putString("black", Integer.toString(newOrder.getColourNumber("black")));
-		parcel.putString("blue", Integer.toString(newOrder.getColourNumber("blue")));
-		parcel.putString("green", Integer.toString(newOrder.getColourNumber("green")));
-		parcel.putString("red", Integer.toString(newOrder.getColourNumber("red")));
-		parcel.putString("white", Integer.toString(newOrder.getColourNumber("white")));
-		
+		parcel.putString("orderName", newOrder.getOrderOwner());
+		parcel.putString("command", Constants.NEW_ORDER_COMMAND);
+		parcel.putString("black",
+				Integer.toString(newOrder.getColourNumber("black")));
+		parcel.putString("blue",
+				Integer.toString(newOrder.getColourNumber("blue")));
+		parcel.putString("green",
+				Integer.toString(newOrder.getColourNumber("green")));
+		parcel.putString("red",
+				Integer.toString(newOrder.getColourNumber("red")));
+		parcel.putString("white",
+				Integer.toString(newOrder.getColourNumber("white")));
+
 		service.putExtra("parcel", parcel);
-		
+
 		// stop any already running services associated with this activity
 		stopService(service);
 		pd = ProgressDialog.show(this, null, "Contacting server");
 		startService(service);
-		
+
 	}
 
-     
-     
-     
-     
-     
-//private class
-private class ResultReceiver extends BroadcastReceiver
-{
-	@Override
-	public void onReceive(Context context, Intent intent) 
+	// private class
+	private class ResultReceiver extends BroadcastReceiver
 	{
-	   pd.dismiss();	  
-	   String response = intent.getStringExtra("result"); 
-	   
+		@Override
+		public void onReceive(Context context, Intent intent)
+		{
+			pd.dismiss();
+			String response = intent.getStringExtra("result");
 
-		  handleNewOrderResult(response, context);
-		
-		
+			handleNewOrderResult(response, context);
+
+		}
 	}
-}
 
+	private void handleNewOrderResult(String response, Context context)
+	{
 
-
-
-
-
-private void handleNewOrderResult(String response, Context context) 
-{
-		
-		if((response).equalsIgnoreCase("\"success\""))
-		{		
+		if ((response).equalsIgnoreCase("\"success\""))
+		{
 			Intent intent = getIntent();
-			/*intent.putExtra(Constants.NAME, readCurrentUserName());
-		    intent.putExtra(Constants.NUMBER, "6767");// update order number to real one*/
+			/*
+			 * intent.putExtra(Constants.NAME, readCurrentUserName());
+			 * intent.putExtra(Constants.NUMBER, "6767");// update order number
+			 * to real one
+			 */
 			setResult(Constants.CREATE_ORDER, intent);
 			finish();
 		}
 		else
-			Toast.makeText(context, Constants.NEW_ORDER_FAIL, Toast.LENGTH_SHORT)
-					.show();
-	}   
+			Toast.makeText(context, Constants.NEW_ORDER_FAIL,
+					Toast.LENGTH_SHORT).show();
+	}
 
-
-	
-	private String readCurrentUserName() 
+	private String readCurrentUserName()
 	{
-		SharedPreferences preferences = getSharedPreferences(Constants.APP_PERSISTANCE, 0);
-	    String userName = preferences.getString(Constants.USERNAME_KEY, null);
-	    return userName;
-    }
-	
-	
-	
+		SharedPreferences preferences = getSharedPreferences(
+				Constants.APP_PERSISTANCE, 0);
+		String userName = preferences.getString(Constants.USERNAME_KEY, null);
+		return userName;
+	}
+
 	@Override
 	public void onStart()
 	{
-        IntentFilter filter = new IntentFilter(Integer.toString(Constants.NEW_ORDER_COMMAND));
-        receiver = new ResultReceiver();
-        this.registerReceiver(receiver, filter);
-        super.onStart();
+		IntentFilter filter = new IntentFilter(Constants.NEW_ORDER_COMMAND);
+		receiver = new ResultReceiver();
+		this.registerReceiver(receiver, filter);
+		super.onStart();
 	}
-	
-	
-	
+
 	@Override
-	protected void onStop() 
+	protected void onStop()
 	{
-	   unregisterReceiver(receiver);
-	   super.onStop();
+		unregisterReceiver(receiver);
+		super.onStop();
 	}
-	
-	
-/////////////////////////////////////////////////////////////////
-	
-	
-	
-	
+
+	// ///////////////////////////////////////////////////////////////
+
 	/**
 	 * Quits the activity without data submission when the "Cancel" button is
 	 * clicked.

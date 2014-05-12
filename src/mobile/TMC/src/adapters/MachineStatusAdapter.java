@@ -84,10 +84,10 @@ public class MachineStatusAdapter extends ArrayAdapter<Machine>
 				statusText.setText(machine.getMachineStatus());
 			if (type != null)
 			{
-				//if (machine.getMachineType().equals(Constants.ROBOT))
-					//type.setImageResource(R.drawable.robot);
-				//else if (machine.getMachineType().equals(Constants.CONVEYOR))
-					//type.setImageResource(R.drawable.conveyor);
+				if (machine.getMachineType().equals(Constants.ROBOT))
+					type.setImageResource(R.drawable.robot);
+				else if (machine.getMachineType().equals(Constants.CONVEYOR))
+					type.setImageResource(R.drawable.conveyor);
 			}
 			if (statusImage != null)
 			{

@@ -2,6 +2,10 @@
 
 package model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * Defines the data structure of the order object as well as its functions.
  * 
@@ -18,6 +22,8 @@ public class Order
 	private int mRed = 0;
 	private int mGreen = 0;
 	private int mWhite = 0;
+	private Date mStartTime = null;
+	private Date mFinishTime = null;
 
 	/**
 	 * Constructor to initialize all the variables.
@@ -37,8 +43,8 @@ public class Order
 	}
 
 	// //////////////////////////////////////////
-	public Order(String orderOwner, int black,
-			   int blue, int green, int red, int white)
+	public Order(String orderOwner, int black, int blue, int green, int red,
+			int white)
 	{
 		mOrderOwner = orderOwner;
 		mBlack = black;
@@ -47,14 +53,15 @@ public class Order
 		mRed = red;
 		mWhite = white;
 	}
-	/////////////////////////////////////////////////////////////////////
 
-	/*public Order(int orderId, String orderOwner, String orderStatus)
+	// ///////////////////////////////////////////////////////////////////
+
+	public Order(int orderId, String orderOwner, String orderStatus)
 	{
 		mOrderId = orderId;
 		mOrderOwner = orderOwner;
 		mOrderStatus = orderStatus;
-	}*/
+	}
 
 	public void setColourNumber(String colourName, int quantity)
 	{
@@ -84,7 +91,6 @@ public class Order
 			return mWhite;
 		return 0;
 	}
-
 
 	/**
 	 * Set the order name.
@@ -117,7 +123,7 @@ public class Order
 	 * Get the order name.
 	 */
 
-	public String getOrderName()
+	public String getOrderOwner()
 	{
 		return mOrderOwner;
 	}
@@ -142,7 +148,23 @@ public class Order
 
 	public int getQuantity()
 	{
-		int quantity = mBlack + mBlue + mGreen + mRed +mWhite;
+		int quantity = mBlack + mBlue + mGreen + mRed + mWhite;
 		return quantity;
+	}
+
+	public String getStartTime()
+	{
+		if (mStartTime == null)
+			return "--/--/--- --:--:--";
+		return (new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()))
+				.format(mStartTime);
+	}
+
+	public String getFinishTime()
+	{
+		if (mFinishTime == null)
+			return "--/--/--- --:--:--";
+		return (new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()))
+				.format(mFinishTime);
 	}
 }

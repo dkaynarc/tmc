@@ -9,7 +9,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import model.Constants;
 import model.Machine;
+
 import ictd.activities.R;
+
 import adapters.MachineStatusAdapter;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -34,7 +36,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
-
 
 /**
  * Sets the layout for the activity.
@@ -84,7 +85,7 @@ public class MachineStatusFragment extends ListFragment
 	/**
 	 * Implements the startup onClickListener
 	 */
-	
+
 	private OnClickListener onStartupClickListener = new OnClickListener() {
 		public void onClick(final View view)
 		{
@@ -95,7 +96,7 @@ public class MachineStatusFragment extends ListFragment
 	/**
 	 * Implements the shutdown onClickListener
 	 */
-	
+
 	private OnClickListener onShutdownClickListener = new OnClickListener() {
 		public void onClick(final View view)
 		{
@@ -103,12 +104,11 @@ public class MachineStatusFragment extends ListFragment
 		}
 	};
 
-
 	/**
 	 * Implements the handler for the new threads created by the startup and
 	 * shutdown buttons. Only necessary for demonstration purposes.
 	 */
-	/*
+
 	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
 		@Override
@@ -125,9 +125,6 @@ public class MachineStatusFragment extends ListFragment
 			}
 		}
 	};
-	*/
-
-
 
 	/**
 	 * Sets the layout for the activity.
@@ -135,7 +132,7 @@ public class MachineStatusFragment extends ListFragment
 	 * Creates a new adapter for a list of machines using predefined values and
 	 * sets the onClickListeners for the buttons.
 	 */
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
@@ -193,10 +190,8 @@ public class MachineStatusFragment extends ListFragment
 	 * need some further implementation.
 	 */
 
-	
-		
 	public void startup()
-	{	
+	{
 		new Thread() {
 			@Override
 			public void run()
@@ -219,7 +214,7 @@ public class MachineStatusFragment extends ListFragment
 	 * off when sound finishes playing. Only used for demonstrative purposes,
 	 * will need some further implementation.
 	 */
-	
+
 	public void shutdown()
 	{
 		new Thread() {
@@ -243,7 +238,7 @@ public class MachineStatusFragment extends ListFragment
 	 * Turns all machines in the adapter on. Only used for demonstrative
 	 * purposes.
 	 */
-	
+
 	public void turnOn()
 	{
 		MachineStatusAdapter adapter = (MachineStatusAdapter) getListView()
@@ -261,12 +256,11 @@ public class MachineStatusFragment extends ListFragment
 	 * Turns all machines in the adapter off. Only used for demonstrative
 	 * purposes.
 	 */
-	
+
 	public void turnOff()
 	{
 		MachineStatusAdapter adapter = (MachineStatusAdapter) getListView()
 				.getAdapter();
-		
 		Machine machine;
 		for (int i = 0; i < adapter.getCount(); i++)
 		{
@@ -280,7 +274,7 @@ public class MachineStatusFragment extends ListFragment
 	 * Instantly turns all machines in the adapter off and then plays the
 	 * respective sound. Only used for demonstrative purposes.
 	 */
-	
+
 	public void emergencyStop()
 	{
 		// Replace turnOff() with emergencyStop() method
@@ -297,14 +291,14 @@ public class MachineStatusFragment extends ListFragment
 	 * 
 	 * @param soundId
 	 */
-	
+
 	public void playSound(int soundId)
 	{
 		if (mMediaPlayer.isPlaying())
 			mMediaPlayer.stop();
-		    mMediaPlayer = MediaPlayer.create(getActivity(), soundId);
-		    mMediaPlayer.setLooping(false);
-		    mMediaPlayer.start();
+		mMediaPlayer = MediaPlayer.create(getActivity(), soundId);
+		mMediaPlayer.setLooping(false);
+		mMediaPlayer.start();
 	}
 	
 	

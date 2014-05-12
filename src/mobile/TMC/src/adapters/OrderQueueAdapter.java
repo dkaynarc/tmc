@@ -74,7 +74,7 @@ public class OrderQueueAdapter extends ArrayAdapter<Order>
 			TextView name = (TextView) v
 					.findViewById(R.id.orderrow_orderowner_tv);
 			TextView number = (TextView) v
-					.findViewById(R.id.orderrow_orderid_tv);//orderrow_orderid_tv
+					.findViewById(R.id.orderrow_orderid_tv);// orderrow_orderid_tv
 			TextView type = (TextView) v
 					.findViewById(R.id.orderrow_orderstatus_tv);
 			ImageView picture = (ImageView) v
@@ -82,8 +82,8 @@ public class OrderQueueAdapter extends ArrayAdapter<Order>
 			ImageButton delete = (ImageButton) v
 					.findViewById(R.id.orderrow_deleteorder_ib);
 			if (name != null)
-				name.setText(order.getOrderName());
-			if (number != null)//////////////////exception here
+				name.setText(order.getOrderOwner());
+			if (number != null)// ////////////////exception here
 				number.setText(Integer.toString(order.getOrderId()));
 			if (type != null)
 				type.setText(order.getOrderStatus());
@@ -91,6 +91,8 @@ public class OrderQueueAdapter extends ArrayAdapter<Order>
 			{
 				if (order.getOrderStatus().equals(Constants.PENDING))
 					picture.setImageResource(R.drawable.pending);
+				else if (order.getOrderStatus().equals(Constants.ASSEMBLY))
+					picture.setImageResource(R.drawable.active);
 				else if (order.getOrderStatus().equals(Constants.COMPLETE))
 					picture.setImageResource(R.drawable.complete);
 			}
