@@ -3,17 +3,14 @@
 package fragments;
 
 import ictd.activities.R;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-/**
- * Implements the logout fragment. Opens a dialog to confirm exiting of the
- * module activity and redirects back to the login activity.
- */
+
 
 public class EnvironmentFragment extends Fragment
 {
@@ -24,6 +21,12 @@ public class EnvironmentFragment extends Fragment
 	{
 		View rootView = inflater.inflate(R.layout.fragment_environment, container,
 				false);
+		
+		TextView dust = (TextView)rootView.findViewById(R.id.environment_dust_tv);
+		
+		
+		
+		
 		return rootView;
 	}
 }

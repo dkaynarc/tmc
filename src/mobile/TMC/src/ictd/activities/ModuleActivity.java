@@ -114,15 +114,14 @@ public class ModuleActivity extends FragmentActivity implements
 										int id)
 								{
 									playSound(R.raw.bye);
-									finish();
-									// Add possible logout code here?
+	     							// Add possible logout code here?
 									//////////////////////////////////
 									SharedPreferences preferences =  getSharedPreferences(Constants.APP_PERSISTANCE, 0);
 								    SharedPreferences.Editor ed = preferences.edit();
 								    ed.remove(Constants.USERNAME_KEY);//watch out for null reference exception
 								    ed.commit();
 									//////////////////////////////////
-									
+									finish();
 								}
 							})
 					.setNegativeButton(Constants.CANCEL,
