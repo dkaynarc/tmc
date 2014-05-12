@@ -45,15 +45,15 @@
             this.environmentTabButton = new System.Windows.Forms.ToolStripButton();
             this.controlTabButton = new System.Windows.Forms.ToolStripButton();
             this.plantMimicTabButton = new System.Windows.Forms.ToolStripButton();
+            this.orderListViewBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tablessControlPanel = new TablessControl();
             this.plantMimicTab = new System.Windows.Forms.TabPage();
+            this.OrderListView = new System.Windows.Forms.DataGridView();
             this.Button_AddNewOrder = new System.Windows.Forms.Button();
             this.controlTab = new System.Windows.Forms.TabPage();
             this.environmentTab = new System.Windows.Forms.TabPage();
             this.ordersTab = new System.Windows.Forms.TabPage();
             this.reportsTab = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.orderListViewBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.orderIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.blackDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -68,10 +68,10 @@
             this.toolStrip1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
             this.toolStrip3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).BeginInit();
             this.tablessControlPanel.SuspendLayout();
             this.plantMimicTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -218,6 +218,10 @@
             this.plantMimicTabButton.Text = "Plant Mimic";
             this.plantMimicTabButton.Click += new System.EventHandler(this.plantMimicScreenButton_Click);
             // 
+            // orderListViewBindingSource
+            // 
+            this.orderListViewBindingSource.DataSource = typeof(TmcData.OrderListView);
+            // 
             // tablessControlPanel
             // 
             this.tablessControlPanel.Controls.Add(this.plantMimicTab);
@@ -233,7 +237,7 @@
             // 
             // plantMimicTab
             // 
-            this.plantMimicTab.Controls.Add(this.dataGridView1);
+            this.plantMimicTab.Controls.Add(this.OrderListView);
             this.plantMimicTab.Controls.Add(this.Button_AddNewOrder);
             this.plantMimicTab.Location = new System.Drawing.Point(4, 22);
             this.plantMimicTab.Name = "plantMimicTab";
@@ -242,6 +246,31 @@
             this.plantMimicTab.TabIndex = 0;
             this.plantMimicTab.Text = "Plant Mimic";
             this.plantMimicTab.UseVisualStyleBackColor = true;
+            // 
+            // OrderListView
+            // 
+            this.OrderListView.AllowUserToAddRows = false;
+            this.OrderListView.AllowUserToDeleteRows = false;
+            this.OrderListView.AutoGenerateColumns = false;
+            this.OrderListView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.OrderListView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.orderIDDataGridViewTextBoxColumn,
+            this.nameDataGridViewTextBoxColumn,
+            this.blackDataGridViewTextBoxColumn,
+            this.blueDataGridViewTextBoxColumn,
+            this.redDataGridViewTextBoxColumn,
+            this.greenDataGridViewTextBoxColumn,
+            this.whiteDataGridViewTextBoxColumn,
+            this.startTimeDataGridViewTextBoxColumn,
+            this.endTimeDataGridViewTextBoxColumn,
+            this.numberOfProductsDataGridViewTextBoxColumn,
+            this.statusIDDataGridViewTextBoxColumn});
+            this.OrderListView.DataSource = this.orderListViewBindingSource;
+            this.OrderListView.Location = new System.Drawing.Point(21, 17);
+            this.OrderListView.Name = "OrderListView";
+            this.OrderListView.Size = new System.Drawing.Size(480, 225);
+            this.OrderListView.TabIndex = 3;
+            this.OrderListView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick_1);
             // 
             // Button_AddNewOrder
             // 
@@ -293,34 +322,6 @@
             this.reportsTab.Text = "Reports";
             this.reportsTab.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AutoGenerateColumns = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.orderIDDataGridViewTextBoxColumn,
-            this.nameDataGridViewTextBoxColumn,
-            this.blackDataGridViewTextBoxColumn,
-            this.blueDataGridViewTextBoxColumn,
-            this.redDataGridViewTextBoxColumn,
-            this.greenDataGridViewTextBoxColumn,
-            this.whiteDataGridViewTextBoxColumn,
-            this.startTimeDataGridViewTextBoxColumn,
-            this.endTimeDataGridViewTextBoxColumn,
-            this.numberOfProductsDataGridViewTextBoxColumn,
-            this.statusIDDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.orderListViewBindingSource;
-            this.dataGridView1.Location = new System.Drawing.Point(21, 18);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(540, 225);
-            this.dataGridView1.TabIndex = 3;
-            // 
-            // orderListViewBindingSource
-            // 
-            this.orderListViewBindingSource.DataSource = typeof(TmcData.OrderListView);
-            // 
             // orderIDDataGridViewTextBoxColumn
             // 
             this.orderIDDataGridViewTextBoxColumn.DataPropertyName = "OrderID";
@@ -338,30 +339,36 @@
             this.blackDataGridViewTextBoxColumn.DataPropertyName = "Black";
             this.blackDataGridViewTextBoxColumn.HeaderText = "Black";
             this.blackDataGridViewTextBoxColumn.Name = "blackDataGridViewTextBoxColumn";
+            this.blackDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            this.blackDataGridViewTextBoxColumn.Visible = false;
             // 
             // blueDataGridViewTextBoxColumn
             // 
             this.blueDataGridViewTextBoxColumn.DataPropertyName = "Blue";
             this.blueDataGridViewTextBoxColumn.HeaderText = "Blue";
             this.blueDataGridViewTextBoxColumn.Name = "blueDataGridViewTextBoxColumn";
+            this.blueDataGridViewTextBoxColumn.Visible = false;
             // 
             // redDataGridViewTextBoxColumn
             // 
             this.redDataGridViewTextBoxColumn.DataPropertyName = "Red";
             this.redDataGridViewTextBoxColumn.HeaderText = "Red";
             this.redDataGridViewTextBoxColumn.Name = "redDataGridViewTextBoxColumn";
+            this.redDataGridViewTextBoxColumn.Visible = false;
             // 
             // greenDataGridViewTextBoxColumn
             // 
             this.greenDataGridViewTextBoxColumn.DataPropertyName = "Green";
             this.greenDataGridViewTextBoxColumn.HeaderText = "Green";
             this.greenDataGridViewTextBoxColumn.Name = "greenDataGridViewTextBoxColumn";
+            this.greenDataGridViewTextBoxColumn.Visible = false;
             // 
             // whiteDataGridViewTextBoxColumn
             // 
             this.whiteDataGridViewTextBoxColumn.DataPropertyName = "White";
             this.whiteDataGridViewTextBoxColumn.HeaderText = "White";
             this.whiteDataGridViewTextBoxColumn.Name = "whiteDataGridViewTextBoxColumn";
+            this.whiteDataGridViewTextBoxColumn.Visible = false;
             // 
             // startTimeDataGridViewTextBoxColumn
             // 
@@ -404,10 +411,10 @@
             this.toolStrip2.PerformLayout();
             this.toolStrip3.ResumeLayout(false);
             this.toolStrip3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).EndInit();
             this.tablessControlPanel.ResumeLayout(false);
             this.plantMimicTab.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -437,7 +444,8 @@
         private System.Windows.Forms.TabPage ordersTab;
         private System.Windows.Forms.TabPage reportsTab;
         private System.Windows.Forms.Button Button_AddNewOrder;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView OrderListView;
+        private System.Windows.Forms.BindingSource orderListViewBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn orderIDDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn blackDataGridViewTextBoxColumn;
@@ -449,7 +457,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn endTimeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn numberOfProductsDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn statusIDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.BindingSource orderListViewBindingSource;
     }
 }
 
