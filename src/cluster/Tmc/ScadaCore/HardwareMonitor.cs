@@ -7,7 +7,7 @@ using Tmc.Common;
 
 namespace Tmc.Scada.Core
 {
-    class HardwareMonitor
+    public class HardwareMonitor
     {
         private ScadaEngine _engine;
         private List<IHardware> _hardware;

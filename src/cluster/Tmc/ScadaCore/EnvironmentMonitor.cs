@@ -26,34 +26,27 @@ namespace Tmc.Scada.Core
     //    ParticlesPerLitre = "pcs/L"
     //}
 
-    class EnvironmentMonitor
+    public class EnvironmentMonitor
     {
-        private static EnvironmentMonitor _instance;
         public bool LoggingEnabled { get; set; }
         private ScadaEngine _engine;
         private List<ISensor> _sensors;
         private List<EnvironmentLogEntry> _log;
 
-        public static EnvironmentMonitor Instance
+        public EnvironmentMonitor(ScadaEngine engine)
         {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new EnvironmentMonitor();
-                }
-                return _instance;
-            }
-        }
-
-        public void Initialise(ScadaEngine engine)
-        {
+            _log = new List<EnvironmentLogEntry>();
+            
             this._engine = engine;
             this._sensors = new List<ISensor>();
             var config = engine.ClusterConfig;
             LoggingEnabled = true;
 
             //_sensors.Add(config.Sensors[typeof(AssemblerRobot)] as AssemblerRobot; //need sensor objects
+        }
+
+        public void Initialise(ScadaEngine engine)
+        {
         }
 
         public void Log()   
