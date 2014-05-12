@@ -35,7 +35,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-
 /**
  * Sets the layout for the activity.
  * 
@@ -50,10 +49,6 @@ public class OrderQueueFragment extends ListFragment
 	private ResultReceiver receiver;
 	private ProgressDialog pd;
 
-	
-	
-	
-	
 	/**
 	 * Implements the order's delete button.
 	 */
@@ -66,19 +61,25 @@ public class OrderQueueFragment extends ListFragment
 					.setTitle(Constants.DELETE_TITLE)
 					.setMessage(Constants.DELETE_CONFIRM)
 					.setPositiveButton(Constants.OK,
-							
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int id)
-								{
-									/*OrderQueueAdapter adapter = (OrderQueueAdapter) getListView().getAdapter();*/
-                                    /////////////////////////////////
-									makeService(Constants.DELETE_ORDER_COMMAND, ((Order)view.getTag()).getOrderId());
-                                    /////////////////////////////////									
-									/*adapter.remove((Order) view.getTag());
-									adapter.notifyDataSetChanged();
-									playSound(R.raw.deleteorder);*/
-								}
-							})
+
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id)
+						{
+							/*
+							 * OrderQueueAdapter adapter = (OrderQueueAdapter)
+							 * getListView().getAdapter();
+							 */
+							// ///////////////////////////////
+							makeService(Constants.DELETE_ORDER_COMMAND,
+									((Order) view.getTag()).getOrderId());
+							// ///////////////////////////////
+							/*
+							 * adapter.remove((Order) view.getTag());
+							 * adapter.notifyDataSetChanged();
+							 * playSound(R.raw.deleteorder);
+							 */
+						}
+					})
 					.setNegativeButton(Constants.CANCEL,
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
@@ -89,10 +90,6 @@ public class OrderQueueFragment extends ListFragment
 							}).show();
 		}
 	};
-	
-	
-	
-	
 
 	/**
 	 * Implements the create order onClick Listener which starts up the new
@@ -129,8 +126,6 @@ public class OrderQueueFragment extends ListFragment
 		return rootView;
 	}
 
-	
-	
 	/**
 	 * Implements each order's onClick listener, displaying its current values
 	 * and providing the option to modify the order.
@@ -145,13 +140,16 @@ public class OrderQueueFragment extends ListFragment
 						((ImageView) v
 								.findViewById(R.id.orderrow_orderstatus_iv))
 								.getDrawable())
-				.setTitle(order.getOrderName())
-				.setTitle(order.getOrderName())
+				.setTitle(order.getOrderId())
 				.setMessage(
-						String.format("%s: %s\n%s: %s\n%s: %s", Constants.NAME,
-								order.getOrderName(), Constants.NUMBER,
-								order.getOrderId(), Constants.STATUS,
-								order.getOrderStatus()))
+						String.format("%s: %s\n%s: %s\n\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d",
+								Constants.NAME, order.getOrderOwner(),
+								Constants.STATUS, order.getOrderStatus(),
+								Constants.BLACK, order.getColourNumber(Constants.BLACK),
+								Constants.BLUE, order.getColourNumber(Constants.BLUE),
+								Constants.GREEN, order.getColourNumber(Constants.GREEN),
+								Constants.RED, order.getColourNumber(Constants.RED),
+								Constants.WHITE, order.getColourNumber(Constants.WHITE)))
 				.setPositiveButton(Constants.OK,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id)
@@ -165,12 +163,12 @@ public class OrderQueueFragment extends ListFragment
 							public void onClick(DialogInterface dialog, int id)
 							{
 								
-								if(order.getOrderName().equalsIgnoreCase(readCurrentUserName()))
+								if(order.getOrderOwner().equalsIgnoreCase(readCurrentUserName()))
 								{
 								   Intent intent = new Intent(getActivity(), ModifyOrderActivity.class);
 								   ////////////////////////////////////////////////
 								   intent.putExtra(Constants.ID, Integer.toString(order.getOrderId()));
-								   intent.putExtra(Constants.NAME, order.getOrderName());
+								   intent.putExtra(Constants.NAME, order.getOrderOwner());
 								   intent.putExtra("black", order.getColourNumber("black"));
 								   intent.putExtra("blue", order.getColourNumber("blue"));
 								   intent.putExtra("green", order.getColourNumber("green"));
@@ -188,18 +186,14 @@ public class OrderQueueFragment extends ListFragment
 						}).show();
 	}
 
-	
-	
-	
-	private String readCurrentUserName() 
+	private String readCurrentUserName()
 	{
-		SharedPreferences preferences = getActivity().getSharedPreferences(Constants.APP_PERSISTANCE, 0);
-	    String userName = preferences.getString(Constants.USERNAME_KEY, null);
-	    return userName;
-    }
-	
-	
-	
+		SharedPreferences preferences = getActivity().getSharedPreferences(
+				Constants.APP_PERSISTANCE, 0);
+		String userName = preferences.getString(Constants.USERNAME_KEY, null);
+		return userName;
+	}
+
 	/**
 	 * Handles the return of the create and modify order activities.
 	 * 
@@ -213,18 +207,16 @@ public class OrderQueueFragment extends ListFragment
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (resultCode)
 		{
-		  case Constants.CREATE_ORDER:
-			  playSound(R.raw.createorder);
-		  break;
+		case Constants.CREATE_ORDER:
+			playSound(R.raw.createorder);
+			break;
 
-		  case Constants.MODIFY_ORDER:
-			  playSound(R.raw.modifyorder);				
-		  break;
+		case Constants.MODIFY_ORDER:
+			playSound(R.raw.modifyorder);
+			break;
 		}
 	}
 
-	
-	
 	/**
 	 * Plays the sound of the id given.
 	 * 
@@ -240,30 +232,25 @@ public class OrderQueueFragment extends ListFragment
 		mMediaPlayer.start();
 	}
 
-	
-	
-	
-	
-	
 	// ///////////////////////////////////////////////////////////////////////////
-	private void makeService(int command, int orderId)
+	private void makeService(String command, int orderId)
 	{
 		Intent service = new Intent(getActivity(), services.SynchService.class);
 		Bundle parcel = new Bundle();
-		parcel.putInt("command", command);
-		parcel.putString("orderId", Integer.toString(orderId));// this value will only be used if command is DELETE
+		parcel.putString("command", command);
+		parcel.putString("orderId", Integer.toString(orderId));// this value
+																// will only be
+																// used if
+																// command is
+																// DELETE
 		service.putExtra("parcel", parcel);
 
 		// stop any already running services associated with this activity
-		//getActivity().stopService(service);
+		// getActivity().stopService(service);
 		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
 		getActivity().startService(service);
 	}
 
-	
-	
-	
-	
 	// private class
 	private class ResultReceiver extends BroadcastReceiver
 	{
@@ -273,116 +260,107 @@ public class OrderQueueFragment extends ListFragment
 			pd.dismiss();
 			String response = intent.getStringExtra("result");
 
-			switch(Integer.decode(intent.getStringExtra("command")))
-			  {
-			    case 3:
-			    handleOrdersUpdate(response);
-			    break;
-			
-			    case 4:
-			    handleOrderDelete(response);
-			    break;
-			    
-			  }		
+			switch (Integer.decode(intent.getStringExtra("command")))
+			{
+			case 3:
+				handleOrdersUpdate(response);
+				break;
+
+			case 4:
+				handleOrderDelete(response);
+				break;
+
+			}
 		}
 	}
 
-	
-
-	
-	
 	private void handleOrderDelete(String response)
 	{
-		try{
-		     JSONObject jsObj = new JSONObject(response);
-		
-		     String result = jsObj.getString("result");
-		   
-		     if(result.equalsIgnoreCase("success"))
-		     {
-		         int orderId = jsObj.getInt("orderId");
-		
-		         OrderQueueAdapter adapter = (OrderQueueAdapter) getListView().getAdapter();
-		         for(int i = 0; i < adapter.getCount(); i ++)
-		         {
-		    	   Order order = adapter.getItem(i);
-			       if(order.getOrderId() == orderId) 
-				   adapter.remove(order);
-		         }	
-		           adapter.notifyDataSetChanged();
-		           playSound(R.raw.deleteorder);
-		           return;
-		    }
+		try
+		{
+			JSONObject jsObj = new JSONObject(response);
 
-		 }
-		
-		catch(JSONException exc)
-		 { 
+			String result = jsObj.getString("result");
+
+			if (result.equalsIgnoreCase("success"))
+			{
+				int orderId = jsObj.getInt("orderId");
+
+				OrderQueueAdapter adapter = (OrderQueueAdapter) getListView()
+						.getAdapter();
+				for (int i = 0; i < adapter.getCount(); i++)
+				{
+					Order order = adapter.getItem(i);
+					if (order.getOrderId() == orderId)
+						adapter.remove(order);
+				}
+				adapter.notifyDataSetChanged();
+				playSound(R.raw.deleteorder);
+				return;
+			}
+
+		}
+
+		catch (JSONException exc)
+		{
 			Log.v("MAD", exc.toString());
-		 }
-		
-		Toast.makeText(this.getActivity(), Constants.DELETE_ORDER_FAIL, Toast.LENGTH_SHORT).show();
+		}
+
+		Toast.makeText(this.getActivity(), Constants.DELETE_ORDER_FAIL,
+				Toast.LENGTH_SHORT).show();
 	}
-	
-	
-	
-	
+
 	private void handleOrdersUpdate(String response)
 	{
 		Log.v("MAD", response);
 
-	    OrderQueueAdapter adapter = (OrderQueueAdapter) getListView().getAdapter();
+		OrderQueueAdapter adapter = (OrderQueueAdapter) getListView()
+				.getAdapter();
 		adapter.clear();
-		
-		ArrayList<Order> orders = new ArrayList<Order>();// = Constants.ORDERS;// change this to the orders
-													// received from the network
+
+		ArrayList<Order> orders = new ArrayList<Order>();// =
+															// Constants.ORDERS;//
+															// change this to
+															// the orders
+		// received from the network
 		JSONArray jArray;
-		try {
-			    jArray = new JSONArray(response);
-				
-		        for(int i = 0; i < jArray.length(); i ++)
-		        {
-		        	JSONObject jObj = jArray.getJSONObject(i);
-			       
-		        	orders.add(new Order(jObj.getInt("mOrderId"),
-					                       jObj.getString("mOrderOwner"), 
-					                         jObj.getString("mOrderStatus"),
-					                           jObj.getInt("black"),
-					                             jObj.getInt("blue"),
-					                               jObj.getInt("green"),
-					                                 jObj.getInt("red"),
-					                                   jObj.getInt("white")));			
-		         }
-		      }
-		 catch (JSONException e) 
-		 {	
+		try
+		{
+			jArray = new JSONArray(response);
+
+			for (int i = 0; i < jArray.length(); i++)
+			{
+				JSONObject jObj = jArray.getJSONObject(i);
+
+				orders.add(new Order(jObj.getInt("mOrderId"), jObj
+						.getString("mOrderOwner"), jObj
+						.getString("mOrderStatus"), jObj.getInt("black"), jObj
+						.getInt("blue"), jObj.getInt("green"), jObj
+						.getInt("red"), jObj.getInt("white")));
+			}
+		}
+		catch (JSONException e)
+		{
 			Log.v("MAD", e.toString());
-		 }		
+		}
 
 		// adapter.addAll(incompleteOrders);
 		adapter.addAll(orders);
 		adapter.notifyDataSetChanged();
 	}
 
-	
-	
-	
-	
 	@Override
 	public void onStart()
 	{
 		receiver = new ResultReceiver();
-		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.UPDATE_ORDERS_COMMAND)));
-		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.DELETE_ORDER_COMMAND)));
+		getActivity().registerReceiver(receiver,
+				new IntentFilter(Constants.UPDATE_ORDERS_COMMAND));
+		getActivity().registerReceiver(receiver,
+				new IntentFilter(Constants.DELETE_ORDER_COMMAND));
 		// update orders here
-		makeService(Constants.UPDATE_ORDERS_COMMAND, 0);	
+		makeService(Constants.UPDATE_ORDERS_COMMAND, 0);
 		super.onStart();
 	}
-
-	
-	
-	
-	
 
 	@Override
 	public void onStop()

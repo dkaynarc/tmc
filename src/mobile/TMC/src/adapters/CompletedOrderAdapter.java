@@ -73,7 +73,7 @@ public class CompletedOrderAdapter extends ArrayAdapter<Order>
 					.findViewById(R.id.orderrow_deleteorder_ib);
 			delete.setVisibility(View.GONE);
 			if (name != null)
-				name.setText(order.getOrderName());
+				name.setText(order.getOrderOwner());
 			if (number != null)
 				number.setText(Integer.toString(order.getOrderId()));
 			if (type != null)

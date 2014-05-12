@@ -1,16 +1,16 @@
 package model;
 
-public class AuthMessage {
-	
-	
+public class AuthMessage
+{
+
 	private String Result;
 	private String Name;
-	
+
 	public String getResult()
 	{
 		return Result;
 	}
-	
+
 	public String getUserName()
 	{
 		return Name;
@@ -20,10 +20,10 @@ public class AuthMessage {
 	{
 		Result = result;
 	}
-	
+
 	public void setUserName(String userName)
 	{
 		Name = userName;
 	}
-	
+
 }

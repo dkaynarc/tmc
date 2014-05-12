@@ -43,6 +43,8 @@ public class Constants
 	public static final String COMPLETED_ORDERS = "COMPLETED ORDERS";
 	public static final String ORDER_QUEUE = "ORDER QUEUE";
 	public static final int REQUEST_CODE = 1;
+	public static final String ENTER_NAME = "Enter order name!";
+	public static final String ENTER_NUMBER = "Enter order number!";
 	public static final int RESULT_OK = 1;
 	public static final int RESULT_CANCEL = 0;
 	public static final String MACHINE_STATUS = "MACHINE STATUS";
@@ -89,4 +91,11 @@ public class Constants
 	public static final int STOP_COMMAND = 10;
 	public static final String SERVER_URL = "http://192.168.1.6:8819/api/Server/";	
 	public static final String ENVIRONMENT = "ENVIRONMENT";
+	public static final String BLACK = "Black";
+	public static final String BLUE = "Blue";
+	public static final String GREEN = "Green";
+	public static final String RED = "Red";
+	public static final String WHITE = "White";
+	public static final String START_TIME = "Start Time";
+	public static final String FINISH_TIME = "Finish Time";
 }
