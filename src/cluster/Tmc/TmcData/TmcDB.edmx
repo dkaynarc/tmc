@@ -6,6 +6,18 @@
     <edmx:StorageModels>
     <Schema Namespace="ICTDModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="ICTDModelStoreContainer">
+          <EntitySet Name="__MigrationHistory" EntityType="ICTDModel.Store.__MigrationHistory" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AspNetRoles" EntityType="ICTDModel.Store.AspNetRoles" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AspNetUserClaims" EntityType="ICTDModel.Store.AspNetUserClaims" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AspNetUserLogins" EntityType="ICTDModel.Store.AspNetUserLogins" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AspNetUsers" EntityType="ICTDModel.Store.AspNetUsers" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ComponentCycleLog" EntityType="ICTDModel.Store.ComponentCycleLog" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ComponentEventLog" EntityType="ICTDModel.Store.ComponentEventLog" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EnviromentLog" EntityType="ICTDModel.Store.EnviromentLog" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Order" EntityType="ICTDModel.Store.Order" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="OrderConfig" EntityType="ICTDModel.Store.OrderConfig" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Source" EntityType="ICTDModel.Store.Source" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Status" EntityType="ICTDModel.Store.Status" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ComponentCycleLogView" EntityType="ICTDModel.Store.ComponentCycleLogView" store:Type="Views" store:Schema="dbo" store:Name="ComponentCycleLogView">
             <DefiningQuery>SELECT 
       [ComponentCycleLogView].[Name] AS [Name], 
@@ -35,11 +47,144 @@
       [OrderListView].[White] AS [White], 
       [OrderListView].[StartTime] AS [StartTime], 
       [OrderListView].[EndTime] AS [EndTime], 
-      [OrderListView].[NumberOfProducts] AS [NumberOfProducts], 
-      [OrderListView].[StatusID] AS [StatusID]
+      [OrderListView].[NumberOfProducts] AS [NumberOfProducts]
       FROM [dbo].[OrderListView] AS [OrderListView]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="EnviromentLog_Source" Association="ICTDModel.Store.EnviromentLog_Source">
+            <End Role="Source" EntitySet="Source" />
+            <End Role="EnviromentLog" EntitySet="EnviromentLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" Association="ICTDModel.Store.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="ICTDModel.Store.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Order" Association="ICTDModel.Store.FK_Order_Order">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="Order1" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Status" Association="ICTDModel.Store.FK_Order_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Status_Order" Association="ICTDModel.Store.FK_Status_Order">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Status1" EntitySet="Status" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" Nullable="false" MaxLength="150" />
+          <Property Name="ContextKey" Type="nvarchar" Nullable="false" MaxLength="300" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" Nullable="false" MaxLength="32" />
+        </EntityType>
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+          <Property Name="User_Id" Type="nvarchar" Nullable="false" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogins">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="LoginProvider" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="ProviderKey" Type="nvarchar" Nullable="false" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="UserName" Type="nvarchar(max)" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="Discriminator" Type="nvarchar" Nullable="false" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="ComponentCycleLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="CycleTime" Type="int" />
+          <Property Name="SourceID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ComponentEventLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="SourceID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EnviromentLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="SourceID" Type="int" Nullable="false" />
+          <Property Name="Reading" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="StatusID" Type="int" />
+          <Property Name="UserID" Type="uniqueidentifier" />
+          <Property Name="StartTime" Type="datetime" />
+          <Property Name="EndTime" Type="datetime" />
+          <Property Name="NumberOfProducts" Type="int" />
+        </EntityType>
+        <EntityType Name="OrderConfig">
+          <Key>
+            <PropertyRef Name="ConfigID" />
+          </Key>
+          <Property Name="ConfigID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="int" />
+          <Property Name="Black" Type="int" Nullable="false" />
+          <Property Name="Blue" Type="int" Nullable="false" />
+          <Property Name="Red" Type="int" Nullable="false" />
+          <Property Name="Green" Type="int" Nullable="false" />
+          <Property Name="White" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Source">
+          <Key>
+            <PropertyRef Name="SourceID" />
+          </Key>
+          <Property Name="SourceID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="StatusID" />
+          </Key>
+          <Property Name="StatusID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'ICTD.dbo.ComponentCycleLogView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
@@ -91,8 +236,83 @@
           <Property Name="StartTime" Type="datetime" />
           <Property Name="EndTime" Type="datetime" />
           <Property Name="NumberOfProducts" Type="int" />
-          <Property Name="StatusID" Type="int" />
         </EntityType>
+        <Association Name="EnviromentLog_Source">
+          <End Role="Source" Type="ICTDModel.Store.Source" Multiplicity="1" />
+          <End Role="EnviromentLog" Type="ICTDModel.Store.EnviromentLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Source">
+              <PropertyRef Name="SourceID" />
+            </Principal>
+            <Dependent Role="EnviromentLog">
+              <PropertyRef Name="SourceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
+          <End Role="AspNetUsers" Type="ICTDModel.Store.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="ICTDModel.Store.AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="ICTDModel.Store.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="ICTDModel.Store.AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Order">
+          <End Role="Order" Type="ICTDModel.Store.Order" Multiplicity="1" />
+          <End Role="Order1" Type="ICTDModel.Store.Order" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="Order1">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Status">
+          <End Role="Status" Type="ICTDModel.Store.Status" Multiplicity="0..1" />
+          <End Role="Order" Type="ICTDModel.Store.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Status_Order">
+          <End Role="Status" Type="ICTDModel.Store.Status" Multiplicity="1" />
+          <End Role="Status1" Type="ICTDModel.Store.Status" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="Status1">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="AddNewCycleLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Timestamp" Type="datetime" Mode="In" />
           <Parameter Name="CycleTime" Type="int" Mode="In" />
@@ -174,7 +394,6 @@
           </FunctionImport>
           <EntitySet Name="ComponentCycleLogViews" EntityType="ICTDModel.ComponentCycleLogView" />
           <EntitySet Name="ComponentEventLogViews" EntityType="ICTDModel.ComponentEventLogView" />
-          <EntitySet Name="OrderListViews" EntityType="ICTDModel.OrderListView" />
           <FunctionImport Name="AddNewCycleLog">
             <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
             <Parameter Name="CycleTime" Mode="In" Type="Int32" />
@@ -203,6 +422,43 @@
           <FunctionImport Name="zFilterComponentEventLogBySourceID" ReturnType="Collection(ICTDModel.zFilterComponentEventLogBySourceID_Result)">
           <Parameter Name="SourceID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="C__MigrationHistory" EntityType="ICTDModel.C__MigrationHistory" />
+          <EntitySet Name="AspNetRoles" EntityType="ICTDModel.AspNetRole" />
+          <EntitySet Name="AspNetUserClaims" EntityType="ICTDModel.AspNetUserClaim" />
+          <EntitySet Name="AspNetUserLogins" EntityType="ICTDModel.AspNetUserLogin" />
+          <EntitySet Name="AspNetUsers" EntityType="ICTDModel.AspNetUser" />
+          <EntitySet Name="ComponentCycleLogs" EntityType="ICTDModel.ComponentCycleLog" />
+          <EntitySet Name="ComponentEventLogs" EntityType="ICTDModel.ComponentEventLog" />
+          <EntitySet Name="EnviromentLogs" EntityType="ICTDModel.EnviromentLog" />
+          <EntitySet Name="Orders" EntityType="ICTDModel.Order" />
+          <EntitySet Name="OrderConfigs" EntityType="ICTDModel.OrderConfig" />
+          <EntitySet Name="Sources" EntityType="ICTDModel.Source" />
+          <EntitySet Name="Status" EntityType="ICTDModel.Status" />
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" Association="ICTDModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="ICTDModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="EnviromentLog_Source" Association="ICTDModel.EnviromentLog_Source">
+            <End Role="Source" EntitySet="Sources" />
+            <End Role="EnviromentLog" EntitySet="EnviromentLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Order" Association="ICTDModel.FK_Order_Order">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="Order1" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Status" Association="ICTDModel.FK_Order_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Status_Order" Association="ICTDModel.FK_Status_Order">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Status1" EntitySet="Status" />
+          </AssociationSet>
+          <EntitySet Name="OrderListViews" EntityType="ICTDModel.OrderListView" />
         </EntityContainer>
         <EntityType Name="ComponentCycleLogView">
           <Key>
@@ -225,28 +481,6 @@
           <Property Type="DateTime" Name="Timestamp" Precision="3" />
           <Property Type="String" Name="Description" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="SourceID" Nullable="false" />
-        </EntityType>
-        <EntityType Name="OrderListView">
-          <Key>
-            <PropertyRef Name="OrderID" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Black" />
-            <PropertyRef Name="Blue" />
-            <PropertyRef Name="Red" />
-            <PropertyRef Name="Green" />
-            <PropertyRef Name="White" />
-          </Key>
-          <Property Type="Int32" Name="OrderID" Nullable="false" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="Black" Nullable="false" />
-          <Property Type="Int32" Name="Blue" Nullable="false" />
-          <Property Type="Int32" Name="Red" Nullable="false" />
-          <Property Type="Int32" Name="Green" Nullable="false" />
-          <Property Type="Int32" Name="White" Nullable="false" />
-          <Property Type="DateTime" Name="StartTime" Precision="3" />
-          <Property Type="DateTime" Name="EndTime" Precision="3" />
-          <Property Type="Int32" Name="NumberOfProducts" />
-          <Property Type="Int32" Name="StatusID" />
         </EntityType>
         <ComplexType Name="FiltCompCyclLogBySour_Result">
           <Property Type="String" Name="Name" Nullable="true" MaxLength="50" />
@@ -287,6 +521,225 @@
           <Property Type="Int32" Name="CycleTime" Nullable="true" />
           <Property Type="Int32" Name="SourceID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Type="String" Name="MigrationId" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ContextKey" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="Binary" Name="Model" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Type="String" Name="ProductVersion" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AspNetRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="String" Name="Id" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="ClaimType" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ClaimValue" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="User_Id" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="ICTDModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogin">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+          </Key>
+          <Property Type="String" Name="UserId" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LoginProvider" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ProviderKey" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="ICTDModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="String" Name="Id" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="UserName" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PasswordHash" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SecurityStamp" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Discriminator" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="ICTDModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="ICTDModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+        </EntityType>
+        <EntityType Name="ComponentCycleLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="Timestamp" Precision="3" />
+          <Property Type="Int32" Name="CycleTime" />
+          <Property Type="Int32" Name="SourceID" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ComponentEventLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="Timestamp" Precision="3" />
+          <Property Type="String" Name="Description" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="SourceID" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EnviromentLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="Timestamp" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="SourceID" Nullable="false" />
+          <Property Type="Double" Name="Reading" Nullable="false" />
+          <NavigationProperty Name="Source" Relationship="ICTDModel.EnviromentLog_Source" FromRole="EnviromentLog" ToRole="Source" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Type="Int32" Name="OrderID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="StatusID" />
+          <Property Type="Guid" Name="UserID" />
+          <Property Type="DateTime" Name="StartTime" Precision="3" />
+          <Property Type="DateTime" Name="EndTime" Precision="3" />
+          <Property Type="Int32" Name="NumberOfProducts" />
+          <NavigationProperty Name="Order1" Relationship="ICTDModel.FK_Order_Order" FromRole="Order" ToRole="Order1" />
+          <NavigationProperty Name="Order2" Relationship="ICTDModel.FK_Order_Order" FromRole="Order1" ToRole="Order" />
+          <NavigationProperty Name="Status" Relationship="ICTDModel.FK_Order_Status" FromRole="Order" ToRole="Status" />
+        </EntityType>
+        <EntityType Name="OrderConfig">
+          <Key>
+            <PropertyRef Name="ConfigID" />
+          </Key>
+          <Property Type="Int32" Name="ConfigID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="OrderID" />
+          <Property Type="Int32" Name="Black" Nullable="false" />
+          <Property Type="Int32" Name="Blue" Nullable="false" />
+          <Property Type="Int32" Name="Red" Nullable="false" />
+          <Property Type="Int32" Name="Green" Nullable="false" />
+          <Property Type="Int32" Name="White" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Source">
+          <Key>
+            <PropertyRef Name="SourceID" />
+          </Key>
+          <Property Type="Int32" Name="SourceID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EnviromentLogs" Relationship="ICTDModel.EnviromentLog_Source" FromRole="Source" ToRole="EnviromentLog" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="StatusID" />
+          </Key>
+          <Property Type="Int32" Name="StatusID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Orders" Relationship="ICTDModel.FK_Order_Status" FromRole="Status" ToRole="Order" />
+          <NavigationProperty Name="Status1" Relationship="ICTDModel.FK_Status_Order" FromRole="Status" ToRole="Status1" />
+          <NavigationProperty Name="Status2" Relationship="ICTDModel.FK_Status_Order" FromRole="Status1" ToRole="Status" />
+        </EntityType>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
+          <End Type="ICTDModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ICTDModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaim">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Type="ICTDModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ICTDModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EnviromentLog_Source">
+          <End Type="ICTDModel.Source" Role="Source" Multiplicity="1" />
+          <End Type="ICTDModel.EnviromentLog" Role="EnviromentLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Source">
+              <PropertyRef Name="SourceID" />
+            </Principal>
+            <Dependent Role="EnviromentLog">
+              <PropertyRef Name="SourceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Order">
+          <End Type="ICTDModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="ICTDModel.Order" Role="Order1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="Order1">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Status">
+          <End Type="ICTDModel.Status" Role="Status" Multiplicity="0..1" />
+          <End Type="ICTDModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Status_Order">
+          <End Type="ICTDModel.Status" Role="Status" Multiplicity="1" />
+          <End Type="ICTDModel.Status" Role="Status1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="Status1">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="OrderListView">
+          <Key>
+            <PropertyRef Name="OrderID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Black" />
+            <PropertyRef Name="Blue" />
+            <PropertyRef Name="Red" />
+            <PropertyRef Name="Green" />
+            <PropertyRef Name="White" />
+          </Key>
+          <Property Type="Int32" Name="OrderID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Black" Nullable="false" />
+          <Property Type="Int32" Name="Blue" Nullable="false" />
+          <Property Type="Int32" Name="Red" Nullable="false" />
+          <Property Type="Int32" Name="Green" Nullable="false" />
+          <Property Type="Int32" Name="White" Nullable="false" />
+          <Property Type="DateTime" Name="StartTime" Precision="3" />
+          <Property Type="DateTime" Name="EndTime" Precision="3" />
+          <Property Type="Int32" Name="NumberOfProducts" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -317,23 +770,6 @@
                 <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="OrderListViews">
-            <EntityTypeMapping TypeName="ICTDModel.OrderListView">
-              <MappingFragment StoreEntitySet="OrderListView">
-                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
-                <ScalarProperty Name="NumberOfProducts" ColumnName="NumberOfProducts" />
-                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="White" ColumnName="White" />
-                <ScalarProperty Name="Green" ColumnName="Green" />
-                <ScalarProperty Name="Red" ColumnName="Red" />
-                <ScalarProperty Name="Blue" ColumnName="Blue" />
-                <ScalarProperty Name="Black" ColumnName="Black" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -399,6 +835,141 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="ICTDModel.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="ICTDModel.AspNetRole">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserClaims">
+            <EntityTypeMapping TypeName="ICTDModel.AspNetUserClaim">
+              <MappingFragment StoreEntitySet="AspNetUserClaims">
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserLogins">
+            <EntityTypeMapping TypeName="ICTDModel.AspNetUserLogin">
+              <MappingFragment StoreEntitySet="AspNetUserLogins">
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="ICTDModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComponentCycleLogs">
+            <EntityTypeMapping TypeName="ICTDModel.ComponentCycleLog">
+              <MappingFragment StoreEntitySet="ComponentCycleLog">
+                <ScalarProperty Name="SourceID" ColumnName="SourceID" />
+                <ScalarProperty Name="CycleTime" ColumnName="CycleTime" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComponentEventLogs">
+            <EntityTypeMapping TypeName="ICTDModel.ComponentEventLog">
+              <MappingFragment StoreEntitySet="ComponentEventLog">
+                <ScalarProperty Name="SourceID" ColumnName="SourceID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EnviromentLogs">
+            <EntityTypeMapping TypeName="ICTDModel.EnviromentLog">
+              <MappingFragment StoreEntitySet="EnviromentLog">
+                <ScalarProperty Name="Reading" ColumnName="Reading" />
+                <ScalarProperty Name="SourceID" ColumnName="SourceID" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="ICTDModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="NumberOfProducts" ColumnName="NumberOfProducts" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderConfigs">
+            <EntityTypeMapping TypeName="ICTDModel.OrderConfig">
+              <MappingFragment StoreEntitySet="OrderConfig">
+                <ScalarProperty Name="White" ColumnName="White" />
+                <ScalarProperty Name="Green" ColumnName="Green" />
+                <ScalarProperty Name="Red" ColumnName="Red" />
+                <ScalarProperty Name="Blue" ColumnName="Blue" />
+                <ScalarProperty Name="Black" ColumnName="Black" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="ConfigID" ColumnName="ConfigID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sources">
+            <EntityTypeMapping TypeName="ICTDModel.Source">
+              <MappingFragment StoreEntitySet="Source">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SourceID" ColumnName="SourceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status">
+            <EntityTypeMapping TypeName="ICTDModel.Status">
+              <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderListViews">
+            <EntityTypeMapping TypeName="ICTDModel.OrderListView">
+              <MappingFragment StoreEntitySet="OrderListView">
+                <ScalarProperty Name="NumberOfProducts" ColumnName="NumberOfProducts" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="White" ColumnName="White" />
+                <ScalarProperty Name="Green" ColumnName="Green" />
+                <ScalarProperty Name="Red" ColumnName="Red" />
+                <ScalarProperty Name="Blue" ColumnName="Blue" />
+                <ScalarProperty Name="Black" ColumnName="Black" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
