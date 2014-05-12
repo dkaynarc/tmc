@@ -32,6 +32,7 @@ namespace Tmc.Scada.Core
         public bool LoggingEnabled { get; set; }
         private ScadaEngine _engine;
         private List<ISensor> _sensors;
+        private List<EnvironmentLogEntry> _log;
 
         public static EnvironmentMonitor Instance
         {
@@ -52,7 +53,7 @@ namespace Tmc.Scada.Core
             var config = engine.ClusterConfig;
             LoggingEnabled = true;
 
-            _sensors.Add(config.Sensors[typeof(AssemblerRobot)] as AssemblerRobot;) //need sensor objects
+            //_sensors.Add(config.Sensors[typeof(AssemblerRobot)] as AssemblerRobot; //need sensor objects
         }
 
         public void Log()   
@@ -61,7 +62,7 @@ namespace Tmc.Scada.Core
             {
                 foreach (var sensor in _sensors)
                 {
-                    Logger.Instance.Write(new EnvirontmentLogEntry(sensor.Name + ": " + sensor.Value + sensor.Unit));
+                    //_log.Add(new EnvironmentLogEntry(sensor.Name + ": " + sensor.Value + sensor.Unit));
                 }
                 Thread.Sleep(1000);
             }

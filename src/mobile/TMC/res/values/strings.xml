@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TMC</string>
+    <string name="action_settings">Settings</string>
+    <string name="loginactivity_title_tv">Login Details</string>
+    <string name="loginactivity_username_tv">Username:</string>
+    <string name="loginactivity_password_tv">Password:</string>
+    <string name="loginactivity_login_b">Login</string>
+    <string name="selection_operations_b">Operations</string>
+    <string name="selection_orders_b">Orders</string>
+    <string name="selection_logout_b">Logout</string>
+    <string name="queuelist_createorder_b">Create Order</string>
+    <string name="orderrow_orderstatus_iv">Order Status</string>
+    <string name="orderrow_deleteorder_ib">Delete Order</string>
+    <string name="title_selection">Selection</string>
+    <string name="title_order_list">Order List</string>
+    <string name="title_activity_module">TMC</string>
+    <string name="list_nodata">No Data.</string>
+    <string name="orderrow_ordername_tv">Name: </string>
+    <string name="orderrow_ordernumber_tv">Number: </string>
+    <string name="orderrow_orderstatus_tv">Status: </string>
+    <string name="title_activity_create_order">CreateOrderActivity</string>
+    <string name="createorder_title_tv">Create Order</string>
+    <string name="createorder_ordername_tv">Order Name:</string>
+    <string name="createorder_ordernumber_tv">Order Number:</string>
+    <string name="createorder_items_number_tv">Number of items:</string> 
+    <string name="createorder_createorder_b">Create</string>
+    <string name="createorder_cancel_b">Cancel</string>
+    <string name="controller_shutdown_b">Shutdown</string>
+    <string name="controller_startup_b">Startup</string>
+    <string name="controller_emergencystop_b">Emergency Stop</string>
+    <string name="machinerow_machinetype_iv">Machine Type</string>
+    <string name="machinerow_machinename_tv">Machine Name: </string>
+    <string name="machinerow_machinestatus_tv">Machine Status: </string>
+    <string name="machinelist_shutdown_b">Shutdown</string>
+    <string name="machinelist_startup_b">Startup</string>
+    <string name="machinelist_emergencystop_b">Emergency Stop</string>
+    <string name="title_activity_modify_order">ModifyOrderActivity</string>
+    <string name="modifyorder_title_tv">Modify Order</string>
+    <string name="modifyorder_ordername_tv">Order Name:</string>
+    <string name="modifyorder_ordernumber_tv">Order Number:</string>
+    <string name="modifyorder_modifyorder_b">Modify</string>
+    <string name="modifyorder_cancel_b">Cancel</string>
+    <string name="createorder_black_tv">Black:</string>
+    <string name="createorder_blue_tv">Blue:</string>
+    <string name="createorder_red_tv">Red:</string>
+    <string name="createorder_green_tv">Green:</string>
+    <string name="createorder_white_tv">White:</string>
+    <string name="createorder_quantity_tv">Quantity:</string>
+    <string name="createorder_ownerlabel_tv">Owner:</string>
+    <string name="createorder_ownername_tv">error</string>
+    <string name="orderrow_orderidlabel_tv">Order ID:</string>
+    <string name="orderrow_orderownerlabel_tv">Owner:</string>
+    <string name="orderrow_orderstatuslabel_tv">Status:</string>
+    <string name="error">error</string>
+    <string name="module_logout">LOGOUT</string>
+    <string name="environment_dustlabel_tv">Dust:</string>
+    <string name="environment_humiditylabel_tv">Humidity:</string>
+    <string name="environment_lightlabel_tv">Light:</string>
+    <string name="environment_soundlabel_tv">Sound:</string>
+    <string name="environment_temperaturelabel_tv">Temperature:</string>
+
+</resources>

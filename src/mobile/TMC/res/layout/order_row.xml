@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants" >
+
+    <ImageView
+        android:id="@+id/orderrow_orderstatus_iv"
+        android:layout_marginTop="3dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignBottom="@+id/orderrow_deleteorder_ib"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/orderrow_orderstatus_iv"
+        android:src="@drawable/active" />
+
+    <TextView
+        android:id="@+id/orderrow_orderidlabel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/orderrow_orderstatus_iv"
+        android:layout_marginLeft="5dp"
+        android:text="@string/orderrow_orderidlabel_tv" />
+    
+    <TextView
+        android:id="@+id/orderrow_orderid_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/orderrow_orderidlabel_tv"
+        android:layout_marginLeft="5dp"
+        android:text="@string/error"/>
+
+    <TextView
+        android:id="@+id/orderrow_orderownerlabel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/orderrow_orderidlabel_tv"
+        android:layout_toRightOf="@+id/orderrow_orderstatus_iv"
+        android:layout_marginLeft="5dp"
+        android:text="@string/orderrow_orderownerlabel_tv"  />
+    
+    <TextView
+        android:id="@+id/orderrow_orderowner_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/orderrow_orderidlabel_tv"
+        android:layout_toRightOf="@+id/orderrow_orderownerlabel_tv"
+        android:layout_marginLeft="5dp"
+        android:text="@string/error"/> 
+
+    <TextView
+        android:id="@+id/orderrow_orderstatuslabel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/orderrow_orderownerlabel_tv"
+        android:layout_toRightOf="@+id/orderrow_orderstatus_iv"
+        android:layout_marginLeft="5dp"
+        android:text="@string/orderrow_orderstatuslabel_tv" />
+    
+    <TextView
+        android:id="@+id/orderrow_orderstatus_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/orderrow_orderownerlabel_tv"
+        android:layout_toRightOf="@+id/orderrow_orderstatuslabel_tv"
+        android:layout_marginLeft="5dp"
+        android:text="@string/error" />
+
+    <ImageButton
+        android:id="@+id/orderrow_deleteorder_ib"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="3dp"
+        android:background="@null"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:src="@android:drawable/ic_delete"
+        
+        android:contentDescription="@string/orderrow_deleteorder_ib"/>
+
+</RelativeLayout>

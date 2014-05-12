@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,9 @@ namespace Tmc.Sensors
 {
     public interface ISensor : IHardware
     {
-        double Name { get; }
-        double Value { get; }
-
-        String Unit { get; }
+        string Channel { get; set; }
+        string IPAddress { get; set; }
+        string PortName { get; set; }
+        float GetData();
     }
 }

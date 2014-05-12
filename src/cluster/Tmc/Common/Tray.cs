@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tmc.Common
 {
-    public class Tray<T> where T:class
+    public class Tray<T> where T : class
     {
         public const int MaxCells = 9;
 
@@ -19,11 +19,6 @@ namespace Tmc.Common
             {
                 Cells.Add(null);
             }
-        }
-
-        public void add(int index, T t)
-        {
-            Cells = t;
         }
     }
 }
