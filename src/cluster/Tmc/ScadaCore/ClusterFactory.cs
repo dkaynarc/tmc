@@ -187,7 +187,7 @@ namespace Tmc.Scada.Core
 
         private ISensor CreateSensor()
         {
-            throw new NotImplementedException();
+            return new Sensor();
         }
 
         private IRobot CreateRobot(Type type)
