@@ -12,17 +12,18 @@ namespace TmcData
     using System;
     using System.Collections.Generic;
     
-    public partial class OrderListView
+    public partial class Status
     {
-        public int OrderID { get; set; }
+        public Status()
+        {
+            this.Orders = new HashSet<Order>();
+        }
+    
+        public int StatusID { get; set; }
         public string Name { get; set; }
-        public int Black { get; set; }
-        public int Blue { get; set; }
-        public int Red { get; set; }
-        public int Green { get; set; }
-        public int White { get; set; }
-        public Nullable<System.DateTime> StartTime { get; set; }
-        public Nullable<System.DateTime> EndTime { get; set; }
-        public Nullable<int> NumberOfProducts { get; set; }
+    
+        public virtual ICollection<Order> Orders { get; set; }
+        public virtual Status Status1 { get; set; }
+        public virtual Status Status2 { get; set; }
     }
 }

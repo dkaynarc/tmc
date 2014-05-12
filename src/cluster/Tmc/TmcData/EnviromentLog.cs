@@ -12,17 +12,13 @@ namespace TmcData
     using System;
     using System.Collections.Generic;
     
-    public partial class OrderListView
+    public partial class EnviromentLog
     {
-        public int OrderID { get; set; }
-        public string Name { get; set; }
-        public int Black { get; set; }
-        public int Blue { get; set; }
-        public int Red { get; set; }
-        public int Green { get; set; }
-        public int White { get; set; }
-        public Nullable<System.DateTime> StartTime { get; set; }
-        public Nullable<System.DateTime> EndTime { get; set; }
-        public Nullable<int> NumberOfProducts { get; set; }
+        public int ID { get; set; }
+        public System.DateTime Timestamp { get; set; }
+        public int SourceID { get; set; }
+        public double Reading { get; set; }
+    
+        public virtual Source Source { get; set; }
     }
 }

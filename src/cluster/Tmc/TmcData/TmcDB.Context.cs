@@ -30,6 +30,18 @@ namespace TmcData
     
         public DbSet<ComponentCycleLogView> ComponentCycleLogViews { get; set; }
         public DbSet<ComponentEventLogView> ComponentEventLogViews { get; set; }
+        public DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
+        public DbSet<AspNetRole> AspNetRoles { get; set; }
+        public DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public DbSet<AspNetUser> AspNetUsers { get; set; }
+        public DbSet<ComponentCycleLog> ComponentCycleLogs { get; set; }
+        public DbSet<ComponentEventLog> ComponentEventLogs { get; set; }
+        public DbSet<EnviromentLog> EnviromentLogs { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderConfig> OrderConfigs { get; set; }
+        public DbSet<Source> Sources { get; set; }
+        public DbSet<Status> Status { get; set; }
         public DbSet<OrderListView> OrderListViews { get; set; }
     
         public virtual int AddNewOrder(Nullable<System.Guid> userID, Nullable<int> black, Nullable<int> blue, Nullable<int> red, Nullable<int> green, Nullable<int> white)

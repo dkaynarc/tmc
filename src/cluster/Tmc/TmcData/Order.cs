@@ -12,17 +12,17 @@ namespace TmcData
     using System;
     using System.Collections.Generic;
     
-    public partial class OrderListView
+    public partial class Order
     {
         public int OrderID { get; set; }
-        public string Name { get; set; }
-        public int Black { get; set; }
-        public int Blue { get; set; }
-        public int Red { get; set; }
-        public int Green { get; set; }
-        public int White { get; set; }
+        public Nullable<int> StatusID { get; set; }
+        public Nullable<System.Guid> UserID { get; set; }
         public Nullable<System.DateTime> StartTime { get; set; }
         public Nullable<System.DateTime> EndTime { get; set; }
         public Nullable<int> NumberOfProducts { get; set; }
+    
+        public virtual Order Order1 { get; set; }
+        public virtual Order Order2 { get; set; }
+        public virtual Status Status { get; set; }
     }
 }
