@@ -18,5 +18,30 @@ namespace Tmc.Scada.App
             InitializeComponent();
 
         }
+
+        private void plantMimicScreenButton_Click(object sender, EventArgs e)
+        {
+            this.tablessControlPanel.SelectedTab = this.plantMimicTab;
+        }
+
+        private void controlTabButton_Click(object sender, EventArgs e)
+        {
+            this.tablessControlPanel.SelectedTab = this.controlTab;
+        }
+
+        private void environmentTabButton_Click(object sender, EventArgs e)
+        {
+            this.tablessControlPanel.SelectedTab = this.environmentTab;
+        }
+
+        private void ordersTabButton_Click(object sender, EventArgs e)
+        {
+            this.tablessControlPanel.SelectedTab = this.ordersTab;
+        }
+
+        private void reportsTabButton_Click(object sender, EventArgs e)
+        {
+            this.tablessControlPanel.SelectedTab = this.reportsTab;
+        }
     }
 }
