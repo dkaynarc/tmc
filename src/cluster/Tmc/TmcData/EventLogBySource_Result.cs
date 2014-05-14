@@ -10,20 +10,13 @@
 namespace TmcData
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Status
+    public partial class EventLogBySource_Result
     {
-        public Status()
-        {
-            this.Orders = new HashSet<Order>();
-        }
-    
-        public int StatusID { get; set; }
+        public int ID { get; set; }
+        public Nullable<System.DateTime> Timestamp { get; set; }
+        public string Description { get; set; }
+        public string LogType { get; set; }
         public string Name { get; set; }
-    
-        public virtual ICollection<Order> Orders { get; set; }
-        public virtual Status Status1 { get; set; }
-        public virtual Status Status2 { get; set; }
     }
 }
