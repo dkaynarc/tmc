@@ -56,12 +56,7 @@ public class Order
 
 	// ///////////////////////////////////////////////////////////////////
 
-	public Order(int orderId, String orderOwner, String orderStatus)
-	{
-		mOrderId = orderId;
-		mOrderOwner = orderOwner;
-		mOrderStatus = orderStatus;
-	}
+
 
 	public void setColourNumber(String colourName, int quantity)
 	{

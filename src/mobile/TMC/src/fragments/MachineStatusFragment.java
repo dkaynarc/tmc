@@ -12,7 +12,6 @@ import model.Constants;
 import model.Machine;
 import ictd.activities.R;
 import adapters.MachineStatusAdapter;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -27,8 +26,6 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,13 +102,14 @@ public class MachineStatusFragment extends ListFragment
 			shutdown();
 		}
 	};
+	private Timer timer;
 
 	/**
 	 * Implements the handler for the new threads created by the startup and
 	 * shutdown buttons. Only necessary for demonstration purposes.
 	 */
 
-	@SuppressLint("HandlerLeak")
+	/*@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg)
@@ -126,7 +124,7 @@ public class MachineStatusFragment extends ListFragment
 				break;
 			}
 		}
-	};
+	};*/
 
 	/**
 	 * Sets the layout for the activity.
@@ -279,8 +277,6 @@ public class MachineStatusFragment extends ListFragment
 
 	public void emergencyStop()
 	{
-		// Replace turnOff() with emergencyStop() method
-		/*turnOff();*/
 		///////////////
 		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
 		makeMachineService(Constants.EMERGENCY_STOP_COMMAND);
@@ -350,9 +346,10 @@ public class MachineStatusFragment extends ListFragment
 		  
 		  else
 		   Toast.makeText(getActivity(), Constants.STOP_FAIL, Toast.LENGTH_SHORT).show();	  
-
 	}
 
+	
+	
 	private void handleStart(String response) 
 	{
 		  if(response.equalsIgnoreCase("\"success\""))
@@ -496,7 +493,7 @@ public class MachineStatusFragment extends ListFragment
      {
        super.onStop();
        getActivity().unregisterReceiver(receiver);
-      
+       stopTimer();
      }
 
 
@@ -504,9 +501,10 @@ public class MachineStatusFragment extends ListFragment
       {
          new AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_delete)
 
-         .setTitle(Constants.ATTENTION).setMessage("The status of the following machinery changed: " + message)
-
-         .setNegativeButton(Constants.OK, new DialogInterface.OnClickListener() {
+         .setTitle(Constants.ATTENTION)
+         .setMessage("The status of the following machinery changed: " + message)
+         .setNegativeButton(Constants.OK, new DialogInterface.OnClickListener() 
+         {
              public void onClick(DialogInterface dialog, int id)
              {
                dialog.cancel();
@@ -523,17 +521,22 @@ public class MachineStatusFragment extends ListFragment
       
       
       
-      
+   private void stopTimer()
+   {
+       timer.cancel(true); 	  
+   }
       
   private void startTimer(long i)
   {
-	new Timer().execute(i);		
+    timer = new Timer();
+    timer.execute(i);		
   }
 
 
 
 private class Timer  extends AsyncTask<Long, Object, Object>
 { 
+
 	@Override
 	protected String doInBackground(Long...params)
 	{

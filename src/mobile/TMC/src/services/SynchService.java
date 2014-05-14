@@ -183,8 +183,8 @@ private void placeNewOrder(Bundle parcel)
 
 private void authenticate(Bundle parcel) 
 {
-    urlString +=  "Authenticate/" + parcel.getString("userName") + "/" + parcel.getString("password"); 
-    
+    urlString +=  "Authenticate/" + parcel.getString("userName") + "/" + parcel.getString("password");
+	    
     String response =  connect(urlString);	
     
     notifyCaller(response);
@@ -205,9 +205,11 @@ private void authenticate(Bundle parcel)
 		  HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		  con.setRequestMethod("GET");
 		  con.setConnectTimeout(100000); // times out after 10 seconds
+
 		  con.setRequestProperty("Content-Type","application/json");
 		  con.setRequestProperty("Accept", "application/json");
-	      BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+	     // int code = con.getResponseCode();
+		  BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
    
 
 		  String line;

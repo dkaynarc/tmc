@@ -68,7 +68,7 @@ public class CompletedOrderFragment extends ListFragment
 						((ImageView) v
 								.findViewById(R.id.orderrow_orderstatus_iv))
 								.getDrawable())
-				.setTitle(order.getOrderId())
+				.setTitle(Integer.toString(order.getOrderId()))
 				.setMessage(
 						String.format("%s: %s\n%s: %s\n%s: %s\n%s: %s\n\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d",
 								Constants.NAME, order.getOrderOwner(),
@@ -88,6 +88,8 @@ public class CompletedOrderFragment extends ListFragment
 				}).show();
 	}
 
+	
+	
 	// private class
 	private class ResultReceiver extends BroadcastReceiver
 	{
@@ -100,6 +102,8 @@ public class CompletedOrderFragment extends ListFragment
 		}
 	}
 
+	
+	
 	private void handleCompletedOrders(String response)
 	{
 		Log.v("MAD", response);
@@ -118,11 +122,12 @@ public class CompletedOrderFragment extends ListFragment
 			{
 				JSONObject jObj = jArray.getJSONObject(i);
 
-				orders.add(new Order(jObj.getInt("mOrderId"), jObj
-						.getString("mOrderOwner"), jObj
-						.getString("mOrderStatus"), jObj.getInt("black"), jObj
-						.getInt("blue"), jObj.getInt("green"), jObj
-						.getInt("red"), jObj.getInt("white")));
+				orders.add(new Order(jObj.getInt("mOrderId"), 
+						jObj.getString("mOrderOwner"),
+						jObj.getString("mOrderStatus"), 
+						jObj.getInt("black"),
+						jObj.getInt("blue"), jObj.getInt("green"), 
+						jObj.getInt("red"), jObj.getInt("white")));
 			}
 		}
 		catch (JSONException e)
@@ -138,8 +143,7 @@ public class CompletedOrderFragment extends ListFragment
 	public void onStart()
 	{
 		receiver = new ResultReceiver();
-		getActivity().registerReceiver(receiver,
-				new IntentFilter(Constants.UPDATE_COMPLETED_ORDERS_COMMAND));
+		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.UPDATE_COMPLETED_ORDERS_COMMAND)));
 
 		// update completed orders here
 		makeService(Constants.UPDATE_COMPLETED_ORDERS_COMMAND);
@@ -153,11 +157,11 @@ public class CompletedOrderFragment extends ListFragment
 		super.onStop();
 	}
 
-	private void makeService(String command)
+	private void makeService(int command)
 	{
 		Intent service = new Intent(getActivity(), services.SynchService.class);
 		Bundle parcel = new Bundle();
-		parcel.putString("command", command);
+		parcel.putInt("command", command);
 		service.putExtra("parcel", parcel);
 
 		// stop any already running services associated with this activity

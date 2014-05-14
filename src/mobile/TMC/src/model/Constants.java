@@ -89,7 +89,9 @@ public class Constants
 	public static final CharSequence START_FAIL = "Failed to start the system";
 	public static final int START_COMMAND = 9;
 	public static final int STOP_COMMAND = 10;
-	public static final String SERVER_URL = "http://192.168.1.6:8819/api/Server/";	
+	//public static final String SERVER_URL = "http://stesha.com.au/api/Server/";
+	//public static final String SERVER_URL = "http://192.168.1.6/api/Server/";	
+	public static final String SERVER_URL = "http://192.168.1.6:9000/api/Server/";	
 	public static final String ENVIRONMENT = "ENVIRONMENT";
 	public static final String BLACK = "Black";
 	public static final String BLUE = "Blue";
@@ -98,4 +100,6 @@ public class Constants
 	public static final String WHITE = "White";
 	public static final String START_TIME = "Start Time";
 	public static final String FINISH_TIME = "Finish Time";
+	public static final int ENV_UPDATE_COMMAND = 11;
+	public static final CharSequence ENV_UPDATE_FAIL = "Environment data update failed";
 }

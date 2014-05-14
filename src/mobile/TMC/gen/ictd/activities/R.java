@@ -218,11 +218,11 @@ public final class R {
         public static final int modify_order_scroll_v=0x7f0a001b;
         public static final int modifyorder_buttons_ll=0x7f0a001c;
         public static final int modifyorder_cancel_b=0x7f0a001e;
+        public static final int modifyorder_id_tv=0x7f0a0018;
+        public static final int modifyorder_idlabel_tv=0x7f0a0017;
         public static final int modifyorder_modifyorder_b=0x7f0a001d;
-        public static final int modifyorder_ordername_et=0x7f0a0018;
-        public static final int modifyorder_ordername_tv=0x7f0a0017;
-        public static final int modifyorder_ordernumber_et=0x7f0a001a;
-        public static final int modifyorder_ordernumber_tv=0x7f0a0019;
+        public static final int modifyorder_owner_tv=0x7f0a001a;
+        public static final int modifyorder_ownerlabel_tv=0x7f0a0019;
         public static final int modifyorder_title_tv=0x7f0a0016;
         public static final int module_logout=0x7f0a0042;
         public static final int orderrow_deleteorder_ib=0x7f0a0037;

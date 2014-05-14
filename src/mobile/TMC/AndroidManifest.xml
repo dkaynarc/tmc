@@ -67,7 +67,12 @@
           <service 
               android:enabled="true" 
               android:name="services.MachineUpdateService">
-          </service>            
+          </service>         
+          
+          <service 
+              android:enabled="true" 
+              android:name="services.EnvUpdateService">
+          </service> 
        
     </application>
 

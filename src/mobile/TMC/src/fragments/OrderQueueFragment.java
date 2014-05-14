@@ -70,8 +70,7 @@ public class OrderQueueFragment extends ListFragment
 							 * getListView().getAdapter();
 							 */
 							// ///////////////////////////////
-							makeService(Constants.DELETE_ORDER_COMMAND,
-									((Order) view.getTag()).getOrderId());
+							makeService(Constants.DELETE_ORDER_COMMAND, ((Order) view.getTag()).getOrderId());
 							// ///////////////////////////////
 							/*
 							 * adapter.remove((Order) view.getTag());
@@ -137,12 +136,10 @@ public class OrderQueueFragment extends ListFragment
 		final Order order = (Order) getListAdapter().getItem(position);
 		new AlertDialog.Builder(getActivity())
 				.setIcon(
-						((ImageView) v
-								.findViewById(R.id.orderrow_orderstatus_iv))
-								.getDrawable())
-				.setTitle(order.getOrderId())
-				.setMessage(
-						String.format("%s: %s\n%s: %s\n\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d",
+						((ImageView) v.findViewById(R.id.orderrow_orderstatus_iv)).getDrawable())
+						.setTitle(Integer.toString(order.getOrderId()))					
+						.setMessage(						
+								String.format("%s: %s\n%s: %s\n\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d",
 								Constants.NAME, order.getOrderOwner(),
 								Constants.STATUS, order.getOrderStatus(),
 								Constants.BLACK, order.getColourNumber(Constants.BLACK),
@@ -233,11 +230,11 @@ public class OrderQueueFragment extends ListFragment
 	}
 
 	// ///////////////////////////////////////////////////////////////////////////
-	private void makeService(String command, int orderId)
+	private void makeService(int command, int orderId)
 	{
 		Intent service = new Intent(getActivity(), services.SynchService.class);
 		Bundle parcel = new Bundle();
-		parcel.putString("command", command);
+		parcel.putInt("command", command);
 		parcel.putString("orderId", Integer.toString(orderId));// this value
 																// will only be
 																// used if
@@ -286,13 +283,12 @@ public class OrderQueueFragment extends ListFragment
 			{
 				int orderId = jsObj.getInt("orderId");
 
-				OrderQueueAdapter adapter = (OrderQueueAdapter) getListView()
-						.getAdapter();
+				OrderQueueAdapter adapter = (OrderQueueAdapter) getListView().getAdapter();
 				for (int i = 0; i < adapter.getCount(); i++)
 				{
 					Order order = adapter.getItem(i);
 					if (order.getOrderId() == orderId)
-						adapter.remove(order);
+						            adapter.remove(order);
 				}
 				adapter.notifyDataSetChanged();
 				playSound(R.raw.deleteorder);
@@ -314,15 +310,11 @@ public class OrderQueueFragment extends ListFragment
 	{
 		Log.v("MAD", response);
 
-		OrderQueueAdapter adapter = (OrderQueueAdapter) getListView()
-				.getAdapter();
+		OrderQueueAdapter adapter = (OrderQueueAdapter) getListView().getAdapter();
 		adapter.clear();
 
-		ArrayList<Order> orders = new ArrayList<Order>();// =
-															// Constants.ORDERS;//
-															// change this to
-															// the orders
-		// received from the network
+		ArrayList<Order> orders = new ArrayList<Order>();
+	
 		JSONArray jArray;
 		try
 		{
@@ -332,11 +324,14 @@ public class OrderQueueFragment extends ListFragment
 			{
 				JSONObject jObj = jArray.getJSONObject(i);
 
-				orders.add(new Order(jObj.getInt("mOrderId"), jObj
-						.getString("mOrderOwner"), jObj
-						.getString("mOrderStatus"), jObj.getInt("black"), jObj
-						.getInt("blue"), jObj.getInt("green"), jObj
-						.getInt("red"), jObj.getInt("white")));
+				orders.add( new Order(jObj.getInt("mOrderId"), 
+						        jObj.getString("mOrderOwner"),
+						        jObj.getString("mOrderStatus"),
+						        jObj.getInt("black"), 
+						        jObj.getInt("blue"),
+						        jObj.getInt("green"), 
+						        jObj.getInt("red"),
+						        jObj.getInt("white")));
 			}
 		}
 		catch (JSONException e)
@@ -353,10 +348,8 @@ public class OrderQueueFragment extends ListFragment
 	public void onStart()
 	{
 		receiver = new ResultReceiver();
-		getActivity().registerReceiver(receiver,
-				new IntentFilter(Constants.UPDATE_ORDERS_COMMAND));
-		getActivity().registerReceiver(receiver,
-				new IntentFilter(Constants.DELETE_ORDER_COMMAND));
+		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.UPDATE_ORDERS_COMMAND)));
+		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.DELETE_ORDER_COMMAND)));
 		// update orders here
 		makeService(Constants.UPDATE_ORDERS_COMMAND, 0);
 		super.onStart();

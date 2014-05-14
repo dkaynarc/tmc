@@ -53,16 +53,12 @@ public class ModifyOrderActivity extends Activity
 		ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,
 				android.R.layout.simple_spinner_item, items);
 
-		(spBlack = (Spinner) findViewById(R.id.createorder_black_s))
-				.setAdapter(adapter);
-		(spBlue = (Spinner) findViewById(R.id.createorder_blue_s))
-				.setAdapter(adapter);
-		(spGreen = (Spinner) findViewById(R.id.createorder_green_s))
-				.setAdapter(adapter);
-		(spRed = (Spinner) findViewById(R.id.createorder_red_s))
-				.setAdapter(adapter);
-		(spWhite = (Spinner) findViewById(R.id.createorder_white_s))
-				.setAdapter(adapter);
+		(spBlack = (Spinner) findViewById(R.id.createorder_black_s)).setAdapter(adapter);
+		(spBlue = (Spinner) findViewById(R.id.createorder_blue_s)).setAdapter(adapter);
+		(spGreen = (Spinner) findViewById(R.id.createorder_green_s)).setAdapter(adapter);
+		(spRed = (Spinner) findViewById(R.id.createorder_red_s)).setAdapter(adapter);
+		(spWhite = (Spinner) findViewById(R.id.createorder_white_s)).setAdapter(adapter);
+		
 		mOrderId = (TextView) findViewById(R.id.modifyorder_id_tv);
 		mOrderOwner = (TextView) findViewById(R.id.modifyorder_owner_tv);
 
@@ -96,17 +92,8 @@ public class ModifyOrderActivity extends Activity
 				Integer.decode(spBlue.getSelectedItem().toString()),
 				Integer.decode(spGreen.getSelectedItem().toString()),
 				Integer.decode(spRed.getSelectedItem().toString()),
-				Integer.decode(spWhite.getSelectedItem().toString())); // the
-																		// user
-																		// name
-																		// is to
-																		// be
-																		// changed
-																		// to a
-																		// real
-																		// user
-																		// name
-
+				Integer.decode(spWhite.getSelectedItem().toString())); 
+		
 		if (newOrder.getQuantity() < 1)
 		{
 			Toast.makeText(getBaseContext(), Constants.ENTER_ITEMS_QUANTITY,
@@ -135,16 +122,13 @@ public class ModifyOrderActivity extends Activity
 		parcel.putString("orderName", order.getOrderOwner());
 		parcel.putString("orderId", Integer.toString(order.getOrderId()));
 		parcel.putString("status", order.getOrderStatus());
-		parcel.putString("command", Constants.MODIFY_ORDER_COMMAND);
-		parcel.putString("black",
-				Integer.toString(order.getColourNumber("black")));
-		parcel.putString("blue",
-				Integer.toString(order.getColourNumber("blue")));
-		parcel.putString("green",
-				Integer.toString(order.getColourNumber("green")));
+		parcel.putInt("command", Constants.MODIFY_ORDER_COMMAND);
+		
+		parcel.putString("black", Integer.toString(order.getColourNumber("black")));
+		parcel.putString("blue", Integer.toString(order.getColourNumber("blue")));
+		parcel.putString("green", Integer.toString(order.getColourNumber("green")));
 		parcel.putString("red", Integer.toString(order.getColourNumber("red")));
-		parcel.putString("white",
-				Integer.toString(order.getColourNumber("white")));
+		parcel.putString("white", Integer.toString(order.getColourNumber("white")));
 
 		service.putExtra("parcel", parcel);
 
@@ -184,7 +168,7 @@ public class ModifyOrderActivity extends Activity
 	@Override
 	public void onStart()
 	{
-		IntentFilter filter = new IntentFilter(Constants.MODIFY_ORDER_COMMAND);
+		IntentFilter filter = new IntentFilter(Integer.toString(Constants.MODIFY_ORDER_COMMAND));
 		receiver = new ResultReceiver();
 		this.registerReceiver(receiver, filter);
 		super.onStart();

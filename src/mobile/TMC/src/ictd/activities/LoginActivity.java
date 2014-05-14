@@ -3,6 +3,7 @@
 package ictd.activities;
 
 import com.google.gson.Gson;
+
 import model.AuthMessage;
 import model.Constants;
 import android.app.Activity;
@@ -45,13 +46,7 @@ public class LoginActivity extends Activity
 		// startup.
 		/* startActivity(intent); */
 
-		// ////////////////
-		receiver = new ResultReceiver();
-		this.registerReceiver(receiver, new IntentFilter(
-				Constants.AUTHENTICATE_COMMAND));
-		// ///////////////
-
-		turnedOn = true;
+		//turnedOn = true;
 	}
 
 	/**
@@ -64,11 +59,9 @@ public class LoginActivity extends Activity
 	public void onLoginClicked(View v)
 	{
 		// ////////////////////
-		makeLoginService(
-				((EditText) findViewById(R.id.loginactivity_username_et))
-						.getText().toString(),
-				((EditText) findViewById(R.id.loginactivity_password_et))
-						.getText().toString());
+		String userName = ((EditText) findViewById(R.id.loginactivity_username_et)).getText().toString();
+		String password = ((EditText) findViewById(R.id.loginactivity_password_et)).getText().toString();
+		makeLoginService(userName, password);
 		// ////////////////////
 		// Replace condition with function that takes in the username and
 		// password,performs the necessary confidentiality enforcements
@@ -92,7 +85,7 @@ public class LoginActivity extends Activity
 		Bundle parcel = new Bundle();
 		parcel.putString("userName", userName);
 		parcel.putString("password", password);
-		parcel.putString("command", Constants.AUTHENTICATE_COMMAND);
+		parcel.putInt("command", Constants.AUTHENTICATE_COMMAND);
 		service.putExtra("parcel", parcel);
 
 		// stop any already running services associated with this activity
@@ -124,6 +117,14 @@ public class LoginActivity extends Activity
 		super.onStop();
 	}
 
+	@Override
+    public void onStart()
+	{
+		receiver = new ResultReceiver();
+		this.registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.AUTHENTICATE_COMMAND)));
+	}
+	
+	
 	private void handleAuthenticationResult(String response)
 	{
 		Gson gsn = new Gson();
@@ -135,8 +136,7 @@ public class LoginActivity extends Activity
 			{
 				String userName = msg.getUserName();
 				saveToSharedPref(Constants.USERNAME_KEY, userName);
-				Intent intent = new Intent(LoginActivity.this,
-						ModuleActivity.class);
+				Intent intent = new Intent(LoginActivity.this, ModuleActivity.class);
 				startActivity(intent);
 			}
 		}

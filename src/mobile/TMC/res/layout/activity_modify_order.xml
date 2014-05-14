@@ -24,7 +24,6 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/modifyorder_title_tv"
         android:layout_marginTop="20dp"
-        android:text="@string/modifyorder_idlabel_tv"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
     <TextView
@@ -42,7 +41,6 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/modifyorder_idlabel_tv"
         android:layout_marginTop="20dp"
-        android:text="@string/modifyorder_ownerlabel_tv"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
     <TextView

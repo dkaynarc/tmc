@@ -148,7 +148,7 @@ public class CreateOrderActivity extends Activity
 		Intent service = new Intent(this, services.SynchService.class);
 		Bundle parcel = new Bundle();
 		parcel.putString("orderName", newOrder.getOrderOwner());
-		parcel.putString("command", Constants.NEW_ORDER_COMMAND);
+		parcel.putInt("command", Constants.NEW_ORDER_COMMAND);
 		parcel.putString("black",
 				Integer.toString(newOrder.getColourNumber("black")));
 		parcel.putString("blue",
@@ -213,7 +213,7 @@ public class CreateOrderActivity extends Activity
 	@Override
 	public void onStart()
 	{
-		IntentFilter filter = new IntentFilter(Constants.NEW_ORDER_COMMAND);
+		IntentFilter filter = new IntentFilter(Integer.toString(Constants.NEW_ORDER_COMMAND));
 		receiver = new ResultReceiver();
 		this.registerReceiver(receiver, filter);
 		super.onStart();
