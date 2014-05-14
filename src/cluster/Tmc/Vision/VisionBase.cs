@@ -16,7 +16,9 @@ namespace Tmc.Vision
 {
     public abstract class VisionBase
     {
-        
+        /// <summary>
+        /// This is used for lower and higher HSV values
+        /// </summary>
         public enum HSVRange { Low = 0, High };
 
 

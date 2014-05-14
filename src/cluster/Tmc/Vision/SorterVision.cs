@@ -34,20 +34,20 @@ namespace Tmc.Vision
             f.Show();
             this.camera = camera;
             //do calibration
-            this.camera.ConnectionString = new Uri(@"https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-frc3/t1.0-9/10270404_10202712962477674_682458036245271256_n.jpg");
+            //this.camera.ConnectionString = new Uri(@"https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-frc3/t1.0-9/10270404_10202712962477674_682458036245271256_n.jpg");
         }
 
         public List<Tablet> GetVisibleTablets()
         {
             List<Tablet> tablet = new List<Tablet>();           
             //img = camera.GetImage();
-            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/Image00002.jpg");
+            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/sortC2.jpg");
 
             f.getValue(ref minCircle, ref maxCircle, ref par3, ref par4, ref cannyThresh, ref cannyAccumThresh);
 
             CircleF[] circles = DetectTablets(img, minCircle, maxCircle, par3, par4, cannyThresh, cannyAccumThresh, f);
             PointF[] points = FindPattern(img.Convert<Gray, Byte>(), new Size(12, 9));
-            CalculateTrueCordXYmm(points, new PointF(594, 750));//253, 525));
+            CalculateTrueCordXYmm(points, new PointF(433,474));//594, 750));//253, 525));
             DetectOverLap();
             DetectDamagedTablet();
             GetXYZForTablets();
@@ -71,12 +71,24 @@ namespace Tmc.Vision
             
         }
 
+        /// <summary>
+        /// finds the chessboard in the image
+        /// </summary>
+        /// <param name="src">
+        /// source image that will contain the chessboard
+        /// </param>
+        /// <param name="dim">
+        /// the dimesions of the chessboard
+        /// </param>
+        /// <returns>
+        /// returns the location of al the chessboard point
+        /// </returns>
         private PointF[] FindPattern(Emgu.CV.Image<Gray, byte> src, Size dim)
         {
             string win1 = "Test Window"; //The name of the window
             CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
             Image<Bgr, Byte> colr = src.Convert<Bgr, Byte>();
-             PointF[] checkerBoardPoints = Emgu.CV.CameraCalibration.FindChessboardCorners(src,dim,CALIB_CB_TYPE.DEFAULT);
+            PointF[] checkerBoardPoints = Emgu.CV.CameraCalibration.FindChessboardCorners(src, dim, Emgu.CV.CvEnum.CALIB_CB_TYPE.ADAPTIVE_THRESH | Emgu.CV.CvEnum.CALIB_CB_TYPE.FILTER_QUADS);//CALIB_CB_TYPE.DEFAULT);
 
             //CameraCalibration.CalibrateCamera(
 
@@ -90,12 +102,12 @@ namespace Tmc.Vision
                  rect.Height = 2;
                  if (a == 0)
                  {
-                     colr.Draw(rect, new Bgr(Color.Blue), 6);
+                     colr.Draw(rect, new Bgr(Color.Blue), 1);
                      a++;
                  }
                  else
                  {
-                     colr.Draw(rect, new Bgr(Color.Red), 6);
+                     colr.Draw(rect, new Bgr(Color.Red), 1);
                      a++;
                  }
              }
@@ -149,25 +161,62 @@ namespace Tmc.Vision
             //double mX = (refPoints[closest[0].Y].Y - refPoints[closest[1].Y].Y) / (refPoints[closest[0].Y].X - refPoints[closest[1].Y].X);//work out gradient
             //double mY = (refPoints[closest[0].X].Y - refPoints[closest[1].X].Y) / (refPoints[closest[0].X].X - refPoints[closest[1].X].X);//work out gradient
 
-            //PointF locationXYmm = new PointF();
-            //double pixcelTommY;
-            //double pixcelTommX;
+            Point qwe = getClosestPointToTargetOnChessboard(refPoints, targetPoint, new Size(12,9));
+            int loc = qwe.X + qwe.Y;
+            PointF locationXYmm = new PointF();
+            double pixcelTommY;
+            double pixcelTommX;
             //Point dis;
-            ////double Mag = Math.Sqrt(Math.Pow((refPoints[0].X - refPoints[1].X), 2) + Math.Pow((refPoints[0].Y - refPoints[1].Y), 2));
-            //double MagY = Math.Sqrt(Math.Pow((refPoints[87].X - refPoints[88].X), 2) + Math.Pow((refPoints[87].Y - refPoints[88].Y), 2));
-            //double MagX = Math.Sqrt(Math.Pow((refPoints[95].X - refPoints[107].X), 2) + Math.Pow((refPoints[95].Y - refPoints[107].Y), 2));
+            //double Mag = Math.Sqrt(Math.Pow((refPoints[0].X - refPoints[1].X), 2) + Math.Pow((refPoints[0].Y - refPoints[1].Y), 2));
+            double MagY = Math.Sqrt(Math.Pow((refPoints[0].X - refPoints[1].X), 2) + Math.Pow((refPoints[0].Y - refPoints[1].Y), 2));
+            double MagX = Math.Sqrt(Math.Pow((refPoints[0].X - refPoints[12].X), 2) + Math.Pow((refPoints[0].Y - refPoints[12].Y), 2));
 
 
-            //pixcelTommY = 200 / MagY;
-            //pixcelTommX = 200 / MagX;
+            pixcelTommY = 200 / MagY;
+            pixcelTommX = 200 / MagX;
 
             //locationXYmm.X = (float)(pixcelTommX * ((targetPoint.X - refPoints[107].X) + ((targetPoint.X - refPoints[107].X) * mX2)))+2200;
             //locationXYmm.Y = (float)(pixcelTommY * ((targetPoint.Y - refPoints[107].Y) + ((targetPoint.Y - refPoints[107].Y) / mY)))+1600;
-            
-            
+
+
+
+            locationXYmm.X = (float)(pixcelTommX * ((targetPoint.X - refPoints[0].X)));
+            locationXYmm.Y = (float)(pixcelTommY * ((targetPoint.Y - refPoints[0].Y)));
+
             return targetPoint;
         }
 
+        private Point getClosestPointToTargetOnChessboard(PointF[] chessboard, PointF target, Size board)
+        {
+            Point closestPoint = new Point(0, 0);
+            
+
+            for (int i = 0; i < board.Width; i++)
+            {
+                if (target.X > chessboard[i].X)
+                {
+                    closestPoint.X = i;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            for (int i = 0; i < board.Width*board.Height; i += board.Width)
+            {
+                if (target.Y > chessboard[i].Y)
+                {
+                    closestPoint.Y = i;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return closestPoint;
+        }
 
     }
 }

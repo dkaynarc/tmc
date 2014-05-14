@@ -30,7 +30,14 @@ namespace Tmc.Vision
         
         private Hsv[,] HSVTabletColoursRanges = new Hsv[5,2];
 
+        /// <summary>
+        /// 
+        /// </summary>
         public enum Side    { Left  = 0, Right };
+        
+        /// <summary>
+        /// 
+        /// </summary>
         public enum pMinMax { Max   = 0, Min };
 
 
