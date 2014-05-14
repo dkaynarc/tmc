@@ -55,12 +55,12 @@ namespace Tmc.Vision
             HSVTabletColoursRanges[(int)TabletColors.Green,(int)HSVRange.High].Satuation  = 96;
             HSVTabletColoursRanges[(int)TabletColors.Green,(int)HSVRange.High].Value      = 226;
 
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue          = 0;//149;
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 110;//93;
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value = 290;//198;
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue = 180;//171;
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation = 200;//128;
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Value = 360;//250;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue            = 176;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation      = 119;//93;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value          = 200;//198;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue           = 5;//171;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation     = 194;//128;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Value         = 360;//250;
 
             HSVTabletColoursRanges[(int)TabletColors.White,(int)HSVRange.Low].Hue         = 51;
             HSVTabletColoursRanges[(int)TabletColors.White,(int)HSVRange.Low].Satuation   = 6;
@@ -96,8 +96,8 @@ namespace Tmc.Vision
         /// </returns>
         public Tray<Tablet> GetTabletsInTray()
         {
-            img = camera.GetImage();
-            //img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/Image00001.jpg");
+            //img = camera.GetImage();
+            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/trayY4.jpg");
             //img = camera.GetImageHttp(new Uri(@"http://www.wwrd.com.au/images/P/2260248_Fable%20s-4%2016cm%20Accent%20Plates-652383734586-co.jpg"));
             string win1 = "Test Window"; //The name of the window
             CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
@@ -110,7 +110,7 @@ namespace Tmc.Vision
 
 
             foreach (Point traypoint in trayPoints)
-            {
+            {//draw dots just for debuging atm
                 Rectangle rect = new Rectangle();
                 rect.X = traypoint.X;
                 rect.Y = traypoint.Y;
@@ -124,6 +124,7 @@ namespace Tmc.Vision
             CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
             DetectTabletsInTray();
             DetectTabletType();
+            CvInvoke.cvWaitKey(0);
             CvInvoke.cvDestroyWindow(win1); //Destory the window
 
             return trayList;

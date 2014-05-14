@@ -166,12 +166,37 @@ namespace Tmc.Vision
         /// </todo>
         public bool InHSVRange(Hsv srcHsv, Hsv[,] targetHsv, TabletColors colour, int lowerLimitExtra, int higherLimitExtra)
         {
-            return ((srcHsv.Hue >= (targetHsv[(int)colour, (int)HSVRange.Low].Hue - lowerLimitExtra)) &&             //lower values
+            if (targetHsv[(int)colour, (int)HSVRange.Low].Hue < targetHsv[(int)colour, (int)HSVRange.High].Hue)
+            {
+                return ((srcHsv.Hue >= (targetHsv[(int)colour, (int)HSVRange.Low].Hue - lowerLimitExtra)) &&             //lower values
                 (srcHsv.Satuation >= (targetHsv[(int)colour, (int)HSVRange.Low].Satuation - lowerLimitExtra)) &&
                 (srcHsv.Value >= (targetHsv[(int)colour, (int)HSVRange.Low].Value - lowerLimitExtra)) &&
                 (srcHsv.Hue <= (targetHsv[(int)colour, (int)HSVRange.High].Hue + higherLimitExtra)) &&               //higher values
                 (srcHsv.Satuation <= (targetHsv[(int)colour, (int)HSVRange.High].Satuation + higherLimitExtra)) &&
                 (srcHsv.Value <= (targetHsv[(int)colour, (int)HSVRange.High].Value + higherLimitExtra)));
+            }
+            else
+            {
+                if (srcHsv.Hue >= (targetHsv[(int)colour, (int)HSVRange.Low].Hue - lowerLimitExtra))
+                {
+                    return ((srcHsv.Hue >= (targetHsv[(int)colour, (int)HSVRange.Low].Hue - lowerLimitExtra)) &&             //lower values
+                    (srcHsv.Satuation >= (targetHsv[(int)colour, (int)HSVRange.Low].Satuation - lowerLimitExtra)) &&
+                    (srcHsv.Value >= (targetHsv[(int)colour, (int)HSVRange.Low].Value - lowerLimitExtra)) &&
+                    (srcHsv.Hue <= (179)) &&               //higher values
+                    (srcHsv.Satuation <= (targetHsv[(int)colour, (int)HSVRange.High].Satuation + higherLimitExtra)) &&
+                    (srcHsv.Value <= (targetHsv[(int)colour, (int)HSVRange.High].Value + higherLimitExtra)));
+                }
+                else if (srcHsv.Hue <= (targetHsv[(int)colour, (int)HSVRange.High].Hue + higherLimitExtra))
+                {
+                    return ((srcHsv.Hue >= (0)) &&             //lower values
+                    (srcHsv.Satuation >= (targetHsv[(int)colour, (int)HSVRange.Low].Satuation - lowerLimitExtra)) &&
+                    (srcHsv.Value >= (targetHsv[(int)colour, (int)HSVRange.Low].Value - lowerLimitExtra)) &&
+                    (srcHsv.Hue <= (targetHsv[(int)colour, (int)HSVRange.High].Hue + higherLimitExtra)) &&               //higher values
+                    (srcHsv.Satuation <= (targetHsv[(int)colour, (int)HSVRange.High].Satuation + higherLimitExtra)) &&
+                    (srcHsv.Value <= (targetHsv[(int)colour, (int)HSVRange.High].Value + higherLimitExtra)));
+                }
+                else return false;
+            }
         }
 
         /// <summary>
@@ -194,12 +219,37 @@ namespace Tmc.Vision
         /// </returns>
         public bool InHSVRange(Hsv srcHsv, Hsv[] targetHsv, int lowerLimitExtra, int higherLimitExtra)
         {
-            return ((srcHsv.Hue >= (targetHsv[(int)HSVRange.Low].Hue - lowerLimitExtra)) &&             //lower values
+            if (targetHsv[(int)HSVRange.Low].Hue < targetHsv[(int)HSVRange.High].Hue)
+            {
+                return ((srcHsv.Hue >= (targetHsv[(int)HSVRange.Low].Hue - lowerLimitExtra)) &&             //lower values
                 (srcHsv.Satuation >= (targetHsv[(int)HSVRange.Low].Satuation - lowerLimitExtra)) &&
                 (srcHsv.Value >= (targetHsv[(int)HSVRange.Low].Value - lowerLimitExtra)) &&
                 (srcHsv.Hue <= (targetHsv[(int)HSVRange.High].Hue + higherLimitExtra)) &&               //higher values
                 (srcHsv.Satuation <= (targetHsv[(int)HSVRange.High].Satuation + higherLimitExtra)) &&
                 (srcHsv.Value <= (targetHsv[(int)HSVRange.High].Value + higherLimitExtra)));
+            }
+            else 
+            {
+                if (srcHsv.Hue >= (targetHsv[(int)HSVRange.Low].Hue - lowerLimitExtra))
+                {
+                    return ((srcHsv.Hue >= (targetHsv[(int)HSVRange.Low].Hue - lowerLimitExtra)) &&             //lower values
+                    (srcHsv.Satuation >= (targetHsv[(int)HSVRange.Low].Satuation - lowerLimitExtra)) &&
+                    (srcHsv.Value >= (targetHsv[(int)HSVRange.Low].Value - lowerLimitExtra)) &&
+                    (srcHsv.Hue <= (179)) &&               //higher values
+                    (srcHsv.Satuation <= (targetHsv[(int)HSVRange.High].Satuation + higherLimitExtra)) &&
+                    (srcHsv.Value <= (targetHsv[(int)HSVRange.High].Value + higherLimitExtra)));
+                }
+                else if (srcHsv.Hue <= (targetHsv[(int)HSVRange.High].Hue + higherLimitExtra))
+                {
+                    return ((srcHsv.Hue >= (0)) &&             //lower values
+                    (srcHsv.Satuation >= (targetHsv[(int)HSVRange.Low].Satuation - lowerLimitExtra)) &&
+                    (srcHsv.Value >= (targetHsv[(int)HSVRange.Low].Value - lowerLimitExtra)) &&
+                    (srcHsv.Hue <= (targetHsv[(int)HSVRange.High].Hue + higherLimitExtra)) &&               //higher values
+                    (srcHsv.Satuation <= (targetHsv[(int)HSVRange.High].Satuation + higherLimitExtra)) &&
+                    (srcHsv.Value <= (targetHsv[(int)HSVRange.High].Value + higherLimitExtra)));
+                }
+                else return false;
+            }
         }
 
         /// <summary>

@@ -107,6 +107,9 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Q /Y "C:\Emgu\emgucv-windows-universal-cuda 2.9.0.1922\bin\*.dll" "$(TargetDir)"
