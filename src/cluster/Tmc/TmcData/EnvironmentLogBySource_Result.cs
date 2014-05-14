@@ -10,13 +10,12 @@
 namespace TmcData
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class ComponentCycleLog
+    public partial class EnvironmentLogBySource_Result
     {
         public int ID { get; set; }
-        public Nullable<System.DateTime> Timestamp { get; set; }
-        public Nullable<int> CycleTime { get; set; }
-        public int SourceID { get; set; }
+        public System.DateTime Timestamp { get; set; }
+        public double Reading { get; set; }
+        public string Name { get; set; }
     }
 }

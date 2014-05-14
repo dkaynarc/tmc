@@ -49,34 +49,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AspNetRole.cs">
-      <DependentUpon>TmcDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUser.cs">
-      <DependentUpon>TmcDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUserClaim.cs">
-      <DependentUpon>TmcDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUserLogin.cs">
-      <DependentUpon>TmcDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ComponentCycleLog.cs">
-      <DependentUpon>TmcDB.tt</DependentUpon>
-    </Compile>
     <Compile Include="ComponentCycleLogView.cs">
-      <DependentUpon>TmcDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ComponentEventLog.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
     <Compile Include="ComponentEventLogView.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="C__MigrationHistory.cs">
+    <Compile Include="CycleLogBySource_Result.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="EnviromentLog.cs">
+    <Compile Include="EnvironmentLogBySource_Result.cs">
+      <DependentUpon>TmcDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EventLogBySource_Result.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
     <Compile Include="FiltCompCyclLogBySour_Result.cs">
@@ -88,22 +73,13 @@
     <Compile Include="FiltOrdeList_Result.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Order.cs">
-      <DependentUpon>TmcDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="OrderConfig.cs">
+    <Compile Include="OrderConfigByOrder_Result.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
     <Compile Include="OrderListView.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source.cs">
-      <DependentUpon>TmcDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Status.cs">
-      <DependentUpon>TmcDB.tt</DependentUpon>
-    </Compile>
     <Compile Include="TmcDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

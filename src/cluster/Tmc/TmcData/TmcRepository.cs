@@ -39,6 +39,14 @@ namespace TmcData
             new ICTDEntities().UpdateOrderStatusByID(orderId, statusId);
         }
 
+        public static void LogEnvironmentData(DateTime timestamp, int sourceID, double value)
+        {
+            new ICTDEntities().AddNewEnvironmentLog(timestamp, sourceID, value);
+        }
 
+        public static void LogComponentEvent(DateTime timestamp, int sourceID, string message, string logType)
+        {
+            new ICTDEntities().AddNewEventLog(timestamp, message, sourceID, logType);
+        }
     }
 }
