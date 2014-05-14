@@ -34,19 +34,7 @@
             this.loginAndLogoutButton = new System.Windows.Forms.ToolStripButton();
             this.currentUserLabel = new System.Windows.Forms.ToolStripLabel();
             this.eStopButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
-            this.alarmStatusLabel = new System.Windows.Forms.ToolStripLabel();
-            this.alarmTypeLabel = new System.Windows.Forms.ToolStripLabel();
-            this.alarmsListButton = new System.Windows.Forms.ToolStripButton();
-            this.alarmsCountLabel = new System.Windows.Forms.ToolStripLabel();
-            this.toolStrip3 = new System.Windows.Forms.ToolStrip();
-            this.reportsTabButton = new System.Windows.Forms.ToolStripButton();
-            this.ordersTabButton = new System.Windows.Forms.ToolStripButton();
-            this.environmentTabButton = new System.Windows.Forms.ToolStripButton();
-            this.controlTabButton = new System.Windows.Forms.ToolStripButton();
-            this.plantMimicTabButton = new System.Windows.Forms.ToolStripButton();
             this.orderListViewBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.tablessControlPanel = new TablessControl();
             this.plantMimicTab = new System.Windows.Forms.TabPage();
             this.controlTab = new System.Windows.Forms.TabPage();
             this.environmentTab = new System.Windows.Forms.TabPage();
@@ -64,13 +52,21 @@
             this.numberOfProductsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Button_AddNewOrder = new System.Windows.Forms.Button();
             this.reportsTab = new System.Windows.Forms.TabPage();
+            this.pnlAlarms = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnShowList = new System.Windows.Forms.Button();
+            this.tbcContentsTabControl = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabAlarmList = new System.Windows.Forms.TabPage();
+            this.dgvAlarmsGrid = new System.Windows.Forms.DataGridView();
+            this.btnDismissAll = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
-            this.toolStrip2.SuspendLayout();
-            this.toolStrip3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).BeginInit();
-            this.tablessControlPanel.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
+            this.tbcContentsTabControl.SuspendLayout();
+            this.tabAlarmList.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -105,134 +101,16 @@
             // 
             this.eStopButton.BackColor = System.Drawing.Color.Red;
             this.eStopButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.eStopButton.ForeColor = System.Drawing.Color.White;
             this.eStopButton.Image = ((System.Drawing.Image)(resources.GetObject("eStopButton.Image")));
             this.eStopButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.eStopButton.Name = "eStopButton";
             this.eStopButton.Size = new System.Drawing.Size(97, 22);
             this.eStopButton.Text = "Emergency Stop";
             // 
-            // toolStrip2
-            // 
-            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.alarmStatusLabel,
-            this.alarmTypeLabel,
-            this.alarmsListButton,
-            this.alarmsCountLabel});
-            this.toolStrip2.Location = new System.Drawing.Point(0, 25);
-            this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.toolStrip2.Size = new System.Drawing.Size(696, 25);
-            this.toolStrip2.TabIndex = 2;
-            this.toolStrip2.Text = "toolStrip2";
-            // 
-            // alarmStatusLabel
-            // 
-            this.alarmStatusLabel.Name = "alarmStatusLabel";
-            this.alarmStatusLabel.Size = new System.Drawing.Size(74, 22);
-            this.alarmStatusLabel.Text = "Alarm Status";
-            // 
-            // alarmTypeLabel
-            // 
-            this.alarmTypeLabel.Name = "alarmTypeLabel";
-            this.alarmTypeLabel.Size = new System.Drawing.Size(133, 22);
-            this.alarmTypeLabel.Text = "Alarm Type/Description";
-            // 
-            // alarmsListButton
-            // 
-            this.alarmsListButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.alarmsListButton.Image = ((System.Drawing.Image)(resources.GetObject("alarmsListButton.Image")));
-            this.alarmsListButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.alarmsListButton.Name = "alarmsListButton";
-            this.alarmsListButton.Size = new System.Drawing.Size(69, 22);
-            this.alarmsListButton.Text = "Alarms List";
-            // 
-            // alarmsCountLabel
-            // 
-            this.alarmsCountLabel.Name = "alarmsCountLabel";
-            this.alarmsCountLabel.Size = new System.Drawing.Size(80, 22);
-            this.alarmsCountLabel.Text = "Alarms Count";
-            // 
-            // toolStrip3
-            // 
-            this.toolStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.reportsTabButton,
-            this.ordersTabButton,
-            this.environmentTabButton,
-            this.controlTabButton,
-            this.plantMimicTabButton});
-            this.toolStrip3.Location = new System.Drawing.Point(0, 50);
-            this.toolStrip3.Name = "toolStrip3";
-            this.toolStrip3.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.toolStrip3.Size = new System.Drawing.Size(696, 25);
-            this.toolStrip3.TabIndex = 3;
-            this.toolStrip3.Text = "toolStrip3";
-            // 
-            // reportsTabButton
-            // 
-            this.reportsTabButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.reportsTabButton.Image = ((System.Drawing.Image)(resources.GetObject("reportsTabButton.Image")));
-            this.reportsTabButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.reportsTabButton.Name = "reportsTabButton";
-            this.reportsTabButton.Size = new System.Drawing.Size(51, 22);
-            this.reportsTabButton.Text = "Reports";
-            this.reportsTabButton.Click += new System.EventHandler(this.reportsTabButton_Click);
-            // 
-            // ordersTabButton
-            // 
-            this.ordersTabButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ordersTabButton.Image = ((System.Drawing.Image)(resources.GetObject("ordersTabButton.Image")));
-            this.ordersTabButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ordersTabButton.Name = "ordersTabButton";
-            this.ordersTabButton.Size = new System.Drawing.Size(46, 22);
-            this.ordersTabButton.Text = "Orders";
-            this.ordersTabButton.Click += new System.EventHandler(this.ordersTabButton_Click);
-            // 
-            // environmentTabButton
-            // 
-            this.environmentTabButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.environmentTabButton.Image = ((System.Drawing.Image)(resources.GetObject("environmentTabButton.Image")));
-            this.environmentTabButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.environmentTabButton.Name = "environmentTabButton";
-            this.environmentTabButton.Size = new System.Drawing.Size(79, 22);
-            this.environmentTabButton.Text = "Environment";
-            this.environmentTabButton.Click += new System.EventHandler(this.environmentTabButton_Click);
-            // 
-            // controlTabButton
-            // 
-            this.controlTabButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.controlTabButton.Image = ((System.Drawing.Image)(resources.GetObject("controlTabButton.Image")));
-            this.controlTabButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.controlTabButton.Name = "controlTabButton";
-            this.controlTabButton.Size = new System.Drawing.Size(51, 22);
-            this.controlTabButton.Text = "Control";
-            this.controlTabButton.Click += new System.EventHandler(this.controlTabButton_Click);
-            // 
-            // plantMimicTabButton
-            // 
-            this.plantMimicTabButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.plantMimicTabButton.Image = ((System.Drawing.Image)(resources.GetObject("plantMimicTabButton.Image")));
-            this.plantMimicTabButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.plantMimicTabButton.Name = "plantMimicTabButton";
-            this.plantMimicTabButton.Size = new System.Drawing.Size(75, 22);
-            this.plantMimicTabButton.Text = "Plant Mimic";
-            this.plantMimicTabButton.Click += new System.EventHandler(this.plantMimicScreenButton_Click);
-            // 
             // orderListViewBindingSource
             // 
             this.orderListViewBindingSource.DataSource = typeof(TmcData.OrderListView);
-            // 
-            // tablessControlPanel
-            // 
-            this.tablessControlPanel.Controls.Add(this.plantMimicTab);
-            this.tablessControlPanel.Controls.Add(this.controlTab);
-            this.tablessControlPanel.Controls.Add(this.environmentTab);
-            this.tablessControlPanel.Controls.Add(this.ordersTab);
-            this.tablessControlPanel.Controls.Add(this.reportsTab);
-            this.tablessControlPanel.Location = new System.Drawing.Point(0, 72);
-            this.tablessControlPanel.Name = "tablessControlPanel";
-            this.tablessControlPanel.SelectedIndex = 0;
-            this.tablessControlPanel.Size = new System.Drawing.Size(694, 378);
-            this.tablessControlPanel.TabIndex = 4;
             // 
             // plantMimicTab
             // 
@@ -385,27 +263,104 @@
             this.reportsTab.Text = "Reports";
             this.reportsTab.UseVisualStyleBackColor = true;
             // 
+            // pnlAlarms
+            // 
+            this.pnlAlarms.Location = new System.Drawing.Point(78, 28);
+            this.pnlAlarms.Name = "pnlAlarms";
+            this.pnlAlarms.Size = new System.Drawing.Size(618, 30);
+            this.pnlAlarms.TabIndex = 2;
+            // 
+            // btnShowList
+            // 
+            this.btnShowList.Location = new System.Drawing.Point(0, 28);
+            this.btnShowList.Name = "btnShowList";
+            this.btnShowList.Size = new System.Drawing.Size(72, 30);
+            this.btnShowList.TabIndex = 3;
+            this.btnShowList.Text = "Show List";
+            this.btnShowList.UseVisualStyleBackColor = true;
+            this.btnShowList.Click += new System.EventHandler(this.btnShowList_Click);
+            // 
+            // tbcContentsTabControl
+            // 
+            this.tbcContentsTabControl.Controls.Add(this.tabPage1);
+            this.tbcContentsTabControl.Controls.Add(this.tabPage2);
+            this.tbcContentsTabControl.Controls.Add(this.tabAlarmList);
+            this.tbcContentsTabControl.ItemSize = new System.Drawing.Size(150, 25);
+            this.tbcContentsTabControl.Location = new System.Drawing.Point(0, 63);
+            this.tbcContentsTabControl.Name = "tbcContentsTabControl";
+            this.tbcContentsTabControl.SelectedIndex = 0;
+            this.tbcContentsTabControl.Size = new System.Drawing.Size(695, 387);
+            this.tbcContentsTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.tbcContentsTabControl.TabIndex = 4;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Location = new System.Drawing.Point(4, 29);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(687, 354);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 29);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(687, 354);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tabAlarmList
+            // 
+            this.tabAlarmList.Controls.Add(this.btnDismissAll);
+            this.tabAlarmList.Controls.Add(this.dgvAlarmsGrid);
+            this.tabAlarmList.Location = new System.Drawing.Point(4, 29);
+            this.tabAlarmList.Name = "tabAlarmList";
+            this.tabAlarmList.Size = new System.Drawing.Size(687, 354);
+            this.tabAlarmList.TabIndex = 2;
+            this.tabAlarmList.Text = "Alarm List";
+            this.tabAlarmList.UseVisualStyleBackColor = true;
+            // 
+            // dgvAlarmsGrid
+            // 
+            this.dgvAlarmsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvAlarmsGrid.Location = new System.Drawing.Point(2, 49);
+            this.dgvAlarmsGrid.Name = "dgvAlarmsGrid";
+            this.dgvAlarmsGrid.Size = new System.Drawing.Size(684, 302);
+            this.dgvAlarmsGrid.TabIndex = 0;
+            // 
+            // btnDismissAll
+            // 
+            this.btnDismissAll.Location = new System.Drawing.Point(570, 3);
+            this.btnDismissAll.Name = "btnDismissAll";
+            this.btnDismissAll.Size = new System.Drawing.Size(114, 43);
+            this.btnDismissAll.TabIndex = 1;
+            this.btnDismissAll.Text = "Dismiss All";
+            this.btnDismissAll.UseVisualStyleBackColor = true;
+            this.btnDismissAll.Click += new System.EventHandler(this.btnDismissAll_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(696, 450);
-            this.Controls.Add(this.tablessControlPanel);
-            this.Controls.Add(this.toolStrip3);
-            this.Controls.Add(this.toolStrip2);
+            this.Controls.Add(this.tbcContentsTabControl);
+            this.Controls.Add(this.btnShowList);
+            this.Controls.Add(this.pnlAlarms);
             this.Controls.Add(this.toolStrip1);
             this.Name = "MainForm";
             this.Text = "TMC System";
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.toolStrip2.ResumeLayout(false);
-            this.toolStrip2.PerformLayout();
-            this.toolStrip3.ResumeLayout(false);
-            this.toolStrip3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).EndInit();
-            this.tablessControlPanel.ResumeLayout(false);
             this.ordersTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).EndInit();
+            this.tbcContentsTabControl.ResumeLayout(false);
+            this.tabAlarmList.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -417,17 +372,6 @@
         private System.Windows.Forms.ToolStripLabel currentUserLabel;
         private System.Windows.Forms.ToolStripButton loginAndLogoutButton;
         private System.Windows.Forms.ToolStripButton eStopButton;
-        private System.Windows.Forms.ToolStrip toolStrip2;
-        private System.Windows.Forms.ToolStrip toolStrip3;
-        private System.Windows.Forms.ToolStripLabel alarmStatusLabel;
-        private System.Windows.Forms.ToolStripLabel alarmTypeLabel;
-        private System.Windows.Forms.ToolStripButton alarmsListButton;
-        private System.Windows.Forms.ToolStripLabel alarmsCountLabel;
-        private System.Windows.Forms.ToolStripButton reportsTabButton;
-        private System.Windows.Forms.ToolStripButton ordersTabButton;
-        private System.Windows.Forms.ToolStripButton environmentTabButton;
-        private System.Windows.Forms.ToolStripButton controlTabButton;
-        private System.Windows.Forms.ToolStripButton plantMimicTabButton;
         private TablessControl tablessControlPanel;
         public System.Windows.Forms.TabPage plantMimicTab;
         public System.Windows.Forms.TabPage controlTab;
@@ -447,6 +391,14 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn startTimeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn endTimeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn numberOfProductsDataGridViewTextBoxColumn;
+        private System.Windows.Forms.FlowLayoutPanel pnlAlarms;
+        private System.Windows.Forms.Button btnShowList;
+        private System.Windows.Forms.TabControl tbcContentsTabControl;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabAlarmList;
+        private System.Windows.Forms.DataGridView dgvAlarmsGrid;
+        private System.Windows.Forms.Button btnDismissAll;
     }
 }
 
