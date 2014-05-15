@@ -39,6 +39,9 @@ namespace TmcData
             new ICTDEntities().UpdateOrderStatusByID(orderId, statusId);
         }
 
-
+        public static void CancelOrder(int orderId)
+        {
+            new ICTDEntities().CancelOrder(orderId);
+        }
     }
 }

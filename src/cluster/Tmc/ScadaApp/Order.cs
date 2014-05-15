@@ -21,22 +21,57 @@ namespace Tmc.Scada.App
 
         private void button_Add_Click(object sender, EventArgs e)
         {
-            int black = 1;
-            int blue = 2;
-            int red = 4;
-            int green = 7;
-            int white = 2;
+            List<int> orderConfig = 
+                new List<decimal>()
+                {
+                    numericUpDown_black.Value,
+                    numericUpDown_blue.Value,
+                    numericUpDown_red.Value,
+                    numericUpDown_green.Value, 
+                    numericUpDown_white.Value
+                }.
+                Select(Decimal.ToInt32).
+                ToList();
 
             //Validate Input
 
-            TmcRepository.AddNewOrder(new Guid(), black, blue, red, green, white);
+            TmcRepository.AddNewOrder(
+                new Guid(), 
+                orderConfig[0], 
+                orderConfig[1],
+                orderConfig[2],
+                orderConfig[3],
+                orderConfig[4]);
             updateOrder();
         }
 
 
         private void updateOrder()
         {
-            orderListViewBindingSource.DataSource = TmcRepository.OrderInfo();
+            var orderList = TmcRepository.OrderInfo();
+
+            orderListViewBindingSource.DataSource = checkBox_showCancelled.Checked ? orderList : orderList.Where(order => order.Name != "Cancelled");
+        }
+
+        private void button_Cancel_Click(object sender, EventArgs e)
+        {
+            var row = dataGridView1.CurrentRow;
+
+            if (row != null)
+            {
+                int orderID = (int)row.Cells[0].Value;
+                TmcRepository.CancelOrder(orderID);
+                updateOrder();
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            updateOrder();
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
         }
     }
 }

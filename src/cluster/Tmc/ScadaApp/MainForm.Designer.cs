@@ -60,8 +60,8 @@
             this.tabControl = new System.Windows.Forms.TabPage();
             this.tabEnvironment = new System.Windows.Forms.TabPage();
             this.tabOrders = new System.Windows.Forms.TabPage();
+            this.orderUserControl = new Tmc.Scada.App.Order();
             this.tabReports = new System.Windows.Forms.TabPage();
-            this.order1 = new Tmc.Scada.App.Order();
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
@@ -353,13 +353,20 @@
             // 
             // tabOrders
             // 
-            this.tabOrders.Controls.Add(this.order1);
+            this.tabOrders.Controls.Add(this.orderUserControl);
             this.tabOrders.Location = new System.Drawing.Point(4, 29);
             this.tabOrders.Name = "tabOrders";
             this.tabOrders.Size = new System.Drawing.Size(687, 354);
             this.tabOrders.TabIndex = 4;
             this.tabOrders.Text = "Orders";
             this.tabOrders.UseVisualStyleBackColor = true;
+            // 
+            // orderUserControl
+            // 
+            this.orderUserControl.Location = new System.Drawing.Point(3, 3);
+            this.orderUserControl.Name = "orderUserControl";
+            this.orderUserControl.Size = new System.Drawing.Size(677, 343);
+            this.orderUserControl.TabIndex = 0;
             // 
             // tabReports
             // 
@@ -369,13 +376,6 @@
             this.tabReports.TabIndex = 5;
             this.tabReports.Text = "Reports";
             this.tabReports.UseVisualStyleBackColor = true;
-            // 
-            // order1
-            // 
-            this.order1.Location = new System.Drawing.Point(24, 39);
-            this.order1.Name = "order1";
-            this.order1.Size = new System.Drawing.Size(605, 272);
-            this.order1.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -436,7 +436,7 @@
         private System.Windows.Forms.TabPage tabEnvironment;
         private System.Windows.Forms.TabPage tabOrders;
         private System.Windows.Forms.TabPage tabReports;
-        private Order order1;
+        private Order orderUserControl;
     }
 }
 
