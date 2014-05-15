@@ -30,19 +30,62 @@ namespace TmcData
     
         public DbSet<ComponentCycleLogView> ComponentCycleLogViews { get; set; }
         public DbSet<ComponentEventLogView> ComponentEventLogViews { get; set; }
-        public DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
-        public DbSet<AspNetRole> AspNetRoles { get; set; }
-        public DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
-        public DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
-        public DbSet<AspNetUser> AspNetUsers { get; set; }
-        public DbSet<ComponentCycleLog> ComponentCycleLogs { get; set; }
-        public DbSet<ComponentEventLog> ComponentEventLogs { get; set; }
-        public DbSet<EnviromentLog> EnviromentLogs { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderConfig> OrderConfigs { get; set; }
-        public DbSet<Source> Sources { get; set; }
-        public DbSet<Status> Status { get; set; }
         public DbSet<OrderListView> OrderListViews { get; set; }
+    
+        public virtual int AddNewCycleLog(Nullable<System.DateTime> timestamp, Nullable<int> cycleTime, Nullable<int> sourceID)
+        {
+            var timestampParameter = timestamp.HasValue ?
+                new ObjectParameter("Timestamp", timestamp) :
+                new ObjectParameter("Timestamp", typeof(System.DateTime));
+    
+            var cycleTimeParameter = cycleTime.HasValue ?
+                new ObjectParameter("CycleTime", cycleTime) :
+                new ObjectParameter("CycleTime", typeof(int));
+    
+            var sourceIDParameter = sourceID.HasValue ?
+                new ObjectParameter("SourceID", sourceID) :
+                new ObjectParameter("SourceID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddNewCycleLog", timestampParameter, cycleTimeParameter, sourceIDParameter);
+        }
+    
+        public virtual int AddNewEnvironmentLog(Nullable<System.DateTime> timestamp, Nullable<int> sourceID, Nullable<double> reading)
+        {
+            var timestampParameter = timestamp.HasValue ?
+                new ObjectParameter("Timestamp", timestamp) :
+                new ObjectParameter("Timestamp", typeof(System.DateTime));
+    
+            var sourceIDParameter = sourceID.HasValue ?
+                new ObjectParameter("SourceID", sourceID) :
+                new ObjectParameter("SourceID", typeof(int));
+    
+            var readingParameter = reading.HasValue ?
+                new ObjectParameter("Reading", reading) :
+                new ObjectParameter("Reading", typeof(double));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddNewEnvironmentLog", timestampParameter, sourceIDParameter, readingParameter);
+        }
+    
+        public virtual int AddNewEventLog(Nullable<System.DateTime> timestamp, string description, Nullable<int> sourceID, string logType)
+        {
+            var timestampParameter = timestamp.HasValue ?
+                new ObjectParameter("Timestamp", timestamp) :
+                new ObjectParameter("Timestamp", typeof(System.DateTime));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("Description", description) :
+                new ObjectParameter("Description", typeof(string));
+    
+            var sourceIDParameter = sourceID.HasValue ?
+                new ObjectParameter("SourceID", sourceID) :
+                new ObjectParameter("SourceID", typeof(int));
+    
+            var logTypeParameter = logType != null ?
+                new ObjectParameter("LogType", logType) :
+                new ObjectParameter("LogType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddNewEventLog", timestampParameter, descriptionParameter, sourceIDParameter, logTypeParameter);
+        }
     
         public virtual int AddNewOrder(Nullable<System.Guid> userID, Nullable<int> black, Nullable<int> blue, Nullable<int> red, Nullable<int> green, Nullable<int> white)
         {
@@ -73,6 +116,15 @@ namespace TmcData
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddNewOrder", userIDParameter, blackParameter, blueParameter, redParameter, greenParameter, whiteParameter);
         }
     
+        public virtual int CancelOrder(Nullable<int> orderID)
+        {
+            var orderIDParameter = orderID.HasValue ?
+                new ObjectParameter("OrderID", orderID) :
+                new ObjectParameter("OrderID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CancelOrder", orderIDParameter);
+        }
+    
         public virtual int CompleteOrder(Nullable<int> orderID)
         {
             var orderIDParameter = orderID.HasValue ?
@@ -82,7 +134,52 @@ namespace TmcData
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CompleteOrder", orderIDParameter);
         }
     
-        public virtual int UpdateOrderStatus(Nullable<int> orderID, string orderStatus)
+        public virtual int CycleLogBySource(Nullable<int> sourceID)
+        {
+            var sourceIDParameter = sourceID.HasValue ?
+                new ObjectParameter("SourceID", sourceID) :
+                new ObjectParameter("SourceID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CycleLogBySource", sourceIDParameter);
+        }
+    
+        public virtual int EnvironmentLogBySource(Nullable<int> sourceID)
+        {
+            var sourceIDParameter = sourceID.HasValue ?
+                new ObjectParameter("SourceID", sourceID) :
+                new ObjectParameter("SourceID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("EnvironmentLogBySource", sourceIDParameter);
+        }
+    
+        public virtual int EventLogBySource(Nullable<int> sourceID)
+        {
+            var sourceIDParameter = sourceID.HasValue ?
+                new ObjectParameter("SourceID", sourceID) :
+                new ObjectParameter("SourceID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("EventLogBySource", sourceIDParameter);
+        }
+    
+        public virtual int OrderConfigByOrder(Nullable<int> orderID)
+        {
+            var orderIDParameter = orderID.HasValue ?
+                new ObjectParameter("OrderID", orderID) :
+                new ObjectParameter("OrderID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("OrderConfigByOrder", orderIDParameter);
+        }
+    
+        public virtual int OrderListByStatus(Nullable<int> statusID)
+        {
+            var statusIDParameter = statusID.HasValue ?
+                new ObjectParameter("StatusID", statusID) :
+                new ObjectParameter("StatusID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("OrderListByStatus", statusIDParameter);
+        }
+    
+        public virtual int UpdateOrderList(Nullable<int> orderID, string orderStatus)
         {
             var orderIDParameter = orderID.HasValue ?
                 new ObjectParameter("OrderID", orderID) :
@@ -92,7 +189,7 @@ namespace TmcData
                 new ObjectParameter("OrderStatus", orderStatus) :
                 new ObjectParameter("OrderStatus", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateOrderStatus", orderIDParameter, orderStatusParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateOrderList", orderIDParameter, orderStatusParameter);
         }
     
         public virtual int UpdateOrderStatusByID(Nullable<int> orderID, Nullable<int> orderStatus)
@@ -121,92 +218,17 @@ namespace TmcData
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateProductProduced", orderIDParameter, productNumberParameter);
         }
     
-        public virtual int AddNewCycleLog(Nullable<System.DateTime> timestamp, Nullable<int> cycleTime, Nullable<int> sourceID)
-        {
-            var timestampParameter = timestamp.HasValue ?
-                new ObjectParameter("Timestamp", timestamp) :
-                new ObjectParameter("Timestamp", typeof(System.DateTime));
-    
-            var cycleTimeParameter = cycleTime.HasValue ?
-                new ObjectParameter("CycleTime", cycleTime) :
-                new ObjectParameter("CycleTime", typeof(int));
-    
-            var sourceIDParameter = sourceID.HasValue ?
-                new ObjectParameter("SourceID", sourceID) :
-                new ObjectParameter("SourceID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddNewCycleLog", timestampParameter, cycleTimeParameter, sourceIDParameter);
-        }
-    
-        public virtual int AddNewEventLog(Nullable<System.DateTime> timestamp, string description, Nullable<int> sourceID)
-        {
-            var timestampParameter = timestamp.HasValue ?
-                new ObjectParameter("Timestamp", timestamp) :
-                new ObjectParameter("Timestamp", typeof(System.DateTime));
-    
-            var descriptionParameter = description != null ?
-                new ObjectParameter("Description", description) :
-                new ObjectParameter("Description", typeof(string));
-    
-            var sourceIDParameter = sourceID.HasValue ?
-                new ObjectParameter("SourceID", sourceID) :
-                new ObjectParameter("SourceID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddNewEventLog", timestampParameter, descriptionParameter, sourceIDParameter);
-        }
-    
-        public virtual int CancelOrder(Nullable<int> orderID)
+        public virtual int UpdateOrderStatus(Nullable<int> orderID, string orderStatus)
         {
             var orderIDParameter = orderID.HasValue ?
                 new ObjectParameter("OrderID", orderID) :
                 new ObjectParameter("OrderID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CancelOrder", orderIDParameter);
-        }
+            var orderStatusParameter = orderStatus != null ?
+                new ObjectParameter("OrderStatus", orderStatus) :
+                new ObjectParameter("OrderStatus", typeof(string));
     
-        public virtual ObjectResult<FiltCompCyclLogBySour_Result> FiltCompCyclLogBySour(Nullable<int> sourceID)
-        {
-            var sourceIDParameter = sourceID.HasValue ?
-                new ObjectParameter("SourceID", sourceID) :
-                new ObjectParameter("SourceID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FiltCompCyclLogBySour_Result>("FiltCompCyclLogBySour", sourceIDParameter);
-        }
-    
-        public virtual ObjectResult<FiltCompEvenLogBySour_Result> FiltCompEvenLogBySour(Nullable<int> sourceID)
-        {
-            var sourceIDParameter = sourceID.HasValue ?
-                new ObjectParameter("SourceID", sourceID) :
-                new ObjectParameter("SourceID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FiltCompEvenLogBySour_Result>("FiltCompEvenLogBySour", sourceIDParameter);
-        }
-    
-        public virtual ObjectResult<FiltOrdeList_Result> FiltOrdeList(Nullable<int> statusID)
-        {
-            var statusIDParameter = statusID.HasValue ?
-                new ObjectParameter("StatusID", statusID) :
-                new ObjectParameter("StatusID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FiltOrdeList_Result>("FiltOrdeList", statusIDParameter);
-        }
-    
-        public virtual ObjectResult<zFilterComponentCycleLogBySourceID_Result> zFilterComponentCycleLogBySourceID(Nullable<int> sourceID)
-        {
-            var sourceIDParameter = sourceID.HasValue ?
-                new ObjectParameter("SourceID", sourceID) :
-                new ObjectParameter("SourceID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<zFilterComponentCycleLogBySourceID_Result>("zFilterComponentCycleLogBySourceID", sourceIDParameter);
-        }
-    
-        public virtual ObjectResult<zFilterComponentEventLogBySourceID_Result> zFilterComponentEventLogBySourceID(Nullable<int> sourceID)
-        {
-            var sourceIDParameter = sourceID.HasValue ?
-                new ObjectParameter("SourceID", sourceID) :
-                new ObjectParameter("SourceID", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<zFilterComponentEventLogBySourceID_Result>("zFilterComponentEventLogBySourceID", sourceIDParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateOrderStatus", orderIDParameter, orderStatusParameter);
         }
     }
 }

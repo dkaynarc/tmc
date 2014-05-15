@@ -10,14 +10,12 @@
 namespace TmcData
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class AspNetUserLogin
+    public partial class CycleLogBySource_Result
     {
-        public string UserId { get; set; }
-        public string LoginProvider { get; set; }
-        public string ProviderKey { get; set; }
-    
-        public virtual AspNetUser AspNetUser { get; set; }
+        public int ID { get; set; }
+        public Nullable<System.DateTime> Timestamp { get; set; }
+        public Nullable<int> CycleTime { get; set; }
+        public string Name { get; set; }
     }
 }

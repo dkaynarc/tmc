@@ -18,6 +18,5 @@ namespace TmcData
         public int ID { get; set; }
         public Nullable<System.DateTime> Timestamp { get; set; }
         public Nullable<int> CycleTime { get; set; }
-        public int SourceID { get; set; }
     }
 }

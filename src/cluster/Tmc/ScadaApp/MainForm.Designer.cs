@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.loginAndLogoutButton = new System.Windows.Forms.ToolStripButton();
@@ -62,9 +61,12 @@
             this.tabControl = new System.Windows.Forms.TabPage();
             this.tabEnvironment = new System.Windows.Forms.TabPage();
             this.tabOrders = new System.Windows.Forms.TabPage();
+            this.orderUserControl = new Tmc.Scada.App.Order();
             this.tabReports = new System.Windows.Forms.TabPage();
+
             this.orderListViewBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic();
+
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
@@ -72,8 +74,12 @@
             this.tbcContentsTabControl.SuspendLayout();
             this.tabAlarmList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
+
             this.tabPlantMimic.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource1)).BeginInit();
+
+            this.tabOrders.SuspendLayout();
+
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -175,7 +181,6 @@
             this.startTimeDataGridViewTextBoxColumn,
             this.endTimeDataGridViewTextBoxColumn,
             this.numberOfProductsDataGridViewTextBoxColumn});
-            this.OrderListView.DataSource = this.orderListViewBindingSource;
             this.OrderListView.Location = new System.Drawing.Point(26, 21);
             this.OrderListView.Name = "OrderListView";
             this.OrderListView.Size = new System.Drawing.Size(497, 225);
@@ -365,12 +370,20 @@
             // 
             // tabOrders
             // 
+            this.tabOrders.Controls.Add(this.orderUserControl);
             this.tabOrders.Location = new System.Drawing.Point(4, 29);
             this.tabOrders.Name = "tabOrders";
             this.tabOrders.Size = new System.Drawing.Size(687, 354);
             this.tabOrders.TabIndex = 4;
             this.tabOrders.Text = "Orders";
             this.tabOrders.UseVisualStyleBackColor = true;
+            // 
+            // orderUserControl
+            // 
+            this.orderUserControl.Location = new System.Drawing.Point(3, 3);
+            this.orderUserControl.Name = "orderUserControl";
+            this.orderUserControl.Size = new System.Drawing.Size(677, 343);
+            this.orderUserControl.TabIndex = 0;
             // 
             // tabReports
             // 
@@ -381,6 +394,7 @@
             this.tabReports.Text = "Reports";
             this.tabReports.UseVisualStyleBackColor = true;
             // 
+
             // orderListViewBindingSource1
             // 
             this.orderListViewBindingSource1.DataSource = typeof(TmcData.OrderListView);
@@ -392,6 +406,7 @@
             this.plantMimic1.Size = new System.Drawing.Size(687, 354);
             this.plantMimic1.TabIndex = 0;
             // 
+
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -411,8 +426,11 @@
             this.tbcContentsTabControl.ResumeLayout(false);
             this.tabAlarmList.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).EndInit();
+
             this.tabPlantMimic.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource1)).EndInit();
+            this.tabOrders.ResumeLayout(false);
+
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -430,7 +448,6 @@
         private System.Windows.Forms.TabPage environmentTab;
         private System.Windows.Forms.TabPage ordersTab;
         private System.Windows.Forms.TabPage reportsTab;
-        private System.Windows.Forms.BindingSource orderListViewBindingSource;
         private System.Windows.Forms.DataGridView OrderListView;
         private System.Windows.Forms.Button Button_AddNewOrder;
         private System.Windows.Forms.DataGridViewTextBoxColumn orderIDDataGridViewTextBoxColumn;
@@ -456,6 +473,7 @@
         private System.Windows.Forms.TabPage tabReports;
         private System.Windows.Forms.BindingSource orderListViewBindingSource1;
         private UserControls.PlantMimic plantMimic1;
+        private Order orderUserControl;
     }
 }
 
