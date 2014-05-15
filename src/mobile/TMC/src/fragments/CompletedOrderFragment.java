@@ -122,12 +122,19 @@ public class CompletedOrderFragment extends ListFragment
 			{
 				JSONObject jObj = jArray.getJSONObject(i);
 
-				orders.add(new Order(jObj.getInt("mOrderId"), 
+				Order order = new Order(
+						jObj.getInt("mOrderId"), 
 						jObj.getString("mOrderOwner"),
 						jObj.getString("mOrderStatus"), 
 						jObj.getInt("black"),
-						jObj.getInt("blue"), jObj.getInt("green"), 
-						jObj.getInt("red"), jObj.getInt("white")));
+						jObj.getInt("blue"), 
+						jObj.getInt("green"), 
+						jObj.getInt("red"), 
+						jObj.getInt("white"));
+				String date = jObj.getString("endTime");
+				order.setFinishTime(date);
+				order.setStartTime(jObj.getString("startTime"));
+				orders.add(order);
 			}
 		}
 		catch (JSONException e)

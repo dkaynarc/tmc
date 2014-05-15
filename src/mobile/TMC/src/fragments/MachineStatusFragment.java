@@ -422,18 +422,24 @@ public class MachineStatusFragment extends ListFragment
 	  ArrayList<Machine> changedMach = new ArrayList<Machine>();
       
       for(int i = 0; i < adapter.getCount(); i++ )
-       {
+      {
     	 if(! newStats.get(i).getMachineStatus().equalsIgnoreCase(
     			                                  ((Machine)adapter.getItem(i)).getMachineStatus()))
     	 {
-    		 changedMach.add(adapter.getItem(i));    		 
+    		 changedMach.add(newStats.get(i));    		 
     	 }
     	   
-       }
+      }
        
       if(changedMach.size() != 0)
-         showAlertDialog(buildMessage(changedMach));
-  }
+      {
+         if(changedMach.get(0).getMachineStatus().equalsIgnoreCase(Constants.OFF))
+    	    showAlertDialog(buildMessage(changedMach), Constants.OFF);
+         
+         else showAlertDialog(buildMessage(changedMach), Constants.ON);
+      
+      }
+      }
 
   
   
@@ -497,12 +503,21 @@ public class MachineStatusFragment extends ListFragment
      }
 
 
-      private void showAlertDialog(String message) 
+      private void showAlertDialog(String message, String status) 
       {
-         new AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_delete)
-
-         .setTitle(Constants.ATTENTION)
-         .setMessage("The status of the following machinery changed: " + message)
+    	  Drawable icon = getResources().getDrawable(android.R.drawable.ic_dialog_alert);
+			
+    	  if(status.equalsIgnoreCase(Constants.OFF))
+			{
+				icon.setColorFilter(new LightingColorFilter(Color.RED, Color.RED));
+			}
+		  else
+			icon.setColorFilter(new LightingColorFilter(Color.GREEN, Color.GREEN));
+        
+			new AlertDialog.Builder(getActivity())
+			.setIcon(icon)
+            .setTitle(Constants.ATTENTION)
+            .setMessage("The status of the following machinery changed: " + message)
          .setNegativeButton(Constants.OK, new DialogInterface.OnClickListener() 
          {
              public void onClick(DialogInterface dialog, int id)

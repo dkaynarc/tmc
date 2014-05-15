@@ -22,8 +22,8 @@ public class Order
 	private int mRed = 0;
 	private int mGreen = 0;
 	private int mWhite = 0;
-	private Date mStartTime = null;
-	private Date mFinishTime = null;
+	private String mStartTime = null;
+	private String mFinishTime = null;
 
 	/**
 	 * Constructor to initialize all the variables.
@@ -151,15 +151,43 @@ public class Order
 	{
 		if (mStartTime == null)
 			return "--/--/--- --:--:--";
-		return (new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()))
+	
+		try
+		{
+	       return (new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()))
 				.format(mStartTime);
+		}
+		catch(Exception exc)
+		{
+			return mStartTime;
+		}
 	}
 
-	public String getFinishTime()
+	public String  getFinishTime()
 	{
 		if (mFinishTime == null)
 			return "--/--/--- --:--:--";
-		return (new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()))
+		
+		try
+		{
+	       return (new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()))
 				.format(mFinishTime);
+		}
+		catch(Exception exc)
+		{
+			return mFinishTime;
+		}
+	}
+	
+	
+	
+	public void setStartTime(String startTime)
+	{
+	    mStartTime = startTime;
+	}
+
+	public void setFinishTime(String finishTime)
+	{
+        mFinishTime = finishTime;
 	}
 }

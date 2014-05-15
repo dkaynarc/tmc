@@ -120,6 +120,7 @@ public class LoginActivity extends Activity
 	@Override
     public void onStart()
 	{
+	    super.onStart();
 		receiver = new ResultReceiver();
 		this.registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.AUTHENTICATE_COMMAND)));
 	}

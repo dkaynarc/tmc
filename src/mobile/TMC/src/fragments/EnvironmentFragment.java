@@ -138,7 +138,7 @@ public class EnvironmentFragment extends Fragment
 			       
 		    if(result.equalsIgnoreCase("success"))
 	         {
-		       dustView.setText(obj.getString("Dust") + (char) 0x00B0 + "pcs/liter");
+		       dustView.setText(obj.getString("Dust") +  "pcs/liter");
 		       humidityView.setText(obj.getString("Humidity") + "%");
 		       lightView.setText(obj.getString("Light") + "cd");
 		       soundView.setText(obj.getString("Sound") + "dB");
