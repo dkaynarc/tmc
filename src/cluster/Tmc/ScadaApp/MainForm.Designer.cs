@@ -49,6 +49,7 @@
             this.startTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.endTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.numberOfProductsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.orderListViewBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.Button_AddNewOrder = new System.Windows.Forms.Button();
             this.reportsTab = new System.Windows.Forms.TabPage();
             this.pnlAlarms = new System.Windows.Forms.FlowLayoutPanel();
@@ -62,15 +63,20 @@
             this.tabEnvironment = new System.Windows.Forms.TabPage();
             this.tabOrders = new System.Windows.Forms.TabPage();
             this.tabReports = new System.Windows.Forms.TabPage();
-            this.orderListViewBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.orderListViewBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.systemStatusLabel = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).BeginInit();
             this.tbcContentsTabControl.SuspendLayout();
             this.tabAlarmList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).BeginInit();
+            this.tabPlantMimic.SuspendLayout();
+            this.tabControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -112,6 +118,7 @@
             this.eStopButton.Name = "eStopButton";
             this.eStopButton.Size = new System.Drawing.Size(97, 22);
             this.eStopButton.Text = "Emergency Stop";
+            this.eStopButton.Click += new System.EventHandler(this.eStopButton_Click);
             // 
             // plantMimicTab
             // 
@@ -245,6 +252,10 @@
             this.numberOfProductsDataGridViewTextBoxColumn.HeaderText = "NumberOfProducts";
             this.numberOfProductsDataGridViewTextBoxColumn.Name = "numberOfProductsDataGridViewTextBoxColumn";
             // 
+            // orderListViewBindingSource
+            // 
+            this.orderListViewBindingSource.DataSource = typeof(TmcData.OrderListView);
+            // 
             // Button_AddNewOrder
             // 
             this.Button_AddNewOrder.Location = new System.Drawing.Point(26, 278);
@@ -328,20 +339,24 @@
             // 
             // tabPlantMimic
             // 
+            this.tabPlantMimic.Controls.Add(this.plantMimic1);
             this.tabPlantMimic.Location = new System.Drawing.Point(4, 29);
             this.tabPlantMimic.Name = "tabPlantMimic";
             this.tabPlantMimic.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPlantMimic.Size = new System.Drawing.Size(687, 353);
+            this.tabPlantMimic.Size = new System.Drawing.Size(687, 354);
             this.tabPlantMimic.TabIndex = 0;
             this.tabPlantMimic.Text = "Plant Mimic";
             this.tabPlantMimic.UseVisualStyleBackColor = true;
             // 
             // tabControl
             // 
+            this.tabControl.Controls.Add(this.systemStatusLabel);
+            this.tabControl.Controls.Add(this.label1);
+            this.tabControl.Controls.Add(this.button1);
             this.tabControl.Location = new System.Drawing.Point(4, 29);
             this.tabControl.Name = "tabControl";
             this.tabControl.Padding = new System.Windows.Forms.Padding(3);
-            this.tabControl.Size = new System.Drawing.Size(687, 353);
+            this.tabControl.Size = new System.Drawing.Size(687, 354);
             this.tabControl.TabIndex = 1;
             this.tabControl.Text = "Control";
             this.tabControl.UseVisualStyleBackColor = true;
@@ -350,7 +365,7 @@
             // 
             this.tabEnvironment.Location = new System.Drawing.Point(4, 29);
             this.tabEnvironment.Name = "tabEnvironment";
-            this.tabEnvironment.Size = new System.Drawing.Size(687, 353);
+            this.tabEnvironment.Size = new System.Drawing.Size(687, 354);
             this.tabEnvironment.TabIndex = 3;
             this.tabEnvironment.Text = "Environment";
             this.tabEnvironment.UseVisualStyleBackColor = true;
@@ -368,18 +383,48 @@
             // 
             this.tabReports.Location = new System.Drawing.Point(4, 29);
             this.tabReports.Name = "tabReports";
-            this.tabReports.Size = new System.Drawing.Size(687, 353);
+            this.tabReports.Size = new System.Drawing.Size(687, 354);
             this.tabReports.TabIndex = 5;
             this.tabReports.Text = "Reports";
             this.tabReports.UseVisualStyleBackColor = true;
             // 
-            // orderListViewBindingSource
-            // 
-            this.orderListViewBindingSource.DataSource = typeof(TmcData.OrderListView);
-            // 
             // orderListViewBindingSource1
             // 
             this.orderListViewBindingSource1.DataSource = typeof(TmcData.OrderListView);
+            // 
+            // plantMimic1
+            // 
+            this.plantMimic1.Location = new System.Drawing.Point(-7, 4);
+            this.plantMimic1.Name = "plantMimic1";
+            this.plantMimic1.Size = new System.Drawing.Size(687, 354);
+            this.plantMimic1.TabIndex = 0;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(192, 21);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(38, 26);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(78, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "System status: ";
+            // 
+            // systemStatusLabel
+            // 
+            this.systemStatusLabel.AutoSize = true;
+            this.systemStatusLabel.Location = new System.Drawing.Point(114, 26);
+            this.systemStatusLabel.Name = "systemStatusLabel";
+            this.systemStatusLabel.Size = new System.Drawing.Size(37, 13);
+            this.systemStatusLabel.TabIndex = 2;
+            this.systemStatusLabel.Text = "Offline";
             // 
             // MainForm
             // 
@@ -396,10 +441,13 @@
             this.toolStrip1.PerformLayout();
             this.ordersTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).EndInit();
             this.tbcContentsTabControl.ResumeLayout(false);
             this.tabAlarmList.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).EndInit();
+            this.tabPlantMimic.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
+            this.tabControl.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -443,6 +491,10 @@
         private System.Windows.Forms.TabPage tabOrders;
         private System.Windows.Forms.TabPage tabReports;
         private System.Windows.Forms.BindingSource orderListViewBindingSource1;
+        private UserControls.PlantMimic plantMimic1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label systemStatusLabel;
     }
 }
 

@@ -43,5 +43,10 @@ namespace Tmc.Scada.Core
         public void EmergencyStop()
         {
         }
+
+        public string GetOperationStatus()
+        {
+            return "";
+        }
     }
 }
