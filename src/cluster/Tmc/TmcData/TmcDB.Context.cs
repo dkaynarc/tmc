@@ -43,9 +43,6 @@ namespace TmcData
         public DbSet<Source> Sources { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<OrderListView> OrderListViews { get; set; }
-        public DbSet<Blog> Blogs { get; set; }
-        public DbSet<Post> Posts { get; set; }
-        public DbSet<User> Users { get; set; }
     
         public virtual int AddNewOrder(Nullable<System.Guid> userID, Nullable<int> black, Nullable<int> blue, Nullable<int> red, Nullable<int> green, Nullable<int> white)
         {

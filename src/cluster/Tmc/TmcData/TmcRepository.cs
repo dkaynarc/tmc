@@ -39,11 +39,6 @@ namespace TmcData
             new ICTDEntities().UpdateOrderStatusByID(orderId, statusId);
         }
 
-        //public static void ()
-        //{
-        //    new ICTDEntities().
-        //}
-
 
     }
 }
