@@ -149,6 +149,25 @@
     <edmx:ConceptualModels>
       <Schema Namespace="ICTDModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="ICTDEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="ComponentCycleLogViews" EntityType="ICTDModel.ComponentCycleLogView" />
+          <EntitySet Name="ComponentEventLogViews" EntityType="ICTDModel.ComponentEventLogView" />
+          <EntitySet Name="OrderListViews" EntityType="ICTDModel.OrderListView" />
+          <FunctionImport Name="AddNewCycleLog">
+            <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
+            <Parameter Name="CycleTime" Mode="In" Type="Int32" />
+            <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AddNewEnvironmentLog">
+            <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
+            <Parameter Name="SourceID" Mode="In" Type="Int32" />
+            <Parameter Name="Reading" Mode="In" Type="Double" />
+          </FunctionImport>
+          <FunctionImport Name="AddNewEventLog">
+            <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="SourceID" Mode="In" Type="Int32" />
+            <Parameter Name="LogType" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="AddNewOrder">
             <Parameter Name="UserID" Mode="In" Type="Guid" />
             <Parameter Name="Black" Mode="In" Type="Int32" />
@@ -157,10 +176,28 @@
             <Parameter Name="Green" Mode="In" Type="Int32" />
             <Parameter Name="White" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="CompleteOrder">
-          <Parameter Name="OrderID" Mode="In" Type="Int32" />
+          <FunctionImport Name="CancelOrder">
+            <Parameter Name="OrderID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="UpdateOrderStatus">
+          <FunctionImport Name="CompleteOrder">
+            <Parameter Name="OrderID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="CycleLogBySource">
+            <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="EnvironmentLogBySource">
+            <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="EventLogBySource">
+            <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="OrderConfigByOrder">
+            <Parameter Name="OrderID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="OrderListByStatus">
+            <Parameter Name="StatusID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateOrderList">
             <Parameter Name="OrderID" Mode="In" Type="Int32" />
             <Parameter Name="OrderStatus" Mode="In" Type="String" />
           </FunctionImport>
@@ -172,93 +209,9 @@
             <Parameter Name="OrderID" Mode="In" Type="Int32" />
             <Parameter Name="ProductNumber" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="AddNewCycleLog">
-            <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
-            <Parameter Name="CycleTime" Mode="In" Type="Int32" />
-            <Parameter Name="SourceID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="AddNewEventLog">
-            <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
-            <Parameter Name="Description" Mode="In" Type="String" />
-            <Parameter Name="SourceID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="CancelOrder">
-          <Parameter Name="OrderID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="FiltCompCyclLogBySour" ReturnType="Collection(ICTDModel.FiltCompCyclLogBySour_Result)">
-          <Parameter Name="SourceID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="FiltCompEvenLogBySour" ReturnType="Collection(ICTDModel.FiltCompEvenLogBySour_Result)">
-          <Parameter Name="SourceID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="FiltOrdeList" ReturnType="Collection(ICTDModel.FiltOrdeList_Result)">
-          <Parameter Name="StatusID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="zFilterComponentCycleLogBySourceID" ReturnType="Collection(ICTDModel.zFilterComponentCycleLogBySourceID_Result)">
-          <Parameter Name="SourceID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="zFilterComponentEventLogBySourceID" ReturnType="Collection(ICTDModel.zFilterComponentEventLogBySourceID_Result)">
-          <Parameter Name="SourceID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <EntitySet Name="ComponentCycleLogViews" EntityType="ICTDModel.ComponentCycleLogView" />
-          <EntitySet Name="ComponentEventLogViews" EntityType="ICTDModel.ComponentEventLogView" />
-          <EntitySet Name="OrderListViews" EntityType="ICTDModel.OrderListView" />
-          <FunctionImport Name="AddNewCycleLog1">
-            <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
-            <Parameter Name="CycleTime" Mode="In" Type="Int32" />
-            <Parameter Name="SourceID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="AddNewEnvironmentLog">
-            <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
-            <Parameter Name="SourceID" Mode="In" Type="Int32" />
-            <Parameter Name="Reading" Mode="In" Type="Double" />
-          </FunctionImport>
-          <FunctionImport Name="AddNewEventLog1">
-            <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
-            <Parameter Name="Description" Mode="In" Type="String" />
-            <Parameter Name="SourceID" Mode="In" Type="Int32" />
-            <Parameter Name="LogType" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="AddNewOrder1">
-            <Parameter Name="UserID" Mode="In" Type="Guid" />
-            <Parameter Name="Black" Mode="In" Type="Int32" />
-            <Parameter Name="Blue" Mode="In" Type="Int32" />
-            <Parameter Name="Red" Mode="In" Type="Int32" />
-            <Parameter Name="Green" Mode="In" Type="Int32" />
-            <Parameter Name="White" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="CancelOrder1">
-            <Parameter Name="OrderID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="CompleteOrder1">
-            <Parameter Name="OrderID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="CycleLogBySource" ReturnType="Collection(ICTDModel.CycleLogBySource_Result)">
-            <Parameter Name="SourceID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="EnvironmentLogBySource" ReturnType="Collection(ICTDModel.EnvironmentLogBySource_Result)">
-            <Parameter Name="SourceID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="EventLogBySource" ReturnType="Collection(ICTDModel.EventLogBySource_Result)">
-            <Parameter Name="SourceID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="OrderConfigByOrder" ReturnType="Collection(ICTDModel.OrderConfigByOrder_Result)">
-            <Parameter Name="OrderID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="OrderListByStatus">
-            <Parameter Name="StatusID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="UpdateOrderStatus1">
+          <FunctionImport Name="UpdateOrderStatus">
             <Parameter Name="OrderID" Mode="In" Type="Int32" />
             <Parameter Name="OrderStatus" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="UpdateOrderStatusByID1">
-            <Parameter Name="OrderID" Mode="In" Type="Int32" />
-            <Parameter Name="OrderStatus" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="UpdateProductProduced1">
-            <Parameter Name="OrderID" Mode="In" Type="Int32" />
-            <Parameter Name="ProductNumber" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="FiltCompCyclLogBySour_Result">
@@ -411,60 +364,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="AddNewCycleLog1" FunctionName="ICTDModel.Store.AddNewCycleLog" />
+          <FunctionImportMapping FunctionImportName="AddNewCycleLog" FunctionName="ICTDModel.Store.AddNewCycleLog" />
           <FunctionImportMapping FunctionImportName="AddNewEnvironmentLog" FunctionName="ICTDModel.Store.AddNewEnvironmentLog" />
-          <FunctionImportMapping FunctionImportName="AddNewEventLog1" FunctionName="ICTDModel.Store.AddNewEventLog" />
-          <FunctionImportMapping FunctionImportName="AddNewOrder1" FunctionName="ICTDModel.Store.AddNewOrder" />
-          <FunctionImportMapping FunctionImportName="CancelOrder1" FunctionName="ICTDModel.Store.CancelOrder" />
-          <FunctionImportMapping FunctionImportName="CompleteOrder1" FunctionName="ICTDModel.Store.CompleteOrder" />
-          <FunctionImportMapping FunctionImportName="CycleLogBySource" FunctionName="ICTDModel.Store.CycleLogBySource">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ICTDModel.CycleLogBySource_Result">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-                <ScalarProperty Name="CycleTime" ColumnName="CycleTime" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="EnvironmentLogBySource" FunctionName="ICTDModel.Store.EnvironmentLogBySource">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ICTDModel.EnvironmentLogBySource_Result">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-                <ScalarProperty Name="Reading" ColumnName="Reading" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="EventLogBySource" FunctionName="ICTDModel.Store.EventLogBySource">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ICTDModel.EventLogBySource_Result">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="LogType" ColumnName="LogType" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="OrderConfigByOrder" FunctionName="ICTDModel.Store.OrderConfigByOrder">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ICTDModel.OrderConfigByOrder_Result">
-                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
-                <ScalarProperty Name="ConfigID" ColumnName="ConfigID" />
-                <ScalarProperty Name="Black" ColumnName="Black" />
-                <ScalarProperty Name="Blue" ColumnName="Blue" />
-                <ScalarProperty Name="Red" ColumnName="Red" />
-                <ScalarProperty Name="Green" ColumnName="Green" />
-                <ScalarProperty Name="White" ColumnName="White" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="AddNewEventLog" FunctionName="ICTDModel.Store.AddNewEventLog" />
+          <FunctionImportMapping FunctionImportName="AddNewOrder" FunctionName="ICTDModel.Store.AddNewOrder" />
+          <FunctionImportMapping FunctionImportName="CancelOrder" FunctionName="ICTDModel.Store.CancelOrder" />
+          <FunctionImportMapping FunctionImportName="CompleteOrder" FunctionName="ICTDModel.Store.CompleteOrder" />
+          <FunctionImportMapping FunctionImportName="CycleLogBySource" FunctionName="ICTDModel.Store.CycleLogBySource" />
+          <FunctionImportMapping FunctionImportName="EnvironmentLogBySource" FunctionName="ICTDModel.Store.EnvironmentLogBySource" />
+          <FunctionImportMapping FunctionImportName="EventLogBySource" FunctionName="ICTDModel.Store.EventLogBySource" />
+          <FunctionImportMapping FunctionImportName="OrderConfigByOrder" FunctionName="ICTDModel.Store.OrderConfigByOrder" />
           <FunctionImportMapping FunctionImportName="OrderListByStatus" FunctionName="ICTDModel.Store.OrderListByStatus" />
-          <FunctionImportMapping FunctionImportName="UpdateOrderStatus1" FunctionName="ICTDModel.Store.UpdateOrderStatus" />
-          <FunctionImportMapping FunctionImportName="UpdateOrderStatusByID1" FunctionName="ICTDModel.Store.UpdateOrderStatusByID" />
-          <FunctionImportMapping FunctionImportName="UpdateProductProduced1" FunctionName="ICTDModel.Store.UpdateProductProduced" />
+          <FunctionImportMapping FunctionImportName="UpdateOrderList" FunctionName="ICTDModel.Store.UpdateOrderStatus" />
+          <FunctionImportMapping FunctionImportName="UpdateOrderStatusByID" FunctionName="ICTDModel.Store.UpdateOrderStatusByID" />
+          <FunctionImportMapping FunctionImportName="UpdateProductProduced" FunctionName="ICTDModel.Store.UpdateProductProduced" />
+          <FunctionImportMapping FunctionImportName="UpdateOrderStatus" FunctionName="ICTDModel.Store.UpdateOrderStatus" />
         </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
