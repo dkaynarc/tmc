@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TmcData;
+using Tmc.Scada.Core;
 
 
 namespace Tmc.Scada.App
@@ -26,6 +27,8 @@ namespace Tmc.Scada.App
         public MainForm()
         {
             InitializeComponent();
+            
+            //Initialise SCADA
             updateOrder();
         }
 

@@ -26,6 +26,10 @@
         <AssociationConnector Association="ICTDModel.FK_Order_Status" />
         <AssociationConnector Association="ICTDModel.FK_Status_Order" />
         <EntityTypeShape EntityType="ICTDModel.OrderListView" Width="1.5" PointX="2.6320783117004103" PointY="27.978637171899265" />
+        <EntityTypeShape EntityType="ICTDModel.Blog" Width="1.5" PointX="11.88633603969884" PointY="14.491963050557283" />
+        <EntityTypeShape EntityType="ICTDModel.Post" Width="1.5" PointX="9.1325559528230489" PointY="21.832690502439014" />
+        <EntityTypeShape EntityType="ICTDModel.User" Width="1.5" PointX="6.2030873141265879" PointY="3.0127585395298704" />
+        <AssociationConnector Association="ICTDModel.FK_BlogPost" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

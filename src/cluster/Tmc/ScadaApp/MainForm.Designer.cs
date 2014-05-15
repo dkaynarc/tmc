@@ -34,7 +34,6 @@
             this.loginAndLogoutButton = new System.Windows.Forms.ToolStripButton();
             this.currentUserLabel = new System.Windows.Forms.ToolStripLabel();
             this.eStopButton = new System.Windows.Forms.ToolStripButton();
-            this.orderListViewBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.plantMimicTab = new System.Windows.Forms.TabPage();
             this.controlTab = new System.Windows.Forms.TabPage();
             this.environmentTab = new System.Windows.Forms.TabPage();
@@ -55,18 +54,24 @@
             this.pnlAlarms = new System.Windows.Forms.FlowLayoutPanel();
             this.btnShowList = new System.Windows.Forms.Button();
             this.tbcContentsTabControl = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabAlarmList = new System.Windows.Forms.TabPage();
-            this.dgvAlarmsGrid = new System.Windows.Forms.DataGridView();
             this.btnDismissAll = new System.Windows.Forms.Button();
+            this.dgvAlarmsGrid = new System.Windows.Forms.DataGridView();
+            this.tabPlantMimic = new System.Windows.Forms.TabPage();
+            this.tabControl = new System.Windows.Forms.TabPage();
+            this.tabEnvironment = new System.Windows.Forms.TabPage();
+            this.tabOrders = new System.Windows.Forms.TabPage();
+            this.tabReports = new System.Windows.Forms.TabPage();
+            this.orderListViewBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.orderListViewBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).BeginInit();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
             this.tbcContentsTabControl.SuspendLayout();
             this.tabAlarmList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -107,10 +112,6 @@
             this.eStopButton.Name = "eStopButton";
             this.eStopButton.Size = new System.Drawing.Size(97, 22);
             this.eStopButton.Text = "Emergency Stop";
-            // 
-            // orderListViewBindingSource
-            // 
-            this.orderListViewBindingSource.DataSource = typeof(TmcData.OrderListView);
             // 
             // plantMimicTab
             // 
@@ -276,42 +277,25 @@
             this.btnShowList.Name = "btnShowList";
             this.btnShowList.Size = new System.Drawing.Size(72, 30);
             this.btnShowList.TabIndex = 3;
-            this.btnShowList.Text = "Show List";
+            this.btnShowList.Text = "Alarms List";
             this.btnShowList.UseVisualStyleBackColor = true;
             this.btnShowList.Click += new System.EventHandler(this.btnShowList_Click);
             // 
             // tbcContentsTabControl
             // 
-            this.tbcContentsTabControl.Controls.Add(this.tabPage1);
-            this.tbcContentsTabControl.Controls.Add(this.tabPage2);
             this.tbcContentsTabControl.Controls.Add(this.tabAlarmList);
-            this.tbcContentsTabControl.ItemSize = new System.Drawing.Size(150, 25);
+            this.tbcContentsTabControl.Controls.Add(this.tabPlantMimic);
+            this.tbcContentsTabControl.Controls.Add(this.tabControl);
+            this.tbcContentsTabControl.Controls.Add(this.tabEnvironment);
+            this.tbcContentsTabControl.Controls.Add(this.tabOrders);
+            this.tbcContentsTabControl.Controls.Add(this.tabReports);
+            this.tbcContentsTabControl.ItemSize = new System.Drawing.Size(115, 25);
             this.tbcContentsTabControl.Location = new System.Drawing.Point(0, 63);
             this.tbcContentsTabControl.Name = "tbcContentsTabControl";
             this.tbcContentsTabControl.SelectedIndex = 0;
             this.tbcContentsTabControl.Size = new System.Drawing.Size(695, 387);
             this.tbcContentsTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tbcContentsTabControl.TabIndex = 4;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 29);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(687, 354);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 29);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(687, 354);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // tabAlarmList
             // 
@@ -324,14 +308,6 @@
             this.tabAlarmList.Text = "Alarm List";
             this.tabAlarmList.UseVisualStyleBackColor = true;
             // 
-            // dgvAlarmsGrid
-            // 
-            this.dgvAlarmsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAlarmsGrid.Location = new System.Drawing.Point(2, 49);
-            this.dgvAlarmsGrid.Name = "dgvAlarmsGrid";
-            this.dgvAlarmsGrid.Size = new System.Drawing.Size(684, 302);
-            this.dgvAlarmsGrid.TabIndex = 0;
-            // 
             // btnDismissAll
             // 
             this.btnDismissAll.Location = new System.Drawing.Point(570, 3);
@@ -341,6 +317,69 @@
             this.btnDismissAll.Text = "Dismiss All";
             this.btnDismissAll.UseVisualStyleBackColor = true;
             this.btnDismissAll.Click += new System.EventHandler(this.btnDismissAll_Click);
+            // 
+            // dgvAlarmsGrid
+            // 
+            this.dgvAlarmsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvAlarmsGrid.Location = new System.Drawing.Point(2, 49);
+            this.dgvAlarmsGrid.Name = "dgvAlarmsGrid";
+            this.dgvAlarmsGrid.Size = new System.Drawing.Size(684, 302);
+            this.dgvAlarmsGrid.TabIndex = 0;
+            // 
+            // tabPlantMimic
+            // 
+            this.tabPlantMimic.Location = new System.Drawing.Point(4, 29);
+            this.tabPlantMimic.Name = "tabPlantMimic";
+            this.tabPlantMimic.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPlantMimic.Size = new System.Drawing.Size(687, 353);
+            this.tabPlantMimic.TabIndex = 0;
+            this.tabPlantMimic.Text = "Plant Mimic";
+            this.tabPlantMimic.UseVisualStyleBackColor = true;
+            // 
+            // tabControl
+            // 
+            this.tabControl.Location = new System.Drawing.Point(4, 29);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.Padding = new System.Windows.Forms.Padding(3);
+            this.tabControl.Size = new System.Drawing.Size(687, 353);
+            this.tabControl.TabIndex = 1;
+            this.tabControl.Text = "Control";
+            this.tabControl.UseVisualStyleBackColor = true;
+            // 
+            // tabEnvironment
+            // 
+            this.tabEnvironment.Location = new System.Drawing.Point(4, 29);
+            this.tabEnvironment.Name = "tabEnvironment";
+            this.tabEnvironment.Size = new System.Drawing.Size(687, 353);
+            this.tabEnvironment.TabIndex = 3;
+            this.tabEnvironment.Text = "Environment";
+            this.tabEnvironment.UseVisualStyleBackColor = true;
+            // 
+            // tabOrders
+            // 
+            this.tabOrders.Location = new System.Drawing.Point(4, 29);
+            this.tabOrders.Name = "tabOrders";
+            this.tabOrders.Size = new System.Drawing.Size(687, 354);
+            this.tabOrders.TabIndex = 4;
+            this.tabOrders.Text = "Orders";
+            this.tabOrders.UseVisualStyleBackColor = true;
+            // 
+            // tabReports
+            // 
+            this.tabReports.Location = new System.Drawing.Point(4, 29);
+            this.tabReports.Name = "tabReports";
+            this.tabReports.Size = new System.Drawing.Size(687, 353);
+            this.tabReports.TabIndex = 5;
+            this.tabReports.Text = "Reports";
+            this.tabReports.UseVisualStyleBackColor = true;
+            // 
+            // orderListViewBindingSource
+            // 
+            this.orderListViewBindingSource.DataSource = typeof(TmcData.OrderListView);
+            // 
+            // orderListViewBindingSource1
+            // 
+            this.orderListViewBindingSource1.DataSource = typeof(TmcData.OrderListView);
             // 
             // MainForm
             // 
@@ -355,12 +394,13 @@
             this.Text = "TMC System";
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).EndInit();
             this.ordersTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).EndInit();
             this.tbcContentsTabControl.ResumeLayout(false);
             this.tabAlarmList.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -394,11 +434,15 @@
         private System.Windows.Forms.FlowLayoutPanel pnlAlarms;
         private System.Windows.Forms.Button btnShowList;
         private System.Windows.Forms.TabControl tbcContentsTabControl;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPlantMimic;
+        private System.Windows.Forms.TabPage tabControl;
         private System.Windows.Forms.TabPage tabAlarmList;
         private System.Windows.Forms.DataGridView dgvAlarmsGrid;
         private System.Windows.Forms.Button btnDismissAll;
+        private System.Windows.Forms.TabPage tabEnvironment;
+        private System.Windows.Forms.TabPage tabOrders;
+        private System.Windows.Forms.TabPage tabReports;
+        private System.Windows.Forms.BindingSource orderListViewBindingSource1;
     }
 }
 
