@@ -54,6 +54,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="controlPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controlPage.Designer.cs">
+      <DependentUpon>controlPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Datasets\EnvironmentReportDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -76,6 +82,9 @@
     <Compile Include="PlantMimic.Designer.cs">
       <DependentUpon>PlantMimic.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="controlPage.resx">
+      <DependentUpon>controlPage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

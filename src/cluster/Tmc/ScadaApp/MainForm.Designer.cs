@@ -65,9 +65,6 @@
             this.tabReports = new System.Windows.Forms.TabPage();
             this.orderListViewBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.systemStatusLabel = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
@@ -76,7 +73,6 @@
             this.tabAlarmList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
             this.tabPlantMimic.SuspendLayout();
-            this.tabControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -350,9 +346,6 @@
             // 
             // tabControl
             // 
-            this.tabControl.Controls.Add(this.systemStatusLabel);
-            this.tabControl.Controls.Add(this.label1);
-            this.tabControl.Controls.Add(this.button1);
             this.tabControl.Location = new System.Drawing.Point(4, 29);
             this.tabControl.Name = "tabControl";
             this.tabControl.Padding = new System.Windows.Forms.Padding(3);
@@ -399,33 +392,6 @@
             this.plantMimic1.Size = new System.Drawing.Size(687, 354);
             this.plantMimic1.TabIndex = 0;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(192, 21);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(38, 26);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(78, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "System status: ";
-            // 
-            // systemStatusLabel
-            // 
-            this.systemStatusLabel.AutoSize = true;
-            this.systemStatusLabel.Location = new System.Drawing.Point(114, 26);
-            this.systemStatusLabel.Name = "systemStatusLabel";
-            this.systemStatusLabel.Size = new System.Drawing.Size(37, 13);
-            this.systemStatusLabel.TabIndex = 2;
-            this.systemStatusLabel.Text = "Offline";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -446,8 +412,6 @@
             this.tabAlarmList.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).EndInit();
             this.tabPlantMimic.ResumeLayout(false);
-            this.tabControl.ResumeLayout(false);
-            this.tabControl.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -492,9 +456,6 @@
         private System.Windows.Forms.TabPage tabReports;
         private System.Windows.Forms.BindingSource orderListViewBindingSource1;
         private UserControls.PlantMimic plantMimic1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label systemStatusLabel;
     }
 }
 
