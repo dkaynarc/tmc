@@ -81,21 +81,21 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox1">
+                    <Textbox Name="Textbox10">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Timestamp</Value>
+                              <Value>Shift Start Time</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox1</rd:DefaultName>
+                      <rd:DefaultName>Textbox10</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -111,21 +111,21 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox4">
+                    <Textbox Name="Textbox11">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Sensor</Value>
+                              <Value>Shift End Time</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox4</rd:DefaultName>
+                      <rd:DefaultName>Textbox11</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -141,21 +141,21 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox6">
+                    <Textbox Name="Textbox12">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Reading</Value>
+                              <Value>Products Produced For Shift</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox6</rd:DefaultName>
+                      <rd:DefaultName>Textbox12</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -176,21 +176,21 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Timestamp">
+                    <Textbox Name="ShiftStartTime">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Timestamp.Value</Value>
+                              <Value>=Fields!ShiftStartTime.Value</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Timestamp</rd:DefaultName>
+                      <rd:DefaultName>ShiftStartTime</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -206,21 +206,21 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Sensor">
+                    <Textbox Name="ShiftEndTime">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Sensor.Value</Value>
+                              <Value>=Fields!ShiftEndTime.Value</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Sensor</rd:DefaultName>
+                      <rd:DefaultName>ShiftEndTime</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -236,21 +236,21 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Reading">
+                    <Textbox Name="ProductsProducedForShift">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Reading.Value</Value>
+                              <Value>=Fields!ProductsProducedForShift.Value</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Reading</rd:DefaultName>
+                      <rd:DefaultName>ProductsProducedForShift</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -285,10 +285,10 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <DataSetName>EnvironmentReportDataSet</DataSetName>
+        <DataSetName>ProductionReportDataSource</DataSetName>
         <Top>2cm</Top>
         <Height>2.8575cm</Height>
-        <Width>18.94417cm</Width>
+        <Width>18.94416cm</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -297,10 +297,10 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>3.60417in</Height>
+    <Height>2in</Height>
     <Style />
   </Body>
-  <Width>7.45834in</Width>
+  <Width>7.45833in</Width>
   <Page>
     <PageHeight>29.7cm</PageHeight>
     <PageWidth>21cm</PageWidth>
@@ -318,33 +318,33 @@
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>bcb2acfb-2a19-49f2-a8f9-00a2628bc161</rd:DataSourceID>
+      <rd:DataSourceID>eb0fc6c9-934a-4874-8dd4-4837125a0680</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="EnvironmentReportDataSet">
+    <DataSet Name="ProductionReportDataSource">
       <Query>
         <DataSourceName>ReportDataSet</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
-        <Field Name="Sensor">
-          <DataField>Sensor</DataField>
+        <Field Name="ShiftStartTime">
+          <DataField>ShiftStartTime</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="Reading">
-          <DataField>Reading</DataField>
+        <Field Name="ShiftEndTime">
+          <DataField>ShiftEndTime</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="Timestamp">
-          <DataField>Timestamp</DataField>
+        <Field Name="ProductsProducedForShift">
+          <DataField>ProductsProducedForShift</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>ReportDataSet</rd:DataSetName>
         <rd:SchemaPath>C:\Users\Oscar\Documents\tmc\src\cluster\Tmc\ScadaApp\Datasets\ReportDataSet.xsd</rd:SchemaPath>
-        <rd:TableName>EnvironmentDataTable</rd:TableName>
+        <rd:TableName>ProductionDataTable</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
         <rd:TableAdapterName />
@@ -352,5 +352,5 @@
     </DataSet>
   </DataSets>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
-  <rd:ReportID>1aa37ecb-0d81-443a-aa16-d230128e0c5d</rd:ReportID>
+  <rd:ReportID>8c1d9dca-b1d8-4e12-ad18-0e979cb5a0cc</rd:ReportID>
 </Report>

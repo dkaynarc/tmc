@@ -69,10 +69,10 @@
               <Width>6.31472cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>6.31472cm</Width>
+              <Width>3.61597cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>6.31472cm</Width>
+              <Width>9.01348cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -81,7 +81,7 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox1">
+                    <Textbox Name="Textbox10">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -95,7 +95,7 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox1</rd:DefaultName>
+                      <rd:DefaultName>Textbox10</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -111,21 +111,21 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox4">
+                    <Textbox Name="Textbox11">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Sensor</Value>
+                              <Value>Event Type</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox4</rd:DefaultName>
+                      <rd:DefaultName>Textbox11</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -141,21 +141,21 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox6">
+                    <Textbox Name="Textbox12">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Reading</Value>
+                              <Value>Description</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox6</rd:DefaultName>
+                      <rd:DefaultName>Textbox12</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -206,21 +206,21 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Sensor">
+                    <Textbox Name="EventType">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Sensor.Value</Value>
+                              <Value>=Fields!EventType.Value</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Sensor</rd:DefaultName>
+                      <rd:DefaultName>EventType</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -236,21 +236,21 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Reading">
+                    <Textbox Name="Description">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Reading.Value</Value>
+                              <Value>=Fields!Description.Value</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Reading</rd:DefaultName>
+                      <rd:DefaultName>Description</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -285,7 +285,7 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <DataSetName>EnvironmentReportDataSet</DataSetName>
+        <DataSetName>AlarmReportDataSet</DataSetName>
         <Top>2cm</Top>
         <Height>2.8575cm</Height>
         <Width>18.94417cm</Width>
@@ -297,10 +297,10 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>3.60417in</Height>
+    <Height>2in</Height>
     <Style />
   </Body>
-  <Width>7.45834in</Width>
+  <Width>7.45833in</Width>
   <Page>
     <PageHeight>29.7cm</PageHeight>
     <PageWidth>21cm</PageWidth>
@@ -318,22 +318,22 @@
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>bcb2acfb-2a19-49f2-a8f9-00a2628bc161</rd:DataSourceID>
+      <rd:DataSourceID>f0450b75-162c-490b-9e26-c0e15fc3a46e</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="EnvironmentReportDataSet">
+    <DataSet Name="AlarmReportDataSet">
       <Query>
         <DataSourceName>ReportDataSet</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
-        <Field Name="Sensor">
-          <DataField>Sensor</DataField>
+        <Field Name="EventType">
+          <DataField>EventType</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="Reading">
-          <DataField>Reading</DataField>
+        <Field Name="Description">
+          <DataField>Description</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Timestamp">
@@ -344,7 +344,7 @@
       <rd:DataSetInfo>
         <rd:DataSetName>ReportDataSet</rd:DataSetName>
         <rd:SchemaPath>C:\Users\Oscar\Documents\tmc\src\cluster\Tmc\ScadaApp\Datasets\ReportDataSet.xsd</rd:SchemaPath>
-        <rd:TableName>EnvironmentDataTable</rd:TableName>
+        <rd:TableName>AlarmDataTable</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
         <rd:TableAdapterName />
@@ -352,5 +352,5 @@
     </DataSet>
   </DataSets>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
-  <rd:ReportID>1aa37ecb-0d81-443a-aa16-d230128e0c5d</rd:ReportID>
+  <rd:ReportID>0855f03a-cbdb-4ecb-854a-59cb1bd85948</rd:ReportID>
 </Report>

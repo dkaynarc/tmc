@@ -41,9 +41,12 @@
     <Reference Include="Appccelerate.StateMachine">
       <HintPath>..\packages\Appccelerate.StateMachine.2.1.0\lib\portable-windows8+net45\Appccelerate.StateMachine.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,10 +63,10 @@
     <Compile Include="controlPage.Designer.cs">
       <DependentUpon>controlPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Datasets\EnvironmentReportDataSet.Designer.cs">
+    <Compile Include="Datasets\ReportDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>EnvironmentReportDataSet.xsd</DependentUpon>
+      <DependentUpon>ReportDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -79,6 +82,18 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ReportControl.Designer.cs">
+      <DependentUpon>ReportControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ReportViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReportViewerForm.Designer.cs">
+      <DependentUpon>ReportViewerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="TablessControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -110,22 +125,35 @@
     <EmbeddedResource Include="PlantMimic.resx">
       <DependentUpon>PlantMimic.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ReportControl.resx">
+      <DependentUpon>ReportControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\AlarmReport.rdlc" />
+    <EmbeddedResource Include="Reports\CycleReport.rdlc" />
     <EmbeddedResource Include="Reports\EnvironmentReport.rdlc" />
+    <EmbeddedResource Include="Reports\LastHundredOrdersAverageCycleTimeReport.rdlc" />
+    <EmbeddedResource Include="Reports\MachineReport.rdlc" />
+    <EmbeddedResource Include="Reports\OrderReport.rdlc" />
+    <EmbeddedResource Include="Reports\ProductionReport.rdlc" />
+    <EmbeddedResource Include="ReportViewerForm.resx">
+      <DependentUpon>ReportViewerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="..\TmcData\App.Config">
       <Link>App.Config</Link>
     </None>
-    <None Include="Datasets\EnvironmentReportDataSet.xsc">
-      <DependentUpon>EnvironmentReportDataSet.xsd</DependentUpon>
+    <None Include="Datasets\ReportDataSet.xsc">
+      <DependentUpon>ReportDataSet.xsd</DependentUpon>
     </None>
-    <None Include="Datasets\EnvironmentReportDataSet.xsd">
+    <None Include="Datasets\ReportDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>EnvironmentReportDataSet.Designer.cs</LastGenOutput>
+      <LastGenOutput>ReportDataSet.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Datasets\EnvironmentReportDataSet.xss">
-      <DependentUpon>EnvironmentReportDataSet.xsd</DependentUpon>
+    <None Include="Datasets\ReportDataSet.xss">
+      <DependentUpon>ReportDataSet.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\TmcData.EnvironmentLogBySource_Result.datasource" />
     <None Include="Properties\DataSources\TmcData.OrderList.datasource" />
     <None Include="Properties\DataSources\TmcData.OrderListView.datasource" />
     <None Include="Properties\Settings.settings">
