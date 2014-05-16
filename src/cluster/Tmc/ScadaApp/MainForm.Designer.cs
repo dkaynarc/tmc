@@ -57,25 +57,20 @@
             this.btnDismissAll = new System.Windows.Forms.Button();
             this.dgvAlarmsGrid = new System.Windows.Forms.DataGridView();
             this.tabPlantMimic = new System.Windows.Forms.TabPage();
+            this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic();
             this.tabControl = new System.Windows.Forms.TabPage();
             this.tabEnvironment = new System.Windows.Forms.TabPage();
             this.tabOrders = new System.Windows.Forms.TabPage();
             this.orderUserControl = new Tmc.Scada.App.Order();
             this.tabReports = new System.Windows.Forms.TabPage();
-
-            this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic();
-
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
             this.tbcContentsTabControl.SuspendLayout();
             this.tabAlarmList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
-
             this.tabPlantMimic.SuspendLayout();
-
             this.tabOrders.SuspendLayout();
-
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -341,6 +336,13 @@
             this.tabPlantMimic.Text = "Plant Mimic";
             this.tabPlantMimic.UseVisualStyleBackColor = true;
             // 
+            // plantMimic1
+            // 
+            this.plantMimic1.Location = new System.Drawing.Point(-7, 4);
+            this.plantMimic1.Name = "plantMimic1";
+            this.plantMimic1.Size = new System.Drawing.Size(687, 354);
+            this.plantMimic1.TabIndex = 0;
+            // 
             // tabControl
             // 
             this.tabControl.Location = new System.Drawing.Point(4, 29);
@@ -386,18 +388,6 @@
             this.tabReports.Text = "Reports";
             this.tabReports.UseVisualStyleBackColor = true;
             // 
-
-            // orderListViewBindingSource1
-            // 
-            // 
-            // plantMimic1
-            // 
-            this.plantMimic1.Location = new System.Drawing.Point(-7, 4);
-            this.plantMimic1.Name = "plantMimic1";
-            this.plantMimic1.Size = new System.Drawing.Size(687, 354);
-            this.plantMimic1.TabIndex = 0;
-            // 
-
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -416,10 +406,8 @@
             this.tbcContentsTabControl.ResumeLayout(false);
             this.tabAlarmList.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).EndInit();
-
             this.tabPlantMimic.ResumeLayout(false);
             this.tabOrders.ResumeLayout(false);
-
             this.ResumeLayout(false);
             this.PerformLayout();
 
