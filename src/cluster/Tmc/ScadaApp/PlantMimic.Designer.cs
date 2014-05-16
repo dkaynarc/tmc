@@ -31,29 +31,29 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.pnlContainer = new System.Windows.Forms.Panel();
-            this.imgSorterConveyor = new System.Windows.Forms.PictureBox();
-            this.imgAssemblyConveyor = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.imgAssemblerRobot = new System.Windows.Forms.PictureBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.imgSorterRobot = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.imgSorterConveyor = new System.Windows.Forms.PictureBox();
+            this.imgAssemblyConveyor = new System.Windows.Forms.PictureBox();
             this.imgSorterCamera = new System.Windows.Forms.PictureBox();
             this.imgAssemblerCamera = new System.Windows.Forms.PictureBox();
+            this.imgAssemblerRobot = new System.Windows.Forms.PictureBox();
             this.imgLoaderRobot = new System.Windows.Forms.PictureBox();
             this.imgPalletiserRobot = new System.Windows.Forms.PictureBox();
+            this.imgSorterRobot = new System.Windows.Forms.PictureBox();
             this.pnlContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgSorterConveyor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgAssemblyConveyor)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.imgAssemblerRobot)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.imgSorterRobot)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgSorterCamera)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgAssemblerCamera)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imgAssemblerRobot)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgLoaderRobot)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgPalletiserRobot)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imgSorterRobot)).BeginInit();
             this.SuspendLayout();
             // 
             // label7
@@ -97,6 +97,60 @@
             this.pnlContainer.Size = new System.Drawing.Size(365, 326);
             this.pnlContainer.TabIndex = 0;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(212, 64);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(72, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Loader Robot";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(192, 174);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(94, 13);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Assembler Camera";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(10, 173);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(74, 13);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Sorter Camera";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(214, 307);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(87, 13);
+            this.label6.TabIndex = 3;
+            this.label6.Text = "Assembler Robot";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(10, 307);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(67, 13);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "Sorter Robot";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(10, 64);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(81, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Palletiser Robot";
+            // 
             // imgSorterConveyor
             // 
             this.imgSorterConveyor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -123,84 +177,6 @@
             this.imgAssemblyConveyor.TabStop = false;
             this.imgAssemblyConveyor.Click += new System.EventHandler(this.imgAssemblyConveyor_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 64);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(81, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Palletiser Robot";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 173);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(74, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Sorter Camera";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(192, 174);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(94, 13);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Assembler Camera";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(214, 307);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(87, 13);
-            this.label6.TabIndex = 3;
-            this.label6.Text = "Assembler Robot";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 307);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(67, 13);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "Sorter Robot";
-            // 
-            // imgAssemblerRobot
-            // 
-            this.imgAssemblerRobot.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.imgAssemblerRobot.Image = global::Tmc.Scada.App.Properties.Resources.robot_arm;
-            this.imgAssemblerRobot.ImageLocation = "";
-            this.imgAssemblerRobot.Location = new System.Drawing.Point(217, 256);
-            this.imgAssemblerRobot.Name = "imgAssemblerRobot";
-            this.imgAssemblerRobot.Size = new System.Drawing.Size(48, 48);
-            this.imgAssemblerRobot.TabIndex = 0;
-            this.imgAssemblerRobot.TabStop = false;
-            this.imgAssemblerRobot.Click += new System.EventHandler(this.imgAssemblerRobot_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(212, 64);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(72, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Loader Robot";
-            // 
-            // imgSorterRobot
-            // 
-            this.imgSorterRobot.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.imgSorterRobot.Image = global::Tmc.Scada.App.Properties.Resources.robot_arm;
-            this.imgSorterRobot.ImageLocation = "";
-            this.imgSorterRobot.Location = new System.Drawing.Point(13, 256);
-            this.imgSorterRobot.Name = "imgSorterRobot";
-            this.imgSorterRobot.Size = new System.Drawing.Size(48, 48);
-            this.imgSorterRobot.TabIndex = 0;
-            this.imgSorterRobot.TabStop = false;
-            this.imgSorterRobot.Click += new System.EventHandler(this.imgSorterRobot_Click);
-            // 
             // imgSorterCamera
             // 
             this.imgSorterCamera.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -224,6 +200,18 @@
             this.imgAssemblerCamera.TabIndex = 0;
             this.imgAssemblerCamera.TabStop = false;
             this.imgAssemblerCamera.Click += new System.EventHandler(this.imgAssemblerCamera_Click);
+            // 
+            // imgAssemblerRobot
+            // 
+            this.imgAssemblerRobot.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.imgAssemblerRobot.Image = global::Tmc.Scada.App.Properties.Resources.robot_arm;
+            this.imgAssemblerRobot.ImageLocation = "";
+            this.imgAssemblerRobot.Location = new System.Drawing.Point(217, 256);
+            this.imgAssemblerRobot.Name = "imgAssemblerRobot";
+            this.imgAssemblerRobot.Size = new System.Drawing.Size(48, 48);
+            this.imgAssemblerRobot.TabIndex = 0;
+            this.imgAssemblerRobot.TabStop = false;
+            this.imgAssemblerRobot.Click += new System.EventHandler(this.imgAssemblerRobot_Click);
             // 
             // imgLoaderRobot
             // 
@@ -249,6 +237,18 @@
             this.imgPalletiserRobot.TabStop = false;
             this.imgPalletiserRobot.Click += new System.EventHandler(this.imgPalletiserRobot_Click);
             // 
+            // imgSorterRobot
+            // 
+            this.imgSorterRobot.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.imgSorterRobot.Image = global::Tmc.Scada.App.Properties.Resources.robot_arm;
+            this.imgSorterRobot.ImageLocation = "";
+            this.imgSorterRobot.Location = new System.Drawing.Point(13, 256);
+            this.imgSorterRobot.Name = "imgSorterRobot";
+            this.imgSorterRobot.Size = new System.Drawing.Size(48, 48);
+            this.imgSorterRobot.TabIndex = 0;
+            this.imgSorterRobot.TabStop = false;
+            this.imgSorterRobot.Click += new System.EventHandler(this.imgSorterRobot_Click);
+            // 
             // PlantMimic
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -256,16 +256,17 @@
             this.Controls.Add(this.pnlContainer);
             this.Name = "PlantMimic";
             this.Size = new System.Drawing.Size(687, 354);
+            this.Load += new System.EventHandler(this.PlantMimic_Load);
             this.pnlContainer.ResumeLayout(false);
             this.pnlContainer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgSorterConveyor)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgAssemblyConveyor)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.imgAssemblerRobot)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.imgSorterRobot)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgSorterCamera)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgAssemblerCamera)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imgAssemblerRobot)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgLoaderRobot)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgPalletiserRobot)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imgSorterRobot)).EndInit();
             this.ResumeLayout(false);
 
         }

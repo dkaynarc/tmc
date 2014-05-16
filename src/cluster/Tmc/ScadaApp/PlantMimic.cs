@@ -14,6 +14,9 @@ namespace Tmc.Scada.App.UserControls
 {
     public partial class PlantMimic : UserControl
     {
+        Timer timer;
+        private const int ONE_SEC_IN_MILLISECS = 1000;
+
         public enum Hardware
         {
             SorterRobot, AssemblerRobot, LoaderRobot, PalletiserRobot, SorterCamera, AssemblerCamera, SorterConveyor, AssemblerConveyor
@@ -24,6 +27,32 @@ namespace Tmc.Scada.App.UserControls
         public PlantMimic()
         {
             InitializeComponent();
+            this.timer = new Timer();
+            this.timer.Interval = ONE_SEC_IN_MILLISECS;
+            this.timer.Tick += timer_Tick;
+        }
+
+        private void PlantMimic_Load(object sender, EventArgs e)
+        {
+            this.timer.Start();
+            this.EnabledChanged += PlantMimic_EnabledChanged;
+        }
+
+        void timer_Tick(object sender, EventArgs e)
+        {
+            //do whatever happens every second 
+        }
+
+        void PlantMimic_EnabledChanged(object sender, EventArgs e)
+        {
+            if (!this.Enabled)
+            {
+                this.timer.Stop();
+            }
+            else
+            {
+                this.timer.Start();
+            }
         }
 
         private void GetHardwareList()

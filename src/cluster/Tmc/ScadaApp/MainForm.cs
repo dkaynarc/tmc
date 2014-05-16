@@ -238,5 +238,20 @@ namespace Tmc.Scada.App
         {
             //this.scadaEngine.EmergencyStop();
         }
+
+        private void tbcContentsTabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TabControl tabControl = sender as TabControl;
+            for (int tabPageIndex = 0; tabPageIndex < tabControl.TabPages.Count; tabPageIndex++)
+            {
+                foreach (Control control in tabControl.TabPages[tabPageIndex].Controls)
+                {
+                    if (control.GetType().BaseType == typeof(UserControl))
+                    {
+                        control.Enabled = (tabPageIndex != tabControl.SelectedIndex) ? false : true;
+                    }
+                }
+            }
+        }
     }
 }

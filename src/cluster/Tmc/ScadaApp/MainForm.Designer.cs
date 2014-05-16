@@ -63,8 +63,8 @@
             this.tabCalibration = new System.Windows.Forms.TabPage();
             this.tabReports = new System.Windows.Forms.TabPage();
             this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic();
-            this.reportControl1 = new Tmc.Scada.App.ReportControl();
             this.calibrationControl1 = new Tmc.Scada.App.CalibrationControl();
+            this.reportControl1 = new Tmc.Scada.App.ReportControl();
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
@@ -299,6 +299,7 @@
             this.tbcContentsTabControl.Size = new System.Drawing.Size(695, 387);
             this.tbcContentsTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tbcContentsTabControl.TabIndex = 4;
+            this.tbcContentsTabControl.SelectedIndexChanged += new System.EventHandler(this.tbcContentsTabControl_SelectedIndexChanged);
             // 
             // tabAlarmList
             // 
@@ -396,19 +397,19 @@
             this.plantMimic1.Size = new System.Drawing.Size(687, 354);
             this.plantMimic1.TabIndex = 0;
             // 
-            // reportControl1
-            // 
-            this.reportControl1.Location = new System.Drawing.Point(-4, 0);
-            this.reportControl1.Name = "reportControl1";
-            this.reportControl1.Size = new System.Drawing.Size(691, 358);
-            this.reportControl1.TabIndex = 0;
-            // 
             // calibrationControl1
             // 
             this.calibrationControl1.Location = new System.Drawing.Point(0, 0);
             this.calibrationControl1.Name = "calibrationControl1";
             this.calibrationControl1.Size = new System.Drawing.Size(687, 354);
             this.calibrationControl1.TabIndex = 0;
+            // 
+            // reportControl1
+            // 
+            this.reportControl1.Location = new System.Drawing.Point(-4, 0);
+            this.reportControl1.Name = "reportControl1";
+            this.reportControl1.Size = new System.Drawing.Size(691, 358);
+            this.reportControl1.TabIndex = 0;
             // 
             // MainForm
             // 

@@ -80,6 +80,7 @@
             this.Controls.Add(this.btnCalibrateSensorCamera);
             this.Name = "CalibrationControl";
             this.Size = new System.Drawing.Size(687, 354);
+            this.Load += new System.EventHandler(this.CalibrationControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.imgAssemblyCameraFeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgSorterCameraFeed)).EndInit();
             this.ResumeLayout(false);
