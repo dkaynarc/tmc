@@ -113,11 +113,11 @@ namespace Tmc.Scada.Core
         private void PlaceTablet(Tablet tablet, TabletMagazine mag)
         {
             var p = TransformToRobotSpace(tablet.LocationPoint);
-            _robot.GetTablet(p.X, p.Y, mag.GetSlotIndex(tablet.Color));
+            //_robot.GetTablet(p.X, p.Y, mag.GetSlotIndex(tablet.Color));
             mag.AddTablet(tablet.Color);
         }
 
-        private Point TransformToRobotSpace(Point p)
+        private PointF TransformToRobotSpace(PointF p)
         {
             //TODO: add logic to transform from camera space to sorter robot space.
             return p;
