@@ -129,7 +129,7 @@ namespace Tmc.Scada.Core
                 }
                 else if (hw is ISensor)
                 {
-                    config.Sensors.Add(hw.GetType(), hw as ISensor);
+                    config.Sensors.Add(hw.Name, hw as ISensor);
                 }
                 else if (hw is ICamera)
                 {
@@ -187,7 +187,7 @@ namespace Tmc.Scada.Core
 
         private ISensor CreateSensor()
         {
-            throw new NotImplementedException();
+            return new Sensor();
         }
 
         private IRobot CreateRobot(Type type)

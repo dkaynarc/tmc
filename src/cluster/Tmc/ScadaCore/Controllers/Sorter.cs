@@ -74,32 +74,18 @@ namespace Tmc.Scada.Core
             var status = ControllerOperationStatus.Succeeded;
             try
             {
-                int shakeRetryAttempts = 0;
-                var visibleTablets = _vision.GetVisibleTablets();
-                while (shakeRetryAttempts < MaxShakeRetryAttempts)
-                {
-                    if (ct.IsCancellationRequested)
-                    {
-                        status = ControllerOperationStatus.Cancelled;
-                        return status;
-                    }
-                    if (visibleTablets.Count == 0)
-                    {
-                        //_robot.Shake();
-                        visibleTablets = _vision.GetVisibleTablets();
-                        break;
-                    }
-                    shakeRetryAttempts++;
-                }
+                var visibleTablets = this.GetVisibleTablets();
                 foreach (var tablet in visibleTablets)
                 {
                     if (mag.IsFull() || ct.IsCancellationRequested)
                     {
-                        break;
+                        status = ControllerOperationStatus.Cancelled;
+                        return status;
                     }
-                    if (!mag.GetFullSlots().Contains(tablet.Color))
+                    if (!mag.IsSlotFull(tablet.Color))
                     {
                         PlaceTablet(tablet, mag);
+                        visibleTablets = this.GetVisibleTablets();
                     }
                 }
             }
@@ -111,14 +97,27 @@ namespace Tmc.Scada.Core
             return status;
         }
 
+        private List<Tablet> GetVisibleTablets()
+        {
+            int shakeRetryAttempts = 0;
+            var visibleTablets = _vision.GetVisibleTablets();
+            while ((visibleTablets.Count() < 0) && (shakeRetryAttempts < MaxShakeRetryAttempts))
+            {
+                //_robot.Shake();
+                visibleTablets = _vision.GetVisibleTablets();
+                shakeRetryAttempts++;
+            }
+            return visibleTablets;
+        }
+
         private void PlaceTablet(Tablet tablet, TabletMagazine mag)
         {
             var p = TransformToRobotSpace(tablet.LocationPoint);
-            _robot.GetTablet(p.X, p.Y, mag.GetSlotIndex(tablet.Color));
+            //_robot.GetTablet(p.X, p.Y, mag.GetSlotIndex(tablet.Color));
             mag.AddTablet(tablet.Color);
         }
 
-        private Point TransformToRobotSpace(Point p)
+        private PointF TransformToRobotSpace(PointF p)
         {
             //TODO: add logic to transform from camera space to sorter robot space.
             return p;

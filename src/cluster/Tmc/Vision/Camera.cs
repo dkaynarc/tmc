@@ -9,10 +9,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System.Drawing;
 using Tmc.Common;
-//<<<<<<< HEAD
 using System.Drawing;
-//=======
-//>>>>>>> a3890c445a582410972443f08269dc0984ceffa2
 using System.Net;
 
 namespace Tmc.Vision

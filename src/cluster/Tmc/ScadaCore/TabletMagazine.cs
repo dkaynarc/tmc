@@ -31,17 +31,44 @@ namespace Tmc.Scada.Core
         {
             Slots[slot] += count;
         }
+
+        public void RemoveTablet(TabletColors slot, int count = 1)
+        {
+            if ((Slots[slot] - count) > -1)
+            {
+                Slots[slot] -= count;
+            }
+            else
+            {
+                throw new InvalidOperationException("Tablet count cannot be less than zero");
+            }
+        }
         
         public int GetSlotIndex(TabletColors slotColor)
         {
             return _slotIndexMap[slotColor];
         }
 
+        public int GetSlotDepth(TabletColors slotColor)
+        {
+            return Slots[slotColor];
+        }
         public bool IsFull()
         {
             bool isFull = true;
             Slots.Values.ToList().ForEach(x => isFull &= (x == SlotCapacity));
             return isFull;
+        }
+
+        public bool IsSlotFull(TabletColors slotColor)
+        {
+            return (Slots[slotColor] == SlotCapacity);
+        }
+
+        //TODO Check whether this method is required anywhere
+        public bool IsSlotEmpty(TabletColors slotColor)
+        {
+            return (Slots[slotColor] == 0);
         }
 
         public List<TabletColors> GetFullSlots()

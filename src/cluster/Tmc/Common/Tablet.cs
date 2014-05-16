@@ -14,6 +14,6 @@ namespace Tmc.Common
     public class Tablet
     {
         public TabletColors Color { get; set; }
-        public Point LocationPoint { get; set; }
+        public PointF LocationPoint { get; set; }
     }
 }

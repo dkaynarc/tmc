@@ -14,7 +14,7 @@ namespace Tmc.Scada.Core
         public Dictionary<Type, IRobot> Robots;
         public Dictionary<Type, IConveyor> Conveyors;
         public Dictionary<string, ICamera> Cameras;
-        public Dictionary<Type, ISensor> Sensors;
+        public Dictionary<string, ISensor> Sensors;
         public Dictionary<Type, IController> Controllers;
         
         public ClusterConfig()
@@ -23,7 +23,7 @@ namespace Tmc.Scada.Core
             Robots = new Dictionary<Type, IRobot>();
             Conveyors = new Dictionary<Type, IConveyor>();
             Cameras = new Dictionary<string, ICamera>();
-            Sensors = new Dictionary<Type, ISensor>();
+            Sensors = new Dictionary<string, ISensor>();
             Controllers = new Dictionary<Type, IController>();
         }
 

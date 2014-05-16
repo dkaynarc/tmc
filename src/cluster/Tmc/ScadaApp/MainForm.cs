@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Tmc.Sensors;
 
 
 namespace Tmc.Scada.App
@@ -16,7 +17,6 @@ namespace Tmc.Scada.App
         public MainForm()
         {
             InitializeComponent();
-
         }
     }
 }

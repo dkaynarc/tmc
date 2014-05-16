@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/environment_dustlabel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/environment_dustlabel_tv"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/environment_humiditylabel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/environment_dustlabel_tv"
+        android:layout_below="@+id/environment_dustlabel_tv"
+        android:layout_marginTop="20dp"
+        android:text="@string/environment_humiditylabel_tv"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/environment_lightlabel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/environment_humiditylabel_tv"
+        android:layout_below="@+id/environment_humiditylabel_tv"
+        android:layout_marginTop="20dp"
+        android:text="@string/environment_lightlabel_tv"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/environment_soundlabel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/environment_lightlabel_tv"
+        android:layout_below="@+id/environment_lightlabel_tv"
+        android:layout_marginTop="20dp"
+        android:text="@string/environment_soundlabel_tv"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/environment_temperaturelabel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/environment_soundlabel_tv"
+        android:layout_below="@+id/environment_soundlabel_tv"
+        android:layout_marginTop="20dp"
+        android:text="@string/environment_temperaturelabel_tv"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/environment_dust_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/environment_dustlabel_tv"
+        android:layout_toRightOf="@+id/environment_dustlabel_tv"
+        android:layout_marginLeft="5dp"
+        android:text="@string/error"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/environment_humidity_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/environment_humiditylabel_tv"
+        android:layout_toRightOf="@+id/environment_humiditylabel_tv"
+        android:layout_marginLeft="5dp"
+        android:text="@string/error"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/environment_light_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/environment_lightlabel_tv"
+        android:layout_toRightOf="@+id/environment_lightlabel_tv"
+        android:layout_marginLeft="5dp"
+        android:text="@string/error"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/environment_sound_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/environment_soundlabel_tv"
+        android:layout_toRightOf="@+id/environment_soundlabel_tv"
+        android:layout_marginLeft="5dp"
+        android:text="@string/error"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/environment_temperature_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/environment_temperaturelabel_tv"
+        android:layout_toRightOf="@+id/environment_temperaturelabel_tv"
+        android:layout_marginLeft="5dp"
+        android:text="@string/error"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+</RelativeLayout>
