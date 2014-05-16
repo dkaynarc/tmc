@@ -14,9 +14,9 @@ namespace Tmc.Robotics
         internal AssemblerRobot() : base()
         {
             var directory = Directory.GetCurrentDirectory() + "\\mod\\";
-            var magazinePoints = directory + "AssemblerMagazinePoints.mod";
-            var magazineHeight = directory + "MagazineHeights.mod";
-            var dropPositions = directory + "TrayDropPositions.mod";
+            var magazinePoints = directory + FileNames.Assembler.MagazinePoints;
+            var magazineHeight = directory + FileNames.Assembler.MagazineHeights;
+            var dropPositions = directory + FileNames.Assembler.TrayPositions;
 
             if (!File.Exists(magazinePoints))
             {
@@ -40,12 +40,12 @@ namespace Tmc.Robotics
 
         public void GetMagazine()
         {
-            this.RunRapidProgram("AssemblerGetMagazine.mod");
+            this.RunRapidProgram(FileNames.Assembler.GetMagazine);
         }
 
         public void ReturnMagazine()
         {
-            this.RunRapidProgram("AssemblerReturnMagazine.mod");
+            this.RunRapidProgram(FileNames.Assembler.ReturnMagazine);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Tmc.Robotics
             dict.Add("%Tablet%", tabletTouch);
             dict.Add("%TabletDrop%", tabletDrop);
 
-            this.RunRapidProgram("PlaceTablet.mod", dict);
+            this.RunRapidProgram(FileNames.Assembler.PlaceTablet, dict);
         }
     }
 }

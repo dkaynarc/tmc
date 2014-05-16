@@ -11,8 +11,8 @@ namespace Tmc.Robotics
         internal SorterRobot() : base()
         {
             var directory = Directory.GetCurrentDirectory() + "\\mod\\";
-            var magazinePoints = directory + "SorterMagazinePoints.mod";
-            var magazineHeight = directory + "SorterMagazineHeights.mod";
+            var magazinePoints = directory + FileNames.Sorter.MagazinePoints;
+            var magazineHeight = directory + FileNames.Sorter.MagazineHeights;
 
             if (!File.Exists(magazinePoints))
             {
@@ -30,12 +30,12 @@ namespace Tmc.Robotics
 
         public void GetMagazine()
         {
-            this.RunRapidProgram("GetMagazine.mod");
+            this.RunRapidProgram(FileNames.Sorter.GetMagazine);
         }
 
         public void ReturnMagazine()
         {
-            this.RunRapidProgram("ReturnMagazine.mod");
+            this.RunRapidProgram(FileNames.Sorter.ReturnMagazine);
         }
 
         /// <summary>
@@ -61,7 +61,12 @@ namespace Tmc.Robotics
             dict.Add("%MagazineHover%", hoverPoint);
             dict.Add("%MagazineDrop%", dropPoint);
 
-            this.RunRapidProgram("SortChip.mod", dict);
+            this.RunRapidProgram(FileNames.Sorter.SortChip, dict);
+        }
+
+        public void Shake()
+        {
+            this.RunRapidProgram(FileNames.Sorter.Shake);
         }
     }
 }
