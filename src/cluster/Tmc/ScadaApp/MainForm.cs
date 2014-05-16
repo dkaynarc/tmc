@@ -15,7 +15,7 @@ namespace Tmc.Scada.App
 {
     public partial class MainForm : Form
     {
-        private ScadaEngine scadaEngine = new ScadaEngine();
+        //private ScadaEngine scadaEngine = new ScadaEngine();
         private DataTable AlarmsDataTable = new DataTable();
         private static int AlarmCount = 1;
         private const string ALARM_LIST_TAB_PAGE_NAME = "tabAlarmList";
@@ -236,7 +236,7 @@ namespace Tmc.Scada.App
 
         private void eStopButton_Click(object sender, EventArgs e)
         {
-            this.scadaEngine.EmergencyStop();
+            //this.scadaEngine.EmergencyStop();
         }
     }
 }

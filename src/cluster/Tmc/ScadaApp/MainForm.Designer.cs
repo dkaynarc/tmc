@@ -48,7 +48,6 @@
             this.startTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.endTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.numberOfProductsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderListViewBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.Button_AddNewOrder = new System.Windows.Forms.Button();
             this.reportsTab = new System.Windows.Forms.TabPage();
             this.pnlAlarms = new System.Windows.Forms.FlowLayoutPanel();
@@ -64,19 +63,16 @@
             this.orderUserControl = new Tmc.Scada.App.Order();
             this.tabReports = new System.Windows.Forms.TabPage();
 
-            this.orderListViewBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic();
 
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).BeginInit();
             this.tbcContentsTabControl.SuspendLayout();
             this.tabAlarmList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
 
             this.tabPlantMimic.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource1)).BeginInit();
 
             this.tabOrders.SuspendLayout();
 
@@ -253,10 +249,6 @@
             this.numberOfProductsDataGridViewTextBoxColumn.HeaderText = "NumberOfProducts";
             this.numberOfProductsDataGridViewTextBoxColumn.Name = "numberOfProductsDataGridViewTextBoxColumn";
             // 
-            // orderListViewBindingSource
-            // 
-            this.orderListViewBindingSource.DataSource = typeof(TmcData.OrderListView);
-            // 
             // Button_AddNewOrder
             // 
             this.Button_AddNewOrder.Location = new System.Drawing.Point(26, 278);
@@ -397,7 +389,6 @@
 
             // orderListViewBindingSource1
             // 
-            this.orderListViewBindingSource1.DataSource = typeof(TmcData.OrderListView);
             // 
             // plantMimic1
             // 
@@ -422,13 +413,11 @@
             this.toolStrip1.PerformLayout();
             this.ordersTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).EndInit();
             this.tbcContentsTabControl.ResumeLayout(false);
             this.tabAlarmList.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).EndInit();
 
             this.tabPlantMimic.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource1)).EndInit();
             this.tabOrders.ResumeLayout(false);
 
             this.ResumeLayout(false);
