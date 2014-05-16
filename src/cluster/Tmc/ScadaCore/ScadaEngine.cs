@@ -48,5 +48,9 @@ namespace Tmc.Scada.Core
         {
             return "";
         }
+
+        public void SetOperatingMode(string mode)
+        {
+        }
     }
 }

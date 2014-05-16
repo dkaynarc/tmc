@@ -61,6 +61,34 @@ namespace Tmc.Scada.App
             }
         }
 
-        
+        private void confirmOperatingModeButton_Click(object sender, EventArgs e)
+        {
+            if(normalModeRadioButton.Checked)
+            {
+                this.scadaEngine.SetOperatingMode("normal");
+            }
+            else if(sortingModeRadioButton.Checked)
+            {
+                this.scadaEngine.SetOperatingMode("sorting");
+            }
+            else if(producingModeRadioButton.Checked)
+            {
+                this.scadaEngine.SetOperatingMode("producing");
+            }
+            else
+            {
+                MessageBox.Show("Please select an operating mode");
+            }
+
+            // reset radio button list
+            clearRadioButton(normalModeRadioButton);
+            clearRadioButton(sortingModeRadioButton);
+            clearRadioButton(producingModeRadioButton); 
+        }
+
+        private void clearRadioButton(RadioButton b)
+        {
+            b.Checked = false;
+        }    
     }
 }
