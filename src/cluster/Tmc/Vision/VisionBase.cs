@@ -31,10 +31,10 @@ namespace Tmc.Vision
         /// <param name="src">
         /// THis is the input image in which we want to find the circles
         /// </param>
-        /// <param name="minCircle">
+        /// <param name="minRadius">
         /// smallest circle diameter that will be detected, note this is in pixcels
         /// </param>
-        /// <param name="maxCircle">
+        /// <param name="maxRadius">
         /// biggest circle diameter that will be detected, note this is in pixcels
         /// </param>
         /// <param name="cannyThresh">
@@ -43,8 +43,8 @@ namespace Tmc.Vision
         /// <param name="cannyAccumThresh">
         /// 
         /// </param>
-        public CircleF[] DetectTablets(Image<Bgr, Byte> src, int minCircle, int maxCircle, double par3, double par4, int cannyThresh, int cannyAccumThresh, Form1 f)
-        {
+        public CircleF[] DetectTablets(Image<Bgr, Byte> src, int minRadius, int maxRadius, double dp, double minDist, int cannyThresh, int cannyAccumThresh, Form1 f)
+        {//double dp, double minDist
             Image<Gray, Byte> graySoft = src.Convert<Gray, Byte>();
             Image<Gray, Byte> gray = graySoft;
 
@@ -58,10 +58,10 @@ namespace Tmc.Vision
             CircleF[] circles = gray.HoughCircles(
                 cannyThreshold,
                 circleAccumulatorThreshold,
-                par3,
-                par4,
-                minCircle,
-                maxCircle
+                dp,
+                minDist,
+                minRadius,
+                maxRadius
                 )[0]; //Get the circles from the first channel
 
             #if true

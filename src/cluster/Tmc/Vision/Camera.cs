@@ -56,6 +56,20 @@ namespace Tmc.Vision
             return image;
         }
 
+        public Image<Bgr, byte> GetImage(int rotation)
+        {
+            var image = GetImageHttp(ConnectionString, 1);
+
+            if (image == null)
+            {
+                _hardwareStatus = HardwareStatus.Failed;
+                throw new InvalidOperationException("Could not get image from capture device");
+            }
+
+            return image;
+        }
+
+        //RotateFlip(RotateFlipType.Rotate90FlipNone);
         public Image<Bgr, byte> GetImageHttp(Uri uri)
         {
             Image<Bgr, byte> emguImg = null;
@@ -64,6 +78,20 @@ namespace Tmc.Vision
             using (var stream = response.GetResponseStream())
             {
                 var img = Bitmap.FromStream(stream) as Bitmap;
+                emguImg = new Image<Bgr, byte>(img);
+            }
+            return emguImg;
+        }
+
+        public Image<Bgr, byte> GetImageHttp(Uri uri, int rotation)
+        {
+            Image<Bgr, byte> emguImg = null;
+            var request = WebRequest.Create(uri);
+            using (var response = request.GetResponse())
+            using (var stream = response.GetResponseStream())
+            {
+                var img = Bitmap.FromStream(stream) as Bitmap;
+                img.RotateFlip(RotateFlipType.Rotate90FlipNone);
                 emguImg = new Image<Bgr, byte>(img);
             }
             return emguImg;

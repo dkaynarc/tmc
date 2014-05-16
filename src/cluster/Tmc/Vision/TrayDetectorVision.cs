@@ -17,9 +17,12 @@ namespace Tmc.Vision
 {
     public class TrayDetectorVision : VisionBase
     {
-        private int minCircle, maxCircle;
-        private int cannyThresh, cannyAccumThresh;
-        private double par3, par4;
+        private int minRadius, maxRadius, cannyThresh, cannyAccumThresh;
+        private double dp, minDist;
+        private Hsv[,] HSVTabletColoursRanges = new Hsv[5, 2];
+
+
+
         private Camera camera;
         private Point[] trayPoints = new Point[4];
         private Image<Bgr, Byte> img;
@@ -28,7 +31,7 @@ namespace Tmc.Vision
         private double Angle;
         Tray<Tablet> trayList = new Tray<Tablet>();
         
-        private Hsv[,] HSVTabletColoursRanges = new Hsv[5,2];
+        
 
         /// <summary>
         /// 
@@ -210,8 +213,8 @@ namespace Tmc.Vision
         /// </summary>
         private void DetectTabletsInTray()
         {         
-            f.getValue(ref minCircle, ref maxCircle, ref par3, ref par4, ref cannyThresh,ref cannyAccumThresh);
-            tablets = DetectTablets(imgTray, minCircle, maxCircle, par3, par4, cannyThresh, cannyAccumThresh, f);
+            f.getValue(ref minRadius, ref maxRadius, ref dp, ref minDist, ref cannyThresh,ref cannyAccumThresh);
+            tablets = DetectTablets(imgTray, minRadius, maxRadius, dp, minDist, cannyThresh, cannyAccumThresh, f);
         }
 
         /// <summary>

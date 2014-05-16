@@ -35,7 +35,11 @@ namespace Tmc.Vision
             //TrayDetectorVision tray = new TrayDetectorVision(c);
             //tray.GetTabletsInTray();
             SorterVision sorter = new SorterVision(c);
-            sorter.GetVisibleTablets();
+            sorter.Calibration();
+            while (true)
+            {
+                sorter.GetVisibleTablets();
+            }
             //CvInvoke.cvWaitKey(0);
         }
     }

@@ -20,13 +20,15 @@ namespace Tmc.Vision
 
     public class SorterVision : VisionBase
     {
-        int minCircle, maxCircle;
-        int cannyThresh, cannyAccumThresh;
-        double par3, par4;
-
+        private int minRadius, maxRadius, cannyThresh, cannyAccumThresh;
+        private double dp, minDist;
+        private Hsv[,] HSVTabletColoursRanges = new Hsv[5, 2];
+        
+        PointF[] ChessboardPoints = new PointF[107];
         private Camera camera;
         private Image<Bgr, Byte> img;
         Form1 f;
+        List<Tablet> TabletList = new List<Tablet>();
 
         /// <summary>
         /// constructor for sorter vision, do all initilasation here
@@ -40,6 +42,7 @@ namespace Tmc.Vision
             f.Show();
             this.camera = camera;
             //do calibration
+            this.camera.ConnectionString = new Uri(@"http://192.168.0.190:8080/photoaf.jpg");
             //this.camera.ConnectionString = new Uri(@"https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-frc3/t1.0-9/10270404_10202712962477674_682458036245271256_n.jpg");
         }
 
@@ -50,20 +53,36 @@ namespace Tmc.Vision
         public List<Tablet> GetVisibleTablets()
         {
             List<Tablet> tablet = new List<Tablet>();           
-            //img = camera.GetImage();
-            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/sortC2.jpg");
+            img = camera.GetImage(1);
+            //img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/sortC2.jpg");
 
-            f.getValue(ref minCircle, ref maxCircle, ref par3, ref par4, ref cannyThresh, ref cannyAccumThresh);
+            f.getValue(ref minRadius, ref maxRadius, ref dp, ref minDist, ref cannyThresh, ref cannyAccumThresh);
 
-            CircleF[] circles = DetectTablets(img, minCircle, maxCircle, par3, par4, cannyThresh, cannyAccumThresh, f);
-            PointF[] points = FindPattern(img.Convert<Gray, Byte>(), new Size(12, 9));
-            CalculateTrueCordXYmm(points, new PointF(109,237));//424, 466));//454, 503));//423,464));//594, 750));//253, 525));
+            CircleF[] circles = DetectTablets(img, minRadius, maxRadius, dp, minDist, cannyThresh, cannyAccumThresh, f);
+            //PointF[] points = FindPattern(img.Convert<Gray, Byte>(), new Size(12, 9));
+            //CircleF
+            //CvInvoke.cvWaitKey(0);
+            foreach (CircleF circle in circles)
+            {
+                CalculateTrueCordXYmm(ChessboardPoints, new PointF(circle.Center.X, circle.Center.Y));//424, 466));//454, 503));//423,464));//594, 750));//253, 525));
+            }
             DetectOverLap();
             DetectDamagedTablet();
+            return FillListOfGoodTablets(ChessboardPoints, circles);
             //GetXYZForTablets();
-            CvInvoke.cvWaitKey(0);
+            CvInvoke.cvWaitKey(0); 
 
             return tablet;
+        }
+
+        public void Calibration()
+        {
+            //Image<Bgr, Byte> img2 = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/sortC2.jpg");
+            //ChessboardPoints = FindPattern(img2.Convert<Gray, Byte>(), new Size(12, 9));
+            ChessboardPoints = FindPattern(camera.GetImage(1).Convert<Gray, Byte>(), new Size(12, 9));
+
+
+
         }
 
 
@@ -128,6 +147,9 @@ namespace Tmc.Vision
         /// <todo>
         /// make it so that board rotation dosent effect our mm return value
         /// </todo>
+        /// <bug>
+        /// if circle outside the chessboard then loc will be out of range so need to fix this
+        /// </bug>
         private PointF CalculateTrueCordXYmm(PointF[] chessboard, PointF targetPoint)
         { 
             
@@ -148,8 +170,8 @@ namespace Tmc.Vision
             {
                 MagY = Math.Sqrt(Math.Pow((chessboard[0].X - chessboard[12].X), 2) + Math.Pow((chessboard[0].Y - chessboard[12].Y), 2));
             }
-            if (ClosestPoint.X > 0)
-            {
+            if (ClosestPoint.X > 11)
+            {//out side bounds
                 MagX = Math.Sqrt(Math.Pow((chessboard[loc - 12].X - chessboard[loc].X), 2) + Math.Pow((chessboard[loc - 12].Y - chessboard[loc].Y), 2));
             }
             else 
@@ -214,6 +236,28 @@ namespace Tmc.Vision
             return closestPoint;
         }
 
+        private List<Tablet> FillListOfGoodTablets(PointF[] chessboard, CircleF[] tablets)
+        {
+            return TabletList;
+        }
+
+        private CircleF[] OtherTabletsNear(CircleF[] knowTablets, CircleF targetTablet)
+        {
+            var circleList = new List<CircleF>();
+
+            foreach(CircleF knowTablet in knowTablets)
+            {
+                if(true)
+                {//center is in the radius of the circle
+                        
+                }
+                if(true)
+                {//if the circle crosses over
+                    
+                }
+            }
+            return knowTablets;
+        }
 
         /// <summary>
         /// will detect if tablet has been covered by another tablet
