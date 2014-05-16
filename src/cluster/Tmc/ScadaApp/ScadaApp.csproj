@@ -57,6 +57,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalibrationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CalibrationControl.Designer.cs">
+      <DependentUpon>CalibrationControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="controlPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -103,6 +109,9 @@
     <Compile Include="PlantMimic.Designer.cs">
       <DependentUpon>PlantMimic.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="CalibrationControl.resx">
+      <DependentUpon>CalibrationControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controlPage.resx">
       <DependentUpon>controlPage.cs</DependentUpon>
     </EmbeddedResource>
