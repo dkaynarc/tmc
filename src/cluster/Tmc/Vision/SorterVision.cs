@@ -42,7 +42,7 @@ namespace Tmc.Vision
             f.Show();
             this.camera = camera;
             //do calibration
-            this.camera.ConnectionString = new Uri(@"http://192.168.0.190:8080/photoaf.jpg");
+            //this.camera.ConnectionString = new Uri(@"http://192.168.0.190:8080/photoaf.jpg");
             //this.camera.ConnectionString = new Uri(@"https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-frc3/t1.0-9/10270404_10202712962477674_682458036245271256_n.jpg");
         }
 
@@ -53,8 +53,8 @@ namespace Tmc.Vision
         public List<Tablet> GetVisibleTablets()
         {
             List<Tablet> tablet = new List<Tablet>();           
-            img = camera.GetImage(1);
-            //img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/sortC2.jpg");
+            //img = camera.GetImage(1);
+            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/sort21.jpg");
 
             f.getValue(ref minRadius, ref maxRadius, ref dp, ref minDist, ref cannyThresh, ref cannyAccumThresh);
 
@@ -65,6 +65,7 @@ namespace Tmc.Vision
             foreach (CircleF circle in circles)
             {
                 CalculateTrueCordXYmm(ChessboardPoints, new PointF(circle.Center.X, circle.Center.Y));//424, 466));//454, 503));//423,464));//594, 750));//253, 525));
+                OtherTabletsNear(circles, circle);
             }
             DetectOverLap();
             DetectDamagedTablet();
@@ -77,9 +78,9 @@ namespace Tmc.Vision
 
         public void Calibration()
         {
-            //Image<Bgr, Byte> img2 = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/sortC2.jpg");
-            //ChessboardPoints = FindPattern(img2.Convert<Gray, Byte>(), new Size(12, 9));
-            ChessboardPoints = FindPattern(camera.GetImage(1).Convert<Gray, Byte>(), new Size(12, 9));
+            Image<Bgr, Byte> img2 = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/chess2.jpg");
+            ChessboardPoints = FindPattern(img2.Convert<Gray, Byte>(), new Size(12, 9));
+            //ChessboardPoints = FindPattern(camera.GetImage(1).Convert<Gray, Byte>(), new Size(12, 9));
 
 
 
@@ -247,16 +248,30 @@ namespace Tmc.Vision
 
             foreach(CircleF knowTablet in knowTablets)
             {
-                if(true)
+                double Mag = Math.Sqrt(Math.Pow((targetTablet.Center.X - knowTablet.Center.X), 2) + Math.Pow((targetTablet.Center.Y - knowTablet.Center.Y), 2));
+
+                bool b = checkCircles(knowTablet, targetTablet);
+                if ((Mag <= targetTablet.Radius) && (checkCircles(knowTablet,targetTablet) == false))
                 {//center is in the radius of the circle
-                        
+                    //float x = targetTablet.Center.X - knowTablet.Center.X;
+                    //float y = targetTablet.Center.Y - knowTablet.Center.Y;
+                    //double m = (0 - y) / (0 - x);
+                    //double Mag = Math.Sqrt(Math.Pow((targetTablet.Center.X - knowTablet.Center.X), 2) + Math.Pow((knowTablet.Center.X - knowTablet.Center.Y ), 2));
+                    int a = 0;
+                    //targetTablet
                 }
-                if(true)
+                if ((Mag < (targetTablet.Radius + knowTablet.Radius)) && (checkCircles(knowTablet, targetTablet) == false))
                 {//if the circle crosses over
                     
                 }
             }
             return knowTablets;
+        }
+
+        private bool checkCircles(CircleF circ, CircleF targ)
+        {
+            return ((circ.Radius == targ.Radius) && (circ.Center.X == targ.Center.X) &&
+                    (circ.Center.Y == targ.Center.Y) && (circ.Area == targ.Area));
         }
 
         /// <summary>

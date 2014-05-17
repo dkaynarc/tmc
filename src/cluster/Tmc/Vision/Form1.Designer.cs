@@ -82,7 +82,7 @@
             this.Npar2.Size = new System.Drawing.Size(120, 22);
             this.Npar2.TabIndex = 2;
             this.Npar2.Value = new decimal(new int[] {
-            45,
+            100,
             0,
             0,
             0});
@@ -99,7 +99,7 @@
             this.Nmin.Size = new System.Drawing.Size(120, 22);
             this.Nmin.TabIndex = 3;
             this.Nmin.Value = new decimal(new int[] {
-            25,
+            60,
             0,
             0,
             0});
@@ -116,7 +116,7 @@
             this.Nmax.Size = new System.Drawing.Size(120, 22);
             this.Nmax.TabIndex = 4;
             this.Nmax.Value = new decimal(new int[] {
-            28,
+            63,
             0,
             0,
             0});
@@ -125,7 +125,8 @@
             // 
             this.pictureBox2.Location = new System.Drawing.Point(564, 13);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(689, 569);
+            this.pictureBox2.Size = new System.Drawing.Size(829, 866);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 5;
             this.pictureBox2.TabStop = false;
             // 
@@ -252,7 +253,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1265, 649);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(1458, 880);
             this.Controls.Add(this.cell6);
             this.Controls.Add(this.cell3);
             this.Controls.Add(this.cell0);
