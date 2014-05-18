@@ -14,9 +14,18 @@ namespace Tmc.Scada.App
     public partial class controlPage : UserControl
     {
         private ScadaEngine scadaEngine;
-        public controlPage(ScadaEngine scadaEngine)
+
+        public controlPage()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Called by main form to pass in access to the scada engine
+        /// </summary>
+        /// <param name="scadaEngine"></param>
+        public void initialiseScadaEngine(ScadaEngine scadaEngine)
+        {
             this.scadaEngine = scadaEngine;
         }
 
@@ -25,7 +34,7 @@ namespace Tmc.Scada.App
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void controlPage_Load(object sender, EventArgs e)
+        private void controlPageStartup()
         {
             if(scadaEngine.GetOperationStatus() == "Offline")
             {
