@@ -57,6 +57,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.checkBox_showCancelled = new System.Windows.Forms.CheckBox();
+            this.label_addOrderError = new System.Windows.Forms.Label();
+            this.label_invalidOrderReason = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.orderListViewBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_black)).BeginInit();
@@ -111,35 +113,30 @@
             this.blackDataGridViewTextBoxColumn.DataPropertyName = "Black";
             this.blackDataGridViewTextBoxColumn.HeaderText = "Black";
             this.blackDataGridViewTextBoxColumn.Name = "blackDataGridViewTextBoxColumn";
-            this.blackDataGridViewTextBoxColumn.Visible = true;
             // 
             // blueDataGridViewTextBoxColumn
             // 
             this.blueDataGridViewTextBoxColumn.DataPropertyName = "Blue";
             this.blueDataGridViewTextBoxColumn.HeaderText = "Blue";
             this.blueDataGridViewTextBoxColumn.Name = "blueDataGridViewTextBoxColumn";
-            this.blueDataGridViewTextBoxColumn.Visible = true;
             // 
             // redDataGridViewTextBoxColumn
             // 
             this.redDataGridViewTextBoxColumn.DataPropertyName = "Red";
             this.redDataGridViewTextBoxColumn.HeaderText = "Red";
             this.redDataGridViewTextBoxColumn.Name = "redDataGridViewTextBoxColumn";
-            this.redDataGridViewTextBoxColumn.Visible = true;
             // 
             // greenDataGridViewTextBoxColumn
             // 
             this.greenDataGridViewTextBoxColumn.DataPropertyName = "Green";
             this.greenDataGridViewTextBoxColumn.HeaderText = "Green";
             this.greenDataGridViewTextBoxColumn.Name = "greenDataGridViewTextBoxColumn";
-            this.greenDataGridViewTextBoxColumn.Visible = true;
             // 
             // whiteDataGridViewTextBoxColumn
             // 
             this.whiteDataGridViewTextBoxColumn.DataPropertyName = "White";
             this.whiteDataGridViewTextBoxColumn.HeaderText = "White";
             this.whiteDataGridViewTextBoxColumn.Name = "whiteDataGridViewTextBoxColumn";
-            this.whiteDataGridViewTextBoxColumn.Visible = true;
             // 
             // startTimeDataGridViewTextBoxColumn
             // 
@@ -316,10 +313,34 @@
             this.checkBox_showCancelled.UseVisualStyleBackColor = true;
             this.checkBox_showCancelled.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // label_addOrderError
+            // 
+            this.label_addOrderError.AutoSize = true;
+            this.label_addOrderError.ForeColor = System.Drawing.Color.Red;
+            this.label_addOrderError.Location = new System.Drawing.Point(518, 278);
+            this.label_addOrderError.Name = "label_addOrderError";
+            this.label_addOrderError.Size = new System.Drawing.Size(67, 13);
+            this.label_addOrderError.TabIndex = 16;
+            this.label_addOrderError.Text = "Invalid Order";
+            this.label_addOrderError.Visible = false;
+            // 
+            // label_invalidOrderReason
+            // 
+            this.label_invalidOrderReason.AutoSize = true;
+            this.label_invalidOrderReason.ForeColor = System.Drawing.Color.Red;
+            this.label_invalidOrderReason.Location = new System.Drawing.Point(534, 291);
+            this.label_invalidOrderReason.MaximumSize = new System.Drawing.Size(100, 0);
+            this.label_invalidOrderReason.Name = "label_invalidOrderReason";
+            this.label_invalidOrderReason.Size = new System.Drawing.Size(0, 13);
+            this.label_invalidOrderReason.TabIndex = 17;
+            this.label_invalidOrderReason.Visible = false;
+            // 
             // Order
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label_invalidOrderReason);
+            this.Controls.Add(this.label_addOrderError);
             this.Controls.Add(this.checkBox_showCancelled);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.panel1);
@@ -371,5 +392,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox checkBox_showCancelled;
+        private System.Windows.Forms.Label label_addOrderError;
+        private System.Windows.Forms.Label label_invalidOrderReason;
     }
 }

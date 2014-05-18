@@ -33,24 +33,48 @@ namespace Tmc.Scada.App
                 Select(Decimal.ToInt32).
                 ToList();
 
-            //Validate Input
+            bool tooManyTablets = orderConfig.Where(tabletNo => tabletNo > 4).Count() != 0;
+            bool emptyOrder = orderConfig.Where(tabletNo => tabletNo == 0).Count() == orderConfig.Count();
 
-            TmcRepository.AddNewOrder(
-                new Guid(), 
-                orderConfig[0], 
-                orderConfig[1],
-                orderConfig[2],
-                orderConfig[3],
-                orderConfig[4]);
-            updateOrder();
+            if (orderIsValid(tooManyTablets, emptyOrder))
+            {
+                TmcRepository.AddNewOrder(
+                    new Guid(), //replace with user id
+                    orderConfig[0],
+                    orderConfig[1],
+                    orderConfig[2],
+                    orderConfig[3],
+                    orderConfig[4]);
+
+                updateOrder();
+            }
+        }
+
+        private bool orderIsValid(bool tooManyTablets, bool emptyOrder)
+        {
+            if (tooManyTablets || emptyOrder)
+            {
+                label_addOrderError.Show();
+                label_invalidOrderReason.Text = tooManyTablets ? "Order can have a maximum of 4 tablets of each type" : "Order can't be empty";
+                label_invalidOrderReason.Show();
+
+                return false;
+            }
+            else
+            {
+                label_addOrderError.Hide();
+                label_invalidOrderReason.Hide();
+
+                return true;
+            }
         }
 
 
         private void updateOrder()
         {
-            //var orderList = TmcRepository.OrderInfo();
+            var orderList = TmcRepository.OrderInfo();
 
-            //orderListViewBindingSource.DataSource = checkBox_showCancelled.Checked ? orderList : orderList.Where(order => order.Name != "Cancelled");
+            orderListViewBindingSource.DataSource = checkBox_showCancelled.Checked ? orderList : orderList.Where(order => order.Name != "Cancelled");
         }
 
         private void button_Cancel_Click(object sender, EventArgs e)
