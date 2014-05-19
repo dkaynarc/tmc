@@ -40,6 +40,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>References\Conveyor.dll</HintPath>
     </Reference>
+    <Reference Include="RobotStudio.Services.RobApi, Version=5.60.5733.84, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\RobotStudio.Services.RobApi.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -119,8 +123,15 @@
     <Content Include="mod\AssemblerTrayPositions.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="References\ABB.Robotics.Controllers.PC.dll" />
-    <Content Include="References\Conveyor.dll" />
+    <Content Include="References\ABB.Robotics.Controllers.PC.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="References\Conveyor.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="References\RobotStudio.Services.RobApi.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
