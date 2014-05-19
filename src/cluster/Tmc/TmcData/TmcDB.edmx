@@ -23,6 +23,14 @@
       [ComponentEventLogView].[LogType] AS [LogType]
       FROM [dbo].[ComponentEventLogView] AS [ComponentEventLogView]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="EnvironmentLogView" EntityType="ICTDModel.Store.EnvironmentLogView" store:Type="Views" store:Schema="dbo" store:Name="EnvironmentLogView">
+            <DefiningQuery>SELECT 
+      [EnvironmentLogView].[ID] AS [ID], 
+      [EnvironmentLogView].[Source] AS [Source], 
+      [EnvironmentLogView].[Reading] AS [Reading], 
+      [EnvironmentLogView].[Timestamp] AS [Timestamp]
+      FROM [dbo].[EnvironmentLogView] AS [EnvironmentLogView]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="OrderListView" EntityType="ICTDModel.Store.OrderListView" store:Type="Views" store:Schema="dbo" store:Name="OrderListView">
             <DefiningQuery>SELECT 
       [OrderListView].[OrderID] AS [OrderID], 
@@ -62,6 +70,20 @@
           <Property Name="Description" Type="nvarchar" MaxLength="255" />
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="LogType" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'ICTD.dbo.EnvironmentLogView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="EnvironmentLogView">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Reading" />
+            <PropertyRef Name="Timestamp" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Source" Type="nvarchar" MaxLength="50" />
+          <Property Name="Reading" Type="float" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -177,25 +199,25 @@
             <Parameter Name="White" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="CancelOrder">
-            <Parameter Name="OrderID" Mode="In" Type="Int32" />
+          <Parameter Name="OrderID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="CompleteOrder">
-            <Parameter Name="OrderID" Mode="In" Type="Int32" />
+          <Parameter Name="OrderID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="CycleLogBySource">
-            <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          <Parameter Name="SourceID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="EnvironmentLogBySource">
-            <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          <Parameter Name="SourceID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="EventLogBySource">
-            <Parameter Name="SourceID" Mode="In" Type="Int32" />
+          <Parameter Name="SourceID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="OrderConfigByOrder">
-            <Parameter Name="OrderID" Mode="In" Type="Int32" />
+          <Parameter Name="OrderID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="OrderListByStatus">
-            <Parameter Name="StatusID" Mode="In" Type="Int32" />
+          <Parameter Name="StatusID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="UpdateOrderList">
             <Parameter Name="OrderID" Mode="In" Type="Int32" />
@@ -213,6 +235,7 @@
             <Parameter Name="OrderID" Mode="In" Type="Int32" />
             <Parameter Name="OrderStatus" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="EnvironmentLogViews" EntityType="ICTDModel.EnvironmentLogView" />
         </EntityContainer>
         <ComplexType Name="FiltCompCyclLogBySour_Result">
           <Property Type="String" Name="Name" Nullable="true" MaxLength="50" />
@@ -321,6 +344,17 @@
           <Property Type="Int32" Name="Green" Nullable="false" />
           <Property Type="Int32" Name="White" Nullable="false" />
         </ComplexType>
+        <EntityType Name="EnvironmentLogView">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Reading" />
+            <PropertyRef Name="Timestamp" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Source" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Double" Name="Reading" Nullable="false" />
+          <Property Type="DateTime" Name="Timestamp" Nullable="false" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -379,6 +413,16 @@
           <FunctionImportMapping FunctionImportName="UpdateOrderStatusByID" FunctionName="ICTDModel.Store.UpdateOrderStatusByID" />
           <FunctionImportMapping FunctionImportName="UpdateProductProduced" FunctionName="ICTDModel.Store.UpdateProductProduced" />
           <FunctionImportMapping FunctionImportName="UpdateOrderStatus" FunctionName="ICTDModel.Store.UpdateOrderStatus" />
+          <EntitySetMapping Name="EnvironmentLogViews">
+            <EntityTypeMapping TypeName="ICTDModel.EnvironmentLogView">
+              <MappingFragment StoreEntitySet="EnvironmentLogView">
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Reading" ColumnName="Reading" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
