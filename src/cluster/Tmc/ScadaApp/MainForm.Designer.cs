@@ -57,14 +57,17 @@
             this.btnDismissAll = new System.Windows.Forms.Button();
             this.dgvAlarmsGrid = new System.Windows.Forms.DataGridView();
             this.tabPlantMimic = new System.Windows.Forms.TabPage();
-            this.tabControl = new System.Windows.Forms.TabPage();
+            this.controlPage1 = new Tmc.Scada.App.controlPage();
+            this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic();
             this.tabEnvironment = new System.Windows.Forms.TabPage();
+            this.environmentControl1 = new Tmc.Scada.App.environmentControl();
             this.tabOrders = new System.Windows.Forms.TabPage();
             this.tabCalibration = new System.Windows.Forms.TabPage();
+            this.calibrationControl1 = new Tmc.Scada.App.CalibrationControl();
             this.tabReports = new System.Windows.Forms.TabPage();
-            this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic();
             this.calibrationControl1 = new Tmc.Scada.App.CalibrationControl();
             this.reportControl1 = new Tmc.Scada.App.ReportControl();
+            this.order1 = new Tmc.Scada.App.Order();
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
@@ -72,6 +75,15 @@
             this.tabAlarmList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
             this.tabPlantMimic.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
+            this.ordersTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
+            this.tbcContentsTabControl.SuspendLayout();
+            this.tabAlarmList.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
+            this.tabPlantMimic.SuspendLayout();
+            this.tabEnvironment.SuspendLayout();
+            this.tabOrders.SuspendLayout();
             this.tabCalibration.SuspendLayout();
             this.tabReports.SuspendLayout();
             this.SuspendLayout();
@@ -287,7 +299,6 @@
             // 
             this.tbcContentsTabControl.Controls.Add(this.tabAlarmList);
             this.tbcContentsTabControl.Controls.Add(this.tabPlantMimic);
-            this.tbcContentsTabControl.Controls.Add(this.tabControl);
             this.tbcContentsTabControl.Controls.Add(this.tabEnvironment);
             this.tbcContentsTabControl.Controls.Add(this.tabOrders);
             this.tbcContentsTabControl.Controls.Add(this.tabCalibration);
@@ -332,6 +343,7 @@
             // 
             // tabPlantMimic
             // 
+            this.tabPlantMimic.Controls.Add(this.controlPage1);
             this.tabPlantMimic.Controls.Add(this.plantMimic1);
             this.tabPlantMimic.Location = new System.Drawing.Point(4, 29);
             this.tabPlantMimic.Name = "tabPlantMimic";
@@ -341,18 +353,23 @@
             this.tabPlantMimic.Text = "Plant Mimic";
             this.tabPlantMimic.UseVisualStyleBackColor = true;
             // 
-            // tabControl
+            // controlPage1
             // 
-            this.tabControl.Location = new System.Drawing.Point(4, 29);
-            this.tabControl.Name = "tabControl";
-            this.tabControl.Padding = new System.Windows.Forms.Padding(3);
-            this.tabControl.Size = new System.Drawing.Size(687, 354);
-            this.tabControl.TabIndex = 1;
-            this.tabControl.Text = "Control";
-            this.tabControl.UseVisualStyleBackColor = true;
+            this.controlPage1.Location = new System.Drawing.Point(377, 60);
+            this.controlPage1.Name = "controlPage1";
+            this.controlPage1.Size = new System.Drawing.Size(303, 175);
+            this.controlPage1.TabIndex = 1;
+            // 
+            // plantMimic1
+            // 
+            this.plantMimic1.Location = new System.Drawing.Point(-153, -3);
+            this.plantMimic1.Name = "plantMimic1";
+            this.plantMimic1.Size = new System.Drawing.Size(543, 354);
+            this.plantMimic1.TabIndex = 0;
             // 
             // tabEnvironment
             // 
+            this.tabEnvironment.Controls.Add(this.environmentControl1);
             this.tabEnvironment.Location = new System.Drawing.Point(4, 29);
             this.tabEnvironment.Name = "tabEnvironment";
             this.tabEnvironment.Size = new System.Drawing.Size(687, 354);
@@ -360,8 +377,16 @@
             this.tabEnvironment.Text = "Environment";
             this.tabEnvironment.UseVisualStyleBackColor = true;
             // 
+            // environmentControl1
+            // 
+            this.environmentControl1.Location = new System.Drawing.Point(3, 3);
+            this.environmentControl1.Name = "environmentControl1";
+            this.environmentControl1.Size = new System.Drawing.Size(257, 190);
+            this.environmentControl1.TabIndex = 0;
+            // 
             // tabOrders
             // 
+            this.tabOrders.Controls.Add(this.order1);
             this.tabOrders.Location = new System.Drawing.Point(4, 29);
             this.tabOrders.Name = "tabOrders";
             this.tabOrders.Size = new System.Drawing.Size(687, 354);
@@ -380,6 +405,13 @@
             this.tabCalibration.Text = "Camera Calibration";
             this.tabCalibration.UseVisualStyleBackColor = true;
             // 
+            // calibrationControl1
+            // 
+            this.calibrationControl1.Location = new System.Drawing.Point(0, 0);
+            this.calibrationControl1.Name = "calibrationControl1";
+            this.calibrationControl1.Size = new System.Drawing.Size(687, 354);
+            this.calibrationControl1.TabIndex = 0;
+            // 
             // tabReports
             // 
             this.tabReports.Controls.Add(this.reportControl1);
@@ -389,13 +421,6 @@
             this.tabReports.TabIndex = 5;
             this.tabReports.Text = "Reports";
             this.tabReports.UseVisualStyleBackColor = true;
-            // 
-            // plantMimic1
-            // 
-            this.plantMimic1.Location = new System.Drawing.Point(-7, 4);
-            this.plantMimic1.Name = "plantMimic1";
-            this.plantMimic1.Size = new System.Drawing.Size(687, 354);
-            this.plantMimic1.TabIndex = 0;
             // 
             // calibrationControl1
             // 
@@ -410,6 +435,13 @@
             this.reportControl1.Name = "reportControl1";
             this.reportControl1.Size = new System.Drawing.Size(691, 358);
             this.reportControl1.TabIndex = 0;
+            // 
+            // order1
+            // 
+            this.order1.Location = new System.Drawing.Point(30, 12);
+            this.order1.Name = "order1";
+            this.order1.Size = new System.Drawing.Size(639, 364);
+            this.order1.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -430,6 +462,8 @@
             this.tabAlarmList.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).EndInit();
             this.tabPlantMimic.ResumeLayout(false);
+            this.tabEnvironment.ResumeLayout(false);
+            this.tabOrders.ResumeLayout(false);
             this.tabCalibration.ResumeLayout(false);
             this.tabReports.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -464,8 +498,6 @@
         private System.Windows.Forms.FlowLayoutPanel pnlAlarms;
         private System.Windows.Forms.Button btnShowList;
         private System.Windows.Forms.TabControl tbcContentsTabControl;
-        private System.Windows.Forms.TabPage tabPlantMimic;
-        private System.Windows.Forms.TabPage tabControl;
         private System.Windows.Forms.TabPage tabAlarmList;
         private System.Windows.Forms.DataGridView dgvAlarmsGrid;
         private System.Windows.Forms.Button btnDismissAll;
@@ -473,11 +505,15 @@
         private System.Windows.Forms.TabPage tabOrders;
         private System.Windows.Forms.TabPage tabReports;
         private System.Windows.Forms.BindingSource orderListViewBindingSource1;
-        private UserControls.PlantMimic plantMimic1;
         private Order orderUserControl;
         private System.Windows.Forms.TabPage tabCalibration;
         private ReportControl reportControl1;
         private CalibrationControl calibrationControl1;
+        private System.Windows.Forms.TabPage tabPlantMimic;
+        private controlPage controlPage1;
+        private UserControls.PlantMimic plantMimic1;
+        private environmentControl environmentControl1;
+        private Order order1;
     }
 }
 

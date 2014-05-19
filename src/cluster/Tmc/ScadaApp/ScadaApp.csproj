@@ -74,6 +74,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ReportDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="environmentControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="environmentControl.Designer.cs">
+      <DependentUpon>environmentControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -114,6 +120,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="controlPage.resx">
       <DependentUpon>controlPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="environmentControl.resx">
+      <DependentUpon>environmentControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -199,6 +208,22 @@
     <None Include="Resources\camera_green.png" />
     <None Include="Resources\camera.png" />
     <None Include="Resources\robot_arm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sorter_conveyor_off.png" />
+    <None Include="Resources\sorter_conveyor_error.png" />
+    <None Include="Resources\robot_on.png" />
+    <None Include="Resources\robot_off.png" />
+    <None Include="Resources\robot_error.png" />
+    <None Include="Resources\camera_on.png" />
+    <None Include="Resources\camera_off.png" />
+    <None Include="Resources\camera_error.png" />
+    <None Include="Resources\assembly_conveyor_on.png" />
+    <None Include="Resources\assembly_conveyor_off.png" />
+    <None Include="Resources\assembly_conveyor_error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sorter_conveyor_on.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

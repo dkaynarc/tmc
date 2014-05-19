@@ -64,9 +64,9 @@
             this.systemStatusLabel.AutoSize = true;
             this.systemStatusLabel.Location = new System.Drawing.Point(84, 16);
             this.systemStatusLabel.Name = "systemStatusLabel";
-            this.systemStatusLabel.Size = new System.Drawing.Size(37, 13);
+            this.systemStatusLabel.Size = new System.Drawing.Size(24, 13);
             this.systemStatusLabel.TabIndex = 2;
-            this.systemStatusLabel.Text = "Offline";
+            this.systemStatusLabel.Text = "Idle";
             // 
             // normalModeRadioButton
             // 
@@ -109,7 +109,7 @@
             this.operatingModeGroupBox.Controls.Add(this.producingModeRadioButton);
             this.operatingModeGroupBox.Location = new System.Drawing.Point(15, 49);
             this.operatingModeGroupBox.Name = "operatingModeGroupBox";
-            this.operatingModeGroupBox.Size = new System.Drawing.Size(200, 127);
+            this.operatingModeGroupBox.Size = new System.Drawing.Size(286, 127);
             this.operatingModeGroupBox.TabIndex = 7;
             this.operatingModeGroupBox.TabStop = false;
             this.operatingModeGroupBox.Text = "Operating Mode";
@@ -143,8 +143,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.startOrStopButton);
             this.Name = "controlPage";
-            this.Size = new System.Drawing.Size(309, 186);
-            this.Load += new System.EventHandler(this.controlPage_Load);
+            this.Size = new System.Drawing.Size(316, 186);
             this.operatingModeGroupBox.ResumeLayout(false);
             this.operatingModeGroupBox.PerformLayout();
             this.ResumeLayout(false);
