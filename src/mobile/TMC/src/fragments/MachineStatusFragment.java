@@ -48,8 +48,8 @@ public class MachineStatusFragment extends ListFragment
 {
 	MediaPlayer mMediaPlayer = new MediaPlayer();
 	private ResultReceiver receiver;
-		private ProgressDialog pd;
-	
+	private ProgressDialog pd;
+
 	private OnClickListener onEmergencyStopClickListener = new OnClickListener() {
 		public void onClick(View view)
 		{
@@ -109,22 +109,13 @@ public class MachineStatusFragment extends ListFragment
 	 * shutdown buttons. Only necessary for demonstration purposes.
 	 */
 
-	/*@SuppressLint("HandlerLeak")
-	private Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg)
-		{
-			switch (msg.what)
-			{
-			case Constants.SHUTDOWN:
-				turnOff();
-				break;
-			case Constants.STARTUP:
-				turnOn();
-				break;
-			}
-		}
-	};*/
+	/*
+	 * @SuppressLint("HandlerLeak") private Handler mHandler = new Handler() {
+	 * 
+	 * @Override public void handleMessage(Message msg) { switch (msg.what) {
+	 * case Constants.SHUTDOWN: turnOff(); break; case Constants.STARTUP:
+	 * turnOn(); break; } } };
+	 */
 
 	/**
 	 * Sets the layout for the activity.
@@ -145,14 +136,16 @@ public class MachineStatusFragment extends ListFragment
 				.setOnClickListener(onShutdownClickListener);
 		((Button) rootView.findViewById(R.id.machinelist_emergencystop_b))
 				.setOnClickListener(onEmergencyStopClickListener);
-		
-		/*setListAdapter(new MachineStatusAdapter(getActivity(),
-				R.layout.machine_row, Constants.MACHINES));*/
-		
-		
-		/////////////////////////////////////////////////////////
-		setListAdapter(new MachineStatusAdapter(getActivity(), R.layout.machine_row, new ArrayList<Machine>()/*dummy array*/ ));
-		////////////////////////////////////////////////////////
+
+		/*
+		 * setListAdapter(new MachineStatusAdapter(getActivity(),
+		 * R.layout.machine_row, Constants.MACHINES));
+		 */
+
+		// ///////////////////////////////////////////////////////
+		setListAdapter(new MachineStatusAdapter(getActivity(),
+				R.layout.machine_row, new ArrayList<Machine>()/* dummy array */));
+		// //////////////////////////////////////////////////////
 		return rootView;
 	}
 
@@ -201,13 +194,13 @@ public class MachineStatusFragment extends ListFragment
 				while (mMediaPlayer.isPlaying())
 				{
 				}
-				/*mHandler.sendEmptyMessage(Constants.STARTUP);*/
+				/* mHandler.sendEmptyMessage(Constants.STARTUP); */
 			}
 		}.start();
-			
+
 		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
 		makeMachineService(Constants.START_COMMAND);
-	}						
+	}
 
 	/**
 	 * Creates a new thread, plays the shutdown sound and then turns machines
@@ -226,12 +219,12 @@ public class MachineStatusFragment extends ListFragment
 				while (mMediaPlayer.isPlaying())
 				{
 				}
-				/*mHandler.sendEmptyMessage(Constants.SHUTDOWN);*/
+				/* mHandler.sendEmptyMessage(Constants.SHUTDOWN); */
 			}
 		}.start();
-		
+
 		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
-		makeMachineService(Constants.STOP_COMMAND);		
+		makeMachineService(Constants.STOP_COMMAND);
 	}
 
 	/**
@@ -277,10 +270,10 @@ public class MachineStatusFragment extends ListFragment
 
 	public void emergencyStop()
 	{
-		///////////////
+		// /////////////
 		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
 		makeMachineService(Constants.EMERGENCY_STOP_COMMAND);
-		///////////////
+		// /////////////
 		playSound(R.raw.stop);
 	}
 
@@ -298,288 +291,279 @@ public class MachineStatusFragment extends ListFragment
 		mMediaPlayer.setLooping(false);
 		mMediaPlayer.start();
 	}
-	
-	
-	
-   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   // private class 
-   private class ResultReceiver extends BroadcastReceiver
-   {
-     @Override
-     public void onReceive(Context context, Intent intent)
-     {
-    	 if(pd != null)
-    		 pd.dismiss();
-    	 
-    	 String response = intent.getStringExtra("result");
-         switch(Integer.decode(intent.getStringExtra("command")))
-          {
-            case 7:
-             handleMachineStatus(response);
-             break;
-          
-            case 8:
-        	  handleEmergencyStop(response);
-              break;
-              
-            case 9:
-            	handleStart(response);
-                break;
-            
-            case 10:
-        	  handleStop(response);
-              break;
-              
-              
-          }
-       }
-     }
 
-	
-	private void handleStop(String response) 
+	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// private class
+	private class ResultReceiver extends BroadcastReceiver
 	{
-		  if(response.equalsIgnoreCase("\"success\""))
-		  {
-			  Toast.makeText(getActivity(), Constants.STOP_SUCCESS, Toast.LENGTH_SHORT).show();
-		      turnOff();
-		  }  
-		  
-		  else
-		   Toast.makeText(getActivity(), Constants.STOP_FAIL, Toast.LENGTH_SHORT).show();	  
+		@Override
+		public void onReceive(Context context, Intent intent)
+		{
+			if (pd != null)
+				pd.dismiss();
+
+			String response = intent.getStringExtra("result");
+			switch (Integer.decode(intent.getStringExtra("command")))
+			{
+			case 7:
+				handleMachineStatus(response);
+				break;
+
+			case 8:
+				handleEmergencyStop(response);
+				break;
+
+			case 9:
+				handleStart(response);
+				break;
+
+			case 10:
+				handleStop(response);
+				break;
+
+			}
+		}
 	}
 
-	
-	
-	private void handleStart(String response) 
+	private void handleStop(String response)
 	{
-		  if(response.equalsIgnoreCase("\"success\""))
-		  {
-			  Toast.makeText(getActivity(), Constants.START_SUCCESS, Toast.LENGTH_SHORT).show();
-		      turnOn();
-		  }  
-		  
-		  else
-		   Toast.makeText(getActivity(), Constants.START_FAIL, Toast.LENGTH_SHORT).show();	  
-	}
-   
-   
-   private void handleEmergencyStop(String response) 
-	{
-	  if(response.equalsIgnoreCase("\"success\""))
-	  {
-		  Toast.makeText(getActivity(), Constants.STOP_SUCCESS, Toast.LENGTH_SHORT).show();
-	      turnOff();
-	  }  
-	  
-	  else
-	   Toast.makeText(getActivity(), Constants.STOP_FAIL, Toast.LENGTH_SHORT).show();	  
+		if (response.equalsIgnoreCase("\"success\""))
+		{
+			Toast.makeText(getActivity(), Constants.STOP_SUCCESS,
+					Toast.LENGTH_SHORT).show();
+			turnOff();
+		}
+
+		else
+			Toast.makeText(getActivity(), Constants.STOP_FAIL,
+					Toast.LENGTH_SHORT).show();
 	}
 
-
-     private void handleMachineStatus(String response) 
-     {
-       ArrayList<Machine> newStats = new ArrayList<Machine>();
-       try 
-       {
-             JSONArray arr = new JSONArray(response);
-
-             for(int i = 0; i < arr.length(); i ++)
-             {
-                JSONObject jObj = arr.getJSONObject(i);
-
-                newStats.add(new Machine(jObj.getString("Name"), 
-                                                 jObj.getString("Status")));
-            } 
-         } 
-         
-       catch (JSONException e) 
-         {
-             e.printStackTrace();
-             return;
-         }
-      
-       // check whether status of any machine changed
-             
-      MachineStatusAdapter adapter = (MachineStatusAdapter)getListView().getAdapter();
-
-      if(adapter.getCount() != 0 && newStats.size() != 0)
-      {
-            doStatusCheck(adapter,newStats);       
-            Toast.makeText(getActivity(), "Updated machine status", Toast.LENGTH_SHORT).show();// to be removed
-      }
-      
-      adapter.clear();
-      adapter.addAll(newStats);
-      adapter.notifyDataSetChanged();
-}
-
-
-
-
-
-  private void doStatusCheck(MachineStatusAdapter adapter, ArrayList<Machine> newStats) 
-  {
-	  ArrayList<Machine> changedMach = new ArrayList<Machine>();
-      
-      for(int i = 0; i < adapter.getCount(); i++ )
-      {
-    	 if(! newStats.get(i).getMachineStatus().equalsIgnoreCase(
-    			                                  ((Machine)adapter.getItem(i)).getMachineStatus()))
-    	 {
-    		 changedMach.add(newStats.get(i));    		 
-    	 }
-    	   
-      }
-       
-      if(changedMach.size() != 0)
-      {
-         if(changedMach.get(0).getMachineStatus().equalsIgnoreCase(Constants.OFF))
-    	    showAlertDialog(buildMessage(changedMach), Constants.OFF);
-         
-         else showAlertDialog(buildMessage(changedMach), Constants.ON);
-      
-      }
-      }
-
-  
-  
-  
-  private String buildMessage(ArrayList<Machine> changedMach) 
-  {
-    StringBuilder message = new StringBuilder();
-	for(Machine mach : changedMach)
+	private void handleStart(String response)
 	{
-		message.append("\n\r" + mach.getMachineName());
+		if (response.equalsIgnoreCase("\"success\""))
+		{
+			Toast.makeText(getActivity(), Constants.START_SUCCESS,
+					Toast.LENGTH_SHORT).show();
+			turnOn();
+		}
+
+		else
+			Toast.makeText(getActivity(), Constants.START_FAIL,
+					Toast.LENGTH_SHORT).show();
 	}
-	
+
+	private void handleEmergencyStop(String response)
+	{
+		if (response.equalsIgnoreCase("\"success\""))
+		{
+			Toast.makeText(getActivity(), Constants.STOP_SUCCESS,
+					Toast.LENGTH_SHORT).show();
+			turnOff();
+		}
+
+		else
+			Toast.makeText(getActivity(), Constants.STOP_FAIL,
+					Toast.LENGTH_SHORT).show();
+	}
+
+	private void handleMachineStatus(String response)
+	{
+		ArrayList<Machine> newStats = new ArrayList<Machine>();
+		try
+		{
+			JSONArray arr = new JSONArray(response);
+
+			for (int i = 0; i < arr.length(); i++)
+			{
+				JSONObject jObj = arr.getJSONObject(i);
+
+				newStats.add(new Machine(jObj.getString("Name"), jObj
+						.getString("Status")));
+			}
+		}
+
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+			return;
+		}
+
+		// check whether status of any machine changed
+
+		MachineStatusAdapter adapter = (MachineStatusAdapter) getListView()
+				.getAdapter();
+
+		if (adapter.getCount() != 0 && newStats.size() != 0)
+		{
+			doStatusCheck(adapter, newStats);
+			Toast.makeText(getActivity(), "Updated machine status",
+					Toast.LENGTH_SHORT).show();// to be removed
+		}
+
+		adapter.clear();
+		adapter.addAll(newStats);
+		adapter.notifyDataSetChanged();
+	}
+
+	private void doStatusCheck(MachineStatusAdapter adapter,
+			ArrayList<Machine> newStats)
+	{
+		ArrayList<Machine> changedMach = new ArrayList<Machine>();
+
+		for (int i = 0; i < adapter.getCount(); i++)
+		{
+			if (!newStats
+					.get(i)
+					.getMachineStatus()
+					.equalsIgnoreCase(
+							((Machine) adapter.getItem(i)).getMachineStatus()))
+			{
+				changedMach.add(newStats.get(i));
+			}
+
+		}
+
+		if (changedMach.size() != 0)
+		{
+			if (changedMach.get(0).getMachineStatus()
+					.equalsIgnoreCase(Constants.OFF))
+				showAlertDialog(buildMessage(changedMach), Constants.OFF);
+
+			else
+				showAlertDialog(buildMessage(changedMach), Constants.ON);
+
+		}
+	}
+
+	private String buildMessage(ArrayList<Machine> changedMach)
+	{
+		StringBuilder message = new StringBuilder();
+		for (Machine mach : changedMach)
+		{
+			message.append("\n\r" + mach.getMachineName());
+		}
+
 		return message.toString();
 	}
 
-  
-      @Override
-      public void onStart()
-      {
-         super.onStart();
-         receiver = new ResultReceiver();
-         getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.MACHINE_STATUS_COMMAND)));		
-         getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.STOP_COMMAND)));
-         getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.START_COMMAND)));
-         getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.EMERGENCY_STOP_COMMAND)));
-         
-         //initial fill of the view with machine status info
-         makeMachineService(Constants.MACHINE_STATUS_COMMAND);
-         startTimer(Constants.UPDATE_INTERVAL);
+	@Override
+	public void onStart()
+	{
+		super.onStart();
+		receiver = new ResultReceiver();
+		getActivity().registerReceiver(
+				receiver,
+				new IntentFilter(Integer
+						.toString(Constants.MACHINE_STATUS_COMMAND)));
+		getActivity().registerReceiver(receiver,
+				new IntentFilter(Integer.toString(Constants.STOP_COMMAND)));
+		getActivity().registerReceiver(receiver,
+				new IntentFilter(Integer.toString(Constants.START_COMMAND)));
+		getActivity().registerReceiver(
+				receiver,
+				new IntentFilter(Integer
+						.toString(Constants.EMERGENCY_STOP_COMMAND)));
 
-      }
+		// initial fill of the view with machine status info
+		makeMachineService(Constants.MACHINE_STATUS_COMMAND);
+		startTimer(Constants.UPDATE_INTERVAL);
 
+	}
 
+	public void makeMachineService(int command)
+	{
+		Intent service;
 
-     public void makeMachineService(int command)
-     {
-    	 Intent service;
-		
-    	 if(command == Constants.MACHINE_STATUS_COMMAND)
-           service = new Intent(getActivity(), services.MachineUpdateService.class);
-    	 
-    	 else     	 
-    		 service = new Intent(getActivity(), services.SynchService.class);
-    	 
-         Bundle parcel = new Bundle();
-         parcel.putInt("command", command);
-         service.putExtra("parcel", parcel);
+		if (command == Constants.MACHINE_STATUS_COMMAND)
+			service = new Intent(getActivity(),
+					services.MachineUpdateService.class);
 
-         //getActivity().stopService(service);
-         getActivity().startService(service);	
-     }
+		else
+			service = new Intent(getActivity(), services.SynchService.class);
 
+		Bundle parcel = new Bundle();
+		parcel.putInt("command", command);
+		service.putExtra("parcel", parcel);
 
+		// getActivity().stopService(service);
+		getActivity().startService(service);
+	}
 
-     @Override
-     public void onStop()
-     {
-       super.onStop();
-       getActivity().unregisterReceiver(receiver);
-       stopTimer();
-     }
+	@Override
+	public void onStop()
+	{
+		super.onStop();
+		getActivity().unregisterReceiver(receiver);
+		stopTimer();
+	}
 
+	private void showAlertDialog(String message, String status)
+	{
+		Drawable icon = getResources().getDrawable(
+				android.R.drawable.ic_dialog_alert);
 
-      private void showAlertDialog(String message, String status) 
-      {
-    	  Drawable icon = getResources().getDrawable(android.R.drawable.ic_dialog_alert);
-			
-    	  if(status.equalsIgnoreCase(Constants.OFF))
+		if (status.equalsIgnoreCase(Constants.OFF))
+		{
+			icon.setColorFilter(new LightingColorFilter(Color.RED, Color.RED));
+		}
+		else
+			icon.setColorFilter(new LightingColorFilter(Color.GREEN,
+					Color.GREEN));
+
+		new AlertDialog.Builder(getActivity())
+				.setIcon(icon)
+				.setTitle(Constants.ATTENTION)
+				.setMessage(
+						"The status of the following machinery changed: "
+								+ message)
+				.setNegativeButton(Constants.OK,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id)
+							{
+								dialog.cancel();
+							}
+						}).show();
+	}
+
+	private void stopTimer()
+	{
+		timer.cancel(true);
+	}
+
+	private void startTimer(long i)
+	{
+		timer = new Timer();
+		timer.execute(i);
+	}
+
+	private class Timer extends AsyncTask<Long, Object, Object>
+	{
+
+		@Override
+		protected String doInBackground(Long... params)
+		{
+			try
 			{
-				icon.setColorFilter(new LightingColorFilter(Color.RED, Color.RED));
+				Thread.sleep(params[0]);
+				return "done";
 			}
-		  else
-			icon.setColorFilter(new LightingColorFilter(Color.GREEN, Color.GREEN));
-        
-			new AlertDialog.Builder(getActivity())
-			.setIcon(icon)
-            .setTitle(Constants.ATTENTION)
-            .setMessage("The status of the following machinery changed: " + message)
-         .setNegativeButton(Constants.OK, new DialogInterface.OnClickListener() 
-         {
-             public void onClick(DialogInterface dialog, int id)
-             {
-               dialog.cancel();
-             }
-             }).show();
-       }
 
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+				return "done";
+			}
+		}
 
-      
-      
-      
-      
-      
-      
-      
-      
-   private void stopTimer()
-   {
-       timer.cancel(true); 	  
-   }
-      
-  private void startTimer(long i)
-  {
-    timer = new Timer();
-    timer.execute(i);		
-  }
+		@Override
+		protected void onPostExecute(Object result)
+		{
+			// this creates regular updates of the view
+			makeMachineService(Constants.MACHINE_STATUS_COMMAND);
+			startTimer(Constants.UPDATE_INTERVAL);
+		}
 
-
-
-private class Timer  extends AsyncTask<Long, Object, Object>
-{ 
-
-	@Override
-	protected String doInBackground(Long...params)
-	{
-		  try
-	    	{
-		    	Thread.sleep(params[0]);
-		    	return "done";
-	    	 }
-		      
-		  catch (InterruptedException e) 
-		    {
-		        e.printStackTrace();
-		        return "done";
-		    }
 	}
-	
-	
-	
-	@Override
-	protected void onPostExecute(Object result)
-	{
-	   //this creates regular updates of the view
-       makeMachineService(Constants.MACHINE_STATUS_COMMAND);
-       startTimer(Constants.UPDATE_INTERVAL);
-	}
-
-
-}
-
 
 }

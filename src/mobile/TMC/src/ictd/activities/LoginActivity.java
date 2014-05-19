@@ -46,7 +46,7 @@ public class LoginActivity extends Activity
 		// startup.
 		/* startActivity(intent); */
 
-		//turnedOn = true;
+		// turnedOn = true;
 	}
 
 	/**
@@ -59,8 +59,10 @@ public class LoginActivity extends Activity
 	public void onLoginClicked(View v)
 	{
 		// ////////////////////
-		String userName = ((EditText) findViewById(R.id.loginactivity_username_et)).getText().toString();
-		String password = ((EditText) findViewById(R.id.loginactivity_password_et)).getText().toString();
+		String userName = ((EditText) findViewById(R.id.loginactivity_username_et))
+				.getText().toString();
+		String password = ((EditText) findViewById(R.id.loginactivity_password_et))
+				.getText().toString();
 		makeLoginService(userName, password);
 		// ////////////////////
 		// Replace condition with function that takes in the username and
@@ -118,14 +120,16 @@ public class LoginActivity extends Activity
 	}
 
 	@Override
-    public void onStart()
+	public void onStart()
 	{
-	    super.onStart();
+		super.onStart();
 		receiver = new ResultReceiver();
-		this.registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.AUTHENTICATE_COMMAND)));
+		this.registerReceiver(
+				receiver,
+				new IntentFilter(Integer
+						.toString(Constants.AUTHENTICATE_COMMAND)));
 	}
-	
-	
+
 	private void handleAuthenticationResult(String response)
 	{
 		Gson gsn = new Gson();
@@ -137,7 +141,8 @@ public class LoginActivity extends Activity
 			{
 				String userName = msg.getUserName();
 				saveToSharedPref(Constants.USERNAME_KEY, userName);
-				Intent intent = new Intent(LoginActivity.this, ModuleActivity.class);
+				Intent intent = new Intent(LoginActivity.this,
+						ModuleActivity.class);
 				startActivity(intent);
 			}
 		}

@@ -32,8 +32,6 @@ public class Machine
 		mMachineName = machineName;
 	}
 
-
-
 	public void setMachineStatus(String machineStatus)
 	{
 		mMachineStatus = machineStatus;
@@ -47,7 +45,6 @@ public class Machine
 	{
 		return mMachineName;
 	}
-
 
 	/**
 	 * Get the machine status.

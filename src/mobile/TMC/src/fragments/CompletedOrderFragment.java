@@ -70,16 +70,22 @@ public class CompletedOrderFragment extends ListFragment
 								.getDrawable())
 				.setTitle(Integer.toString(order.getOrderId()))
 				.setMessage(
-						String.format("%s: %s\n%s: %s\n%s: %s\n%s: %s\n\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d",
+						String.format(
+								"%s: %s\n%s: %s\n%s: %s\n%s: %s\n\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d",
 								Constants.NAME, order.getOrderOwner(),
 								Constants.STATUS, order.getOrderStatus(),
 								Constants.START_TIME, order.getStartTime(),
 								Constants.FINISH_TIME, order.getFinishTime(),
-								Constants.BLACK, order.getColourNumber(Constants.BLACK),
-								Constants.BLUE, order.getColourNumber(Constants.BLUE),
-								Constants.GREEN, order.getColourNumber(Constants.GREEN),
-								Constants.RED, order.getColourNumber(Constants.RED),
-								Constants.WHITE, order.getColourNumber(Constants.WHITE)))
+								Constants.BLACK,
+								order.getColourNumber(Constants.BLACK),
+								Constants.BLUE,
+								order.getColourNumber(Constants.BLUE),
+								Constants.GREEN,
+								order.getColourNumber(Constants.GREEN),
+								Constants.RED,
+								order.getColourNumber(Constants.RED),
+								Constants.WHITE,
+								order.getColourNumber(Constants.WHITE)))
 				.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id)
 					{
@@ -88,8 +94,6 @@ public class CompletedOrderFragment extends ListFragment
 				}).show();
 	}
 
-	
-	
 	// private class
 	private class ResultReceiver extends BroadcastReceiver
 	{
@@ -102,8 +106,6 @@ public class CompletedOrderFragment extends ListFragment
 		}
 	}
 
-	
-	
 	private void handleCompletedOrders(String response)
 	{
 		Log.v("MAD", response);
@@ -122,15 +124,11 @@ public class CompletedOrderFragment extends ListFragment
 			{
 				JSONObject jObj = jArray.getJSONObject(i);
 
-				Order order = new Order(
-						jObj.getInt("mOrderId"), 
+				Order order = new Order(jObj.getInt("mOrderId"),
 						jObj.getString("mOrderOwner"),
-						jObj.getString("mOrderStatus"), 
-						jObj.getInt("black"),
-						jObj.getInt("blue"), 
-						jObj.getInt("green"), 
-						jObj.getInt("red"), 
-						jObj.getInt("white"));
+						jObj.getString("mOrderStatus"), jObj.getInt("black"),
+						jObj.getInt("blue"), jObj.getInt("green"),
+						jObj.getInt("red"), jObj.getInt("white"));
 				String date = jObj.getString("endTime");
 				order.setFinishTime(date);
 				order.setStartTime(jObj.getString("startTime"));
@@ -150,7 +148,10 @@ public class CompletedOrderFragment extends ListFragment
 	public void onStart()
 	{
 		receiver = new ResultReceiver();
-		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.UPDATE_COMPLETED_ORDERS_COMMAND)));
+		getActivity().registerReceiver(
+				receiver,
+				new IntentFilter(Integer
+						.toString(Constants.UPDATE_COMPLETED_ORDERS_COMMAND)));
 
 		// update completed orders here
 		makeService(Constants.UPDATE_COMPLETED_ORDERS_COMMAND);

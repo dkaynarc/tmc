@@ -70,7 +70,8 @@ public class OrderQueueFragment extends ListFragment
 							 * getListView().getAdapter();
 							 */
 							// ///////////////////////////////
-							makeService(Constants.DELETE_ORDER_COMMAND, ((Order) view.getTag()).getOrderId());
+							makeService(Constants.DELETE_ORDER_COMMAND,
+									((Order) view.getTag()).getOrderId());
 							// ///////////////////////////////
 							/*
 							 * adapter.remove((Order) view.getTag());
@@ -119,8 +120,7 @@ public class OrderQueueFragment extends ListFragment
 
 		// Replace list "orders" with the list of orders returned
 		setListAdapter(new OrderQueueAdapter(getActivity(), R.layout.order_row,
-			    new ArrayList<Order>(), onDeleteOrderClickListener));	
-		
+				new ArrayList<Order>(), onDeleteOrderClickListener));
 
 		return rootView;
 	}
@@ -136,17 +136,25 @@ public class OrderQueueFragment extends ListFragment
 		final Order order = (Order) getListAdapter().getItem(position);
 		new AlertDialog.Builder(getActivity())
 				.setIcon(
-						((ImageView) v.findViewById(R.id.orderrow_orderstatus_iv)).getDrawable())
-						.setTitle(Integer.toString(order.getOrderId()))					
-						.setMessage(						
-								String.format("%s: %s\n%s: %s\n\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d",
+						((ImageView) v
+								.findViewById(R.id.orderrow_orderstatus_iv))
+								.getDrawable())
+				.setTitle(Integer.toString(order.getOrderId()))
+				.setMessage(
+						String.format(
+								"%s: %s\n%s: %s\n\n%s: %d\n%s: %d\n%s: %d\n%s: %d\n%s: %d",
 								Constants.NAME, order.getOrderOwner(),
 								Constants.STATUS, order.getOrderStatus(),
-								Constants.BLACK, order.getColourNumber(Constants.BLACK),
-								Constants.BLUE, order.getColourNumber(Constants.BLUE),
-								Constants.GREEN, order.getColourNumber(Constants.GREEN),
-								Constants.RED, order.getColourNumber(Constants.RED),
-								Constants.WHITE, order.getColourNumber(Constants.WHITE)))
+								Constants.BLACK,
+								order.getColourNumber(Constants.BLACK),
+								Constants.BLUE,
+								order.getColourNumber(Constants.BLUE),
+								Constants.GREEN,
+								order.getColourNumber(Constants.GREEN),
+								Constants.RED,
+								order.getColourNumber(Constants.RED),
+								Constants.WHITE,
+								order.getColourNumber(Constants.WHITE)))
 				.setPositiveButton(Constants.OK,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id)
@@ -154,32 +162,44 @@ public class OrderQueueFragment extends ListFragment
 								dialog.cancel();
 							}
 						})
-						
+
 				.setNegativeButton(Constants.MODIFY,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id)
 							{
-								
-								if(order.getOrderOwner().equalsIgnoreCase(readCurrentUserName()))
+
+								if (order.getOrderOwner().equalsIgnoreCase(
+										readCurrentUserName()))
 								{
-								   Intent intent = new Intent(getActivity(), ModifyOrderActivity.class);
-								   ////////////////////////////////////////////////
-								   intent.putExtra(Constants.ID, Integer.toString(order.getOrderId()));
-								   intent.putExtra(Constants.NAME, order.getOrderOwner());
-								   intent.putExtra("black", order.getColourNumber("black"));
-								   intent.putExtra("blue", order.getColourNumber("blue"));
-								   intent.putExtra("green", order.getColourNumber("green"));
-								   intent.putExtra("red", order.getColourNumber("red"));
-								   intent.putExtra("white", order.getColourNumber("white"));
-								   /////////////////////////////////////////////////
-								   startActivityForResult(intent, Constants.REQUEST_CODE);
-								   dialog.cancel();
-						        }
+									Intent intent = new Intent(getActivity(),
+											ModifyOrderActivity.class);
+									// //////////////////////////////////////////////
+									intent.putExtra(Constants.ID, Integer
+											.toString(order.getOrderId()));
+									intent.putExtra(Constants.NAME,
+											order.getOrderOwner());
+									intent.putExtra("black",
+											order.getColourNumber("black"));
+									intent.putExtra("blue",
+											order.getColourNumber("blue"));
+									intent.putExtra("green",
+											order.getColourNumber("green"));
+									intent.putExtra("red",
+											order.getColourNumber("red"));
+									intent.putExtra("white",
+											order.getColourNumber("white"));
+									// ///////////////////////////////////////////////
+									startActivityForResult(intent,
+											Constants.REQUEST_CODE);
+									dialog.cancel();
+								}
 								else
 								{
-									Toast.makeText(getActivity(), Constants.NOT_AUTHORIZED, Toast.LENGTH_SHORT).show();
+									Toast.makeText(getActivity(),
+											Constants.NOT_AUTHORIZED,
+											Toast.LENGTH_SHORT).show();
 								}
-						  }
+							}
 						}).show();
 	}
 
@@ -283,12 +303,13 @@ public class OrderQueueFragment extends ListFragment
 			{
 				int orderId = jsObj.getInt("orderId");
 
-				OrderQueueAdapter adapter = (OrderQueueAdapter) getListView().getAdapter();
+				OrderQueueAdapter adapter = (OrderQueueAdapter) getListView()
+						.getAdapter();
 				for (int i = 0; i < adapter.getCount(); i++)
 				{
 					Order order = adapter.getItem(i);
 					if (order.getOrderId() == orderId)
-						            adapter.remove(order);
+						adapter.remove(order);
 				}
 				adapter.notifyDataSetChanged();
 				playSound(R.raw.deleteorder);
@@ -310,11 +331,12 @@ public class OrderQueueFragment extends ListFragment
 	{
 		Log.v("MAD", response);
 
-		OrderQueueAdapter adapter = (OrderQueueAdapter) getListView().getAdapter();
+		OrderQueueAdapter adapter = (OrderQueueAdapter) getListView()
+				.getAdapter();
 		adapter.clear();
 
 		ArrayList<Order> orders = new ArrayList<Order>();
-	
+
 		JSONArray jArray;
 		try
 		{
@@ -324,15 +346,12 @@ public class OrderQueueFragment extends ListFragment
 			{
 				JSONObject jObj = jArray.getJSONObject(i);
 
-				Order order = new Order(jObj.getInt("mOrderId"), 
-						        jObj.getString("mOrderOwner"),
-						        jObj.getString("mOrderStatus"),
-						        jObj.getInt("black"), 
-						        jObj.getInt("blue"),
-						        jObj.getInt("green"), 
-						        jObj.getInt("red"),
-						        jObj.getInt("white"));
-	
+				Order order = new Order(jObj.getInt("mOrderId"),
+						jObj.getString("mOrderOwner"),
+						jObj.getString("mOrderStatus"), jObj.getInt("black"),
+						jObj.getInt("blue"), jObj.getInt("green"),
+						jObj.getInt("red"), jObj.getInt("white"));
+
 				order.setFinishTime(jObj.getString("endTime"));
 				order.setStartTime(jObj.getString("startTime"));
 				orders.add(order);
@@ -352,8 +371,14 @@ public class OrderQueueFragment extends ListFragment
 	public void onStart()
 	{
 		receiver = new ResultReceiver();
-		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.UPDATE_ORDERS_COMMAND)));
-		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.DELETE_ORDER_COMMAND)));
+		getActivity().registerReceiver(
+				receiver,
+				new IntentFilter(Integer
+						.toString(Constants.UPDATE_ORDERS_COMMAND)));
+		getActivity().registerReceiver(
+				receiver,
+				new IntentFilter(Integer
+						.toString(Constants.DELETE_ORDER_COMMAND)));
 		// update orders here
 		makeService(Constants.UPDATE_ORDERS_COMMAND, 0);
 		super.onStart();

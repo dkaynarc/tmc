@@ -60,5 +60,9 @@
     <string name="environment_lightlabel_tv">Light:</string>
     <string name="environment_soundlabel_tv">Sound:</string>
     <string name="environment_temperaturelabel_tv">Temperature:</string>
+    <string name="alarms_errorslabel_tv">Errors:</string>
+    <string name="none">None</string>
+    <string name="alarms_warningslabel_tv">Warnings:</string>
+    <string name="alarms_alarmslabel_tv">Alarms:</string>
 
 </resources>

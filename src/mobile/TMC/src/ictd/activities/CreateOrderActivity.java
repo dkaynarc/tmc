@@ -213,7 +213,8 @@ public class CreateOrderActivity extends Activity
 	@Override
 	public void onStart()
 	{
-		IntentFilter filter = new IntentFilter(Integer.toString(Constants.NEW_ORDER_COMMAND));
+		IntentFilter filter = new IntentFilter(
+				Integer.toString(Constants.NEW_ORDER_COMMAND));
 		receiver = new ResultReceiver();
 		this.registerReceiver(receiver, filter);
 		super.onStart();

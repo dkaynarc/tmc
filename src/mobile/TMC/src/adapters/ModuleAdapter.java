@@ -3,6 +3,7 @@
 package adapters;
 
 import model.Constants;
+import fragments.AlarmsFragment;
 import fragments.CompletedOrderFragment;
 import fragments.EnvironmentFragment;
 import fragments.MachineStatusFragment;
@@ -45,8 +46,11 @@ public class ModuleAdapter extends FragmentPagerAdapter
 		case 2:
 			fragment = new CompletedOrderFragment();
 			break;
-		default:
+		case 3:
 			fragment = new EnvironmentFragment();
+			break;
+		default:
+			fragment = new AlarmsFragment();
 		}
 		Bundle args = new Bundle();
 		fragment.setArguments(args);
@@ -60,7 +64,7 @@ public class ModuleAdapter extends FragmentPagerAdapter
 	@Override
 	public int getCount()
 	{
-		return 4;
+		return 5;
 	}
 
 	/**
@@ -80,6 +84,8 @@ public class ModuleAdapter extends FragmentPagerAdapter
 			return Constants.COMPLETED_ORDERS;
 		case 3:
 			return Constants.ENVIRONMENT;
+		case 4:
+			return Constants.ALARMS;
 		}
 		return null;
 	}
