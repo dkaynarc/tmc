@@ -224,7 +224,7 @@
           <IISUrl>http://localhost:17451/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>True</UseCustomServer>
-          <CustomServerUrl>http://192.168.1.4</CustomServerUrl>
+          <CustomServerUrl>http://stesha.com.au</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

@@ -153,7 +153,7 @@ namespace APIServerWeb
         [HttpGet]
         public string StopScada()
         {
-            /*try
+           try
             {
                 ScadaConnectionManager.ScadaClient.Stop();
                 return "Scada stopped successfully";
@@ -161,8 +161,8 @@ namespace APIServerWeb
             catch (EndpointNotFoundException)
             {
                 return SCADA_UNAVAILABLE_MESSAGE;
-            }*/
-            return "success";
+            }
+           // return "success";
         }
 
         [HttpGet]

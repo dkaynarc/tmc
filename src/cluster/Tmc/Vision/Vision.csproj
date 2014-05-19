@@ -138,8 +138,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Q /Y "C:\Emgu\emgucv-windows-universal-cuda 2.9.0.1922\bin\*.dll" "$(TargetDir)"
-xcopy /I /E /Q /Y "C:\Emgu\emgucv-windows-universal-cuda 2.9.0.1922\bin\x86" "$(TargetDir)\x86"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
