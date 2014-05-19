@@ -79,8 +79,8 @@ public class CompletedOrderAdapter extends ArrayAdapter<Order>
 			if (type != null)
 				type.setText(order.getOrderStatus());
 			if (picture != null)
-			   picture.setImageResource(R.drawable.complete);		
-     		}
+				picture.setImageResource(R.drawable.complete);
+		}
 		else
 			v = convertView;
 		return v;

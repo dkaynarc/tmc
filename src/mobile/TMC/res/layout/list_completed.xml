@@ -11,13 +11,75 @@
 	    android:id="@+id/android:list"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_alignParentTop="true"
+	    android:layout_above="@+id/completedorders_totalcountlabel_tv"
+	    android:layout_below="@+id/completedorders_to_tv"
+	    android:layout_alignTop="@+id/android:empty"
 	    android:layout_centerHorizontal="true" >
 	</ListView>
-	
-	<TextView android:id="@+id/android:empty"
+
+	<TextView
+	    android:id="@+id/completedorders_totalcountlabel_tv"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_centerHorizontal="true"
+	    android:text="@string/completedorders_totalcountlabel_tv"
+	    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	<TextView
+	    android:id="@+id/android:empty"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:text="@string/list_nodata" />
+	    android:layout_above="@+id/completedorders_totalcountlabel_tv"
+	    android:layout_alignLeft="@+id/android:list"
+	    android:layout_below="@+id/completedorders_to_tv"
+	    android:text="@string/none" />
+
+	<TextView
+	    android:id="@+id/completedorders_totalcount_tv"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_toRightOf="@+id/completedorders_totalcountlabel_tv"
+	    android:layout_marginLeft="5dp"
+	    android:text="@string/default_zero"
+	    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	<TextView
+	    android:id="@+id/completedorders_fromlabel_tv"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true"
+	    android:text="@string/completedorders_fromlabel_tv"
+	    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	<TextView
+	    android:id="@+id/completedorders_to_tv"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/completedorders_tolabel_tv"
+	    android:layout_below="@+id/completedorders_tolabel_tv"
+	    android:text="@string/default_date"
+	    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	<TextView
+	    android:id="@+id/completedorders_from_tv"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/completedorders_fromlabel_tv"
+	    android:layout_below="@+id/completedorders_fromlabel_tv"
+	    android:text="@string/default_date"
+	    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	<TextView
+	    android:id="@+id/completedorders_tolabel_tv"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentTop="true"
+	    android:layout_toRightOf="@+id/completedorders_from_tv"
+	    android:layout_marginLeft="25dp"
+	    android:text="@string/completedorders_tolabel_tv"
+	    android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

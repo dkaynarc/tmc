@@ -15,10 +15,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;							
+import android.widget.TextView;
 import android.widget.Toast;
-
-
 
 public class EnvironmentFragment extends Fragment
 {
@@ -38,163 +36,145 @@ public class EnvironmentFragment extends Fragment
 		View rootView = inflater.inflate(R.layout.fragment_environment,
 				container, false);
 
+		/*
+		 * String dust = ""; // Set dust to dust value ((TextView)
+		 * rootView.findViewById(R.id.environment_dust_tv)) .setText(dust +
+		 * (char) 0x00B0 + "C");
+		 * 
+		 * String humidity = ""; // Set humidity to humidity ((TextView)
+		 * rootView.findViewById(R.id.environment_humidity_tv))
+		 * .setText(humidity + "%");
+		 * 
+		 * String light = ""; // Set light to light value ((TextView)
+		 * rootView.findViewById(R.id.environment_light_tv)) .setText(light +
+		 * "cd");
+		 * 
+		 * String sound = ""; // Set sound to sound value ((TextView)
+		 * rootView.findViewById(R.id.environment_sound_tv)) .setText(sound +
+		 * "dB");
+		 * 
+		 * String temperature = ""; // Set temperature to temperature
+		 * ((TextView) rootView.findViewById(R.id.environment_temperature_tv))
+		 * .setText(temperature + (char) 0x00B0 + "C");
+		 */
 
-		/*String dust = "";
-		// Set dust to dust value
-		((TextView) rootView.findViewById(R.id.environment_dust_tv))
-				.setText(dust + (char) 0x00B0 + "C");
+		// ///////////////////////////////////////////////////////////////
 
-		String humidity = "";
-		// Set humidity to humidity
-		((TextView) rootView.findViewById(R.id.environment_humidity_tv))
-				.setText(humidity + "%");
+		dustView = (TextView) rootView.findViewById(R.id.environment_dust_tv);
 
-		String light = "";
-		// Set light to light value
-		((TextView) rootView.findViewById(R.id.environment_light_tv))
-				.setText(light + "cd");
+		humidityView = (TextView) rootView
+				.findViewById(R.id.environment_humidity_tv);
 
-		String sound = "";
-		// Set sound to sound value
-		((TextView) rootView.findViewById(R.id.environment_sound_tv))
-				.setText(sound + "dB");
+		lightView = (TextView) rootView.findViewById(R.id.environment_light_tv);
 
-		String temperature = "";
-		// Set temperature to temperature
-		((TextView) rootView.findViewById(R.id.environment_temperature_tv))
-				.setText(temperature + (char) 0x00B0 + "C");*/
-		
-		
-		/////////////////////////////////////////////////////////////////
-		
-	
-	    dustView = (TextView) rootView.findViewById(R.id.environment_dust_tv);
+		soundView = (TextView) rootView.findViewById(R.id.environment_sound_tv);
 
-	    humidityView = (TextView) rootView.findViewById(R.id.environment_humidity_tv);
+		temperatureView = (TextView) rootView
+				.findViewById(R.id.environment_temperature_tv);
 
-	    lightView = (TextView) rootView.findViewById(R.id.environment_light_tv);
-
-        soundView =	(TextView) rootView.findViewById(R.id.environment_sound_tv);
- 
-    	temperatureView = (TextView) rootView.findViewById(R.id.environment_temperature_tv);		
-	
 		return rootView;
 	}
-	
-	
 
-	private void makeService(int envUpdateCommand) 
+	private void makeService(int envUpdateCommand)
 	{
-		Intent service = new Intent(getActivity(), services.EnvUpdateService.class);
+		Intent service = new Intent(getActivity(),
+				services.EnvUpdateService.class);
 		Bundle parcel = new Bundle();
 		parcel.putInt("command", Constants.ENV_UPDATE_COMMAND);
 		service.putExtra("parcel", parcel);
-		
+
 		getActivity().startService(service);
 	}
-	
-	
-	
+
 	public void onStart()
 	{
 		super.onStart();
-		
+
 		receiver = new ResultReceiver();
-        getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.ENV_UPDATE_COMMAND)));
-        makeService(Constants.ENV_UPDATE_COMMAND);
-        startTimer(Constants.UPDATE_INTERVAL);
+		getActivity()
+				.registerReceiver(
+						receiver,
+						new IntentFilter(Integer
+								.toString(Constants.ENV_UPDATE_COMMAND)));
+		makeService(Constants.ENV_UPDATE_COMMAND);
+		startTimer(Constants.UPDATE_INTERVAL);
 	}
-	
-	
-	
+
 	public void onStop()
 	{
 		super.onStop();
 		getActivity().unregisterReceiver(receiver);
 		timer.cancel(true);
 	}
-	
-	
-	
-	
+
 	private class ResultReceiver extends BroadcastReceiver
 	{
 
-	  @Override
-	  public void onReceive(Context context, Intent intent)
-	  {	    	 
-         handleEnvUpdate(intent.getStringExtra("result"));   
-	  }
+		@Override
+		public void onReceive(Context context, Intent intent)
+		{
+			handleEnvUpdate(intent.getStringExtra("result"));
+		}
 	}
-	     
 
-	
-	private void handleEnvUpdate(String response) 
+	private void handleEnvUpdate(String response)
 	{
 		try
 		{
-	    	JSONObject obj =  new JSONObject(response);				
-		    String result = obj.getString("Result");
-			       
-		    if(result.equalsIgnoreCase("success"))
-	         {
-		       dustView.setText(obj.getString("Dust") +  "pcs/liter");
-		       humidityView.setText(obj.getString("Humidity") + "%");
-		       lightView.setText(obj.getString("Light") + "cd");
-		       soundView.setText(obj.getString("Sound") + "dB");
-		       temperatureView.setText(obj.getString("Temperature") + (char) 0x00B0 + "C");	
-	 	       Toast.makeText(getActivity(), "Updated environment data", Toast.LENGTH_SHORT).show();// to be removed
-	          }
-	     }
-		catch(Exception exc)
-		{		
-			Toast.makeText(getActivity(), Constants.ENV_UPDATE_FAIL, Toast.LENGTH_SHORT).show();
+			JSONObject obj = new JSONObject(response);
+			String result = obj.getString("Result");
+
+			if (result.equalsIgnoreCase("success"))
+			{
+				dustView.setText(obj.getString("Dust") + "pcs/liter");
+				humidityView.setText(obj.getString("Humidity") + "%");
+				lightView.setText(obj.getString("Light") + "cd");
+				soundView.setText(obj.getString("Sound") + "dB");
+				temperatureView.setText(obj.getString("Temperature")
+						+ (char) 0x00B0 + "C");
+				Toast.makeText(getActivity(), "Updated environment data",
+						Toast.LENGTH_SHORT).show();// to be removed
+			}
+		}
+		catch (Exception exc)
+		{
+			Toast.makeText(getActivity(), Constants.ENV_UPDATE_FAIL,
+					Toast.LENGTH_SHORT).show();
 		}
 	}
-	
-	
-	
-		      
+
 	private void startTimer(long i)
 	{
 		timer = new Timer();
-	    timer.execute(i);		
+		timer.execute(i);
 	}
 
-
-
-	private class Timer  extends AsyncTask<Long, Object, Object>
-	{ 
-		@Override
-	    protected String doInBackground(Long...params)
-		{
-		 try
-		  	{
-		    	Thread.sleep(params[0]);
-		    	return "done";
-		  	 }
-					      
-		catch (InterruptedException e) 
-		    {
-		        e.printStackTrace();
-		        return "done";
-		    }
-		}
-			
-				
-				
-	@Override
-	protected void onPostExecute(Object result)
+	private class Timer extends AsyncTask<Long, Object, Object>
 	{
-	   //this creates regular updates of the view
-	   makeService(Constants.ENV_UPDATE_COMMAND);
-	   startTimer(Constants.UPDATE_INTERVAL);
-	}
+		@Override
+		protected String doInBackground(Long... params)
+		{
+			try
+			{
+				Thread.sleep(params[0]);
+				return "done";
+			}
+
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+				return "done";
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Object result)
+		{
+			// this creates regular updates of the view
+			makeService(Constants.ENV_UPDATE_COMMAND);
+			startTimer(Constants.UPDATE_INTERVAL);
+		}
 
 	}
-	
 
-
-	
-			
 }
