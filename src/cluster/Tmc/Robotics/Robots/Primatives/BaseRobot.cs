@@ -94,6 +94,11 @@ namespace Tmc.Robotics
             this.RobotIPAddress = ip;
         }
 
+        public void EmergencyStop()
+        {
+            this.Controller.Rapid.Stop(StopMode.Immediate);
+        }
+
         protected void RunRapidProgram(string filename)
         {
             if (this.Controller.OperatingMode != ControllerOperatingMode.Auto)
