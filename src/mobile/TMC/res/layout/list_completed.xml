@@ -12,9 +12,9 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_above="@+id/completedorders_totalcountlabel_tv"
+	    android:layout_below="@+id/completedorders_to_tv"
 	    android:layout_alignTop="@+id/android:empty"
 	    android:layout_centerHorizontal="true" >
-
 	</ListView>
 
 	<TextView
