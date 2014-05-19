@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+//import android.widget.TextView;
 
 public class AlarmsFragment extends Fragment
 {
@@ -19,12 +19,12 @@ public class AlarmsFragment extends Fragment
 		View rootView = inflater.inflate(R.layout.fragment_alarms, container,
 				false);
 
-		TextView errors = (TextView) rootView
-				.findViewById(R.id.alarms_errors_tv);
-		TextView warnings = (TextView) rootView
-				.findViewById(R.id.alarms_warnings_tv);
-		TextView alarms = (TextView) rootView
-				.findViewById(R.id.alarms_alarms_tv);
+//		TextView errors = (TextView) rootView
+//				.findViewById(R.id.alarms_errors_tv);
+//		TextView warnings = (TextView) rootView
+//				.findViewById(R.id.alarms_warnings_tv);
+//		TextView alarms = (TextView) rootView
+//				.findViewById(R.id.alarms_alarms_tv);
 
 		return rootView;
 	}

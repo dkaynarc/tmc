@@ -112,4 +112,5 @@ public class Constants
 	public static final int ENV_UPDATE_COMMAND = 11;
 	public static final CharSequence ENV_UPDATE_FAIL = "Environment data update failed";
 	public static final String ALARMS = "ALARMS";
+	public static final String DATE_FORMAT = "dd/MM/yyyy";
 }
