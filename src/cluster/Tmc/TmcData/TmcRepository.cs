@@ -14,6 +14,11 @@ namespace TmcData
             return new ICTDEntities().OrderListViews.ToList();
         }
 
+        public static IList<EnvironmentLogView> EnvironmentLog()
+        {
+            return new ICTDEntities().EnvironmentLogViews.ToList();
+        }
+
         public static void AddNewOrder(Guid userID, int black, int blue, int red, int green, int white )
         {
             new ICTDEntities().AddNewOrder(userID, black, blue, red, green, white);
