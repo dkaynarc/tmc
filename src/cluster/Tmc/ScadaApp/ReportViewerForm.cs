@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Reporting.WinForms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,8 @@ namespace Tmc.Scada.App
 {
     public partial class ReportViewerForm : Form
     {
+        public ReportViewer ReportViewer { get { return this.rpvReportViewer; } }
+
         public ReportViewerForm()
         {
             InitializeComponent();
@@ -19,8 +22,7 @@ namespace Tmc.Scada.App
 
         private void ReportViewerForm_Load(object sender, EventArgs e)
         {
-
-            this.reportViewer1.RefreshReport();
+            this.rpvReportViewer.RefreshReport();
         }
     }
 }

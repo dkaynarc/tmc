@@ -146,13 +146,13 @@
     <EmbeddedResource Include="ReportControl.resx">
       <DependentUpon>ReportControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\AlarmReport.rdlc" />
-    <EmbeddedResource Include="Reports\CycleReport.rdlc" />
-    <EmbeddedResource Include="Reports\EnvironmentReport.rdlc" />
-    <EmbeddedResource Include="Reports\LastHundredOrdersAverageCycleTimeReport.rdlc" />
-    <EmbeddedResource Include="Reports\MachineReport.rdlc" />
-    <EmbeddedResource Include="Reports\OrderReport.rdlc" />
-    <EmbeddedResource Include="Reports\ProductionReport.rdlc" />
+    <None Include="Reporting\AlarmReport.rdlc" />
+    <EmbeddedResource Include="Reporting\CycleReport.rdlc" />
+    <EmbeddedResource Include="Reporting\EnvironmentReport.rdlc" />
+    <EmbeddedResource Include="Reporting\LastHundredOrdersAverageCycleTimeReport.rdlc" />
+    <EmbeddedResource Include="Reporting\MachineReport.rdlc" />
+    <EmbeddedResource Include="Reporting\OrderReport.rdlc" />
+    <EmbeddedResource Include="Reporting\ProductionReport.rdlc" />
     <EmbeddedResource Include="ReportViewerForm.resx">
       <DependentUpon>ReportViewerForm.cs</DependentUpon>
     </EmbeddedResource>

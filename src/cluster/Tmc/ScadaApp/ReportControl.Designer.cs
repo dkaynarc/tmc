@@ -49,6 +49,7 @@
             this.btnGenerateEnvironmentReport.TabIndex = 0;
             this.btnGenerateEnvironmentReport.Text = "Environment Report";
             this.btnGenerateEnvironmentReport.UseVisualStyleBackColor = true;
+            this.btnGenerateEnvironmentReport.Click += new System.EventHandler(this.btnGenerateEnvironmentReport_Click);
             // 
             // btnGenerateAlarmsReport
             // 

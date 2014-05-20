@@ -28,25 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
+            this.rpvReportViewer = new Microsoft.Reporting.WinForms.ReportViewer();
             this.SuspendLayout();
             // 
-            // reportViewer1
+            // rpvReportViewer
             // 
-            this.reportViewer1.Location = new System.Drawing.Point(0, 0);
-            this.reportViewer1.Name = "reportViewer1";
-            this.reportViewer1.Size = new System.Drawing.Size(652, 363);
-            this.reportViewer1.TabIndex = 0;
+            this.rpvReportViewer.Location = new System.Drawing.Point(0, 0);
+            this.rpvReportViewer.Name = "rpvReportViewer";
+            this.rpvReportViewer.Size = new System.Drawing.Size(741, 403);
+            this.rpvReportViewer.TabIndex = 0;
             // 
             // ReportViewerForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(653, 363);
-            this.Controls.Add(this.reportViewer1);
+            this.ClientSize = new System.Drawing.Size(742, 403);
+            this.Controls.Add(this.rpvReportViewer);
             this.Name = "ReportViewerForm";
-            this.Text = "ReportViewerForm";
+            this.Text = "Report Viewer";
             this.Load += new System.EventHandler(this.ReportViewerForm_Load);
             this.ResumeLayout(false);
 
@@ -54,6 +54,6 @@
 
         #endregion
 
-        private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
+        private Microsoft.Reporting.WinForms.ReportViewer rpvReportViewer;
     }
 }

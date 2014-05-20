@@ -77,10 +77,10 @@
             this.tabPlantMimic.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
+            //((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
             this.tbcContentsTabControl.SuspendLayout();
             this.tabAlarmList.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
+            //((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
             this.tabPlantMimic.SuspendLayout();
             this.tabEnvironment.SuspendLayout();
             this.tabOrders.SuspendLayout();

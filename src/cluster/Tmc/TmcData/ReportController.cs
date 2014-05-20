@@ -8,9 +8,9 @@ using TmcData.Datasets;
 
 namespace TmcData
 {
-    static class ReportController
+    public static class ReportController
     {
-        public static ReportDataSet.EnvironmentDataTableDataTable GetEnvironmentReportData()
+        public static IEnumerable GetEnvironmentReportData()
         {
             ReportDataSet.EnvironmentDataTableDataTable dataTable = new ReportDataSet.EnvironmentDataTableDataTable();
             var query = (from q in new ICTDEntities().EnvironmentLogViews.AsEnumerable()
@@ -27,13 +27,14 @@ namespace TmcData
             newRow.Sensor = "Humidity";
             newRow.Reading = 33.3;
             newRow.Timestamp = DateTime.Now;
+            dataTable.AddEnvironmentDataTableRow(newRow);
 
             //REAL THING
             //newRow.Sensor = query.Source;
             //newRow.Reading = query.Reading;
             //newRow.Timestamp = query.Timestamp;
 
-            return dataTable;
+            return dataTable.AsEnumerable();
         }
     }
 }
