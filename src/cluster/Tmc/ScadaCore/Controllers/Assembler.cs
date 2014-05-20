@@ -24,20 +24,11 @@ namespace Tmc.Scada.Core
                 throw new ArgumentException("Could not retrieve a AssemblerRobot from ClusterConfig");
             }
         }  
-        public override void Begin(ControllerParams parameters) // TODO
+        public override void Begin(ControllerParams parameters)
         {
             var p = parameters as AssemblerParams;
             if (p != null)
             {
-                foreach (var pair in p.OrderConfiguration.Tablets.Where(x => x.Value > 0))
-                {
-                    if(pair.Value > p.Magazine.GetSlotDepth(pair.Key))
-                    {
-                        Logger.Instance.Write(new LogEntry("Not enough tablets to complete the order, Please refill tablet magazine"));
-                        OnCompleted(new ControllerEventArgs() { OperationStatus = ControllerOperationStatus.Failed });
-                    }
-                }
-
                 if (!IsRunning)
                 {
                     IsRunning = true;
@@ -60,15 +51,36 @@ namespace Tmc.Scada.Core
             }
         }
 
+        private bool canCompleteOrder(TabletMagazine mag, OrderConfiguration orderConfiguration)
+        {
+            foreach (var pair in orderConfiguration.Tablets.Where(x => x.Value > 0))
+            {
+                if (pair.Value > mag.GetSlotDepth(pair.Key))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private void AssembleAsync(TabletMagazine mag, OrderConfiguration orderConfiguration)
         {
             var ct = _cancelTokenSource.Token;
-            Task.Run(() =>
+            if (!canCompleteOrder(mag, orderConfiguration))
             {
-                var status = Assemble(mag, orderConfiguration, ct);
+                Logger.Instance.Write(new LogEntry("Not enough tablets to complete the order, Please refill tablet magazine"));
+                OnCompleted(new AssemblerEventArgs() { OperationStatus = AssemblerOperationStatus.TabletRefill });
                 IsRunning = false;
-                OnCompleted(new ControllerEventArgs() { OperationStatus = status });
-            }, ct);
+            }            
+            else
+            {
+                Task.Run(() =>
+                {
+                    var status = Assemble(mag, orderConfiguration, ct);
+                    IsRunning = false;
+                    OnCompleted(new ControllerEventArgs() { OperationStatus = status });
+                }, ct);
+            }
         }
 
         private ControllerOperationStatus Assemble(TabletMagazine mag, OrderConfiguration orderConfiguration, CancellationToken ct) //TODO Check for tray index outofbound
@@ -95,6 +107,7 @@ namespace Tmc.Scada.Core
 
                     }
                 }
+                status = ControllerOperationStatus.Succeeded;
             }
             catch (Exception ex)
             {
@@ -109,5 +122,15 @@ namespace Tmc.Scada.Core
     {
         public TabletMagazine Magazine;
         public OrderConfiguration OrderConfiguration;
+    }
+
+    public enum AssemblerOperationStatus
+    {
+        TabletRefill
+    }
+
+    public class AssemblerEventArgs : ControllerEventArgs
+    {
+        public AssemblerOperationStatus OperationStatus;
     }
 }

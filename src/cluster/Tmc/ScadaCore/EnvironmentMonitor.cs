@@ -2,62 +2,79 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Tmc.Sensors;
-using System.Threading;
+using System.Configuration;
+using System.Timers;
+using TmcData;
 
 namespace Tmc.Scada.Core
 {
-    //public enum Sensors
-    //{
-    //    Humidity,
-    //    Temperature,
-    //    Light,
-    //    Sound,
-    //    Dust
-    //}
-
-    //public enum Units
-    //{
-    //    Percentage = "%",
-    //    Celsius = "°C",
-    //    Candela = "cd",
-    //    Decibel = "dB",
-    //    ParticlesPerLitre = "pcs/L"
-    //}
-
     public class EnvironmentMonitor
     {
         public bool LoggingEnabled { get; set; }
-        private ScadaEngine _engine;
         private List<ISensor> _sensors;
-        private List<EnvironmentLogEntry> _log;
+        private List<EnvironmentLogEntry> Log { get; set; }
+        private Timer _updateTimer;
 
-        public EnvironmentMonitor(ScadaEngine engine)
+        // SensorProperties Entry will have the Dictionary as follows
+        // <Channel, Tuple<Units, Maximum threshold, minimum threshold>>
+        public Dictionary<String, Tuple<String, float, float>> SensorProperties { get; private set; }
+
+        public EnvironmentMonitor(ClusterConfig config)
         {
-            _log = new List<EnvironmentLogEntry>();
-            
-            this._engine = engine;
-            this._sensors = new List<ISensor>();
-            var config = engine.ClusterConfig;
-            LoggingEnabled = true;
-
-            //_sensors.Add(config.Sensors[typeof(AssemblerRobot)] as AssemblerRobot; //need sensor objects
+            InitialiseSensorProperties();
+            Log = new List<EnvironmentLogEntry>();
+            _sensors = new List<ISensor>();
+            _sensors.AddRange(config.Sensors.Values);
+            this.LoggingEnabled = true;
+            int updateTime = 1000;
+            if (!Int32.TryParse(ConfigurationManager.AppSettings["EnvironmentMonitorUpdateRateMsec"], out updateTime))
+            {
+                Logger.Instance.Write(new LogEntry("EnvironmentMonitorUpdateRateMsec is invalid, defaulting to 1000 msec",
+                    LogType.Warning));
+            }
+            this._updateTimer = new Timer(updateTime);
+            this._updateTimer.Elapsed += new ElapsedEventHandler((s, e) => this.Update());
         }
 
-        public void Initialise(ScadaEngine engine)
+        private void InitialiseSensorProperties()
         {
+            SensorProperties.Add("Temperature", new Tuple<string, float, float>("°C", 50, 10));
+            SensorProperties.Add("Temperature", new Tuple<string, float, float>("°C", 50, 10));
+            SensorProperties.Add("Temperature", new Tuple<string, float, float>("°C", 50, 10));
+            SensorProperties.Add("Temperature", new Tuple<string, float, float>("°C", 50, 10));
+            SensorProperties.Add("Temperature", new Tuple<string, float, float>("°C", 50, 10));
+            SensorProperties.Add("Temperature", new Tuple<string, float, float>("°C", 50, 10));
         }
 
-        public void Log()   
+        public void Start()
+        {
+            this._updateTimer.Start();
+        }
+
+        public void Stop()
+        {
+            this._updateTimer.Stop();
+        }
+
+        private void Update()
         {
             while (LoggingEnabled)
             {
                 foreach (var sensor in _sensors)
                 {
-                    //_log.Add(new EnvironmentLogEntry(sensor.Name + ": " + sensor.Value + sensor.Unit));
+                    LogType logType;
+                    if ((sensor.GetData() > SensorProperties[sensor.Channel].Item2) || (sensor.GetData() < SensorProperties[sensor.Channel].Item3)) 
+                    {
+                        logType = LogType.Warning;
+                    }
+                    else
+                    {
+                        logType = LogType.Message;
+                    }
+                    Log.Add(new EnvironmentLogEntry(sensor.Channel, sensor.GetData(), SensorProperties[sensor.Channel].Item1, logType));
+                    // enter in the database once its merged with scada
                 }
-                Thread.Sleep(1000);
             }
         }
     }
