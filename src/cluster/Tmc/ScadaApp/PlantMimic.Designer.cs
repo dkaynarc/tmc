@@ -84,7 +84,6 @@
             this.pnlContainer.Controls.Add(this.label6);
             this.pnlContainer.Controls.Add(this.label5);
             this.pnlContainer.Controls.Add(this.label1);
-            this.pnlContainer.Controls.Add(this.imgSorterConveyor);
             this.pnlContainer.Controls.Add(this.imgAssemblyConveyor);
             this.pnlContainer.Controls.Add(this.imgSorterCamera);
             this.pnlContainer.Controls.Add(this.imgAssemblerCamera);
@@ -92,6 +91,7 @@
             this.pnlContainer.Controls.Add(this.imgLoaderRobot);
             this.pnlContainer.Controls.Add(this.imgPalletiserRobot);
             this.pnlContainer.Controls.Add(this.imgSorterRobot);
+            this.pnlContainer.Controls.Add(this.imgSorterConveyor);
             this.pnlContainer.Location = new System.Drawing.Point(165, 14);
             this.pnlContainer.Name = "pnlContainer";
             this.pnlContainer.Size = new System.Drawing.Size(365, 326);
@@ -153,22 +153,12 @@
             // 
             // imgSorterConveyor
             // 
-            this.imgSorterConveyor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.imgSorterConveyor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.imgSorterConveyor.Location = new System.Drawing.Point(63, 202);
+            this.imgSorterConveyor.Image = global::Tmc.Scada.App.Properties.Resources.sorter_conveyor_off;
+            this.imgSorterConveyor.Location = new System.Drawing.Point(52, 195);
             this.imgSorterConveyor.Name = "imgSorterConveyor";
-            this.imgSorterConveyor.Size = new System.Drawing.Size(160, 48);
-            this.imgSorterConveyor.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.imgSorterConveyor.TabIndex = 2;
-            this.imgSorterConveyor.TabStop = false;
-            this.imgSorterConveyor.Click += new System.EventHandler(this.imgSorterConveyor_Click);
-            this.imgSorterConveyor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.imgSorterConveyor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.imgSorterConveyor.Image = global::Tmc.Scada.App.Properties.Resources.conveyor_belt;
-            this.imgSorterConveyor.Location = new System.Drawing.Point(63, 202);
-            this.imgSorterConveyor.Name = "imgSorterConveyor";
-            this.imgSorterConveyor.Size = new System.Drawing.Size(160, 48);
-            this.imgSorterConveyor.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.imgSorterConveyor.Size = new System.Drawing.Size(182, 74);
+            this.imgSorterConveyor.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.imgSorterConveyor.TabIndex = 2;
             this.imgSorterConveyor.TabStop = false;
             this.imgSorterConveyor.Click += new System.EventHandler(this.imgSorterConveyor_Click);
@@ -177,16 +167,7 @@
             // 
             this.imgAssemblyConveyor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.imgAssemblyConveyor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.imgAssemblyConveyor.Location = new System.Drawing.Point(290, 13);
-            this.imgAssemblyConveyor.Name = "imgAssemblyConveyor";
-            this.imgAssemblyConveyor.Size = new System.Drawing.Size(58, 291);
-            this.imgAssemblyConveyor.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.imgAssemblyConveyor.TabIndex = 1;
-            this.imgAssemblyConveyor.TabStop = false;
-            this.imgAssemblyConveyor.Click += new System.EventHandler(this.imgAssemblyConveyor_Click);
-            this.imgAssemblyConveyor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.imgAssemblyConveyor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.imgAssemblyConveyor.Image = global::Tmc.Scada.App.Properties.Resources.conveyor_belt;
+            this.imgAssemblyConveyor.Image = global::Tmc.Scada.App.Properties.Resources.assembly_conveyor_off;
             this.imgAssemblyConveyor.Location = new System.Drawing.Point(290, 13);
             this.imgAssemblyConveyor.Name = "imgAssemblyConveyor";
             this.imgAssemblyConveyor.Size = new System.Drawing.Size(58, 291);
@@ -198,10 +179,12 @@
             // imgSorterCamera
             // 
             this.imgSorterCamera.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.imgSorterCamera.Image = global::Tmc.Scada.App.Properties.Resources.camera_off;
             this.imgSorterCamera.ImageLocation = "";
             this.imgSorterCamera.Location = new System.Drawing.Point(13, 122);
             this.imgSorterCamera.Name = "imgSorterCamera";
             this.imgSorterCamera.Size = new System.Drawing.Size(48, 48);
+            this.imgSorterCamera.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.imgSorterCamera.TabIndex = 0;
             this.imgSorterCamera.TabStop = false;
             this.imgSorterCamera.Click += new System.EventHandler(this.imgSorterCamera_Click);
@@ -209,10 +192,12 @@
             // imgAssemblerCamera
             // 
             this.imgAssemblerCamera.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.imgAssemblerCamera.Image = global::Tmc.Scada.App.Properties.Resources.camera_off;
             this.imgAssemblerCamera.ImageLocation = "";
             this.imgAssemblerCamera.Location = new System.Drawing.Point(217, 122);
             this.imgAssemblerCamera.Name = "imgAssemblerCamera";
             this.imgAssemblerCamera.Size = new System.Drawing.Size(48, 48);
+            this.imgAssemblerCamera.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.imgAssemblerCamera.TabIndex = 0;
             this.imgAssemblerCamera.TabStop = false;
             this.imgAssemblerCamera.Click += new System.EventHandler(this.imgAssemblerCamera_Click);
@@ -220,22 +205,12 @@
             // imgAssemblerRobot
             // 
             this.imgAssemblerRobot.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.imgAssemblerRobot.Image = global::Tmc.Scada.App.Properties.Resources.robot_off;
             this.imgAssemblerRobot.ImageLocation = "";
             this.imgAssemblerRobot.Location = new System.Drawing.Point(217, 256);
             this.imgAssemblerRobot.Name = "imgAssemblerRobot";
             this.imgAssemblerRobot.Size = new System.Drawing.Size(48, 48);
-            this.imgAssemblerRobot.TabIndex = 0;
-            this.imgAssemblerRobot.TabStop = false;
-            this.imgAssemblerRobot.Click += new System.EventHandler(this.imgAssemblerRobot_Click);
-            // 
-            // imgAssemblerRobot
-            // 
-            this.imgAssemblerRobot.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.imgAssemblerRobot.Image = global::Tmc.Scada.App.Properties.Resources.robot_arm;
-            this.imgAssemblerRobot.ImageLocation = "";
-            this.imgAssemblerRobot.Location = new System.Drawing.Point(217, 256);
-            this.imgAssemblerRobot.Name = "imgAssemblerRobot";
-            this.imgAssemblerRobot.Size = new System.Drawing.Size(48, 48);
+            this.imgAssemblerRobot.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.imgAssemblerRobot.TabIndex = 0;
             this.imgAssemblerRobot.TabStop = false;
             this.imgAssemblerRobot.Click += new System.EventHandler(this.imgAssemblerRobot_Click);
@@ -243,11 +218,12 @@
             // imgLoaderRobot
             // 
             this.imgLoaderRobot.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.imgLoaderRobot.Image = global::Tmc.Scada.App.Properties.Resources.robot_off;
             this.imgLoaderRobot.ImageLocation = "";
             this.imgLoaderRobot.Location = new System.Drawing.Point(217, 13);
             this.imgLoaderRobot.Name = "imgLoaderRobot";
             this.imgLoaderRobot.Size = new System.Drawing.Size(48, 48);
-            this.imgLoaderRobot.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.imgLoaderRobot.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.imgLoaderRobot.TabIndex = 0;
             this.imgLoaderRobot.TabStop = false;
             this.imgLoaderRobot.Click += new System.EventHandler(this.imgLoaderRobot_Click);
@@ -255,11 +231,12 @@
             // imgPalletiserRobot
             // 
             this.imgPalletiserRobot.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.imgPalletiserRobot.Image = global::Tmc.Scada.App.Properties.Resources.robot_off;
             this.imgPalletiserRobot.ImageLocation = "";
             this.imgPalletiserRobot.Location = new System.Drawing.Point(13, 13);
             this.imgPalletiserRobot.Name = "imgPalletiserRobot";
             this.imgPalletiserRobot.Size = new System.Drawing.Size(48, 48);
-            this.imgPalletiserRobot.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.imgPalletiserRobot.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.imgPalletiserRobot.TabIndex = 0;
             this.imgPalletiserRobot.TabStop = false;
             this.imgPalletiserRobot.Click += new System.EventHandler(this.imgPalletiserRobot_Click);
@@ -267,22 +244,12 @@
             // imgSorterRobot
             // 
             this.imgSorterRobot.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.imgSorterRobot.Image = global::Tmc.Scada.App.Properties.Resources.robot_off;
             this.imgSorterRobot.ImageLocation = "";
             this.imgSorterRobot.Location = new System.Drawing.Point(13, 256);
             this.imgSorterRobot.Name = "imgSorterRobot";
             this.imgSorterRobot.Size = new System.Drawing.Size(48, 48);
-            this.imgSorterRobot.TabIndex = 0;
-            this.imgSorterRobot.TabStop = false;
-            this.imgSorterRobot.Click += new System.EventHandler(this.imgSorterRobot_Click);
-            // 
-            // imgSorterRobot
-            // 
-            this.imgSorterRobot.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.imgSorterRobot.Image = global::Tmc.Scada.App.Properties.Resources.robot_arm;
-            this.imgSorterRobot.ImageLocation = "";
-            this.imgSorterRobot.Location = new System.Drawing.Point(13, 256);
-            this.imgSorterRobot.Name = "imgSorterRobot";
-            this.imgSorterRobot.Size = new System.Drawing.Size(48, 48);
+            this.imgSorterRobot.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.imgSorterRobot.TabIndex = 0;
             this.imgSorterRobot.TabStop = false;
             this.imgSorterRobot.Click += new System.EventHandler(this.imgSorterRobot_Click);

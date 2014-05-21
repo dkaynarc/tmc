@@ -93,29 +93,9 @@ namespace Tmc.Scada.App.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap camera {
-            get {
-                object obj = ResourceManager.GetObject("camera", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap camera_error {
             get {
                 object obj = ResourceManager.GetObject("camera_error", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap camera_green {
-            get {
-                object obj = ResourceManager.GetObject("camera_green", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -136,76 +116,6 @@ namespace Tmc.Scada.App.Properties {
         internal static System.Drawing.Bitmap camera_on {
             get {
                 object obj = ResourceManager.GetObject("camera_on", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap camera_red {
-            get {
-                object obj = ResourceManager.GetObject("camera_red", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap conveyor_belt {
-            get {
-                object obj = ResourceManager.GetObject("conveyor_belt", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap conveyor_belt_green {
-            get {
-                object obj = ResourceManager.GetObject("conveyor_belt_green", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap conveyor_belt_red {
-            get {
-                object obj = ResourceManager.GetObject("conveyor_belt_red", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap robot_arm {
-            get {
-                object obj = ResourceManager.GetObject("robot_arm", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap robot_arm_green {
-            get {
-                object obj = ResourceManager.GetObject("robot_arm_green", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap robot_arm_red {
-            get {
-                object obj = ResourceManager.GetObject("robot_arm_red", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

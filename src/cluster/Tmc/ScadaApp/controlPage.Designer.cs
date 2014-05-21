@@ -71,13 +71,14 @@
             // normalModeRadioButton
             // 
             this.normalModeRadioButton.AutoSize = true;
+            this.normalModeRadioButton.BackColor = System.Drawing.SystemColors.Control;
             this.normalModeRadioButton.Location = new System.Drawing.Point(9, 23);
             this.normalModeRadioButton.Name = "normalModeRadioButton";
             this.normalModeRadioButton.Size = new System.Drawing.Size(172, 17);
             this.normalModeRadioButton.TabIndex = 3;
             this.normalModeRadioButton.TabStop = true;
             this.normalModeRadioButton.Text = "Normal (Sorting and Producing)";
-            this.normalModeRadioButton.UseVisualStyleBackColor = true;
+            this.normalModeRadioButton.UseVisualStyleBackColor = false;
             // 
             // sortingModeRadioButton
             // 

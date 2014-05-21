@@ -80,9 +80,13 @@ namespace Tmc.Scada.App.UserControls
             {
                 this.ChangeCameraPictureBox(pictureBox, hardwareStatus);
             }
-            else if (hardware == Hardware.AssemblerConveyor || hardware == Hardware.SorterConveyor)
+            else if (hardware == Hardware.AssemblerConveyor)
             {
-                this.ChangeConveyorPictureBox(pictureBox, hardwareStatus);
+                this.ChangeAssemblyConveyorPictureBox(pictureBox, hardwareStatus);
+            }
+            else if (hardware == Hardware.SorterConveyor)
+            {
+                this.ChangeSorterConveyorPictureBox(pictureBox, hardwareStatus);
             }
         }
 
@@ -111,11 +115,11 @@ namespace Tmc.Scada.App.UserControls
         {
             switch (hardwareStatus)
             {
-                case HardwareStatus.Offline: pictureBox.Image = Properties.Resources.robot_arm; 
+                case HardwareStatus.Offline: pictureBox.Image = Properties.Resources.robot_off; 
                     return;
-                case HardwareStatus.Operational: pictureBox.Image = Properties.Resources.robot_arm_green;
+                case HardwareStatus.Operational: pictureBox.Image = Properties.Resources.robot_on;
                     return;
-                case HardwareStatus.Failed: pictureBox.Image = Properties.Resources.robot_arm_green;
+                case HardwareStatus.Failed: pictureBox.Image = Properties.Resources.robot_error;
                     return;
             }
         }
@@ -124,24 +128,37 @@ namespace Tmc.Scada.App.UserControls
         {
             switch (hardwareStatus)
             {
-                case HardwareStatus.Offline: pictureBox.Image = Properties.Resources.camera;
+                case HardwareStatus.Offline: pictureBox.Image = Properties.Resources.camera_off;
                     return;
-                case HardwareStatus.Operational: pictureBox.Image = Properties.Resources.camera_green;
+                case HardwareStatus.Operational: pictureBox.Image = Properties.Resources.camera_on;
                     return;
-                case HardwareStatus.Failed: pictureBox.Image = Properties.Resources.camera_red;
+                case HardwareStatus.Failed: pictureBox.Image = Properties.Resources.camera_error;
                     return;
             }
         }
 
-        private void ChangeConveyorPictureBox(PictureBox pictureBox, HardwareStatus hardwareStatus)
+        private void ChangeAssemblyConveyorPictureBox(PictureBox pictureBox, HardwareStatus hardwareStatus)
         {
             switch (hardwareStatus)
             {
-                case HardwareStatus.Offline: pictureBox.Image = Properties.Resources.conveyor_belt;
+                case HardwareStatus.Offline: pictureBox.Image = Properties.Resources.assembly_conveyor_off;
                     return;
-                case HardwareStatus.Operational: pictureBox.Image = Properties.Resources.conveyor_belt_green;
+                case HardwareStatus.Operational: pictureBox.Image = Properties.Resources.assembly_conveyor_on;
                     return;
-                case HardwareStatus.Failed: pictureBox.Image = Properties.Resources.conveyor_belt_red;
+                case HardwareStatus.Failed: pictureBox.Image = Properties.Resources.assembly_conveyor_error;
+                    return;
+            }
+        }
+
+        private void ChangeSorterConveyorPictureBox(PictureBox pictureBox, HardwareStatus hardwareStatus)
+        {
+            switch (hardwareStatus)
+            {
+                case HardwareStatus.Offline: pictureBox.Image = Properties.Resources.sorter_conveyor_off;
+                    return;
+                case HardwareStatus.Operational: pictureBox.Image = Properties.Resources.sorter_conveyor_on;
+                    return;
+                case HardwareStatus.Failed: pictureBox.Image = Properties.Resources.sorter_conveyor_error;
                     return;
             }
         }

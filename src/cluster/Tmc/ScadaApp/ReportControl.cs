@@ -52,7 +52,8 @@ namespace Tmc.Scada.App
         private void btnGenerateEnvironmentReport_Click(object sender, EventArgs e)
         {
             this.BuildReport(ReportType.Environment, reportViewerForm);
-            reportViewerForm.Text
+            //Not sure what this line is for, there was no semicolon so couldn't build.. 
+            //reportViewerForm.Text 
             reportViewerForm.Show();
         }
 

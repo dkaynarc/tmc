@@ -39,7 +39,7 @@ namespace Tmc.Scada.App
             if(scadaEngine.GetOperationStatus() == "Offline")
             {
                 this.startOrStopButton.Text = "Start";
-                this.systemStatusLabel.Text = "Offline";
+                this.systemStatusLabel.Text = "Idle";
             }
             else if(scadaEngine.GetOperationStatus() == "Online")
             {
@@ -51,6 +51,8 @@ namespace Tmc.Scada.App
                 this.startOrStopButton.Hide();
                 this.systemStatusLabel.Text = "Disabled";
             }
+
+            normalModeRadioButton.BackColor = Color.Green;
         }
 
         /// <summary>
@@ -74,15 +76,28 @@ namespace Tmc.Scada.App
         {
             if(normalModeRadioButton.Checked)
             {
-                this.scadaEngine.SetOperatingMode("normal");
+                //this.scadaEngine.SetOperatingMode("normal");
+                
+                normalModeRadioButton.BackColor = Color.Green;
+                sortingModeRadioButton.BackColor = Color.White;
+                producingModeRadioButton.BackColor = Color.White;
+
             }
             else if(sortingModeRadioButton.Checked)
             {
-                this.scadaEngine.SetOperatingMode("sorting");
+                //this.scadaEngine.SetOperatingMode("sorting");
+
+                sortingModeRadioButton.BackColor = Color.Green;
+                normalModeRadioButton.BackColor = Color.White;
+                producingModeRadioButton.BackColor = Color.White;
             }
             else if(producingModeRadioButton.Checked)
             {
-                this.scadaEngine.SetOperatingMode("producing");
+                //this.scadaEngine.SetOperatingMode("producing");
+
+                producingModeRadioButton.BackColor = Color.Green;
+                sortingModeRadioButton.BackColor = Color.White;
+                normalModeRadioButton.BackColor = Color.White;
             }
             else
             {
