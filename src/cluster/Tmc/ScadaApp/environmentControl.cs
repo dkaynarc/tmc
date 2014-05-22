@@ -16,17 +16,17 @@ namespace Tmc.Scada.App
         {
             InitializeComponent();
 
-            Teperature = listView1.Items[0];
-            Humidity = listView1.Items[1];
-            Light = listView1.Items[2];
-            Sound = listView1.Items[3];
-            Dust = listView1.Items[4];
+            Teperature = listView1.Items[0].SubItems[1];
+            Humidity = listView1.Items[1].SubItems[1];
+            Light = listView1.Items[2].SubItems[1];
+            Sound = listView1.Items[3].SubItems[1];
+            Dust = listView1.Items[4].SubItems[1];
         }
 
-        private ListViewItem Teperature;
-        private ListViewItem Humidity;
-        private ListViewItem Light;
-        private ListViewItem Sound;
-        private ListViewItem Dust;
+        private ListViewItem.ListViewSubItem Teperature;
+        private ListViewItem.ListViewSubItem Humidity;
+        private ListViewItem.ListViewSubItem Light;
+        private ListViewItem.ListViewSubItem Sound;
+        private ListViewItem.ListViewSubItem Dust;
     }
 }
