@@ -49,5 +49,9 @@ namespace TmcData
             new ICTDEntities().AddNewEnvironmentLog(timestamp, sourceID, reading, type);
         }
 
+        public static void AddEnvironmentalReading(Source source, DateTime timestamp, float reading, EnvironmentType type)
+        {
+            new ICTDEntities().AddNewEnvironmentLog(timestamp, (int)source, reading, type.ToString());
+        }
     }
 }
