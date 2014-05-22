@@ -12,8 +12,7 @@ namespace TmcData
     {
         public static IList<OrderListView> OrderInfo()
         {
-            //return new ICTDEntities().OrderListViews.ToList();
-            return new List<OrderListView>();
+            return new ICTDEntities().OrderListViews.ToList();
         }
 
         public static IList<EnvironmentLogView> EnvironmentLog()
