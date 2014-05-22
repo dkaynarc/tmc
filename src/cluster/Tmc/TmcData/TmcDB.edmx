@@ -28,7 +28,8 @@
       [EnvironmentLogView].[ID] AS [ID], 
       [EnvironmentLogView].[Source] AS [Source], 
       [EnvironmentLogView].[Reading] AS [Reading], 
-      [EnvironmentLogView].[Timestamp] AS [Timestamp]
+      [EnvironmentLogView].[Timestamp] AS [Timestamp], 
+      [EnvironmentLogView].[Type] AS [Type]
       FROM [dbo].[EnvironmentLogView] AS [EnvironmentLogView]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="OrderListView" EntityType="ICTDModel.Store.OrderListView" store:Type="Views" store:Schema="dbo" store:Name="OrderListView">
@@ -84,6 +85,7 @@
           <Property Name="Source" Type="nvarchar" MaxLength="50" />
           <Property Name="Reading" Type="float" Nullable="false" />
           <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -354,6 +356,7 @@
           <Property Type="String" Name="Source" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Double" Name="Reading" Nullable="false" />
           <Property Type="DateTime" Name="Timestamp" Nullable="false" Precision="3" />
+          <Property Type="String" Name="Type" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -416,6 +419,7 @@
           <EntitySetMapping Name="EnvironmentLogViews">
             <EntityTypeMapping TypeName="ICTDModel.EnvironmentLogView">
               <MappingFragment StoreEntitySet="EnvironmentLogView">
+                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
                 <ScalarProperty Name="Reading" ColumnName="Reading" />
                 <ScalarProperty Name="Source" ColumnName="Source" />
