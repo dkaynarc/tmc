@@ -62,25 +62,17 @@
             this.tabEnvironment = new System.Windows.Forms.TabPage();
             this.environmentControl1 = new Tmc.Scada.App.environmentControl();
             this.tabOrders = new System.Windows.Forms.TabPage();
+            this.order1 = new Tmc.Scada.App.Order();
             this.tabCalibration = new System.Windows.Forms.TabPage();
             this.calibrationControl1 = new Tmc.Scada.App.CalibrationControl();
             this.tabReports = new System.Windows.Forms.TabPage();
-            this.calibrationControl1 = new Tmc.Scada.App.CalibrationControl();
             this.reportControl1 = new Tmc.Scada.App.ReportControl();
-            this.order1 = new Tmc.Scada.App.Order();
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
             this.tbcContentsTabControl.SuspendLayout();
             this.tabAlarmList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
-            this.tabPlantMimic.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
-            this.ordersTab.SuspendLayout();
-            //((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
-            this.tbcContentsTabControl.SuspendLayout();
-            this.tabAlarmList.SuspendLayout();
-            //((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
             this.tabPlantMimic.SuspendLayout();
             this.tabEnvironment.SuspendLayout();
             this.tabOrders.SuspendLayout();
@@ -340,6 +332,7 @@
             this.dgvAlarmsGrid.Name = "dgvAlarmsGrid";
             this.dgvAlarmsGrid.Size = new System.Drawing.Size(684, 302);
             this.dgvAlarmsGrid.TabIndex = 0;
+            this.dgvAlarmsGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAlarmsGrid_CellClick);
             // 
             // tabPlantMimic
             // 
@@ -394,6 +387,13 @@
             this.tabOrders.Text = "Orders";
             this.tabOrders.UseVisualStyleBackColor = true;
             // 
+            // order1
+            // 
+            this.order1.Location = new System.Drawing.Point(30, 12);
+            this.order1.Name = "order1";
+            this.order1.Size = new System.Drawing.Size(639, 364);
+            this.order1.TabIndex = 0;
+            // 
             // tabCalibration
             // 
             this.tabCalibration.Controls.Add(this.calibrationControl1);
@@ -422,26 +422,14 @@
             this.tabReports.Text = "Reports";
             this.tabReports.UseVisualStyleBackColor = true;
             // 
-            // calibrationControl1
-            // 
-            this.calibrationControl1.Location = new System.Drawing.Point(0, 0);
-            this.calibrationControl1.Name = "calibrationControl1";
-            this.calibrationControl1.Size = new System.Drawing.Size(687, 354);
-            this.calibrationControl1.TabIndex = 0;
-            // 
             // reportControl1
             // 
             this.reportControl1.Location = new System.Drawing.Point(-4, 0);
             this.reportControl1.Name = "reportControl1";
+            this.reportControl1.SelectedEndDate = new System.DateTime(2014, 5, 22, 14, 42, 45, 131);
+            this.reportControl1.SelectedStartDate = new System.DateTime(2014, 5, 21, 14, 42, 45, 131);
             this.reportControl1.Size = new System.Drawing.Size(691, 358);
             this.reportControl1.TabIndex = 0;
-            // 
-            // order1
-            // 
-            this.order1.Location = new System.Drawing.Point(30, 12);
-            this.order1.Name = "order1";
-            this.order1.Size = new System.Drawing.Size(639, 364);
-            this.order1.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -477,7 +465,7 @@
         private System.Windows.Forms.ToolStripLabel currentUserLabel;
         private System.Windows.Forms.ToolStripButton loginAndLogoutButton;
         private System.Windows.Forms.ToolStripButton eStopButton;
-        private TablessControl tablessControlPanel;
+        //private TablessControl tablessControlPanel;
         public System.Windows.Forms.TabPage plantMimicTab;
         public System.Windows.Forms.TabPage controlTab;
         private System.Windows.Forms.TabPage environmentTab;

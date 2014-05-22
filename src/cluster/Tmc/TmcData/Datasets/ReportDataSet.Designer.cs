@@ -865,7 +865,7 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ProductionDataTableRow AddProductionDataTableRow(string ShiftStartTime, string ShiftEndTime, string ProductsProducedForShift) {
+            public ProductionDataTableRow AddProductionDataTableRow(System.DateTime ShiftStartTime, System.DateTime ShiftEndTime, int ProductsProducedForShift) {
                 ProductionDataTableRow rowProductionDataTableRow = ((ProductionDataTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ShiftStartTime,
@@ -901,11 +901,11 @@ namespace TmcData.Datasets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnShiftStartTime = new global::System.Data.DataColumn("ShiftStartTime", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnShiftStartTime = new global::System.Data.DataColumn("ShiftStartTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnShiftStartTime);
-                this.columnShiftEndTime = new global::System.Data.DataColumn("ShiftEndTime", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnShiftEndTime = new global::System.Data.DataColumn("ShiftEndTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnShiftEndTime);
-                this.columnProductsProducedForShift = new global::System.Data.DataColumn("ProductsProducedForShift", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnProductsProducedForShift = new global::System.Data.DataColumn("ProductsProducedForShift", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnProductsProducedForShift);
             }
             
@@ -1040,7 +1040,7 @@ namespace TmcData.Datasets {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class CycleDataTableDataTable : global::System.Data.TypedTableBase<CycleDataTableRow> {
             
-            private global::System.Data.DataColumn columnOrderId;
+            private global::System.Data.DataColumn columnTimestamp;
             
             private global::System.Data.DataColumn columnCycleTime;
             
@@ -1079,9 +1079,9 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn OrderIdColumn {
+            public global::System.Data.DataColumn TimestampColumn {
                 get {
-                    return this.columnOrderId;
+                    return this.columnTimestamp;
                 }
             }
             
@@ -1130,10 +1130,10 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public CycleDataTableRow AddCycleDataTableRow(string OrderId, string CycleTime) {
+            public CycleDataTableRow AddCycleDataTableRow(System.DateTime Timestamp, double CycleTime) {
                 CycleDataTableRow rowCycleDataTableRow = ((CycleDataTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        OrderId,
+                        Timestamp,
                         CycleTime};
                 rowCycleDataTableRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowCycleDataTableRow);
@@ -1157,16 +1157,16 @@ namespace TmcData.Datasets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnOrderId = base.Columns["OrderId"];
+                this.columnTimestamp = base.Columns["Timestamp"];
                 this.columnCycleTime = base.Columns["CycleTime"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnOrderId = new global::System.Data.DataColumn("OrderId", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnOrderId);
-                this.columnCycleTime = new global::System.Data.DataColumn("CycleTime", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTimestamp = new global::System.Data.DataColumn("Timestamp", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTimestamp);
+                this.columnCycleTime = new global::System.Data.DataColumn("CycleTime", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCycleTime);
             }
             
@@ -1411,7 +1411,7 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public MachineDataTableRow AddMachineDataTableRow(string Source, string MachineStatus, string AverageCycleTime, string Timestamp) {
+            public MachineDataTableRow AddMachineDataTableRow(string Source, string MachineStatus, double AverageCycleTime, System.DateTime Timestamp) {
                 MachineDataTableRow rowMachineDataTableRow = ((MachineDataTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Source,
@@ -1453,9 +1453,9 @@ namespace TmcData.Datasets {
                 base.Columns.Add(this.columnSource);
                 this.columnMachineStatus = new global::System.Data.DataColumn("MachineStatus", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMachineStatus);
-                this.columnAverageCycleTime = new global::System.Data.DataColumn("AverageCycleTime", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnAverageCycleTime = new global::System.Data.DataColumn("AverageCycleTime", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAverageCycleTime);
-                this.columnTimestamp = new global::System.Data.DataColumn("Timestamp", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTimestamp = new global::System.Data.DataColumn("Timestamp", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTimestamp);
             }
             
@@ -1690,7 +1690,7 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public AlarmDataTableRow AddAlarmDataTableRow(string EventType, string Description, string Timestamp) {
+            public AlarmDataTableRow AddAlarmDataTableRow(string EventType, string Description, System.DateTime Timestamp) {
                 AlarmDataTableRow rowAlarmDataTableRow = ((AlarmDataTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         EventType,
@@ -1730,7 +1730,7 @@ namespace TmcData.Datasets {
                 base.Columns.Add(this.columnEventType);
                 this.columnDescription = new global::System.Data.DataColumn("Description", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDescription);
-                this.columnTimestamp = new global::System.Data.DataColumn("Timestamp", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTimestamp = new global::System.Data.DataColumn("Timestamp", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTimestamp);
             }
             
@@ -1877,11 +1877,9 @@ namespace TmcData.Datasets {
             
             private global::System.Data.DataColumn columnGreen;
             
-            private global::System.Data.DataColumn columnOrderStatus;
+            private global::System.Data.DataColumn columnStartTime;
             
-            private global::System.Data.DataColumn columnCustomerName;
-            
-            private global::System.Data.DataColumn columnTimestamp;
+            private global::System.Data.DataColumn columnEndTime;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -1966,25 +1964,17 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn OrderStatusColumn {
+            public global::System.Data.DataColumn StartTimeColumn {
                 get {
-                    return this.columnOrderStatus;
+                    return this.columnStartTime;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn CustomerNameColumn {
+            public global::System.Data.DataColumn EndTimeColumn {
                 get {
-                    return this.columnCustomerName;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn TimestampColumn {
-                get {
-                    return this.columnTimestamp;
+                    return this.columnEndTime;
                 }
             }
             
@@ -2025,7 +2015,7 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public OrderDataTableRow AddOrderDataTableRow(string OrderId, string White, string Black, string Blue, string Red, string Green, string OrderStatus, string CustomerName, string Timestamp) {
+            public OrderDataTableRow AddOrderDataTableRow(int OrderId, int White, int Black, int Blue, int Red, int Green, System.DateTime StartTime, System.DateTime EndTime) {
                 OrderDataTableRow rowOrderDataTableRow = ((OrderDataTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         OrderId,
@@ -2034,9 +2024,8 @@ namespace TmcData.Datasets {
                         Blue,
                         Red,
                         Green,
-                        OrderStatus,
-                        CustomerName,
-                        Timestamp};
+                        StartTime,
+                        EndTime};
                 rowOrderDataTableRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowOrderDataTableRow);
                 return rowOrderDataTableRow;
@@ -2065,32 +2054,29 @@ namespace TmcData.Datasets {
                 this.columnBlue = base.Columns["Blue"];
                 this.columnRed = base.Columns["Red"];
                 this.columnGreen = base.Columns["Green"];
-                this.columnOrderStatus = base.Columns["OrderStatus"];
-                this.columnCustomerName = base.Columns["CustomerName"];
-                this.columnTimestamp = base.Columns["Timestamp"];
+                this.columnStartTime = base.Columns["StartTime"];
+                this.columnEndTime = base.Columns["EndTime"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnOrderId = new global::System.Data.DataColumn("OrderId", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnOrderId = new global::System.Data.DataColumn("OrderId", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnOrderId);
-                this.columnWhite = new global::System.Data.DataColumn("White", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnWhite = new global::System.Data.DataColumn("White", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnWhite);
-                this.columnBlack = new global::System.Data.DataColumn("Black", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnBlack = new global::System.Data.DataColumn("Black", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBlack);
-                this.columnBlue = new global::System.Data.DataColumn("Blue", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnBlue = new global::System.Data.DataColumn("Blue", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBlue);
-                this.columnRed = new global::System.Data.DataColumn("Red", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnRed = new global::System.Data.DataColumn("Red", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRed);
-                this.columnGreen = new global::System.Data.DataColumn("Green", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnGreen = new global::System.Data.DataColumn("Green", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGreen);
-                this.columnOrderStatus = new global::System.Data.DataColumn("OrderStatus", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnOrderStatus);
-                this.columnCustomerName = new global::System.Data.DataColumn("CustomerName", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnCustomerName);
-                this.columnTimestamp = new global::System.Data.DataColumn("Timestamp", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTimestamp);
+                this.columnStartTime = new global::System.Data.DataColumn("StartTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnStartTime);
+                this.columnEndTime = new global::System.Data.DataColumn("EndTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEndTime);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2228,6 +2214,8 @@ namespace TmcData.Datasets {
             
             private global::System.Data.DataColumn columnCycleTime;
             
+            private global::System.Data.DataColumn columnOrderId;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public Last100OrderCycleTimeDataTableDataTable() {
@@ -2279,6 +2267,14 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn OrderIdColumn {
+                get {
+                    return this.columnOrderId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2314,11 +2310,12 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public Last100OrderCycleTimeDataTableRow AddLast100OrderCycleTimeDataTableRow(string OrderDate, string CycleTime) {
+            public Last100OrderCycleTimeDataTableRow AddLast100OrderCycleTimeDataTableRow(System.DateTime OrderDate, double CycleTime, int OrderId) {
                 Last100OrderCycleTimeDataTableRow rowLast100OrderCycleTimeDataTableRow = ((Last100OrderCycleTimeDataTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         OrderDate,
-                        CycleTime};
+                        CycleTime,
+                        OrderId};
                 rowLast100OrderCycleTimeDataTableRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowLast100OrderCycleTimeDataTableRow);
                 return rowLast100OrderCycleTimeDataTableRow;
@@ -2343,15 +2340,18 @@ namespace TmcData.Datasets {
             internal void InitVars() {
                 this.columnOrderDate = base.Columns["OrderDate"];
                 this.columnCycleTime = base.Columns["CycleTime"];
+                this.columnOrderId = base.Columns["OrderId"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnOrderDate = new global::System.Data.DataColumn("OrderDate", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnOrderDate = new global::System.Data.DataColumn("OrderDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnOrderDate);
-                this.columnCycleTime = new global::System.Data.DataColumn("CycleTime", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnCycleTime = new global::System.Data.DataColumn("CycleTime", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCycleTime);
+                this.columnOrderId = new global::System.Data.DataColumn("OrderId", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOrderId);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2593,10 +2593,10 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string ShiftStartTime {
+            public System.DateTime ShiftStartTime {
                 get {
                     try {
-                        return ((string)(this[this.tableProductionDataTable.ShiftStartTimeColumn]));
+                        return ((global::System.DateTime)(this[this.tableProductionDataTable.ShiftStartTimeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'ShiftStartTime\' in table \'ProductionDataTable\' is DBNull.", e);
@@ -2609,10 +2609,10 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string ShiftEndTime {
+            public System.DateTime ShiftEndTime {
                 get {
                     try {
-                        return ((string)(this[this.tableProductionDataTable.ShiftEndTimeColumn]));
+                        return ((global::System.DateTime)(this[this.tableProductionDataTable.ShiftEndTimeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'ShiftEndTime\' in table \'ProductionDataTable\' is DBNull.", e);
@@ -2625,10 +2625,10 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string ProductsProducedForShift {
+            public int ProductsProducedForShift {
                 get {
                     try {
-                        return ((string)(this[this.tableProductionDataTable.ProductsProducedForShiftColumn]));
+                        return ((int)(this[this.tableProductionDataTable.ProductsProducedForShiftColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'ProductsProducedForShift\' in table \'ProductionDataTable\' is" +
@@ -2693,26 +2693,26 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string OrderId {
+            public System.DateTime Timestamp {
                 get {
                     try {
-                        return ((string)(this[this.tableCycleDataTable.OrderIdColumn]));
+                        return ((global::System.DateTime)(this[this.tableCycleDataTable.TimestampColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'OrderId\' in table \'CycleDataTable\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Timestamp\' in table \'CycleDataTable\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableCycleDataTable.OrderIdColumn] = value;
+                    this[this.tableCycleDataTable.TimestampColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string CycleTime {
+            public double CycleTime {
                 get {
                     try {
-                        return ((string)(this[this.tableCycleDataTable.CycleTimeColumn]));
+                        return ((double)(this[this.tableCycleDataTable.CycleTimeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'CycleTime\' in table \'CycleDataTable\' is DBNull.", e);
@@ -2725,14 +2725,14 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsOrderIdNull() {
-                return this.IsNull(this.tableCycleDataTable.OrderIdColumn);
+            public bool IsTimestampNull() {
+                return this.IsNull(this.tableCycleDataTable.TimestampColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetOrderIdNull() {
-                this[this.tableCycleDataTable.OrderIdColumn] = global::System.Convert.DBNull;
+            public void SetTimestampNull() {
+                this[this.tableCycleDataTable.TimestampColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2796,10 +2796,10 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string AverageCycleTime {
+            public double AverageCycleTime {
                 get {
                     try {
-                        return ((string)(this[this.tableMachineDataTable.AverageCycleTimeColumn]));
+                        return ((double)(this[this.tableMachineDataTable.AverageCycleTimeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'AverageCycleTime\' in table \'MachineDataTable\' is DBNull.", e);
@@ -2812,10 +2812,10 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Timestamp {
+            public System.DateTime Timestamp {
                 get {
                     try {
-                        return ((string)(this[this.tableMachineDataTable.TimestampColumn]));
+                        return ((global::System.DateTime)(this[this.tableMachineDataTable.TimestampColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Timestamp\' in table \'MachineDataTable\' is DBNull.", e);
@@ -2923,10 +2923,10 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Timestamp {
+            public System.DateTime Timestamp {
                 get {
                     try {
-                        return ((string)(this[this.tableAlarmDataTable.TimestampColumn]));
+                        return ((global::System.DateTime)(this[this.tableAlarmDataTable.TimestampColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Timestamp\' in table \'AlarmDataTable\' is DBNull.", e);
@@ -2990,10 +2990,10 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string OrderId {
+            public int OrderId {
                 get {
                     try {
-                        return ((string)(this[this.tableOrderDataTable.OrderIdColumn]));
+                        return ((int)(this[this.tableOrderDataTable.OrderIdColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'OrderId\' in table \'OrderDataTable\' is DBNull.", e);
@@ -3006,10 +3006,10 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string White {
+            public int White {
                 get {
                     try {
-                        return ((string)(this[this.tableOrderDataTable.WhiteColumn]));
+                        return ((int)(this[this.tableOrderDataTable.WhiteColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'White\' in table \'OrderDataTable\' is DBNull.", e);
@@ -3022,10 +3022,10 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Black {
+            public int Black {
                 get {
                     try {
-                        return ((string)(this[this.tableOrderDataTable.BlackColumn]));
+                        return ((int)(this[this.tableOrderDataTable.BlackColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Black\' in table \'OrderDataTable\' is DBNull.", e);
@@ -3038,10 +3038,10 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Blue {
+            public int Blue {
                 get {
                     try {
-                        return ((string)(this[this.tableOrderDataTable.BlueColumn]));
+                        return ((int)(this[this.tableOrderDataTable.BlueColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Blue\' in table \'OrderDataTable\' is DBNull.", e);
@@ -3054,10 +3054,10 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Red {
+            public int Red {
                 get {
                     try {
-                        return ((string)(this[this.tableOrderDataTable.RedColumn]));
+                        return ((int)(this[this.tableOrderDataTable.RedColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Red\' in table \'OrderDataTable\' is DBNull.", e);
@@ -3070,10 +3070,10 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Green {
+            public int Green {
                 get {
                     try {
-                        return ((string)(this[this.tableOrderDataTable.GreenColumn]));
+                        return ((int)(this[this.tableOrderDataTable.GreenColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Green\' in table \'OrderDataTable\' is DBNull.", e);
@@ -3086,49 +3086,33 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string OrderStatus {
+            public System.DateTime StartTime {
                 get {
                     try {
-                        return ((string)(this[this.tableOrderDataTable.OrderStatusColumn]));
+                        return ((global::System.DateTime)(this[this.tableOrderDataTable.StartTimeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'OrderStatus\' in table \'OrderDataTable\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'StartTime\' in table \'OrderDataTable\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableOrderDataTable.OrderStatusColumn] = value;
+                    this[this.tableOrderDataTable.StartTimeColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string CustomerName {
+            public System.DateTime EndTime {
                 get {
                     try {
-                        return ((string)(this[this.tableOrderDataTable.CustomerNameColumn]));
+                        return ((global::System.DateTime)(this[this.tableOrderDataTable.EndTimeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'CustomerName\' in table \'OrderDataTable\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'EndTime\' in table \'OrderDataTable\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableOrderDataTable.CustomerNameColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Timestamp {
-                get {
-                    try {
-                        return ((string)(this[this.tableOrderDataTable.TimestampColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Timestamp\' in table \'OrderDataTable\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableOrderDataTable.TimestampColumn] = value;
+                    this[this.tableOrderDataTable.EndTimeColumn] = value;
                 }
             }
             
@@ -3206,38 +3190,26 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsOrderStatusNull() {
-                return this.IsNull(this.tableOrderDataTable.OrderStatusColumn);
+            public bool IsStartTimeNull() {
+                return this.IsNull(this.tableOrderDataTable.StartTimeColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetOrderStatusNull() {
-                this[this.tableOrderDataTable.OrderStatusColumn] = global::System.Convert.DBNull;
+            public void SetStartTimeNull() {
+                this[this.tableOrderDataTable.StartTimeColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsCustomerNameNull() {
-                return this.IsNull(this.tableOrderDataTable.CustomerNameColumn);
+            public bool IsEndTimeNull() {
+                return this.IsNull(this.tableOrderDataTable.EndTimeColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetCustomerNameNull() {
-                this[this.tableOrderDataTable.CustomerNameColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsTimestampNull() {
-                return this.IsNull(this.tableOrderDataTable.TimestampColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetTimestampNull() {
-                this[this.tableOrderDataTable.TimestampColumn] = global::System.Convert.DBNull;
+            public void SetEndTimeNull() {
+                this[this.tableOrderDataTable.EndTimeColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -3257,10 +3229,10 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string OrderDate {
+            public System.DateTime OrderDate {
                 get {
                     try {
-                        return ((string)(this[this.tableLast100OrderCycleTimeDataTable.OrderDateColumn]));
+                        return ((global::System.DateTime)(this[this.tableLast100OrderCycleTimeDataTable.OrderDateColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'OrderDate\' in table \'Last100OrderCycleTimeDataTable\' is DBN" +
@@ -3274,10 +3246,10 @@ namespace TmcData.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string CycleTime {
+            public double CycleTime {
                 get {
                     try {
-                        return ((string)(this[this.tableLast100OrderCycleTimeDataTable.CycleTimeColumn]));
+                        return ((double)(this[this.tableLast100OrderCycleTimeDataTable.CycleTimeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'CycleTime\' in table \'Last100OrderCycleTimeDataTable\' is DBN" +
@@ -3286,6 +3258,23 @@ namespace TmcData.Datasets {
                 }
                 set {
                     this[this.tableLast100OrderCycleTimeDataTable.CycleTimeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int OrderId {
+                get {
+                    try {
+                        return ((int)(this[this.tableLast100OrderCycleTimeDataTable.OrderIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OrderId\' in table \'Last100OrderCycleTimeDataTable\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableLast100OrderCycleTimeDataTable.OrderIdColumn] = value;
                 }
             }
             
@@ -3311,6 +3300,18 @@ namespace TmcData.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCycleTimeNull() {
                 this[this.tableLast100OrderCycleTimeDataTable.CycleTimeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsOrderIdNull() {
+                return this.IsNull(this.tableLast100OrderCycleTimeDataTable.OrderIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetOrderIdNull() {
+                this[this.tableLast100OrderCycleTimeDataTable.OrderIdColumn] = global::System.Convert.DBNull;
             }
         }
         

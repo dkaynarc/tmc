@@ -10,14 +10,17 @@ using System.Windows.Forms;
 using Microsoft.Reporting.WinForms;
 using System.Reflection;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace Tmc.Scada.App
 {
     public partial class ReportControl : UserControl
     {
+        #region Class-wide Objects, Enums and Properties
+
         protected enum ReportType
         {
-            Alarm, Cycle, Environment, Last100Orders, Machine, Order, Production
+            Alarm, Cycle, Environment, Machine, Order, Production
         }
 
         private Dictionary<ReportType, string> ReportNameDictionary = new Dictionary<ReportType,string>()
@@ -25,53 +28,116 @@ namespace Tmc.Scada.App
             { ReportType.Alarm, "AlarmReport" },
             { ReportType.Cycle, "CycleReport" },
             { ReportType.Environment, "EnvironmentReport" },
-            { ReportType.Last100Orders, "LastHundredOrdersAverageCycleTimeReport" },
             { ReportType.Machine, "MachineReport" },
             { ReportType.Order, "OrderReport" },
             { ReportType.Production, "ProductionReport" }
         };
 
-        private Dictionary<ReportType, Func<IEnumerable>> ReportDataSourceDictionary = new Dictionary<ReportType, Func<IEnumerable>>()
+        private Dictionary<ReportType, Func<DateTime, DateTime, IEnumerable>> ReportDataSourceDictionary 
+            = new Dictionary<ReportType, Func<DateTime, DateTime, IEnumerable>>()
         {
-            //{ ReportType.Alarm, "AlarmReport" },
-            //{ ReportType.Cycle, "CycleReport" },
+            { ReportType.Alarm, TmcData.ReportController.GetAlarmsReportData },
+            { ReportType.Cycle, TmcData.ReportController.GetCycleReportData },
             { ReportType.Environment, TmcData.ReportController.GetEnvironmentReportData },
-            //{ ReportType.Last100Orders, "LastHundredOrdersAverageCycleTimeReport" },
-            //{ ReportType.Machine, "MachineReport" },
-            //{ ReportType.Order, "OrderReport" },
-            //{ ReportType.Production, "ProductionReport" }
+            { ReportType.Machine, TmcData.ReportController.GetMachineReportData },
+            { ReportType.Order, TmcData.ReportController.GetOrderReportData },
+            { ReportType.Production, TmcData.ReportController.GetProductionReportData }
         };
 
-        private ReportViewerForm reportViewerForm = new ReportViewerForm();
+        public DateTime SelectedStartDate
+        {
+            get { return this.dteStartTime.Value; }
+            set { this.dteStartTime.Value = value; }
+        }
+
+        public DateTime SelectedEndDate
+        {
+            get { return this.dteEndTime.Value; }
+            set { this.dteEndTime.Value = value; }
+        }
+
+        #endregion
 
         public ReportControl()
         {
             InitializeComponent();
         }
 
-        private void btnGenerateEnvironmentReport_Click(object sender, EventArgs e)
+        private void CreateReport(ReportType reportType)
         {
-            this.BuildReport(ReportType.Environment, reportViewerForm);
-            reportViewerForm.Text
+            if (!this.DatesWithinValidRange())
+            {
+                MessageBox.Show("Please ensure the start date is equal or earlier than the end date.");
+                return;
+            }
+
+            ReportViewerForm reportViewerForm = new ReportViewerForm();
+            this.BuildReport(reportType, reportViewerForm, this.SelectedStartDate, this.SelectedEndDate);
+            reportViewerForm.Text = Regex.Replace(ReportNameDictionary[reportType], "([a-z](?=[A-Z])|[A-Z](?=[A-Z][a-z]))", "$1 ");
             reportViewerForm.Show();
         }
 
-        //private void BuildEnvironmentReport(ReportViewerForm reportViewerForm)
-        //{
-            
-        //}
-
-        private void BuildReport(ReportType reportType, ReportViewerForm reportViewerForm)
+        private void BuildReport(ReportType reportType, ReportViewerForm reportViewerForm, DateTime startDate, DateTime endDate)
         {
+            if (reportViewerForm == null)
+            {
+                throw new Exception();
+            }
+
             string reportName = ReportNameDictionary[reportType];
             reportViewerForm.ReportViewer.LocalReport.ReportPath = "..\\..\\Reporting\\" + reportName + ".rdlc";
             reportViewerForm.ReportViewer.LocalReport.DataSources.Clear();
-            reportViewerForm.ReportViewer.LocalReport.DataSources.Add(new ReportDataSource(reportName + "DataSet", this.GetReportDataSource(reportType)));
+            reportViewerForm.ReportViewer.LocalReport.DataSources.Add(new ReportDataSource(reportName + "DataSet", this.GetReportDataSource(reportType, startDate, endDate)));
         }
 
-        private IEnumerable GetReportDataSource(ReportType reportType)
+        private bool DatesWithinValidRange()
         {
-            return ReportDataSourceDictionary[reportType]();
+            return this.SelectedStartDate <= this.SelectedEndDate;
+        }
+
+        private IEnumerable GetReportDataSource(ReportType reportType, DateTime startDate, DateTime endDate)
+        {
+            return ReportDataSourceDictionary[reportType](startDate, endDate);
+        }
+
+        #region Button Click Methods
+
+        private void btnGenerateEnvironmentReport_Click(object sender, EventArgs e)
+        {
+            this.CreateReport(ReportType.Environment);
+        }
+
+        private void btnGenerateCycleTimeReport_Click(object sender, EventArgs e)
+        {
+            this.CreateReport(ReportType.Cycle);
+        }
+
+        private void btnGenerateProductionReport_Click(object sender, EventArgs e)
+        {
+            this.CreateReport(ReportType.Production);
+        }
+
+        private void btnGenerateAlarmsReport_Click(object sender, EventArgs e)
+        {
+            this.CreateReport(ReportType.Alarm);
+        }
+
+        private void btnGenerateOrderReport_Click(object sender, EventArgs e)
+        {
+            this.CreateReport(ReportType.Order);
+        }
+
+        private void btnGenerateMachineReport_Click(object sender, EventArgs e)
+        {
+            this.CreateReport(ReportType.Order);
+        }
+
+        #endregion
+
+        private void ReportControl_Load(object sender, EventArgs e)
+        {
+            this.SelectedStartDate = DateTime.Now.AddDays(-1);
+            this.SelectedEndDate = DateTime.Now;
         }
     }
 }

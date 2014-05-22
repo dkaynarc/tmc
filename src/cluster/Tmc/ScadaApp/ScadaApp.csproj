@@ -69,11 +69,6 @@
     <Compile Include="controlPage.Designer.cs">
       <DependentUpon>controlPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Datasets\ReportDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ReportDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="environmentControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -105,9 +100,6 @@
     </Compile>
     <Compile Include="ReportViewerForm.Designer.cs">
       <DependentUpon>ReportViewerForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TablessControl.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="PlantMimic.cs">
       <SubType>UserControl</SubType>
@@ -146,10 +138,10 @@
     <EmbeddedResource Include="ReportControl.resx">
       <DependentUpon>ReportControl.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\TmcData.Datasets.ReportDataSet.datasource" />
     <None Include="Reporting\AlarmReport.rdlc" />
     <EmbeddedResource Include="Reporting\CycleReport.rdlc" />
     <EmbeddedResource Include="Reporting\EnvironmentReport.rdlc" />
-    <EmbeddedResource Include="Reporting\LastHundredOrdersAverageCycleTimeReport.rdlc" />
     <EmbeddedResource Include="Reporting\MachineReport.rdlc" />
     <EmbeddedResource Include="Reporting\OrderReport.rdlc" />
     <EmbeddedResource Include="Reporting\ProductionReport.rdlc" />
@@ -159,21 +151,7 @@
     <None Include="..\TmcData\App.Config">
       <Link>App.Config</Link>
     </None>
-    <None Include="Datasets\ReportDataSet.xsc">
-      <DependentUpon>ReportDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="Datasets\ReportDataSet.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ReportDataSet.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Datasets\ReportDataSet.xss">
-      <DependentUpon>ReportDataSet.xsd</DependentUpon>
-    </None>
     <None Include="packages.config" />
-    <None Include="Properties\DataSources\TmcData.EnvironmentLogBySource_Result.datasource" />
-    <None Include="Properties\DataSources\TmcData.OrderList.datasource" />
-    <None Include="Properties\DataSources\TmcData.OrderListView.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

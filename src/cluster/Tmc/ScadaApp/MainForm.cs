@@ -17,7 +17,6 @@ namespace Tmc.Scada.App
     {
         //private ScadaEngine scadaEngine = new ScadaEngine();
         private DataTable AlarmsDataTable = new DataTable();
-        private static int AlarmCount = 1;
         private const string ALARM_LIST_TAB_PAGE_NAME = "tabAlarmList";
         private const string ALARM_GRID_DISMISS_BUTTON_NAME = "alarmDismiss";
         private const string ALARM_GRID_ALARM_NUMBER_COLUMN_NAME = "alarmNumber";
@@ -25,50 +24,101 @@ namespace Tmc.Scada.App
         private const string ALARM_GRID_ALARM_MESSAGE_COLUMN_NAME = "alarmMessage";
         private const string ALARM_GRID_ALARM_DATETIME_COLUMN_NAME = "alarmDateTime";
 
+        private Timer timer;
+        private int lastAlarmId;
+
         public MainForm()
         {
             InitializeComponent();
             //Initialise SCADA
+            //Only proceed if SCADA is initialised
+            this.InitialiseAlarmControls();
         }
 
-        
-
-        private void plantMimicScreenButton_Click(object sender, EventArgs e)
+        private void InitialiseAlarmControls()
         {
-            this.tablessControlPanel.SelectedTab = this.plantMimicTab;
+            this.InitialiseAlarmDataTable();
+            this.SetGridViewOptions();
         }
 
-        private void controlTabButton_Click(object sender, EventArgs e)
+        private void InitialiseTimer()
         {
-            this.tablessControlPanel.SelectedTab = this.controlTab;
+            this.timer = new Timer();
+            timer.Interval = 1000;
+            timer.Tick += timer_Tick;
         }
 
-        private void environmentTabButton_Click(object sender, EventArgs e)
+        void timer_Tick(object sender, EventArgs e)
         {
-            this.tablessControlPanel.SelectedTab = this.environmentTab;
+            TmcData.ComponentEventLogView newAlarm = TmcRepository.GetLatestAlarm();
+            if (this.AlarmIsNew(newAlarm))
+            {
+                this.AddAlarmEntryToDataTable(newAlarm.ID, newAlarm.LogType, newAlarm.Description, newAlarm.Timestamp.Value);
+            }
         }
 
-        private void ordersTabButton_Click(object sender, EventArgs e)
+        private bool AlarmIsNew(TmcData.ComponentEventLogView newAlarm)
         {
-            this.tablessControlPanel.SelectedTab = this.ordersTab;
+            return this.AlarmsDataTable.Rows[AlarmsDataTable.Rows.Count - 1].Field<int>(ALARM_GRID_ALARM_NUMBER_COLUMN_NAME) < newAlarm.ID;
         }
 
-        private void reportsTabButton_Click(object sender, EventArgs e)
+        private void UpdateLastAlarmId(int alarmId)
         {
-            this.tablessControlPanel.SelectedTab = this.reportsTab;
+            this.lastAlarmId = alarmId;
         }
+
+        //private void plantMimicScreenButton_Click(object sender, EventArgs e)
+        //{
+        //    this.tablessControlPanel.SelectedTab = this.plantMimicTab;
+        //}
+
+        //private void controlTabButton_Click(object sender, EventArgs e)
+        //{
+        //    this.tablessControlPanel.SelectedTab = this.controlTab;
+        //}
+
+        //private void environmentTabButton_Click(object sender, EventArgs e)
+        //{
+        //    this.tablessControlPanel.SelectedTab = this.environmentTab;
+        //}
+
+        //private void ordersTabButton_Click(object sender, EventArgs e)
+        //{
+        //    this.tablessControlPanel.SelectedTab = this.ordersTab;
+        //}
+
+        //private void reportsTabButton_Click(object sender, EventArgs e)
+        //{
+        //    this.tablessControlPanel.SelectedTab = this.reportsTab;
+        //}
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
 
-
         private void orderListBindingSource_CurrentChanged(object sender, EventArgs e)
         {
 
         }
 
+        #region Entry Point Method for Creating Alarm Notifications
+
+        private void AddAlarmEntryToDataTable(int alarmId, string alarmType, string alarmDescription, DateTime alarmDateTime)
+        {
+            DataRow alarmEntryRow = this.AlarmsDataTable.NewRow();
+            alarmEntryRow["alarmNumber"] = alarmId;
+            alarmEntryRow["alarmType"] = alarmType.ToString();
+            alarmEntryRow["alarmDescription"] = alarmDescription;
+            alarmEntryRow["alarmDateTime"] = alarmDateTime;
+
+            this.AlarmsDataTable.Rows.Add(alarmEntryRow);
+            this.UpdateLastAlarmId(alarmId);
+            this.AddAlarmNotification(alarmType, alarmDescription, alarmDateTime);
+            this.AddDismissButtonColumnToGridView();
+        }
+
+        #endregion
 
         #region Alarm Bar Methods
 
@@ -161,18 +211,6 @@ namespace Tmc.Scada.App
             this.AlarmsDataTable.Columns["alarmDateTime"].Caption = "Date & Time";
         }
 
-        private void AddAlarmEntryToDataTable(string alarmType, string alarmDescription, DateTime alarmDateTime)
-        {
-            DataRow alarmEntryRow = this.AlarmsDataTable.NewRow();
-            alarmEntryRow["alarmNumber"] = AlarmCount;
-            alarmEntryRow["alarmType"] = alarmType.ToString();
-            alarmEntryRow["alarmDescription"] = alarmDescription;
-            alarmEntryRow["alarmDateTime"] = alarmDateTime;
-
-            this.AlarmsDataTable.Rows.Add(alarmEntryRow);
-            AlarmCount++;
-        }
-
         #endregion
 
         #region Alarm Gridview Methods
@@ -250,6 +288,22 @@ namespace Tmc.Scada.App
                     {
                         control.Enabled = (tabPageIndex != tabControl.SelectedIndex) ? false : true;
                     }
+                }
+            }
+        }
+
+        private void dgvAlarmsGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (this.dgvAlarmsGrid.Columns[e.ColumnIndex].Name == ALARM_GRID_DISMISS_BUTTON_NAME)
+            {
+                if (this.pnlAlarms.Controls.Count > 0)
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        this.pnlAlarms.Controls.RemoveAt((this.pnlAlarms.Controls.Count - 1) - (e.RowIndex * 3));
+                    }
+
+                    this.DismissAlarmNotifcation(e.RowIndex);
                 }
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,8 @@ namespace TmcData
     {
         public static IList<OrderListView> OrderInfo()
         {
-            return new ICTDEntities().OrderListViews.ToList();
+            //return new ICTDEntities().OrderListViews.ToList();
+            return new List<OrderListView>();
         }
 
         public static IList<EnvironmentLogView> EnvironmentLog()
@@ -47,6 +49,11 @@ namespace TmcData
         public static void CancelOrder(int orderId)
         {
             new ICTDEntities().CancelOrder(orderId);
+        }
+
+        public static ComponentEventLogView GetLatestAlarm()
+        {
+            return new ICTDEntities().ComponentEventLogViews.LastOrDefault();
         }
     }
 }

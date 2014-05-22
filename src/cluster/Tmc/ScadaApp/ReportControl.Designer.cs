@@ -33,7 +33,6 @@
             this.btnGenerateProductionReport = new System.Windows.Forms.Button();
             this.btnGenerateMachineReport = new System.Windows.Forms.Button();
             this.btnGenerateCycleTimeReport = new System.Windows.Forms.Button();
-            this.btnGenerateLast100OrderCycleTimeReport = new System.Windows.Forms.Button();
             this.btnGenerateOrderReport = new System.Windows.Forms.Button();
             this.dteStartTime = new System.Windows.Forms.DateTimePicker();
             this.dteEndTime = new System.Windows.Forms.DateTimePicker();
@@ -59,6 +58,7 @@
             this.btnGenerateAlarmsReport.TabIndex = 0;
             this.btnGenerateAlarmsReport.Text = "Alarms Report";
             this.btnGenerateAlarmsReport.UseVisualStyleBackColor = true;
+            this.btnGenerateAlarmsReport.Click += new System.EventHandler(this.btnGenerateAlarmsReport_Click);
             // 
             // btnGenerateProductionReport
             // 
@@ -68,15 +68,17 @@
             this.btnGenerateProductionReport.TabIndex = 0;
             this.btnGenerateProductionReport.Text = "Production Report";
             this.btnGenerateProductionReport.UseVisualStyleBackColor = true;
+            this.btnGenerateProductionReport.Click += new System.EventHandler(this.btnGenerateProductionReport_Click);
             // 
             // btnGenerateMachineReport
             // 
-            this.btnGenerateMachineReport.Location = new System.Drawing.Point(251, 259);
+            this.btnGenerateMachineReport.Location = new System.Drawing.Point(490, 171);
             this.btnGenerateMachineReport.Name = "btnGenerateMachineReport";
             this.btnGenerateMachineReport.Size = new System.Drawing.Size(187, 82);
             this.btnGenerateMachineReport.TabIndex = 0;
             this.btnGenerateMachineReport.Text = "Machine Report";
             this.btnGenerateMachineReport.UseVisualStyleBackColor = true;
+            this.btnGenerateMachineReport.Click += new System.EventHandler(this.btnGenerateMachineReport_Click);
             // 
             // btnGenerateCycleTimeReport
             // 
@@ -84,17 +86,9 @@
             this.btnGenerateCycleTimeReport.Name = "btnGenerateCycleTimeReport";
             this.btnGenerateCycleTimeReport.Size = new System.Drawing.Size(187, 82);
             this.btnGenerateCycleTimeReport.TabIndex = 0;
-            this.btnGenerateCycleTimeReport.Text = "Cycle Time Report";
+            this.btnGenerateCycleTimeReport.Text = "Average Cycle Time Report";
             this.btnGenerateCycleTimeReport.UseVisualStyleBackColor = true;
-            // 
-            // btnGenerateLast100OrderCycleTimeReport
-            // 
-            this.btnGenerateLast100OrderCycleTimeReport.Location = new System.Drawing.Point(490, 171);
-            this.btnGenerateLast100OrderCycleTimeReport.Name = "btnGenerateLast100OrderCycleTimeReport";
-            this.btnGenerateLast100OrderCycleTimeReport.Size = new System.Drawing.Size(187, 82);
-            this.btnGenerateLast100OrderCycleTimeReport.TabIndex = 0;
-            this.btnGenerateLast100OrderCycleTimeReport.Text = "Cycle Times of Last 100 Orders";
-            this.btnGenerateLast100OrderCycleTimeReport.UseVisualStyleBackColor = true;
+            this.btnGenerateCycleTimeReport.Click += new System.EventHandler(this.btnGenerateCycleTimeReport_Click);
             // 
             // btnGenerateOrderReport
             // 
@@ -104,6 +98,7 @@
             this.btnGenerateOrderReport.TabIndex = 0;
             this.btnGenerateOrderReport.Text = "Order Report";
             this.btnGenerateOrderReport.UseVisualStyleBackColor = true;
+            this.btnGenerateOrderReport.Click += new System.EventHandler(this.btnGenerateOrderReport_Click);
             // 
             // dteStartTime
             // 
@@ -147,13 +142,13 @@
             this.Controls.Add(this.dteStartTime);
             this.Controls.Add(this.btnGenerateOrderReport);
             this.Controls.Add(this.btnGenerateMachineReport);
-            this.Controls.Add(this.btnGenerateLast100OrderCycleTimeReport);
             this.Controls.Add(this.btnGenerateProductionReport);
             this.Controls.Add(this.btnGenerateCycleTimeReport);
             this.Controls.Add(this.btnGenerateAlarmsReport);
             this.Controls.Add(this.btnGenerateEnvironmentReport);
             this.Name = "ReportControl";
-            this.Size = new System.Drawing.Size(691, 358);
+            this.Size = new System.Drawing.Size(691, 267);
+            this.Load += new System.EventHandler(this.ReportControl_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -166,7 +161,6 @@
         private System.Windows.Forms.Button btnGenerateProductionReport;
         private System.Windows.Forms.Button btnGenerateMachineReport;
         private System.Windows.Forms.Button btnGenerateCycleTimeReport;
-        private System.Windows.Forms.Button btnGenerateLast100OrderCycleTimeReport;
         private System.Windows.Forms.Button btnGenerateOrderReport;
         private System.Windows.Forms.DateTimePicker dteStartTime;
         private System.Windows.Forms.DateTimePicker dteEndTime;
