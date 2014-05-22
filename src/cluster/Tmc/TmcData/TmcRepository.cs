@@ -44,6 +44,10 @@ namespace TmcData
             new ICTDEntities().UpdateOrderStatusByID(orderId, statusId);
         }
 
+        public static void AddEnvironmentalReading(int sourceID, DateTime timestamp, float reading, string type)
+        {
+            new ICTDEntities().AddNewEnvironmentLog(timestamp, sourceID, reading, type);
+        }
 
     }
 }

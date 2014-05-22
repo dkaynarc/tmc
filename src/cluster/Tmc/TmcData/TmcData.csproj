@@ -58,6 +58,7 @@
     <Compile Include="CycleLogBySource_Result.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DatabaseMappings.cs" />
     <Compile Include="EnvironmentLogBySource_Result.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
