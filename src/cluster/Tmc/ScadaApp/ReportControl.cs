@@ -74,9 +74,6 @@ namespace Tmc.Scada.App
             ReportViewerForm reportViewerForm = new ReportViewerForm();
             this.BuildReport(reportType, reportViewerForm, this.SelectedStartDate, this.SelectedEndDate);
             reportViewerForm.Text = Regex.Replace(ReportNameDictionary[reportType], "([a-z](?=[A-Z])|[A-Z](?=[A-Z][a-z]))", "$1 ");
-            this.BuildReport(ReportType.Environment, reportViewerForm);
-            //Not sure what this line is for, there was no semicolon so couldn't build.. 
-            //reportViewerForm.Text 
             reportViewerForm.Show();
         }
 
