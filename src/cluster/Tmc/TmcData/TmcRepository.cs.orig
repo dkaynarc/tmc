@@ -46,6 +46,7 @@ namespace TmcData
             new ICTDEntities().UpdateOrderStatusByID(orderId, statusId);
         }
 
+<<<<<<< HEAD
         public static void CancelOrder(int orderId)
         {
             new ICTDEntities().CancelOrder(orderId);
@@ -54,7 +55,7 @@ namespace TmcData
         public static ComponentEventLogView GetLatestAlarm()
         {
             return new ICTDEntities().ComponentEventLogViews.LastOrDefault();
-        }
+=======
         public static void AddEnvironmentalReading(int sourceID, DateTime timestamp, float reading, string type)
         {
             new ICTDEntities().AddNewEnvironmentLog(timestamp, sourceID, reading, type);
@@ -63,6 +64,7 @@ namespace TmcData
         public static void AddEnvironmentalReading(Source source, DateTime timestamp, float reading, EnvironmentType type)
         {
             new ICTDEntities().AddNewEnvironmentLog(timestamp, (int)source, reading, type.ToString());
+>>>>>>> a23523713e84d8b9ec01ca16e506d0ca063b9f63
         }
     }
 }

@@ -55,6 +55,27 @@
     <Compile Include="ComponentEventLogView.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="CycleLogBySource_Result.cs">
+      <DependentUpon>TmcDB.tt</DependentUpon>
+    </Compile>
+<<<<<<< HEAD
+    <Compile Include="Datasets\ReportDataSet.Designer.cs">
+      <DependentUpon>ReportDataSet.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+=======
+    <Compile Include="DatabaseMappings.cs" />
+>>>>>>> a23523713e84d8b9ec01ca16e506d0ca063b9f63
+    <Compile Include="EnvironmentLogBySource_Result.cs">
+      <DependentUpon>TmcDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EnvironmentLogView.cs">
+      <DependentUpon>TmcDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EventLogBySource_Result.cs">
+      <DependentUpon>TmcDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="FiltCompCyclLogBySour_Result.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
@@ -64,10 +85,14 @@
     <Compile Include="FiltOrdeList_Result.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="OrderConfigByOrder_Result.cs">
+      <DependentUpon>TmcDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="OrderListView.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportController.cs" />
     <Compile Include="TmcDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -99,6 +124,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
+    <None Include="Datasets\ReportDataSet.xsc">
+      <DependentUpon>ReportDataSet.xsd</DependentUpon>
+    </None>
+    <EmbeddedResource Include="Datasets\ReportDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ReportDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="Datasets\ReportDataSet.xss">
+      <DependentUpon>ReportDataSet.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="TmcDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -118,11 +154,7 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-<<<<<<< HEAD
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
-=======
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
->>>>>>> parent of 7439fcc... Revert "Framework for UI established"
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
