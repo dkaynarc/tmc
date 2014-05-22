@@ -65,6 +65,7 @@ namespace Tmc.Scada.App
 
         private void CreateReport(ReportType reportType)
         {
+<<<<<<< HEAD
             if (!this.DatesWithinValidRange())
             {
                 MessageBox.Show("Please ensure the start date is equal or earlier than the end date.");
@@ -74,9 +75,11 @@ namespace Tmc.Scada.App
             ReportViewerForm reportViewerForm = new ReportViewerForm();
             this.BuildReport(reportType, reportViewerForm, this.SelectedStartDate, this.SelectedEndDate);
             reportViewerForm.Text = Regex.Replace(ReportNameDictionary[reportType], "([a-z](?=[A-Z])|[A-Z](?=[A-Z][a-z]))", "$1 ");
+=======
             this.BuildReport(ReportType.Environment, reportViewerForm);
             //Not sure what this line is for, there was no semicolon so couldn't build.. 
             //reportViewerForm.Text 
+>>>>>>> 106687cee84fc3b297961679f7661d2459ded330
             reportViewerForm.Show();
         }
 
