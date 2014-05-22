@@ -120,6 +120,7 @@
           <Parameter Name="Timestamp" Type="datetime" Mode="In" />
           <Parameter Name="SourceID" Type="int" Mode="In" />
           <Parameter Name="Reading" Type="float" Mode="In" />
+          <Parameter Name="Type" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="AddNewEventLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Timestamp" Type="datetime" Mode="In" />
@@ -185,6 +186,7 @@
             <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
             <Parameter Name="SourceID" Mode="In" Type="Int32" />
             <Parameter Name="Reading" Mode="In" Type="Double" />
+            <Parameter Name="Type" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="AddNewEventLog">
             <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
