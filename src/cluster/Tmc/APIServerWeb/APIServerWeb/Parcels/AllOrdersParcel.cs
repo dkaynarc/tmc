@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tmc.WebService
+namespace APIServerWeb.Parcels
 {
-    public class Placeholder
+    public class AllOrdersParcel
     {
+
+
+        public LinkedList<OrderParcel> AllOrders { get; set; }
+
     }
 }
