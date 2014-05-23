@@ -307,6 +307,11 @@ namespace Tmc.Vision
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="tablets"></param>
         private void HistogramImage(Image<Bgr, Byte> src, CircleF[] tablets)
         {
             Image<Hsv, Byte> srcHSV = src.Convert<Hsv, Byte>();
@@ -322,25 +327,6 @@ namespace Tmc.Vision
             DenseHistogram HistoHue = new DenseHistogram(256, new RangeF(0, 256));
             DenseHistogram HistoSat = new DenseHistogram(256, new RangeF(0, 256));
             DenseHistogram HistoVal = new DenseHistogram(256, new RangeF(0, 256));
-
-            // = "First line.\r\nSecond line.\r\nThird line.";
-
-            // Write the string to a file.
-           // System.IO.StreamWriter file = new System.IO.StreamWriter("c:\\test.txt");
-
-            //Image<Gray, Byte> Comparedimg2Blue  = src[0];
-            //Image<Gray, Byte> Comparedimg2Green = src[1];
-            //Image<Gray, Byte> Comparedimg2Red   = src[2];
-
-            //HistoHue.Calculate(new Image<Gray, Byte>[] { Comparedimg2Blue }, true, null);
-            //HistoSat.Calculate(new Image<Gray, Byte>[] { Comparedimg2Green }, true, null);
-            //HistoVal.Calculate(new Image<Gray, Byte>[] { Comparedimg2Red }, true, null);
-
-            
-
-            //HistoHue.MatND.ManagedArray.CopyTo(HueHist, 0);
-            //HistoSat.MatND.ManagedArray.CopyTo(SatHist, 0);
-            //HistoVal.MatND.ManagedArray.CopyTo(ValHist, 0);
 
             Rectangle rect = new Rectangle();
             Image<Bgr, byte> oneTablet;
@@ -380,9 +366,9 @@ namespace Tmc.Vision
                 Image<Gray, Byte> Comparedimg2Red = hsvColor[2];
 
                 float[][] abc   = HsvValueFloatArray(oneTablet);
-                int[][] hue = getHighLowHSV(abc, 30, 0);
-                int[][] sat = getHighLowHSV(abc, 30, 1);
-                int[][] val = getHighLowHSV(abc, 30, 2);
+                int[][] hue     = getHighLowHSV(abc, 30, HSVdata.Hue);
+                int[][] sat     = getHighLowHSV(abc, 30, HSVdata.Sat);
+                int[][] val     = getHighLowHSV(abc, 30, HSVdata.Val);
 
 
                 HistoHue.Calculate(new Image<Gray, Byte>[] { Comparedimg2Blue }, true, null);
@@ -400,12 +386,6 @@ namespace Tmc.Vision
                 {
                     //lowh 
                 }
-                //string lines = ;
-                //file.WriteLine(lines);
-                
-                //CvInvoke.cvShowImage("hue", Comparedimg2Blue);
-                //CvInvoke.cvShowImage("sat", Comparedimg2Green);
-                //CvInvoke.cvShowImage("val", Comparedimg2Red);
 
 
                 
@@ -413,106 +393,12 @@ namespace Tmc.Vision
                 HistogramViewer.Show(oneTablet.Convert<Hsv, Byte>());
                 CvInvoke.cvWaitKey(0);
             }
-            //file.Close();
-            //CvInvoke.cvShowImage("der", HistoHue.GetHistogramImage());
-
             HistogramViewer.Show(src);
 
             CvInvoke.cvWaitKey(0); 
         }
 
-        private int[][] getHighLowHSV(float[][] srcHSV, int limit, int hsvPart)
-        {
-            var HsvList = new List<int[]>();
-
-            int[] hsvLH = new int[2];
-
-            //Hsv[] hsvLH = new Hsv[2];
-
-            //for (int hsvPart = 0; hsvPart < 3; hsvPart++)
-            //{
-                int toggle = 0;
-                for (int j = 0; j < 256; j++)
-                {
-                    if (srcHSV[hsvPart][j] > limit)
-                    {
-                        if (toggle == 0)
-                        {
-                            //HsvList.Add
-                            //if (hsvPart == 0) hsvLH[(int)HSVRange.Low].Hue            = j;
-                            //else if (hsvPart == 1) hsvLH[(int)HSVRange.Low].Satuation = j;
-                            //else if (hsvPart == 2) hsvLH[(int)HSVRange.Low].Value     = j;
-                            hsvLH[(int)HSVRange.Low] = j;
-                            //HsvList.Add(hsvLH);
-                            toggle = 1;
-
-                        }
-                        
-                    }
-                    else if (srcHSV[hsvPart][j] < limit)
-                    {
-                        if (toggle == 1)
-                        {
-                            //if (hsvPart == 0) hsvLH[(int)HSVRange.High].Hue             = j;
-                            //else if (hsvPart == 1) hsvLH[(int)HSVRange.High].Satuation  = j;
-                            //else if (hsvPart == 2) hsvLH[(int)HSVRange.High].Value      = j;
-                            hsvLH[(int)HSVRange.High] = j;
-
-                            //HsvList.AddRange(hsvLH);
-                            HsvList.Add(hsvLH.Clone() as int[]);
-                            toggle = 0;
-                        }
-                    }
-                    if ((j == 255) && (toggle == 1))
-                    {
-                        
-                        hsvLH[(int)HSVRange.High] = 255;
-                        HsvList.Add(hsvLH.Clone() as int[]);
-                        toggle = 0;
-                        
-                    }
-                }
-            //}
-            return HsvList.ToArray();
-        }
-
-        private float[][] HsvValueFloatArray(Image<Bgr, Byte> src)
-        {
-            var HsvList = new List<float[]>();
-
-            float[] HueHist;
-            float[] SatHist;
-            float[] ValHist;
-
-            HueHist = new float[256];
-            SatHist = new float[256];
-            ValHist = new float[256];
-
-            DenseHistogram HistoHue = new DenseHistogram(256, new RangeF(0, 256));
-            DenseHistogram HistoSat = new DenseHistogram(256, new RangeF(0, 256));
-            DenseHistogram HistoVal = new DenseHistogram(256, new RangeF(0, 256));
-
-            Image<Hsv, Byte> hsvColor = src.Convert<Hsv, Byte>();
-            Image<Gray, Byte> Comparedimg2Hsv = hsvColor[0];
-            Image<Gray, Byte> Comparedimg2Sat = hsvColor[1];
-            Image<Gray, Byte> Comparedimg2Val = hsvColor[2];
-
-            HistoHue.Calculate(new Image<Gray, Byte>[] { Comparedimg2Hsv }, true, null);
-            HistoSat.Calculate(new Image<Gray, Byte>[] { Comparedimg2Sat }, true, null);
-            HistoVal.Calculate(new Image<Gray, Byte>[] { Comparedimg2Val }, true, null);
-
-            //HistoVal.Calculate(
-
-            HistoHue.MatND.ManagedArray.CopyTo(HueHist, 0);
-            HistoSat.MatND.ManagedArray.CopyTo(SatHist, 0);
-            HistoVal.MatND.ManagedArray.CopyTo(ValHist, 0);
-
-            HsvList.Add(HueHist);
-            HsvList.Add(SatHist);
-            HsvList.Add(ValHist);
-
-            return HsvList.ToArray();
-        }
+        
 
     }
 }

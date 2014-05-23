@@ -21,6 +21,8 @@ namespace Tmc.Vision
         /// </summary>
         public enum HSVRange { Low = 0, High };
 
+        public enum HSVdata { Hue = 0, Sat, Val };
+
 
         /// <summary>
         /// This Function lets us detect circles in an image
@@ -375,6 +377,102 @@ namespace Tmc.Vision
                 
 
             return src.GetSubRect(rect);
+        }
+
+        /// <summary>
+        /// workout where the peaks in
+        /// </summary>
+        /// <param name="srcHSV"></param>
+        /// <param name="limit"></param>
+        /// <param name="hsvPart"></param>
+        /// <returns></returns>
+        public int[][] getHighLowHSV(float[][] srcHSV, int limit, HSVdata hsvPart)//int hsvPart)
+        {
+            var HsvList = new List<int[]>();
+
+            int[] hsvLH = new int[2];
+
+            int toggle = 0;
+
+            for (int j = 0; j < 256; j++)
+            {
+                if (srcHSV[(int)hsvPart][j] > limit)
+                {
+                    if (toggle == 0)
+                    {
+                        hsvLH[(int)HSVRange.Low] = j;
+                        toggle = 1;
+
+                    }
+
+                }
+                else if (srcHSV[(int)hsvPart][j] < limit)
+                {
+                    if (toggle == 1)
+                    {
+                        hsvLH[(int)HSVRange.High] = j;
+                        HsvList.Add(hsvLH.Clone() as int[]);
+                        toggle = 0;
+                    }
+                }
+                if ((j == 255) && (toggle == 1))
+                {
+
+                    hsvLH[(int)HSVRange.High] = 255;
+                    HsvList.Add(hsvLH.Clone() as int[]);
+                    toggle = 0;
+
+                }
+            }
+            //}
+            return HsvList.ToArray();
+        }
+
+        /// <summary>
+        /// works out hsv histogram of image and give us back an arrays for Hue, saturation, and value
+        /// </summary>
+        /// <param name="src">
+        /// source image we want to get the historgram of
+        /// </param>
+        /// <returns>
+        /// returns 2d array for hue sat and val
+        /// </returns>
+        public float[][] HsvValueFloatArray(Image<Bgr, Byte> src)
+        {
+            var HsvList = new List<float[]>();
+
+            float[] HueHist;
+            float[] SatHist;
+            float[] ValHist;
+
+            HueHist = new float[256];
+            SatHist = new float[256];
+            ValHist = new float[256];
+
+            DenseHistogram HistoHue = new DenseHistogram(256, new RangeF(0, 256));
+            DenseHistogram HistoSat = new DenseHistogram(256, new RangeF(0, 256));
+            DenseHistogram HistoVal = new DenseHistogram(256, new RangeF(0, 256));
+
+            Image<Hsv, Byte> hsvColor = src.Convert<Hsv, Byte>();
+            Image<Gray, Byte> Comparedimg2Hsv = hsvColor[0];
+            Image<Gray, Byte> Comparedimg2Sat = hsvColor[1];
+            Image<Gray, Byte> Comparedimg2Val = hsvColor[2];
+
+            HistoHue.Calculate(new Image<Gray, Byte>[] { Comparedimg2Hsv }, true, null);
+            HistoSat.Calculate(new Image<Gray, Byte>[] { Comparedimg2Sat }, true, null);
+            HistoVal.Calculate(new Image<Gray, Byte>[] { Comparedimg2Val }, true, null);
+
+            //HistoVal.Calculate(
+
+            HistoHue.MatND.ManagedArray.CopyTo(HueHist, 0);
+            HistoSat.MatND.ManagedArray.CopyTo(SatHist, 0);
+            HistoVal.MatND.ManagedArray.CopyTo(ValHist, 0);
+
+            HsvList.Add(HueHist);
+            HsvList.Add(SatHist);
+            HsvList.Add(ValHist);
+
+            return HsvList.ToArray();
         }
     }
 }
