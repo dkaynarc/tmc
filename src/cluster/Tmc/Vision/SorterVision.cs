@@ -11,6 +11,7 @@ using Emgu.CV.Structure;
 using Emgu.CV.GPU;
 using Tmc.Common;
 using Emgu.CV.Features2D;
+using Emgu.CV.UI;
 //using Emgu.CV.CameraCalibration;
 
 namespace Tmc.Vision
@@ -62,10 +63,12 @@ namespace Tmc.Vision
             //PointF[] points = FindPattern(img.Convert<Gray, Byte>(), new Size(12, 9));
             //CircleF
             //CvInvoke.cvWaitKey(0);
+            
             foreach (CircleF circle in circles)
             {
                 CalculateTrueCordXYmm(ChessboardPoints, new PointF(circle.Center.X, circle.Center.Y));//424, 466));//454, 503));//423,464));//594, 750));//253, 525));
-                OtherTabletsNear(circles, circle);
+                CircleF[] abc = OtherTabletsNear(circles, circle);
+                HistogramImage(img, circles);
             }
             DetectOverLap();
             DetectDamagedTablet();
@@ -249,23 +252,31 @@ namespace Tmc.Vision
             foreach(CircleF knowTablet in knowTablets)
             {
                 double Mag = Math.Sqrt(Math.Pow((targetTablet.Center.X - knowTablet.Center.X), 2) + Math.Pow((targetTablet.Center.Y - knowTablet.Center.Y), 2));
-
+                int a = 0;
                 bool b = checkCircles(knowTablet, targetTablet);
                 if ((Mag <= targetTablet.Radius) && (checkCircles(knowTablet,targetTablet) == false))
                 {//center is in the radius of the circle
-                    //float x = targetTablet.Center.X - knowTablet.Center.X;
-                    //float y = targetTablet.Center.Y - knowTablet.Center.Y;
-                    //double m = (0 - y) / (0 - x);
-                    //double Mag = Math.Sqrt(Math.Pow((targetTablet.Center.X - knowTablet.Center.X), 2) + Math.Pow((knowTablet.Center.X - knowTablet.Center.Y ), 2));
-                    int a = 0;
+                    a++;
+                    circleList.Add(knowTablet);
+                    //int a = 0;
                     //targetTablet
                 }
                 if ((Mag < (targetTablet.Radius + knowTablet.Radius)) && (checkCircles(knowTablet, targetTablet) == false))
                 {//if the circle crosses over
                     
+                    if (a < 1)
+                    {
+                        circleList.Add(knowTablet);
+                    }
+                    
+                    a++;
+                    //int a = 0;
                 }
             }
-            return knowTablets;
+
+            return circleList.ToArray();
+
+            //return knowTablets;
         }
 
         private bool checkCircles(CircleF circ, CircleF targ)
@@ -294,6 +305,213 @@ namespace Tmc.Vision
         private void DetectDamagedTablet()
         {
 
+        }
+
+        private void HistogramImage(Image<Bgr, Byte> src, CircleF[] tablets)
+        {
+            Image<Hsv, Byte> srcHSV = src.Convert<Hsv, Byte>();
+
+            float[] HueHist;
+            float[] SatHist;
+            float[] ValHist;
+
+            HueHist = new float[256];
+            SatHist = new float[256];
+            ValHist = new float[256];
+
+            DenseHistogram HistoHue = new DenseHistogram(256, new RangeF(0, 256));
+            DenseHistogram HistoSat = new DenseHistogram(256, new RangeF(0, 256));
+            DenseHistogram HistoVal = new DenseHistogram(256, new RangeF(0, 256));
+
+            // = "First line.\r\nSecond line.\r\nThird line.";
+
+            // Write the string to a file.
+           // System.IO.StreamWriter file = new System.IO.StreamWriter("c:\\test.txt");
+
+            //Image<Gray, Byte> Comparedimg2Blue  = src[0];
+            //Image<Gray, Byte> Comparedimg2Green = src[1];
+            //Image<Gray, Byte> Comparedimg2Red   = src[2];
+
+            //HistoHue.Calculate(new Image<Gray, Byte>[] { Comparedimg2Blue }, true, null);
+            //HistoSat.Calculate(new Image<Gray, Byte>[] { Comparedimg2Green }, true, null);
+            //HistoVal.Calculate(new Image<Gray, Byte>[] { Comparedimg2Red }, true, null);
+
+            
+
+            //HistoHue.MatND.ManagedArray.CopyTo(HueHist, 0);
+            //HistoSat.MatND.ManagedArray.CopyTo(SatHist, 0);
+            //HistoVal.MatND.ManagedArray.CopyTo(ValHist, 0);
+
+            Rectangle rect = new Rectangle();
+            Image<Bgr, byte> oneTablet;
+            double dotAngle = 0.607;//result of of cos(ang) which use to multiply radius to give us the dot product
+            TabletColors tabletColour;
+            int cellInTray;
+
+
+            foreach (CircleF tablet in tablets)
+            {
+
+                rect.X = (int)(tablet.Center.X - (tablet.Radius * dotAngle));
+                rect.Y = (int)(tablet.Center.Y - (tablet.Radius * dotAngle));
+                rect.Width = (int)((tablet.Radius * dotAngle) * 2);
+                rect.Height = (int)((tablet.Radius * dotAngle) * 2);
+
+                if (rect.X < 0) rect.X = 0;
+                if (rect.Y < 0) rect.Y = 0;
+                if ((rect.X + rect.Width) > src.Cols)
+                {
+                    rect.Width -= (rect.X + rect.Width) - src.Cols;
+                }
+                if ((rect.Y + rect.Height) > src.Rows)
+                {
+                    rect.Height -= (rect.Y + rect.Height) - src.Rows;
+                }
+
+                oneTablet = src.GetSubRect(rect);
+                CvInvoke.cvShowImage("Test Window2", oneTablet); //Show the image
+                tabletColour = detectColour(oneTablet, HSVTabletColoursRanges);
+                //cellInTray      = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
+                //trayList.Cells[cellInTray] = new Tablet { Color = tabletColour };
+                //HistogramViewer.Show(oneTablet);
+                Image<Hsv, Byte> hsvColor = oneTablet.Convert<Hsv, Byte>();
+                Image<Gray, Byte> Comparedimg2Blue = hsvColor[0];
+                Image<Gray, Byte> Comparedimg2Green = hsvColor[1];
+                Image<Gray, Byte> Comparedimg2Red = hsvColor[2];
+
+                float[][] abc   = HsvValueFloatArray(oneTablet);
+                int[][] hue = getHighLowHSV(abc, 30, 0);
+                int[][] sat = getHighLowHSV(abc, 30, 1);
+                int[][] val = getHighLowHSV(abc, 30, 2);
+
+
+                HistoHue.Calculate(new Image<Gray, Byte>[] { Comparedimg2Blue }, true, null);
+                HistoSat.Calculate(new Image<Gray, Byte>[] { Comparedimg2Green }, true, null);
+                 HistoVal.Calculate(new Image<Gray, Byte>[] { Comparedimg2Red }, true, null);
+
+                //HistoVal.Calculate(
+
+                HistoHue.MatND.ManagedArray.CopyTo(HueHist, 0);
+                HistoSat.MatND.ManagedArray.CopyTo(SatHist, 0);
+                HistoVal.MatND.ManagedArray.CopyTo(ValHist, 0);
+                int lowh, lows, lowv;
+                int highh, highs, highv;
+                for(int i=0; i < 256;i++)
+                {
+                    //lowh 
+                }
+                //string lines = ;
+                //file.WriteLine(lines);
+                
+                //CvInvoke.cvShowImage("hue", Comparedimg2Blue);
+                //CvInvoke.cvShowImage("sat", Comparedimg2Green);
+                //CvInvoke.cvShowImage("val", Comparedimg2Red);
+
+
+                
+
+                HistogramViewer.Show(oneTablet.Convert<Hsv, Byte>());
+                CvInvoke.cvWaitKey(0);
+            }
+            //file.Close();
+            //CvInvoke.cvShowImage("der", HistoHue.GetHistogramImage());
+
+            HistogramViewer.Show(src);
+
+            CvInvoke.cvWaitKey(0); 
+        }
+
+        private int[][] getHighLowHSV(float[][] srcHSV, int limit, int hsvPart)
+        {
+            var HsvList = new List<int[]>();
+
+            int[] hsvLH = new int[2];
+
+            //Hsv[] hsvLH = new Hsv[2];
+
+            //for (int hsvPart = 0; hsvPart < 3; hsvPart++)
+            //{
+                int toggle = 0;
+                for (int j = 0; j < 256; j++)
+                {
+                    if (srcHSV[hsvPart][j] > limit)
+                    {
+                        if (toggle == 0)
+                        {
+                            //HsvList.Add
+                            //if (hsvPart == 0) hsvLH[(int)HSVRange.Low].Hue            = j;
+                            //else if (hsvPart == 1) hsvLH[(int)HSVRange.Low].Satuation = j;
+                            //else if (hsvPart == 2) hsvLH[(int)HSVRange.Low].Value     = j;
+                            hsvLH[(int)HSVRange.Low] = j;
+                            //HsvList.Add(hsvLH);
+                            toggle = 1;
+
+                        }
+                        
+                    }
+                    else if (srcHSV[hsvPart][j] < limit)
+                    {
+                        if (toggle == 1)
+                        {
+                            //if (hsvPart == 0) hsvLH[(int)HSVRange.High].Hue             = j;
+                            //else if (hsvPart == 1) hsvLH[(int)HSVRange.High].Satuation  = j;
+                            //else if (hsvPart == 2) hsvLH[(int)HSVRange.High].Value      = j;
+                            hsvLH[(int)HSVRange.High] = j;
+
+                            //HsvList.AddRange(hsvLH);
+                            HsvList.Add(hsvLH.Clone() as int[]);
+                            toggle = 0;
+                        }
+                    }
+                    if ((j == 255) && (toggle == 1))
+                    {
+                        
+                        hsvLH[(int)HSVRange.High] = 255;
+                        HsvList.Add(hsvLH.Clone() as int[]);
+                        toggle = 0;
+                        
+                    }
+                }
+            //}
+            return HsvList.ToArray();
+        }
+
+        private float[][] HsvValueFloatArray(Image<Bgr, Byte> src)
+        {
+            var HsvList = new List<float[]>();
+
+            float[] HueHist;
+            float[] SatHist;
+            float[] ValHist;
+
+            HueHist = new float[256];
+            SatHist = new float[256];
+            ValHist = new float[256];
+
+            DenseHistogram HistoHue = new DenseHistogram(256, new RangeF(0, 256));
+            DenseHistogram HistoSat = new DenseHistogram(256, new RangeF(0, 256));
+            DenseHistogram HistoVal = new DenseHistogram(256, new RangeF(0, 256));
+
+            Image<Hsv, Byte> hsvColor = src.Convert<Hsv, Byte>();
+            Image<Gray, Byte> Comparedimg2Hsv = hsvColor[0];
+            Image<Gray, Byte> Comparedimg2Sat = hsvColor[1];
+            Image<Gray, Byte> Comparedimg2Val = hsvColor[2];
+
+            HistoHue.Calculate(new Image<Gray, Byte>[] { Comparedimg2Hsv }, true, null);
+            HistoSat.Calculate(new Image<Gray, Byte>[] { Comparedimg2Sat }, true, null);
+            HistoVal.Calculate(new Image<Gray, Byte>[] { Comparedimg2Val }, true, null);
+
+            //HistoVal.Calculate(
+
+            HistoHue.MatND.ManagedArray.CopyTo(HueHist, 0);
+            HistoSat.MatND.ManagedArray.CopyTo(SatHist, 0);
+            HistoVal.MatND.ManagedArray.CopyTo(ValHist, 0);
+
+            HsvList.Add(HueHist);
+            HsvList.Add(SatHist);
+            HsvList.Add(ValHist);
+
+            return HsvList.ToArray();
         }
 
     }

@@ -66,11 +66,25 @@ namespace Tmc.Vision
 
             #if true
             Image<Bgr, Byte> a = src.Clone();
+            
+            Image<Gray, Byte> imageL = a[1];
+            imageL._EqualizeHist();
+            a[1] = imageL;
+
+            Image<Gray, Byte> imageL2 = a[2];
+            imageL2._EqualizeHist();
+            a[2] = imageL2;
+
+            Image<Gray, Byte> imageL3 = a[0];
+            imageL3._EqualizeHist();
+            a[0] = imageL3;
 
             foreach (CircleF circle in circles)
             {
                 a.Draw(circle, new Bgr(Color.Red), 2);
             }
+
+            
 
             f.pictureBox2_draw(a);
 
