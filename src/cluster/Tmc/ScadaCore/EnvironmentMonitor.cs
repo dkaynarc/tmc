@@ -13,7 +13,7 @@ namespace Tmc.Scada.Core
     {
         public bool LoggingEnabled { get; set; }
         private List<ISensor> _sensors;
-        private List<EnvironmentLogEntry> Log { get; set; }
+        public List<EnvironmentLogEntry> Log { get; set; }
         private Timer _updateTimer;
 
         // SensorProperties Entry will have the Dictionary as follows

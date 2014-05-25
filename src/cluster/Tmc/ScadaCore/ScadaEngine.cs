@@ -33,7 +33,6 @@ namespace Tmc.Scada.Core
 
         public void Start()
         {
-            _environmentMonitor.Log(); // Should be run on a separate thread
         }
 
         public void Stop()

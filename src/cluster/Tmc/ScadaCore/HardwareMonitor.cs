@@ -14,13 +14,13 @@ namespace Tmc.Scada.Core
         public bool LoggingEnabled { get; set; }
         private ScadaEngine _engine;
         private List<IHardware> _hardware;
-        private List<HardwareLogEntry> Log { get; set; }
+        //private List<HardwareLogEntry> Log { get; set; }
         private Timer _updateTimer;
 
         public HardwareMonitor(ClusterConfig config)
         {
             _hardware = config.GetAllHardware();
-            Log = new List<HardwareLogEntry>();
+            //Log = new List<HardwareLogEntry>();
             int updateTime = 1000;
 
             if (!Int32.TryParse(ConfigurationManager.AppSettings["HardwareMonitorUpdateRateMsec"], out updateTime))
@@ -57,11 +57,10 @@ namespace Tmc.Scada.Core
                     {
                         logType = LogType.Message;
                     }
-                    Log.Add(new HardwareLogEntry(hardware.Name, hardware.GetStatus(), logType));
+                    //Log.Add(new HardwareLogEntry(hardware.Name, hardware.GetStatus(), logType));
                     // enter in the database
                 }
             }
         }
-    }
     }
 }
