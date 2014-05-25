@@ -1,0 +1,13 @@
+diff a/src/cluster/Tmc/TmcData/TmcRepository.cs b/src/cluster/Tmc/TmcData/TmcRepository.cs	(rejected hunks)
+@@ -39,6 +39,11 @@
+             new ICTDEntities().UpdateOrderStatusByID(orderId, statusId);
+         }
+ 
++        //public static void ()
++        //{
++        //    new ICTDEntities().
++        //}
++
+ 
+     }
+ }
