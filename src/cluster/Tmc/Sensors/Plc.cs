@@ -27,6 +27,7 @@ namespace Tmc.Sensors
         private string _nodeIpAddress;
         private AxAsadtcp _plc;
         private Dictionary<PlcAttachedSwitch, bool> _switchStates;
+        private const string DemoWindowName = "Automated Solutions Demo";
 
         public Plc()
         {
@@ -68,10 +69,10 @@ namespace Tmc.Sensors
             {
                 this._plc = CreatePlcControl();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 this._hwStatus = HardwareStatus.Failed;
-                throw new Exception("PLC initialisation failed");
+                throw new Exception("PLC initialisation failed", ex);
             }
             this._hwStatus = HardwareStatus.Operational;
         }
@@ -130,10 +131,13 @@ namespace Tmc.Sensors
         private AxAsadtcp CreatePlcControl()
         {
             var control = new AxAsadtcp();
+            var windowDestroyer = new WindowDestroyer(DemoWindowName, 100, 5);
 
             ((System.ComponentModel.ISupportInitialize)(control)).BeginInit();
             
-            CloseDemoWindowAsync();
+            // Close the demo notification window
+            windowDestroyer.DestroyWindow();
+
             control.CreateControl();
 
             control.Visible = false;
@@ -141,30 +145,6 @@ namespace Tmc.Sensors
             ((System.ComponentModel.ISupportInitialize)(control)).EndInit();
             
             return control;
-        }
-
-        /// <summary>
-        /// Closes the PLC ActiveX control's demo notification.
-        /// TODO: Add a cancellation token so that this thread has no chance
-        /// of running forever.
-        /// </summary>
-        private void CloseDemoWindowAsync()
-        {
-            Task.Run(() =>
-            {
-                IEnumerable<IntPtr> demoWindows = null;
-                // HACK
-                do
-                {
-                    var windows = Win32Helpers.GetOpenWindows();
-                    demoWindows = windows.Where(x => x.Value.Contains("Automated Solutions Demo"))
-                                    .Select(x => x.Key);
-                    System.Threading.Thread.Sleep(10);
-                }
-                while (demoWindows == null || demoWindows.Count() == 0);
-                // END HACK
-                Win32Helpers.CloseWindow(demoWindows.ToArray()[0]);
-            });
         }
     }
 }
