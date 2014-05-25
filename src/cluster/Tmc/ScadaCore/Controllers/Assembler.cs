@@ -11,6 +11,7 @@ namespace Tmc.Scada.Core
 {
     public sealed class Assembler : ControllerBase
     {
+        public Tray<Tablet> LastOrderTray;
         private AssemblerRobot _assemblerRobot;
         private CancellationTokenSource _cancelTokenSource;
 
@@ -18,6 +19,7 @@ namespace Tmc.Scada.Core
         {
             _assemblerRobot = config.Robots[typeof(AssemblerRobot)] as AssemblerRobot;
             this._cancelTokenSource = new CancellationTokenSource();
+            this.LastOrderTray = null;
 
             if (_assemblerRobot == null)
             {
@@ -69,45 +71,45 @@ namespace Tmc.Scada.Core
             if (!canCompleteOrder(mag, orderConfiguration))
             {
                 Logger.Instance.Write(new LogEntry("Not enough tablets to complete the order, Please refill tablet magazine"));
-                OnCompleted(new AssemblerEventArgs() { OperationStatus = AssemblerOperationStatus.TabletRefill });
+                OnCompleted(new AssemblerEventArgs() { AssemblerOperationStatus = AssemblerOperationStatus.TabletRefill });
                 IsRunning = false;
-            }            
+            }
             else
             {
                 Task.Run(() =>
                 {
                     var status = Assemble(mag, orderConfiguration, ct);
                     IsRunning = false;
-                    OnCompleted(new ControllerEventArgs() { OperationStatus = status });
+                    OnCompleted(new AssemblerEventArgs()
+                    {
+                        OperationStatus = status,
+                        AssemblerOperationStatus = AssemblerOperationStatus.Normal
+                    });
                 }, ct);
             }
         }
 
-        private ControllerOperationStatus Assemble(TabletMagazine mag, OrderConfiguration orderConfiguration, CancellationToken ct) //TODO Check for tray index outofbound
+        private ControllerOperationStatus Assemble(TabletMagazine mag, OrderConfiguration orderConfiguration, CancellationToken ct)
         {
             var status = ControllerOperationStatus.Succeeded;
             try
             {
-                int trayIndex = 0;                                                      
-                foreach (var pair in orderConfiguration.Tablets.Where(x => x.Value > 0))
+                var tray = MapOrderToTray(orderConfiguration);
+                for (int i = 0; i < tray.Cells.Count; i++)
                 {
-                    var numTablets = pair.Value;
-                    for (int i = 0; i < numTablets; i++)
+                    var tablet = tray.Cells[i];
+                    if (ct.IsCancellationRequested)
                     {
-                        if (ct.IsCancellationRequested)
-                        {
-                            status = ControllerOperationStatus.Cancelled;
-                            return status;
-                        }
-                        else
-                        {
-                            _assemblerRobot.PlaceTablet(mag.GetSlotIndex(pair.Key), mag.GetSlotDepth(pair.Key), trayIndex); //TODO check chip depth = 10 or 0 when full?
-                            trayIndex++;
-                        }
-
+                        status = ControllerOperationStatus.Cancelled;
+                        return status;
+                    }
+                    else
+                    {
+                        _assemblerRobot.PlaceTablet(mag.GetSlotIndex(tablet.Color), mag.GetSlotDepth(tablet.Color), i); //TODO check chip depth = 10 or 0 when full?
                     }
                 }
                 status = ControllerOperationStatus.Succeeded;
+                LastOrderTray = tray;
             }
             catch (Exception ex)
             {
@@ -115,6 +117,37 @@ namespace Tmc.Scada.Core
                 status = ControllerOperationStatus.Failed;
             }
             return status;
+        }
+
+        private Tray<Tablet> MapOrderToTray(OrderConfiguration orderConfig)
+        {
+            int trayIndex = 0;
+            var tray = new Tray<Tablet>();
+            var tabletCollection = orderConfig.Tablets.Where(x => x.Value > 0);
+            int totalTablets = 0;
+            tabletCollection.ToList().ForEach(x => totalTablets += x.Value);
+
+            if (totalTablets > Tray<Tablet>.MaxUsableCells - 1)
+            {
+                throw new Exception(String.Format("The number of tablets in the order exceeds number of usable tray cells ({0} > {1})",
+                                        totalTablets, Tray<Tablet>.MaxUsableCells));
+            }            
+
+            foreach (var pair in tabletCollection)
+            {
+                var numTablets = pair.Value;
+                for (int i = 0; i < numTablets; i++)
+                {
+                    if (trayIndex == Tray<Tablet>.MiddleCellIndex)
+                    {
+                        trayIndex++;
+                    }
+                    tray.Cells[i] = new Tablet() { Color = pair.Key };
+                    trayIndex++;
+                }
+            }
+
+            return tray;
         }
     }
 
@@ -126,11 +159,13 @@ namespace Tmc.Scada.Core
 
     public enum AssemblerOperationStatus
     {
-        TabletRefill
+        TabletRefill,
+        Normal
     }
 
     public class AssemblerEventArgs : ControllerEventArgs
     {
-        public AssemblerOperationStatus OperationStatus;
+        public AssemblerOperationStatus AssemblerOperationStatus;
+        public Tray<Tablet> MappedTray;
     }
 }

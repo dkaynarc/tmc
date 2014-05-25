@@ -15,5 +15,11 @@ namespace Tmc.Common
     {
         public TabletColors Color { get; set; }
         public PointF LocationPoint { get; set; }
+
+        public Tablet()
+        {
+            Color = TabletColors.Unknown;
+            LocationPoint = new PointF(0, 0);
+        }
     }
 }

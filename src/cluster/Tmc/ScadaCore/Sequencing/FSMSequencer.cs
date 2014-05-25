@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Diagnostics;
 using Appccelerate.StateMachine;
+using Tmc.Common;
 
 namespace Tmc.Scada.Core.Sequencing
 {
@@ -21,6 +22,7 @@ namespace Tmc.Scada.Core.Sequencing
         private Sorter _sorter;
         private TrayVerifier _trayVerifier;
         private Palletiser _palletiser;
+        private OrderConsumer _orderConsumer;
 
         public FSMSequencer(ScadaEngine engine)
         {
@@ -34,6 +36,8 @@ namespace Tmc.Scada.Core.Sequencing
             this._sorter = _engine.ClusterConfig.Controllers[typeof(Sorter)] as Sorter;
             this._trayVerifier = _engine.ClusterConfig.Controllers[typeof(TrayVerifier)] as TrayVerifier;
             this._palletiser = _engine.ClusterConfig.Controllers[typeof(Palletiser)] as Palletiser;
+
+            this._orderConsumer = _engine.OrderConsumer;
 
             Debug.Assert(this._conveyorController != null);
             Debug.Assert(this._assembler != null);
@@ -192,7 +196,8 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.Shutdown);
 
             _fsm.In(State.AssemblyConveyorMovingForward)
-                .ExecuteOnEntry(() => { 
+                .ExecuteOnEntry(() => 
+                { 
                     _conveyorController.Begin(new ConveyorControllerParams
                         {
                             ConveyorType = ConveyorType.Assembly,
@@ -210,9 +215,21 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.Shutdown);
 
             _fsm.In(State.VerifyingTray)
-                .On(Trigger.TrayVerificationCompleted)
+                .ExecuteOnEntry(() =>
+                {
+                    Tray<Tablet> trayToVerify = _assembler.LastOrderTray;
+                    _trayVerifier.Begin(new TrayVerifierParams()
+                    {
+                        TraySpecification = trayToVerify,
+                        VerificationMode = VerificationMode.Product,
+                        Sender = this
+                    });
+                })
+                .On(Trigger.Valid).If<VerificationMode>((mode) => mode == VerificationMode.Tray)
                     .Goto(State.AssemblyConveyorMovingForward)
-                .On(Trigger.ProductVerificationCompleted)
+                .On(Trigger.Valid).If<VerificationMode>((mode) => mode == VerificationMode.Product)
+                    .Goto(State.AssemblyConveyorMovingBackward)
+                .On(Trigger.Invalid)
                     .Goto(State.AssemblyConveyorMovingBackward)
                 .On(Trigger.Stop)
                     .Goto(State.Stopped)
@@ -220,6 +237,15 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.Shutdown);
 
             _fsm.In(State.Assembling)
+                .ExecuteOnEntry(() =>
+                {
+                    var order = _orderConsumer.PeekOrder();
+                    _assembler.Begin(new AssemblerParams
+                    {
+                        OrderConfiguration = order.Configuration,
+                        Sender = this
+                    });
+                })
                 .On(Trigger.Completed)
                     .Goto(State.AssemblyConveyorMovingBackward)
                 .On(Trigger.Stop)
@@ -233,7 +259,8 @@ namespace Tmc.Scada.Core.Sequencing
                     _conveyorController.Begin(new ConveyorControllerParams
                     {
                         ConveyorType = ConveyorType.Assembly,
-                        ConveyorAction = ConveyorAction.MoveBackward
+                        ConveyorAction = ConveyorAction.MoveBackward,
+                        Sender = this
                     });
                 })
                 .On(Trigger.Completed)
@@ -247,20 +274,81 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.Shutdown);
 
             _fsm.In(State.PlacingTrayInBuffer)
+                .ExecuteOnEntry(() => 
+                {
+                    _loader.Begin(new LoaderParams()
+                    {
+                        Action = LoaderAction.LoadToPalletiser,
+                        Sender = this
+                    });
+                })
                 .On(Trigger.Completed)
-                    .Goto(State.Palletising)
+                    //.Goto(State.Palletising)
+                    .Goto(State.Idle)
                 .On(Trigger.Stop)
                     .Goto(State.Stopped)
                 .On(Trigger.Shutdown)
                     .Goto(State.Shutdown);
 
+            // Skip this state because the palletiser robot is inactive.
             _fsm.In(State.Palletising)
+                .ExecuteOnEntry(() => _fsm.Fire(Trigger.Completed))
                 .On(Trigger.Completed)
                     .Goto(State.Idle)
                 .On(Trigger.Stop)
                     .Goto(State.Stopped)
                 .On(Trigger.Shutdown)
                     .Goto(State.Shutdown);
+        }
+
+        private void BindEvents()
+        {
+            _assembler.Completed += Assembler_Completed;
+            _conveyorController.Completed += ConveyorController_Completed;
+            _loader.Completed += Loader_Completed;
+            _palletiser.Completed += Palletiser_Completed;
+            _sorter.Completed += Sorter_Completed;
+            _trayVerifier.Completed += TrayVerifier_Completed;
+        }
+
+        private void Assembler_Completed(object sender, ControllerEventArgs e)
+        {
+            var args = e as AssemblerEventArgs;
+            _fsm.Fire(Trigger.Completed);
+        }
+
+        private void ConveyorController_Completed(object sender, ControllerEventArgs e)
+        {
+            _fsm.Fire(Trigger.Completed);
+        }
+
+        private void Loader_Completed(object sender, ControllerEventArgs e)
+        {
+            _fsm.Fire(Trigger.Completed);
+        }
+
+        private void Palletiser_Completed(object sender, ControllerEventArgs e)
+        {
+            _fsm.Fire(Trigger.Completed);
+        }
+
+        private void Sorter_Completed(object sender, ControllerEventArgs e)
+        {
+            _fsm.Fire(Trigger.Completed);
+        }
+
+        private void TrayVerifier_Completed(object sender, ControllerEventArgs e)
+        {
+            var args = e as OnVerificationCompleteEventArgs;
+            
+            if (args.VerificationResult == VerificationResult.Valid)
+            {
+                _fsm.Fire(Trigger.Valid, args.VerificationMode);
+            }
+            else if (args.VerificationResult == VerificationResult.Invalid)
+            {
+                _fsm.Fire(Trigger.Invalid, args.VerificationMode);
+            }
         }
     }
 }

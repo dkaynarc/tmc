@@ -9,6 +9,10 @@ namespace Tmc.Common
     public class Tray<T> where T : class
     {
         public const int MaxCells = 9;
+        // The middle cell is used to pick up the tray and therefore cannot be used
+        // to hold tablets
+        public const int MaxUsableCells = MaxCells - 1;
+        public const int MiddleCellIndex = 4;
 
         public List<T> Cells { get; set; }
 

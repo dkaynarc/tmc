@@ -14,6 +14,7 @@ namespace Tmc.Scada.Core
     {
         public string Name { get; set; }
         public ClusterConfig ClusterConfig { get; set; }
+        public OrderConsumer OrderConsumer { get; set; }
         internal TabletMagazine TabletMagazine { get; set; }
         //private HardwareMonitor _hardwareMonitor;
         private EnvironmentMonitor _environmentMonitor;
@@ -25,6 +26,7 @@ namespace Tmc.Scada.Core
             //this._hardwareMonitor = new HardwareMonitor(this);
             this.TabletMagazine = new TabletMagazine(); 
             //this._sequencer = new FSMSequencer(this);
+            this.OrderConsumer = new OrderConsumer();
         }
 
         public void Initialise()
@@ -33,7 +35,7 @@ namespace Tmc.Scada.Core
 
         public void Start()
         {
-            _environmentMonitor.Log(); // Should be run on a separate thread
+            //_environmentMonitor.Log(); // Should be run on a separate thread
         }
 
         public void Stop()

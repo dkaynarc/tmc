@@ -13,7 +13,9 @@ namespace Tmc.Scada.Core.Sequencing
 
         // State specific commands
         // Verification
-        TrayVerificationCompleted,
-        ProductVerificationCompleted
+        TrayValid,
+        TrayInvalid,
+        Valid,
+        Invalid
     }
 }

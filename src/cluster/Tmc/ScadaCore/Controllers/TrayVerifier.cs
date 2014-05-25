@@ -32,7 +32,7 @@ namespace Tmc.Scada.Core
             if (p != null)
             {
                 IsRunning = true;
-                VerifyTrayAsync(p.TraySpecification);
+                VerifyTrayAsync(p.TraySpecification, p.VerificationMode);
             }
         }
 
@@ -40,12 +40,12 @@ namespace Tmc.Scada.Core
         {
         }
 
-        private bool DetermineValidity(Tray<Tablet> t1, Tray<Tablet> t2)
+        private VerificationResult DetermineValidity(Tray<Tablet> t1, Tray<Tablet> t2)
         {
-            return (t1 == t2);
+            return (t1 == t2) ? VerificationResult.Valid : VerificationResult.Invalid;
         }
 
-        private void VerifyTrayAsync(Tray<Tablet> tray)
+        private void VerifyTrayAsync(Tray<Tablet> tray, VerificationMode mode)
         {
             var task = new Task(() =>
                 {
@@ -55,7 +55,8 @@ namespace Tmc.Scada.Core
                     //OnCompleted(new OnVerificationCompleteEventArgs
                     //    {
                     //        DetectedTray = detected,
-                    //        IsValid = isValid,
+                    //        VerificationResult = isValid,
+                    //        VerificationMode = mode,
                     //        OperationStatus = ControllerOperationStatus.Succeeded
                     //    })
                 });
@@ -63,14 +64,28 @@ namespace Tmc.Scada.Core
         }
     }
 
+    public enum VerificationMode
+    {
+        Tray,
+        Product
+    }
+
+    public enum VerificationResult
+    {
+        Valid,
+        Invalid
+    }
+
     public class TrayVerifierParams : ControllerParams
     {
-        public Tray<Tablet> TraySpecification { get; set; }
+        public Tray<Tablet> TraySpecification { get; set; } 
+        public VerificationMode VerificationMode { get;set; }
     }
 
     public class OnVerificationCompleteEventArgs : ControllerEventArgs
     {
         public Tray<Tablet> DetectedTray;
-        public bool IsValid;
+        public VerificationMode VerificationMode;
+        public VerificationResult VerificationResult;
     }
 }
