@@ -23,6 +23,8 @@ namespace Tmc.Vision
 
         public enum HSVdata { Hue = 0, Sat, Val };
 
+        public enum TC { Black = 0, White, Red, Blue, Green, Bad, Na };
+
 
         /// <summary>
         /// This Function lets us detect circles in an image
@@ -473,6 +475,31 @@ namespace Tmc.Vision
             HsvList.Add(ValHist);
 
             return HsvList.ToArray();
+        }
+
+        public Image<Bgr, Byte> DrawPoints(Image<Bgr, Byte> src, PointF[] points)
+        {
+            foreach (PointF point in points)
+            {//draw dots just for debuging atm
+                Rectangle rect = new Rectangle();
+                rect.X = (int)point.X;
+                rect.Y = (int)point.Y;
+                rect.Width = 2;
+                rect.Height = 2;
+                //if (a == 0)
+                //{
+                //    src.Draw(rect, new Bgr(Color.Blue), 1);
+                //    a++;
+                //}
+                src.Draw(rect, new Bgr(Color.Red), 1);
+                //a++;
+            }
+            return src;
+        }
+
+        public double Mag(PointF a, PointF b)
+        {
+            return Math.Sqrt(Math.Pow((a.X - b.X),2) + Math.Pow((a.Y - b.Y),2) );
         }
     }
 }

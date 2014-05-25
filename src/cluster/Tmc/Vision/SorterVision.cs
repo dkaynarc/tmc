@@ -316,21 +316,9 @@ namespace Tmc.Vision
         {
             Image<Hsv, Byte> srcHSV = src.Convert<Hsv, Byte>();
 
-            float[] HueHist;
-            float[] SatHist;
-            float[] ValHist;
-
-            HueHist = new float[256];
-            SatHist = new float[256];
-            ValHist = new float[256];
-
-            DenseHistogram HistoHue = new DenseHistogram(256, new RangeF(0, 256));
-            DenseHistogram HistoSat = new DenseHistogram(256, new RangeF(0, 256));
-            DenseHistogram HistoVal = new DenseHistogram(256, new RangeF(0, 256));
-
             Rectangle rect = new Rectangle();
             Image<Bgr, byte> oneTablet;
-            double dotAngle = 0.607;//result of of cos(ang) which use to multiply radius to give us the dot product
+            double dotAngle = 0.707;//result of of cos(ang) which use to multiply radius to give us the dot product
             TabletColors tabletColour;
             int cellInTray;
 
@@ -357,48 +345,59 @@ namespace Tmc.Vision
                 oneTablet = src.GetSubRect(rect);
                 CvInvoke.cvShowImage("Test Window2", oneTablet); //Show the image
                 tabletColour = detectColour(oneTablet, HSVTabletColoursRanges);
-                //cellInTray      = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
-                //trayList.Cells[cellInTray] = new Tablet { Color = tabletColour };
-                //HistogramViewer.Show(oneTablet);
-                Image<Hsv, Byte> hsvColor = oneTablet.Convert<Hsv, Byte>();
-                Image<Gray, Byte> Comparedimg2Blue = hsvColor[0];
-                Image<Gray, Byte> Comparedimg2Green = hsvColor[1];
-                Image<Gray, Byte> Comparedimg2Red = hsvColor[2];
 
                 float[][] abc   = HsvValueFloatArray(oneTablet);
                 int[][] hue     = getHighLowHSV(abc, 30, HSVdata.Hue);
                 int[][] sat     = getHighLowHSV(abc, 30, HSVdata.Sat);
                 int[][] val     = getHighLowHSV(abc, 30, HSVdata.Val);
 
-
-                HistoHue.Calculate(new Image<Gray, Byte>[] { Comparedimg2Blue }, true, null);
-                HistoSat.Calculate(new Image<Gray, Byte>[] { Comparedimg2Green }, true, null);
-                 HistoVal.Calculate(new Image<Gray, Byte>[] { Comparedimg2Red }, true, null);
-
-                //HistoVal.Calculate(
-
-                HistoHue.MatND.ManagedArray.CopyTo(HueHist, 0);
-                HistoSat.MatND.ManagedArray.CopyTo(SatHist, 0);
-                HistoVal.MatND.ManagedArray.CopyTo(ValHist, 0);
-                int lowh, lows, lowv;
-                int highh, highs, highv;
-                for(int i=0; i < 256;i++)
-                {
-                    //lowh 
-                }
-
-
-                
+                TabletColour(src, tablet);
 
                 HistogramViewer.Show(oneTablet.Convert<Hsv, Byte>());
                 CvInvoke.cvWaitKey(0);
             }
             HistogramViewer.Show(src);
 
-            CvInvoke.cvWaitKey(0); 
+            CvInvoke.cvWaitKey(0);
         }
 
-        
+        private void TabletColour(Image<Bgr, Byte> src, CircleF tablet)
+        {
+            double angle1 = Math.Cos(45 * (Math.PI / 180));
+            double angle2 = Math.Cos(41 * (Math.PI / 180));
+            double angle3 = Math.Cos(37 * (Math.PI / 180));
+            double angle4 = Math.Cos(31.5 * (Math.PI / 180));
+            double angle5 = Math.Cos(24 * (Math.PI / 180));
+            double angle6 = Math.Cos(16 * (Math.PI / 180));
+
+            PointF[] points = new PointF[6];
+
+            points[0].X = (int)(tablet.Center.X - (tablet.Radius * angle1));
+            points[0].Y = (int)(tablet.Center.Y - (Math.Sin(45 * (Math.PI / 180)) * tablet.Radius));
+
+            points[1].X = (int)(tablet.Center.X - (tablet.Radius * angle2));
+            points[1].Y = (int)(tablet.Center.Y - (Math.Sin(41 * (Math.PI / 180)) * tablet.Radius));
+
+            points[2].X = (int)(tablet.Center.X - (tablet.Radius * angle3));
+            points[2].Y = (int)(tablet.Center.Y - (Math.Sin(37 * (Math.PI / 180)) * tablet.Radius));
+
+            points[3].X = (int)(tablet.Center.X - (tablet.Radius * angle4));
+            points[3].Y = (int)(tablet.Center.Y - (Math.Sin(31.5 * (Math.PI / 180)) * tablet.Radius));
+
+            points[4].X = (int)(tablet.Center.X - (tablet.Radius * angle5));
+            points[4].Y = (int)(tablet.Center.Y - (Math.Sin(24 * (Math.PI / 180)) * tablet.Radius));
+
+            points[5].X = (int)(tablet.Center.X - (tablet.Radius * angle6));
+            points[5].Y = (int)(tablet.Center.Y - (Math.Sin(16 * (Math.PI / 180)) * tablet.Radius));
+
+            Image<Bgr, Byte> derp;
+
+            derp = DrawPoints(src, points);
+
+            CvInvoke.cvShowImage("Test Window3", derp);
+            CvInvoke.cvWaitKey(0);
+        }
+        //private i
 
     }
 }
