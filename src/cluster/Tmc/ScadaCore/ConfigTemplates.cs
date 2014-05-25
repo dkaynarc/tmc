@@ -9,7 +9,7 @@ namespace Tmc.Scada.Core
     internal struct ClusterTemplate
     {
         public string Name;
-        public readonly List<HardwareTemplate> Hardware;
+        public List<HardwareTemplate> Hardware;
 
         public ClusterTemplate(string name)
         {

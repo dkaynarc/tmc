@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Cluster Name="TMC-Cluster-01">
+  <!--<Hardware Type="LoaderRobot" Name="LoaderRobot" IPAddress="127.0.0.1"/>
+  <Hardware Type="SorterRobot" Name="SorterRobot" IPAddress="127.0.0.1"/>
+  <Hardware Type="AssemblerRobot" Name="AssemblerRobot" IPAddress="127.0.0.1"/>
+  <Hardware Type="PalletiserRobot" Name="PalletiserRobot" IPAddress="127.0.0.1"/>-->
+  <Hardware Type="BluetoothConveyor">
+    <Name>SorterConveyor</Name>
+    <PortName>COM3</PortName>
+    <WaitTime>1000</WaitTime>
+  </Hardware>
+  <Hardware Type="SerialConveyor">
+    <Name>AssemblyConveyor</Name>
+    <PortName>COM5</PortName>
+  </Hardware>
+  <!--The vision project will need to be converted into a Class Library
+      before it can be created using this file-->
+  <!--<Hardware Type="Camera">
+    <Name>SorterCamera</Name>
+    <ConnectionString>http://www.google.com</ConnectionString>
+  </Hardware>
+  <Hardware Type="Camera">
+    <Name>TrayVerifierCamera</Name>
+    <ConnectionString>http://www.google.com</ConnectionString>
+  </Hardware>-->
+  <!--<Hardware Type="Sensor">
+    <Name>TemperatureSensor</Name>
+    <Channel>temperature</Channel>
+    <IPAddress>127.0.0.1</IPAddress>
+    <PortName>10001</PortName>
+  </Hardware>
+  <Hardware Type="Sensor">
+    <Name>LightSensor</Name>
+    <Channel>light</Channel>
+    <IPAddress>127.0.0.1</IPAddress>
+    <PortName>10001</PortName>
+  </Hardware>-->
+</Cluster>

@@ -10,9 +10,5 @@ namespace Tmc.Scada.Core.Sequencing
     {
         string Name { get; set; }
         bool Enabled { get; }
-
-        void Start();
-        void Update();
-        void Stop();
     }
 }

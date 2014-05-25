@@ -12,49 +12,48 @@ using Tmc.Common;
 
 namespace Tmc.Vision
 {
-    class SorterVision
+    public class SorterVision : VisionBase
     {
-        private Camera camera;
+        int minCircle, maxCircle;
+        int cannyThresh, cannyAccumThresh;
+        double par3, par4;
 
-        SorterVision(Camera camera)
+        private Camera camera;
+        private Image<Bgr, Byte> img;
+        Form1 f;
+
+        public SorterVision(Camera camera)
         {
             this.camera = camera;
+            //do calibration
         }
 
         public List<Tablet> GetVisibleTablets()
         {
-            var tablets = new List<Tablet>();
-            return tablets;
+            List<Tablet> tablet = new List<Tablet>();           
+            img = camera.GetImage();
+            CircleF[] circles = DetectTablets(img, minCircle, maxCircle, par3, par4, cannyThresh, cannyAccumThresh, f);
+            DetectOverLap();
+            DetectDamagedTablet();
+            GetXYZForTablets();
+             
+            return tablet;
         }
-
-        public void RunSorterCamera()
+        
+        private void DetectOverLap()
         {
-            
+              
         }
-
+             
         private void GetXYZForTablets()
         {
             
         }
 
-        private void DetectOverLap()
-        {
-                   
+        private void DetectDamagedTablet()
+        { 
+            
         }
-        /*public void hi()
-        {
-            string win1 = "Test Window"; //The name of the window
-
-            CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
-
-            Image<Bgr, Byte> img = new Image<Bgr, byte>(400, 200, new Bgr(255, 0, 0)); //Create an image of 400x200 of Blue color
-            MCvFont f = new MCvFont(FONT.CV_FONT_HERSHEY_COMPLEX, 1.0, 1.0); //Create the font
-
-            img.Draw("Hello, world", ref f, new System.Drawing.Point(10, 80), new Bgr(0, 255, 0)); //Draw "Hello, world." on the image using the specific font
-
-            CvInvoke.cvShowImage(win1, img); //Show the image
-            CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
-            CvInvoke.cvDestroyWindow(win1); //Destory the window
-        }*/
+  
     }
 }
