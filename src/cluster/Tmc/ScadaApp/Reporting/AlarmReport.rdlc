@@ -17,7 +17,7 @@
           </TablixColumns>
           <TablixRows>
             <TablixRow>
-              <Height>1.42875cm</Height>
+              <Height>1cm</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -124,7 +124,7 @@
               </TablixCells>
             </TablixRow>
             <TablixRow>
-              <Height>1.42875cm</Height>
+              <Height>1cm</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -244,7 +244,7 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>AlarmReportDataSet</DataSetName>
-        <Height>2.8575cm</Height>
+        <Height>2cm</Height>
         <Width>19cm</Width>
         <Style>
           <Border>
@@ -253,7 +253,7 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>1.30208in</Height>
+    <Height>1.05208in</Height>
     <Style />
   </Body>
   <Width>7.48032in</Width>
@@ -283,7 +283,6 @@
           </Paragraphs>
           <rd:DefaultName>ReportName</rd:DefaultName>
           <Top>0.3cm</Top>
-          <Left>0cm</Left>
           <Height>1.2cm</Height>
           <Width>12cm</Width>
           <Style>

@@ -21,6 +21,11 @@ namespace TmcData
             return new ICTDEntities().EnvironmentLogViews.ToList();
         }
 
+        //public static IList<EnvironmentLogView> EnvironmentLog(DateTime startTime, DateTime endTime)
+        //{
+        //    return ReportController.GetEnvironmentReportData(startTime, endTime).
+        //}
+
         public static void AddNewOrder(Guid userID, int black, int blue, int red, int green, int white )
         {
             new ICTDEntities().AddNewOrder(userID, black, blue, red, green, white);
@@ -55,5 +60,20 @@ namespace TmcData
         {
             return new ICTDEntities().ComponentEventLogViews.LastOrDefault();
         }
+
+        public static List<string> GetEnvironmentSourceTypes()
+        {
+            return new ICTDEntities().EnvironmentLogViews.Where(x => !String.IsNullOrWhiteSpace(x.Source)).Select(y => y.Source).Distinct().ToList();
+        }
+
+        public static List<string> GetAlarmTypes()
+        {
+            return new ICTDEntities().ComponentEventLogViews.Where(x => !String.IsNullOrWhiteSpace(x.LogType)).Where(y => y.LogType.Equals("Warning", StringComparison.InvariantCultureIgnoreCase) || y.LogType.Equals("Error", StringComparison.InvariantCultureIgnoreCase) || y.LogType.Equals("Alarm", StringComparison.InvariantCultureIgnoreCase)).Select(z => z.LogType).Distinct().ToList();
+        }
+
+        //public static List<string> GetAlarmTypes()
+        //{
+        //    return new ICTDEntities().ComponentCycleLogViews.Where(x => !String.IsNullOrWhiteSpace(x.
+        //}
     }
 }

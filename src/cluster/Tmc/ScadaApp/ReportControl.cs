@@ -20,7 +20,7 @@ namespace Tmc.Scada.App
 
         protected enum ReportType
         {
-            Alarm, Cycle, Environment, Machine, Order, Production
+            Alarm, Cycle, Environment, Order, Production
         }
 
         private Dictionary<ReportType, string> ReportNameDictionary = new Dictionary<ReportType,string>()
@@ -28,20 +28,26 @@ namespace Tmc.Scada.App
             { ReportType.Alarm, "AlarmReport" },
             { ReportType.Cycle, "CycleReport" },
             { ReportType.Environment, "EnvironmentReport" },
-            { ReportType.Machine, "MachineReport" },
             { ReportType.Order, "OrderReport" },
             { ReportType.Production, "ProductionReport" }
         };
 
-        private Dictionary<ReportType, Func<DateTime, DateTime, IEnumerable>> ReportDataSourceDictionary 
-            = new Dictionary<ReportType, Func<DateTime, DateTime, IEnumerable>>()
+        private Dictionary<ReportType, Delegate> ReportDataSourceMethodsDictionary = new Dictionary<ReportType, Delegate>()
         {
-            { ReportType.Alarm, TmcData.ReportController.GetAlarmsReportData },
-            { ReportType.Cycle, TmcData.ReportController.GetCycleReportData },
-            { ReportType.Environment, TmcData.ReportController.GetEnvironmentReportData },
-            { ReportType.Machine, TmcData.ReportController.GetMachineReportData },
-            { ReportType.Order, TmcData.ReportController.GetOrderReportData },
-            { ReportType.Production, TmcData.ReportController.GetProductionReportData }
+            { ReportType.Alarm, new Func<DateTime, DateTime, List<string>, IEnumerable>(TmcData.ReportController.GetAlarmsReportData) },
+            { ReportType.Cycle, new Func<DateTime, DateTime, IEnumerable>(TmcData.ReportController.GetCycleReportData) },
+            { ReportType.Environment, new Func<DateTime, DateTime, List<string>, IEnumerable>(TmcData.ReportController.GetEnvironmentReportData) },
+            { ReportType.Order, new Func<DateTime, DateTime, string, IEnumerable>(TmcData.ReportController.GetOrderReportData) },
+            { ReportType.Production, new Func<DateTime, DateTime, IEnumerable>(TmcData.ReportController.GetProductionReportData) }
+        };
+
+        private Dictionary<int, ReportType> ReportGenerationIndexDictionary = new Dictionary<int,ReportType>()
+        {
+            { 1, ReportType.Alarm},
+            { 2, ReportType.Cycle},
+            { 3, ReportType.Environment },
+            { 4, ReportType.Order },
+            { 5, ReportType.Production }
         };
 
         public DateTime SelectedStartDate
@@ -61,6 +67,27 @@ namespace Tmc.Scada.App
         public ReportControl()
         {
             InitializeComponent();
+        }
+
+        private void ReportControl_Load(object sender, EventArgs e)
+        {
+            this.SelectedStartDate = DateTime.Now.AddDays(-1);
+            this.SelectedEndDate = DateTime.Now;
+            this.PopulateReportComboBox();
+            this.InitialiseFilteringPanels();
+            this.ClearAllFilteringOptions();
+        }
+
+        private void PopulateReportComboBox()
+        {
+            List<string> reports = new List<string>();
+            reports.Add(String.Empty);
+            foreach (KeyValuePair<int, ReportType> pair in this.ReportGenerationIndexDictionary)
+            {
+                reports.Add(pair.Value.ToString() + " Report");
+            }
+
+            this.cboReports.DataSource = reports;
         }
 
         private void CreateReport(ReportType reportType)
@@ -97,47 +124,101 @@ namespace Tmc.Scada.App
 
         private IEnumerable GetReportDataSource(ReportType reportType, DateTime startDate, DateTime endDate)
         {
-            return ReportDataSourceDictionary[reportType](startDate, endDate);
+            //return ReportDataSourceMethodsDictionary[reportType](startDate, endDate);
+            return new List<string>().AsEnumerable();
         }
 
-        #region Button Click Methods
-
-        private void btnGenerateEnvironmentReport_Click(object sender, EventArgs e)
+        private void ClearAllFilteringOptions()
         {
-            this.CreateReport(ReportType.Environment);
+            foreach (Control control in this.Controls)
+            {
+                if (control.GetType() == typeof(Panel))
+                {
+                    control.Visible = false;
+                }
+            }
         }
 
-        private void btnGenerateCycleTimeReport_Click(object sender, EventArgs e)
+        private void InitialiseFilteringPanels()
         {
-            this.CreateReport(ReportType.Cycle);
+            foreach (Control control in this.Controls)
+            {
+                if (control.GetType() == typeof(Panel))
+                {
+                    control.Location = new Point(265, 40);
+                    control.Size = new Size(405, 213);
+                }
+            }
         }
 
-        private void btnGenerateProductionReport_Click(object sender, EventArgs e)
+        private void CheckAllListboxItems(ListBox listBox)
         {
-            this.CreateReport(ReportType.Production);
+            if (listBox.Items.Count <= 0)
+            {
+                return;
+            }
+
+            for (int listBoxIndex = 0; listBoxIndex < listBox.Items.Count; listBoxIndex++)
+            {
+                listBox.SetSelected(listBoxIndex, true);
+            }
         }
 
-        private void btnGenerateAlarmsReport_Click(object sender, EventArgs e)
+        private void cboReports_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.CreateReport(ReportType.Alarm);
+            ComboBox reportsComboBox = sender as ComboBox;
+
+            this.ClearAllFilteringOptions();
+            if (reportsComboBox.SelectedIndex > 0)
+            {
+                this.ShowFilteringOptions(this.ReportGenerationIndexDictionary[reportsComboBox.SelectedIndex]);
+            }
         }
 
-        private void btnGenerateOrderReport_Click(object sender, EventArgs e)
+        private void ShowFilteringOptions(ReportType reportType)
         {
-            this.CreateReport(ReportType.Order);
+            switch (reportType)
+            {
+                case ReportType.Alarm: this.ShowAlarmReportFilters(); break;
+                case ReportType.Environment: this.ShowEnvironmentReportFilters(); break;
+                case ReportType.Order: this.ShowOrderReportFilters(); break;
+                default: ClearAllFilteringOptions(); break;
+            }
         }
 
-        private void btnGenerateMachineReport_Click(object sender, EventArgs e)
+        private void ShowEnvironmentReportFilters()
         {
-            this.CreateReport(ReportType.Order);
+            this.ClearAllFilteringOptions();
+            this.pnlEnvironmentReportFilters.Visible = true;
+            this.clbEnvironmentSourceFilter.Items.Clear();
+            //foreach (string source in TmcData.TmcRepository.GetEnvironmentSourceTypes())
+            //{
+            //    this.clbEnvironmentSourceFilter.Items.Add(source);
+            //}
+            this.CheckAllListboxItems(this.clbEnvironmentSourceFilter);
         }
 
-        #endregion
-
-        private void ReportControl_Load(object sender, EventArgs e)
+        private void ShowAlarmReportFilters()
         {
-            this.SelectedStartDate = DateTime.Now.AddDays(-1);
-            this.SelectedEndDate = DateTime.Now;
+            this.ClearAllFilteringOptions();
+            this.pnlAlarmReportFilters.Visible = true;
+            this.clbAlarmsTypeFilter.Items.Clear();
+            //foreach (string type in TmcData.TmcRepository.GetAlarmTypes())
+            //{
+            //    this.clbEnvironmentSourceFilter.Items.Add(type);
+            //}
+            this.CheckAllListboxItems(this.clbAlarmsTypeFilter);
+        }
+
+        private void ShowOrderReportFilters()
+        {
+            this.ClearAllFilteringOptions();
+            this.pnlOrderReportFilters.Visible = true;
+        }
+
+        private void btnGenerateReport_Click(object sender, EventArgs e)
+        {
+            //this.CreateReport(this.ReportGenerationDictionary[this.cboReports.SelectedIndex]);
         }
     }
 }
