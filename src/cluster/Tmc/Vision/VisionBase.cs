@@ -160,6 +160,37 @@ namespace Tmc.Vision
             }
         }
 
+        public TabletColors detectColour(Hsv srcHSV, Hsv[,] HSVTabletColourRange)
+        {
+            int ol = 0;
+            int oh = 0;
+
+            if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.Green, ol, oh))
+            {//green
+                return TabletColors.Green;
+            }
+            else if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.Red, ol, oh))
+            {//red
+                return TabletColors.Red;
+            }
+            else if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.White, ol, oh))
+            {//white
+                return TabletColors.White;
+            }
+            else if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.Blue, ol, oh))
+            {//blue
+                return TabletColors.Blue;
+            }
+            else if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.Black, ol, oh))
+            {//black
+                return TabletColors.Black;
+            }
+            else
+            {
+                return TabletColors.Unknown;
+            }
+        }
+
         /// <summary>
         /// Tells us if the the HSV color is in range
         /// </summary>
@@ -477,9 +508,9 @@ namespace Tmc.Vision
             return HsvList.ToArray();
         }
 
-        public Image<Bgr, Byte> DrawPoints(Image<Bgr, Byte> src, PointF[] points)
+        public Image<Bgr, Byte> DrawPoints(Image<Bgr, Byte> src, Point[] points)
         {
-            foreach (PointF point in points)
+            foreach (Point point in points)
             {//draw dots just for debuging atm
                 Rectangle rect = new Rectangle();
                 rect.X = (int)point.X;

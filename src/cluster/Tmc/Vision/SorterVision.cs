@@ -45,6 +45,41 @@ namespace Tmc.Vision
             //do calibration
             //this.camera.ConnectionString = new Uri(@"http://192.168.0.190:8080/photoaf.jpg");
             //this.camera.ConnectionString = new Uri(@"https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-frc3/t1.0-9/10270404_10202712962477674_682458036245271256_n.jpg");
+
+            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 76;
+            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 24;
+            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 139;
+            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 87;
+            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 96;
+            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 226;
+
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue = 176;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 119;//93;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value = 200;//198;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue = 5;//171;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation = 194;//128;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Value = 360;//250;
+
+            HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.Low].Hue = 12;
+            HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.Low].Satuation = 45;
+            HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.Low].Value = 238;
+            HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 17;
+            HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 62;
+            HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.High].Value = 255;
+
+            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 115;
+            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 76;
+            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 69;
+            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 126;
+            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 125;
+            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 213;
+
+            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.Low].Hue = 102;
+            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.Low].Satuation = 15;
+            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.Low].Value = 90;
+            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.High].Hue = 145;
+            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.High].Satuation = 39;
+            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.High].Value = 167;
         }
 
         /// <summary>
@@ -346,13 +381,31 @@ namespace Tmc.Vision
                 CvInvoke.cvShowImage("Test Window2", oneTablet); //Show the image
                 tabletColour = detectColour(oneTablet, HSVTabletColoursRanges);
 
-                float[][] abc   = HsvValueFloatArray(oneTablet);
-                int[][] hue     = getHighLowHSV(abc, 30, HSVdata.Hue);
-                int[][] sat     = getHighLowHSV(abc, 30, HSVdata.Sat);
-                int[][] val     = getHighLowHSV(abc, 30, HSVdata.Val);
+                float[][] abca   = HsvValueFloatArray(oneTablet);
+                
+
+                 var tabletList = new List<Image<Bgr, Byte>>();
+                tabletList = TabletColour(src, tablet);
+                for (int i = 0; i < tabletList.Capacity - 1; i++)
+                {
+                    float[][] abc = HsvValueFloatArray(tabletList[i]);
+                    int[][] hue = getHighLowHSV(abc, 30, HSVdata.Hue);
+                    int[][] sat = getHighLowHSV(abc, 30, HSVdata.Sat);
+                    int[][] val = getHighLowHSV(abc, 30, HSVdata.Val);
+                    abca = addFloats(abca, abc);
+                }
+                //Image<Bgr, Byte> qwe[];// = new Image<Bgr, Byte>;
+                //= TabletColour(src, tablet);
+
+                int[][] huex = getHighLowHSV(abca, 50, HSVdata.Hue);
+                int[][] satx = getHighLowHSV(abca, 50, HSVdata.Sat);
+                int[][] valx = getHighLowHSV(abca, 50, HSVdata.Val);
+
+                ChoseCheckType(huex, satx, valx);
 
                 TabletColour(src, tablet);
 
+                HistogramViewer.Show(oneTablet.Convert<Hsv, Byte>());
                 HistogramViewer.Show(oneTablet.Convert<Hsv, Byte>());
                 CvInvoke.cvWaitKey(0);
             }
@@ -361,8 +414,36 @@ namespace Tmc.Vision
             CvInvoke.cvWaitKey(0);
         }
 
-        private void TabletColour(Image<Bgr, Byte> src, CircleF tablet)
+        private void ChoseCheckType(int[][] hue, int[][] sat, int[][] val)
         {
+            if ((hue.GetLength(0) == 1) && (sat.GetLength(0) == 1) && (val.GetLength(0) == 1))
+            {
+                TabletColors a = detectColour(new Hsv((hue[0][0]+hue[0][1])/2,(sat[0][0]+sat[0][1])/2,(val[0][0]+val[0][1])/2),HSVTabletColoursRanges);
+            }
+            else
+            {
+ 
+            }
+        }
+
+        private float[][] addFloats(float[][] srcFloat, float[][] srcFloatAdd)
+        { 
+            //float[,] values= new float[3,256];
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 256; j++)
+                {
+                    srcFloat[i][j] += srcFloatAdd[i][j];
+                }
+            }
+            return srcFloat;
+        }
+
+        private List<Image<Bgr, Byte>> TabletColour(Image<Bgr, Byte> src, CircleF tablet)
+        {
+            var TabletList = new List<Image<Bgr, Byte>>();
+
             double angle1 = Math.Cos(45 * (Math.PI / 180));
             double angle2 = Math.Cos(41 * (Math.PI / 180));
             double angle3 = Math.Cos(37 * (Math.PI / 180));
@@ -370,25 +451,110 @@ namespace Tmc.Vision
             double angle5 = Math.Cos(24 * (Math.PI / 180));
             double angle6 = Math.Cos(16 * (Math.PI / 180));
 
-            PointF[] points = new PointF[6];
+            Point[] points = new Point[11];
+
+            float rad = tablet.Radius - 1;
 
             points[0].X = (int)(tablet.Center.X - (tablet.Radius * angle1));
-            points[0].Y = (int)(tablet.Center.Y - (Math.Sin(45 * (Math.PI / 180)) * tablet.Radius));
+            points[0].Y = (int)(tablet.Center.Y - (Math.Sin(45 * (Math.PI / 180)) * rad));
 
             points[1].X = (int)(tablet.Center.X - (tablet.Radius * angle2));
-            points[1].Y = (int)(tablet.Center.Y - (Math.Sin(41 * (Math.PI / 180)) * tablet.Radius));
+            points[1].Y = (int)(tablet.Center.Y - (Math.Sin(41 * (Math.PI / 180)) * rad));
+
+            //Image<Bgr, Byte> LS1 = CropImage(src, points[1].X, points[1].Y, points[0].X - points[1].X, ((int)tablet.Center.Y - points[1].Y) * 2);
+
+            
 
             points[2].X = (int)(tablet.Center.X - (tablet.Radius * angle3));
-            points[2].Y = (int)(tablet.Center.Y - (Math.Sin(37 * (Math.PI / 180)) * tablet.Radius));
+            points[2].Y = (int)(tablet.Center.Y - (Math.Sin(37 * (Math.PI / 180)) * rad));
 
             points[3].X = (int)(tablet.Center.X - (tablet.Radius * angle4));
-            points[3].Y = (int)(tablet.Center.Y - (Math.Sin(31.5 * (Math.PI / 180)) * tablet.Radius));
+            points[3].Y = (int)(tablet.Center.Y - (Math.Sin(31.5 * (Math.PI / 180)) * rad));
 
             points[4].X = (int)(tablet.Center.X - (tablet.Radius * angle5));
-            points[4].Y = (int)(tablet.Center.Y - (Math.Sin(24 * (Math.PI / 180)) * tablet.Radius));
+            points[4].Y = (int)(tablet.Center.Y - (Math.Sin(24 * (Math.PI / 180)) * rad));
 
             points[5].X = (int)(tablet.Center.X - (tablet.Radius * angle6));
-            points[5].Y = (int)(tablet.Center.Y - (Math.Sin(16 * (Math.PI / 180)) * tablet.Radius));
+            points[5].Y = (int)(tablet.Center.Y - (Math.Sin(16 * (Math.PI / 180)) * rad));
+
+            Image<Bgr, Byte> LS1 = CropImage(src, points[1].X, points[1].Y, points[0].X - points[1].X, ((int)tablet.Center.Y - points[1].Y) * 2);
+            Image<Bgr, Byte> LS2 = CropImage(src, points[2].X, points[2].Y, points[1].X - points[2].X, ((int)tablet.Center.Y - points[2].Y) * 2);
+            Image<Bgr, Byte> LS3 = CropImage(src, points[3].X, points[3].Y, points[2].X - points[3].X, ((int)tablet.Center.Y - points[3].Y) * 2);
+            Image<Bgr, Byte> LS4 = CropImage(src, points[4].X, points[4].Y, points[3].X - points[4].X, ((int)tablet.Center.Y - points[4].Y) * 2);
+            Image<Bgr, Byte> LS5 = CropImage(src, points[5].X, points[5].Y, points[4].X - points[5].X, ((int)tablet.Center.Y - points[5].Y) * 2);
+            //Image<Bgr, Byte> LS6 = CropImage(src, points[1].X, points[1].Y, points[0].X - points[1].X, ((int)tablet.Center.Y - points[1].Y) * 2);
+            Image<Bgr, Byte> RS1 = CropImage(src, ((int)tablet.Center.X + ((int)tablet.Center.X - points[1].X)) - (points[0].X - points[1].X), points[1].Y, points[0].X - points[1].X, ((int)tablet.Center.Y - points[1].Y) * 2);
+            Image<Bgr, Byte> RS2 = CropImage(src, ((int)tablet.Center.X + ((int)tablet.Center.X - points[2].X)) - (points[1].X - points[2].X), points[2].Y, points[1].X - points[2].X, ((int)tablet.Center.Y - points[2].Y) * 2);
+            Image<Bgr, Byte> RS3 = CropImage(src, ((int)tablet.Center.X + ((int)tablet.Center.X - points[3].X)) - (points[2].X - points[3].X), points[3].Y, points[2].X - points[3].X, ((int)tablet.Center.Y - points[3].Y) * 2);
+            Image<Bgr, Byte> RS4 = CropImage(src, ((int)tablet.Center.X + ((int)tablet.Center.X - points[4].X)) - (points[3].X - points[4].X), points[4].Y, points[3].X - points[4].X, ((int)tablet.Center.Y - points[4].Y) * 2);
+            Image<Bgr, Byte> RS5 = CropImage(src, ((int)tablet.Center.X + ((int)tablet.Center.X - points[5].X)) - (points[4].X - points[5].X), points[5].Y, points[4].X - points[5].X, ((int)tablet.Center.Y - points[5].Y) * 2);
+
+            Image<Bgr, Byte> TS1 = CropImage(src, points[0].X + (points[1].Y - points[0].Y), points[0].Y - ((points[0].X - points[1].X)), ((int)tablet.Center.Y - points[1].Y) * 2, points[0].X - points[1].X);
+            Image<Bgr, Byte> TS2 = CropImage(src, points[0].X + (points[2].Y - points[0].Y), points[0].Y - ((points[0].X - points[2].X)), ((int)tablet.Center.Y - points[2].Y) * 2, points[1].X - points[2].X);
+            Image<Bgr, Byte> TS3 = CropImage(src, points[0].X + (points[3].Y - points[0].Y), points[0].Y - ((points[0].X - points[3].X)), ((int)tablet.Center.Y - points[3].Y) * 2, points[2].X - points[3].X);
+            Image<Bgr, Byte> TS4 = CropImage(src, points[0].X + (points[4].Y - points[0].Y), points[0].Y - ((points[0].X - points[4].X)), ((int)tablet.Center.Y - points[4].Y) * 2, points[3].X - points[4].X);
+            Image<Bgr, Byte> TS5 = CropImage(src, points[0].X + (points[5].Y - points[0].Y), points[0].Y - ((points[0].X - points[5].X)), ((int)tablet.Center.Y - points[5].Y) * 2, points[4].X - points[5].X);
+
+            Image<Bgr, Byte> BS1 = CropImage(src, points[0].X + (points[1].Y - points[0].Y), points[0].Y - ((points[0].X - points[1].X)), ((int)tablet.Center.Y - points[1].Y) * 2, points[0].X - points[1].X);
+            Image<Bgr, Byte> BS2 = CropImage(src, points[0].X + (points[2].Y - points[0].Y), points[0].Y - ((points[0].X - points[2].X)), ((int)tablet.Center.Y - points[2].Y) * 2, points[1].X - points[2].X);
+            Image<Bgr, Byte> BS3 = CropImage(src, points[0].X + (points[3].Y - points[0].Y), points[0].Y - ((points[0].X - points[3].X)), ((int)tablet.Center.Y - points[3].Y) * 2, points[2].X - points[3].X);
+            Image<Bgr, Byte> BS4 = CropImage(src, points[0].X + (points[4].Y - points[0].Y), points[0].Y - ((points[0].X - points[4].X)), ((int)tablet.Center.Y - points[4].Y) * 2, points[3].X - points[4].X);
+            Image<Bgr, Byte> BS5 = CropImage(src, points[0].X + (points[5].Y - points[0].Y), points[0].Y - ((points[0].X - points[5].X)), ((int)tablet.Center.Y - points[5].Y) * 2, points[4].X - points[5].X);
+
+            TabletList.Add(LS1);
+            TabletList.Add(LS2);
+            TabletList.Add(LS3);
+            TabletList.Add(LS4);
+            TabletList.Add(LS5);
+
+            TabletList.Add(RS1);
+            TabletList.Add(RS2);
+            TabletList.Add(RS3);
+            TabletList.Add(RS4);
+            TabletList.Add(RS5);
+
+            TabletList.Add(TS1);
+            TabletList.Add(TS2);
+            TabletList.Add(TS3);
+            TabletList.Add(TS4);
+            TabletList.Add(TS5);
+             
+            points[6].X = points[0].X + (points[1].Y - points[0].Y);
+            points[6].Y = (points[0].Y - ((points[0].X - points[1].X)));
+
+            points[7].X = points[0].X + (points[2].Y - points[0].Y);
+            points[7].Y = points[0].Y - ((points[0].X - points[2].X));
+            points[8].X = points[0].X + (points[3].Y - points[0].Y);
+            points[8].Y = points[0].Y - ((points[0].X - points[3].X));
+            points[9].X = points[0].X + (points[4].Y - points[0].Y);
+            points[9].Y = points[0].Y - ((points[0].X - points[4].X));
+            points[10].X = points[0].X + (points[5].Y - points[0].Y);
+            points[10].Y = points[0].Y - ((points[0].X - points[5].X) );//points[0].Y - ((points[5].Y - points[0].Y) );
+
+            //Image<Bgr, Byte> TS2 = CropImage(src, points[2].X, points[2].Y, ((int)tablet.Center.Y - points[2].Y) * 2, points[1].X - points[2].X);
+            //Image<Bgr, Byte> TS3 = CropImage(src, points[3].X, points[3].Y, ((int)tablet.Center.Y - points[3].Y) * 2, points[2].X - points[3].X);
+            //Image<Bgr, Byte> TS4 = CropImage(src, points[4].X, points[4].Y, ((int)tablet.Center.Y - points[4].Y) * 2, points[3].X - points[4].X);
+            //Image<Bgr, Byte> TS5 = CropImage(src, points[5].X, points[5].Y, ((int)tablet.Center.Y - points[5].Y) * 2, points[4].X - points[5].X);
+
+
+
+            CvInvoke.cvShowImage("first", LS1);
+            CvInvoke.cvShowImage("first2", LS2);
+            CvInvoke.cvShowImage("first3", LS3);
+            CvInvoke.cvShowImage("first4", LS4);
+            CvInvoke.cvShowImage("first5", LS5);
+
+            CvInvoke.cvShowImage("firstr", RS1);
+            CvInvoke.cvShowImage("first2r", RS2);
+            CvInvoke.cvShowImage("first3r", RS3);
+            CvInvoke.cvShowImage("first4r", RS4);
+            CvInvoke.cvShowImage("first5r", RS5);
+
+            CvInvoke.cvShowImage("firstrt", TS1);
+            CvInvoke.cvShowImage("first2rt", TS2);
+            CvInvoke.cvShowImage("first3rt", TS3);
+            CvInvoke.cvShowImage("first4rt", TS4);
+            CvInvoke.cvShowImage("first5rt", TS5);
 
             Image<Bgr, Byte> derp;
 
@@ -396,6 +562,8 @@ namespace Tmc.Vision
 
             CvInvoke.cvShowImage("Test Window3", derp);
             CvInvoke.cvWaitKey(0);
+
+            return TabletList;
         }
         //private i
 
