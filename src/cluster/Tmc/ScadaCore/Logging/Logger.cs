@@ -10,7 +10,7 @@ namespace Tmc.Scada.Core
     public enum LogStrategy
     {
         File,
-        //Database,
+        Database,
         All
     }
 

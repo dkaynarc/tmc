@@ -53,5 +53,10 @@ namespace TmcData
         {
             new ICTDEntities().AddNewEnvironmentLog(timestamp, (int)source, reading, type.ToString());
         }
+
+        public static void AddNewEventLog(DateTime timestamp, string description, int sourceID, string logType)
+        {
+            new ICTDEntities().AddNewEventLog(timestamp, description, sourceID, logType);
+        }
     }
 }
