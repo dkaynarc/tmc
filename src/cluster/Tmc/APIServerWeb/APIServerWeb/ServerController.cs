@@ -367,6 +367,28 @@ namespace APIServerWeb
 
 
 
+        [HttpGet]
+        public HttpResponseMessage GetCompletedOrdersReport(string var1, string var2)
+        {
+            DateTime start = DateTime.Parse(var1);
+            DateTime end = DateTime.Parse(var2);
+            
+            try
+            {
+                IEnumerable<Order> orders = repository.Orders.Where(p => p != null).
+                                                   Where(p => p.StatusID == 3).
+                                                       Where(p => p.EndTime >= start && p.EndTime <= end);
+                IEnumerable<OrderParcel> parcels = CopyOrders(orders);
+                return Request.CreateResponse(HttpStatusCode.OK, parcels);
+            }
+            catch (Exception exc)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, exc.ToString());
+            }
+        }
+
+        
+
 
 
 

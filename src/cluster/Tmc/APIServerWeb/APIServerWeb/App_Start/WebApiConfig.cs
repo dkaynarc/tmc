@@ -53,10 +53,6 @@ using System.Web.Http;
                                  defaults: new { id = RouteParameter.Optional });
 
 
-            config.Routes.MapHttpRoute(
-                                            null,
-                                            "",
-                                            new { controller = "Server" });
 
 
             config.MapHttpAttributeRoutes();
