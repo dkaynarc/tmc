@@ -5,14 +5,14 @@ namespace APIServerWeb.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<ApiServerWeb.Authentication.SCADADbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<APIServerWeb.Authentication.SCADADbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(ApiServerWeb.Authentication.SCADADbContext context)
+        protected override void Seed(APIServerWeb.Authentication.SCADADbContext context)
         {
             //  This method will be called after migrating to the latest version.
 
