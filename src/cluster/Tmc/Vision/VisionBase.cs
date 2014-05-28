@@ -69,20 +69,8 @@ namespace Tmc.Vision
                 )[0]; //Get the circles from the first channel
 
             #if true
-            Image<Bgr, Byte> a = src.Clone();
             
-            Image<Gray, Byte> imageL = a[1];
-            imageL._EqualizeHist();
-            a[1] = imageL;
-
-            Image<Gray, Byte> imageL2 = a[2];
-            imageL2._EqualizeHist();
-            a[2] = imageL2;
-
-            Image<Gray, Byte> imageL3 = a[0];
-            imageL3._EqualizeHist();
-            a[0] = imageL3;
-
+            Image<Bgr, Byte> a = src.Clone();
             foreach (CircleF circle in circles)
             {
                 a.Draw(circle, new Bgr(Color.Red), 2);
@@ -90,7 +78,7 @@ namespace Tmc.Vision
 
             
 
-            f.pictureBox2_draw(a);
+            //f.pictureBox2_draw(a);
 
             #endif
             CvInvoke.cvWaitKey(40);//remove move later
@@ -189,6 +177,40 @@ namespace Tmc.Vision
             {
                 return TabletColors.Unknown;
             }
+        }
+
+        public void detectColour(int[][] hue, int[][] sat, int[][] val, Hsv[,] HSVTabletColourRange)
+        {
+            int ol = 0;
+            int oh = 0;
+            //for(int i = 0; i < hue.GetLength(0); i++)
+            //{
+              /*  int srcHSV;
+                if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.Green, ol, oh))
+                {//green
+                    return TabletColors.Green;
+                }
+                else if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.Red, ol, oh))
+                {//red
+                    return TabletColors.Red;
+                }
+                else if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.White, ol, oh))
+                {//white
+                    return TabletColors.White;
+                }
+                else if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.Blue, ol, oh))
+                {//blue
+                    return TabletColors.Blue;
+                }
+                else if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.Black, ol, oh))
+                {//black
+                    return TabletColors.Black;
+                }
+                else
+                {
+                    return TabletColors.Unknown;
+                }*/
+            //}
         }
 
         /// <summary>
@@ -302,6 +324,18 @@ namespace Tmc.Vision
                 else return false;
             }
         }
+
+        /*public TabletColors InRange(int srcPeak, Hsv[,] allHsvs, int type)
+        {
+            if (type == 0)
+            {
+ 
+            }
+            foreach(Hsv allHsv in allHsvs)
+            {
+                //if
+            }
+        }*/
 
         /// <summary>
         /// This function allows you to remove everything(change to black) in a image apart from the color you want(change to white)

@@ -82,7 +82,7 @@
             this.Npar2.Size = new System.Drawing.Size(120, 22);
             this.Npar2.TabIndex = 2;
             this.Npar2.Value = new decimal(new int[] {
-            63,
+            83,
             0,
             0,
             0});

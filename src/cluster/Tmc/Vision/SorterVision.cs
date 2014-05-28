@@ -28,6 +28,7 @@ namespace Tmc.Vision
         PointF[] ChessboardPoints = new PointF[107];
         private Camera camera;
         private Image<Bgr, Byte> img;
+        private Image<Bgr, Byte> ab;
         Form1 f;
         List<Tablet> TabletList = new List<Tablet>();
 
@@ -46,40 +47,40 @@ namespace Tmc.Vision
             //this.camera.ConnectionString = new Uri(@"http://192.168.0.190:8080/photoaf.jpg");
             //this.camera.ConnectionString = new Uri(@"https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-frc3/t1.0-9/10270404_10202712962477674_682458036245271256_n.jpg");
 
-            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 76;
-            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 24;
-            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 139;
-            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 87;
-            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 96;
-            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 226;
+            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 46;
+            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 55;//75;
+            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 50;
+            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 68;
+            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 170;//140;
+            HSVTabletColoursRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 125;
 
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue = 176;
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 119;//93;
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value = 200;//198;
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue = 5;//171;
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation = 194;//128;
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Value = 360;//250;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue = 1;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 153;//93;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value = 117;//198;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue = 8;//171;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation = 219;//128;
+            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Value = 196;//250;
 
             HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.Low].Hue = 12;
-            HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.Low].Satuation = 45;
-            HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.Low].Value = 238;
-            HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 17;
-            HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 62;
-            HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.High].Value = 255;
+            HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.Low].Satuation = 52;
+            HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.Low].Value = 183;
+            HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 18;
+            HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 110;
+            HSVTabletColoursRanges[(int)TabletColors.White, (int)HSVRange.High].Value = 239;
 
-            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 115;
-            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 76;
-            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 69;
-            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 126;
-            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 125;
-            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 213;
+            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 114;
+            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 36;
+            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 49;
+            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 147;
+            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 123;
+            HSVTabletColoursRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 109;
 
-            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.Low].Hue = 102;
-            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.Low].Satuation = 15;
-            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.Low].Value = 90;
-            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.High].Hue = 145;
-            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.High].Satuation = 39;
-            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.High].Value = 167;
+            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.Low].Hue = 177;
+            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.Low].Satuation = 51;
+            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.Low].Value = 19;
+            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.High].Hue = 16;
+            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.High].Satuation = 135;
+            HSVTabletColoursRanges[(int)TabletColors.Black, (int)HSVRange.High].Value = 75;
         }
 
         /// <summary>
@@ -90,7 +91,7 @@ namespace Tmc.Vision
         {
             List<Tablet> tablet = new List<Tablet>();           
             //img = camera.GetImage(1);
-            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/sort21.jpg");
+            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/sort30.jpg");
 
             f.getValue(ref minRadius, ref maxRadius, ref dp, ref minDist, ref cannyThresh, ref cannyAccumThresh);
 
@@ -98,18 +99,19 @@ namespace Tmc.Vision
             //PointF[] points = FindPattern(img.Convert<Gray, Byte>(), new Size(12, 9));
             //CircleF
             //CvInvoke.cvWaitKey(0);
-            
+            ab = img.Clone();
             foreach (CircleF circle in circles)
             {
                 CalculateTrueCordXYmm(ChessboardPoints, new PointF(circle.Center.X, circle.Center.Y));//424, 466));//454, 503));//423,464));//594, 750));//253, 525));
                 CircleF[] abc = OtherTabletsNear(circles, circle);
                 HistogramImage(img, circles);
             }
+            f.pictureBox2_draw(ab);
             DetectOverLap();
-            DetectDamagedTablet();
+            DetectDamagedTablet();CvInvoke.cvWaitKey(0); 
             return FillListOfGoodTablets(ChessboardPoints, circles);
             //GetXYZForTablets();
-            CvInvoke.cvWaitKey(0); 
+            
 
             return tablet;
         }
@@ -389,7 +391,7 @@ namespace Tmc.Vision
                 for (int i = 0; i < tabletList.Capacity - 1; i++)
                 {
                     float[][] abc = HsvValueFloatArray(tabletList[i]);
-                    int[][] hue = getHighLowHSV(abc, 30, HSVdata.Hue);
+                    int[][] hue = getHighLowHSV(abc,  30, HSVdata.Hue);
                     int[][] sat = getHighLowHSV(abc, 30, HSVdata.Sat);
                     int[][] val = getHighLowHSV(abc, 30, HSVdata.Val);
                     abca = addFloats(abca, abc);
@@ -401,28 +403,82 @@ namespace Tmc.Vision
                 int[][] satx = getHighLowHSV(abca, 50, HSVdata.Sat);
                 int[][] valx = getHighLowHSV(abca, 50, HSVdata.Val);
 
-                ChoseCheckType(huex, satx, valx);
+                //if (ChoseCheckType(huex, satx, valx, tablet, tablets) == true)
+                if(FirstPass(huex, satx, valx, tablet, tablets) == true)
+                {
+                    ab.Draw(tablet, new Bgr(Color.Red), 2);
+                    //HistogramViewer.Show(oneTablet.Convert<Hsv, Byte>());
+                }
 
                 TabletColour(src, tablet);
 
-                HistogramViewer.Show(oneTablet.Convert<Hsv, Byte>());
-                HistogramViewer.Show(oneTablet.Convert<Hsv, Byte>());
-                CvInvoke.cvWaitKey(0);
+                //HistogramViewer.Show(oneTablet.Convert<Hsv, Byte>());
+                //HistogramViewer.Show(oneTablet.Convert<Hsv, Byte>());
+                //CvInvoke.cvWaitKey(0);
             }
-            HistogramViewer.Show(src);
+            //HistogramViewer.Show(src);
 
-            CvInvoke.cvWaitKey(0);
+            //CvInvoke.cvWaitKey(0);
         }
 
-        private void ChoseCheckType(int[][] hue, int[][] sat, int[][] val)
+        private bool FirstPass(int[][] hue, int[][] sat, int[][] val, CircleF circle, CircleF[] circles)
+        {
+            if ((hue.GetLength(0) == 1) && (sat.GetLength(0) == 1) && (val.GetLength(0) == 1))
+            {
+                TabletColors a = detectColour(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletColoursRanges);
+                if (a != TabletColors.Unknown) return true;
+                else return false;
+            }
+            else
+            {
+                TabletColors b = detectColour(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletColoursRanges);
+                int hueM = hue.GetLength(0) - 1;
+                int satM = sat.GetLength(0) - 1;
+                int valM = val.GetLength(0) - 1;
+                TabletColors c = detectColour(new Hsv((hue[hueM][0] + hue[hueM][1]) / 2, (sat[satM][0] + sat[satM][1]) / 2, (val[valM][0] + val[valM][1]) / 2), HSVTabletColoursRanges);
+                if (hue.GetLength(0) > 2)
+                {
+                    hueM = ((hue.GetLength(0) - 1) / 2);
+                }
+                if (sat.GetLength(0) > 2)
+                {
+                    satM = ((sat.GetLength(0) - 1) / 2);
+                }
+                if (val.GetLength(0) > 2)
+                {
+                    valM = ((val.GetLength(0) - 1) / 2);
+                }
+                TabletColors d = detectColour(new Hsv((hue[hueM][0] + hue[hueM][1]) / 2, (sat[satM][0] + sat[satM][1]) / 2, (val[valM][0] + val[valM][1]) / 2), HSVTabletColoursRanges);
+
+                if ((b != TabletColors.Unknown) && (b == c) && (b == d)) return true;
+                else return false;
+            }
+
+        }
+
+        private bool ChoseCheckType(int[][] hue, int[][] sat, int[][] val, CircleF circle,CircleF[] circles)
         {
             if ((hue.GetLength(0) == 1) && (sat.GetLength(0) == 1) && (val.GetLength(0) == 1))
             {
                 TabletColors a = detectColour(new Hsv((hue[0][0]+hue[0][1])/2,(sat[0][0]+sat[0][1])/2,(val[0][0]+val[0][1])/2),HSVTabletColoursRanges);
+                if (a != TabletColors.Unknown) return true;
+                else return false;
             }
             else
             {
- 
+                TabletColors b = detectColour(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletColoursRanges);
+                if (b != TabletColors.Unknown) return true;
+                else return false;
+                CircleF[] near = OtherTabletsNear(circles, circle);
+                int a = near.GetLength(0);
+                if (near.GetLength(0) == 0)
+                {//if there are no tablets nearby the tablet
+
+                }
+                else
+                {//there be thy tablets
+                    
+                }
             }
         }
 
@@ -538,7 +594,7 @@ namespace Tmc.Vision
 
 
 
-            CvInvoke.cvShowImage("first", LS1);
+            /*CvInvoke.cvShowImage("first", LS1);
             CvInvoke.cvShowImage("first2", LS2);
             CvInvoke.cvShowImage("first3", LS3);
             CvInvoke.cvShowImage("first4", LS4);
@@ -554,14 +610,14 @@ namespace Tmc.Vision
             CvInvoke.cvShowImage("first2rt", TS2);
             CvInvoke.cvShowImage("first3rt", TS3);
             CvInvoke.cvShowImage("first4rt", TS4);
-            CvInvoke.cvShowImage("first5rt", TS5);
+            CvInvoke.cvShowImage("first5rt", TS5);*/
 
             Image<Bgr, Byte> derp;
 
-            derp = DrawPoints(src, points);
+            //derp = DrawPoints(src, points);
 
-            CvInvoke.cvShowImage("Test Window3", derp);
-            CvInvoke.cvWaitKey(0);
+            //CvInvoke.cvShowImage("Test Window3", derp);
+            //CvInvoke.cvWaitKey(0);
 
             return TabletList;
         }
