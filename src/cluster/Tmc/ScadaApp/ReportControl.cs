@@ -32,14 +32,14 @@ namespace Tmc.Scada.App
             { ReportType.Production, "ProductionReport" }
         };
 
-        private Dictionary<ReportType, Delegate> ReportDataSourceMethodsDictionary = new Dictionary<ReportType, Delegate>()
-        {
-            { ReportType.Alarm, new Func<DateTime, DateTime, List<string>, IEnumerable>(TmcData.ReportController.GetAlarmsReportData) },
-            { ReportType.Cycle, new Func<DateTime, DateTime, IEnumerable>(TmcData.ReportController.GetCycleReportData) },
-            { ReportType.Environment, new Func<DateTime, DateTime, List<string>, IEnumerable>(TmcData.ReportController.GetEnvironmentReportData) },
-            { ReportType.Order, new Func<DateTime, DateTime, string, IEnumerable>(TmcData.ReportController.GetOrderReportData) },
-            { ReportType.Production, new Func<DateTime, DateTime, IEnumerable>(TmcData.ReportController.GetProductionReportData) }
-        };
+        //private Dictionary<ReportType, Delegate> ReportDataSourceMethodsDictionary = new Dictionary<ReportType, Delegate>()
+        //{
+        //    { ReportType.Alarm, new Func<DateTime, DateTime, List<string>, IEnumerable>(TmcData.ReportController.GetAlarmsReportData) },
+        //    { ReportType.Cycle, new Func<DateTime, DateTime, IEnumerable>(TmcData.ReportController.GetCycleReportData) },
+        //    { ReportType.Environment, new Func<DateTime, DateTime, List<string>, IEnumerable>(TmcData.ReportController.GetEnvironmentReportData) },
+        //    { ReportType.Order, new Func<DateTime, DateTime, string, IEnumerable>(TmcData.ReportController.GetOrderReportData) },
+        //    { ReportType.Production, new Func<DateTime, DateTime, IEnumerable>(TmcData.ReportController.GetProductionReportData) }
+        //};
 
         private Dictionary<int, ReportType> ReportGenerationIndexDictionary = new Dictionary<int,ReportType>()
         {
@@ -117,15 +117,43 @@ namespace Tmc.Scada.App
             reportViewerForm.ReportViewer.LocalReport.DataSources.Add(new ReportDataSource(reportName + "DataSet", this.GetReportDataSource(reportType, startDate, endDate)));
         }
 
+        private IEnumerable GetReportDataSource(ReportType reportType, DateTime startTime, DateTime endTime)
+        {
+            switch (reportType)
+            {
+                case ReportType.Alarm: return TmcData.ReportController.GetAlarmsReportData(startTime, endTime, this.GetFilterOptionsList(reportType));
+                case ReportType.Cycle: return TmcData.ReportController.GetCycleReportData(startTime, endTime);
+                case ReportType.Environment: return TmcData.ReportController.GetEnvironmentReportData(startTime, endTime, this.GetFilterOptionsList(reportType));
+                case ReportType.Order: return TmcData.ReportController.GetOrderReportData(startTime, endTime, this.txtOrderIdFilter.Text);
+                case ReportType.Production: return TmcData.ReportController.GetProductionReportData(startTime, endTime);
+                default: throw new Exception("Selected report does not exist.");
+            };
+        }
+
+        private List<string> GetFilterOptionsList(ReportType reportType)
+        {
+            switch (reportType)
+            {
+                case ReportType.Alarm: return this.GetCheckedBoxListValues(this.clbAlarmsTypeFilter);
+                case ReportType.Environment: return this.GetCheckedBoxListValues(this.clbEnvironmentSourceFilter);
+                default: throw new Exception("Report type not supported.");
+            }
+        }
+
+        private List<string> GetCheckedBoxListValues(CheckedListBox checkedListBox)
+        {
+            List<string> values = new List<string>();
+            foreach (var item in checkedListBox.CheckedItems)
+            {
+                values.Add(item.ToString());
+            }
+
+            return values;
+        }
+
         private bool DatesWithinValidRange()
         {
             return this.SelectedStartDate <= this.SelectedEndDate;
-        }
-
-        private IEnumerable GetReportDataSource(ReportType reportType, DateTime startDate, DateTime endDate)
-        {
-            //return ReportDataSourceMethodsDictionary[reportType](startDate, endDate);
-            return new List<string>().AsEnumerable();
         }
 
         private void ClearAllFilteringOptions()
@@ -218,7 +246,7 @@ namespace Tmc.Scada.App
 
         private void btnGenerateReport_Click(object sender, EventArgs e)
         {
-            //this.CreateReport(this.ReportGenerationDictionary[this.cboReports.SelectedIndex]);
+            this.CreateReport(this.ReportGenerationIndexDictionary[this.cboReports.SelectedIndex]);
         }
     }
 }

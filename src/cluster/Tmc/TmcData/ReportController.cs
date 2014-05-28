@@ -16,31 +16,32 @@ namespace TmcData
             
             //TEST DATA
 
-            ReportDataSet.EnvironmentDataTableRow newRow = dataTable.NewEnvironmentDataTableRow();
-            newRow.Sensor = "Humidity";
-            newRow.Reading = 33.3;
-            newRow.Timestamp = DateTime.Now;
-            dataTable.AddEnvironmentDataTableRow(newRow);
+            //ReportDataSet.EnvironmentDataTableRow newRow = dataTable.NewEnvironmentDataTableRow();
+            //newRow.Sensor = "Humidity";
+            //newRow.Reading = 33.3;
+            //newRow.Timestamp = DateTime.Now;
+            //dataTable.AddEnvironmentDataTableRow(newRow);
 
             //REAL THING
 
-            //var query = from q in new ICTDEntities().EnvironmentLogViews
-            //            where q.Timestamp >= startTime && q.Timestamp <= endTime
-            //            select new
-            //            {
-            //                Source = q.Source,
-            //                Reading = q.Reading,
-            //                Timestamp = q.Timestamp
-            //            };
+            var query = from q in new ICTDEntities().EnvironmentLogViews
+                        where q.Timestamp >= startTime && q.Timestamp <= endTime && q.Source.Any(s => sourcesToShow.Contains(q.Source))
+                        select new
+                        {
+                            Source = q.Source,
+                            Reading = q.Reading,
+                            Timestamp = q.Timestamp
+                        };
 
-            //foreach (var view in query)
-            //{
-            //    ReportDataSet.EnvironmentDataTableRow newRow = dataTable.NewEnvironmentDataTableRow();
-            //    newRow.Timestamp = view.Timestamp;
-            //    newRow.Sensor = view.Source;
-            //    newRow.Reading = view.Reading;
-            //    dataTable.AddEnvironmentDataTableRow(newRow);
-            //}
+
+            foreach (var view in query)
+            {
+                ReportDataSet.EnvironmentDataTableRow newRow = dataTable.NewEnvironmentDataTableRow();
+                newRow.Timestamp = view.Timestamp;
+                newRow.Sensor = view.Source;
+                newRow.Reading = view.Reading;
+                dataTable.AddEnvironmentDataTableRow(newRow);
+            }
 
             return dataTable.AsEnumerable();
         }
@@ -50,31 +51,31 @@ namespace TmcData
             ReportDataSet.AlarmDataTableDataTable dataTable = new ReportDataSet.AlarmDataTableDataTable();
 
             // TEST DATA
-            ReportDataSet.AlarmDataTableRow newRow = dataTable.NewAlarmDataTableRow();
-            newRow.Timestamp = DateTime.Now;
-            newRow.EventType = "Warning";
-            newRow.Description = "Something blew up.";
-            dataTable.AddAlarmDataTableRow(newRow);
+            //ReportDataSet.AlarmDataTableRow newRow = dataTable.NewAlarmDataTableRow();
+            //newRow.Timestamp = DateTime.Now;
+            //newRow.EventType = "Warning";
+            //newRow.Description = "Something blew up.";
+            //dataTable.AddAlarmDataTableRow(newRow);
 
             // REAL THING
-            //var query = from q in new ICTDEntities().ComponentEventLogViews
-            //            where q.Timestamp >= startTime && q.Timestamp <= endTime
-            //            select new
-            //            {
-            //                Name = q.Name,
-            //                Timestamp = q.Timestamp,
-            //                Description = q.Description,
-            //                LogType = q.LogType
-            //            };
+            var query = from q in new ICTDEntities().ComponentEventLogViews
+                        where q.Timestamp >= startTime && q.Timestamp <= endTime && q.LogType.Any(s => typesToShow.Contains(q.LogType))
+                        select new
+                        {
+                            Name = q.Name,
+                            Timestamp = q.Timestamp,
+                            Description = q.Description,
+                            LogType = q.LogType
+                        };
 
-            //foreach (var view in query)
-            //{
-            //    ReportDataSet.AlarmDataTableRow newRow = dataTable.NewAlarmDataTableRow();
-            //    newRow.Timestamp = view.Timestamp.HasValue ? view.Timestamp.Value : DateTime.MinValue;
-            //    newRow.Description = view.Description;
-            //    newRow.EventType = view.LogType;
-            //    dataTable.AddAlarmDataTableRow(newRow);
-            //}
+            foreach (var view in query)
+            {
+                ReportDataSet.AlarmDataTableRow newRow = dataTable.NewAlarmDataTableRow();
+                newRow.Timestamp = view.Timestamp.HasValue ? view.Timestamp.Value : DateTime.MinValue;
+                newRow.Description = view.Description;
+                newRow.EventType = view.LogType;
+                dataTable.AddAlarmDataTableRow(newRow);
+            }
 
             return dataTable.AsEnumerable();
         }
@@ -96,23 +97,23 @@ namespace TmcData
                 dataTable.AddCycleDataTableRow(newRow);
             }
 
-            //REAL THING
-            //var query = from q in new ICTDEntities().ComponentCycleLogViews
-            //            where q.Timestamp >= startTime && q.Timestamp <= endTime
-            //            select new
-            //            {
-            //                Name = q.Name,
-            //                Timestamp = q.Timestamp,
-            //                CycleTime = q.CycleTime
-            //            };
+            ////REAL THING
+            ////var query = from q in new ICTDEntities().ComponentCycleLogViews
+            ////            where q.Timestamp >= startTime && q.Timestamp <= endTime
+            ////            select new
+            ////            {
+            ////                Name = q.Name,
+            ////                Timestamp = q.Timestamp,
+            ////                CycleTime = q.CycleTime
+            ////            };
 
-            //foreach (var view in query)
-            //{
-            //    ReportDataSet.CycleDataTableRow newRow = dataTable.NewCycleDataTableRow();
-            //    newRow.Timestamp = view.Timestamp.HasValue ? view.Timestamp.Value : DateTime.MinValue;
-            //    newRow.CycleTime = view.CycleTime.HasValue ? view.CycleTime.Value : 0;
-            //    dataTable.AddCycleDataTableRow(newRow);
-            //}
+            ////foreach (var view in query)
+            ////{
+            ////    ReportDataSet.CycleDataTableRow newRow = dataTable.NewCycleDataTableRow();
+            ////    newRow.Timestamp = view.Timestamp.HasValue ? view.Timestamp.Value : DateTime.MinValue;
+            ////    newRow.CycleTime = view.CycleTime.HasValue ? view.CycleTime.Value : 0;
+            ////    dataTable.AddCycleDataTableRow(newRow);
+            ////}
 
             return dataTable.AsEnumerable();
         }
@@ -122,49 +123,55 @@ namespace TmcData
             ReportDataSet.OrderDataTableDataTable dataTable = new ReportDataSet.OrderDataTableDataTable();
 
             // TEST DATA
-            Random rng = new Random();
-            for (int i = 0; i < 3; i++)
-            {
-                ReportDataSet.OrderDataTableRow newRow = dataTable.NewOrderDataTableRow();
-                newRow.OrderId = i + 1;
-                newRow.White = rng.Next(1, 10);
-                newRow.Black = rng.Next(1, 10);
-                newRow.Red = rng.Next(1, 10);
-                newRow.Blue = rng.Next(1, 10);
-                newRow.Green = rng.Next(1, 10);
-                newRow.StartTime = DateTime.Now.AddMinutes(rng.Next(1, 10) * -1);
-                newRow.EndTime = DateTime.Now;
-                dataTable.AddOrderDataTableRow(newRow);
-            }
-
-            // REAL THING
-            //var query = from q in new ICTDEntities().OrderListViews
-            //            where q.StartTime >= startTime && q.EndTime <= endTime
-            //            select new
-            //            {
-            //                OrderId = q.OrderID,
-            //                White = q.White,
-            //                Black = q.Black,
-            //                Green = q.Green,
-            //                Red = q.Red,
-            //                Blue = q.Blue,
-            //                StartTime = q.StartTime,
-            //                EndTime = q.EndTime
-            //            };
-
-            //foreach (var view in query)
+            //Random rng = new Random();
+            //for (int i = 0; i < 3; i++)
             //{
             //    ReportDataSet.OrderDataTableRow newRow = dataTable.NewOrderDataTableRow();
-            //    newRow.OrderId = view.OrderId;
-            //    newRow.White = view.White;
-            //    newRow.Black = view.Black;
-            //    newRow.Green = view.Green;
-            //    newRow.Red = view.Red;
-            //    newRow.Blue = view.Blue;
-            //    newRow.StartTime = view.StartTime.HasValue ? view.StartTime.Value : DateTime.MinValue;
-            //    newRow.EndTime = view.EndTime.HasValue ? view.EndTime.Value : DateTime.MinValue;
+            //    newRow.OrderId = i + 1;
+            //    newRow.White = rng.Next(1, 10);
+            //    newRow.Black = rng.Next(1, 10);
+            //    newRow.Red = rng.Next(1, 10);
+            //    newRow.Blue = rng.Next(1, 10);
+            //    newRow.Green = rng.Next(1, 10);
+            //    newRow.StartTime = DateTime.Now.AddMinutes(rng.Next(1, 10) * -1);
+            //    newRow.EndTime = DateTime.Now;
             //    dataTable.AddOrderDataTableRow(newRow);
             //}
+
+            // REAL THING
+            var query = from q in new ICTDEntities().OrderListViews
+                        where q.StartTime >= startTime && q.EndTime <= endTime
+                        select new
+                        {
+                            OrderId = q.OrderID,
+                            White = q.White,
+                            Black = q.Black,
+                            Green = q.Green,
+                            Red = q.Red,
+                            Blue = q.Blue,
+                            StartTime = q.StartTime,
+                            EndTime = q.EndTime
+                        };
+
+            int id;
+            if (!String.IsNullOrWhiteSpace(orderIdFilter) && Int32.TryParse(orderIdFilter, out id))
+            {
+                query.FirstOrDefault(x => x.OrderId == id);
+            }
+
+            foreach (var view in query)
+            {
+                ReportDataSet.OrderDataTableRow newRow = dataTable.NewOrderDataTableRow();
+                newRow.OrderId = view.OrderId;
+                newRow.White = view.White;
+                newRow.Black = view.Black;
+                newRow.Green = view.Green;
+                newRow.Red = view.Red;
+                newRow.Blue = view.Blue;
+                newRow.StartTime = view.StartTime.HasValue ? view.StartTime.Value : DateTime.MinValue;
+                newRow.EndTime = view.EndTime.HasValue ? view.EndTime.Value : DateTime.MinValue;
+                dataTable.AddOrderDataTableRow(newRow);
+            }
 
             return dataTable.AsEnumerable();
         }

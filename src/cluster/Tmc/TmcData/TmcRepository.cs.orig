@@ -12,14 +12,18 @@ namespace TmcData
     {
         public static IList<OrderListView> OrderInfo()
         {
-            //return new ICTDEntities().OrderListViews.ToList();
-            return new List<OrderListView>();
+            return new ICTDEntities().OrderListViews.ToList();
         }
 
         public static IList<EnvironmentLogView> EnvironmentLog()
         {
             return new ICTDEntities().EnvironmentLogViews.ToList();
         }
+
+        //public static IList<EnvironmentLogView> EnvironmentLog(DateTime startTime, DateTime endTime)
+        //{
+        //    return ReportController.GetEnvironmentReportData(startTime, endTime).
+        //}
 
         public static void AddNewOrder(Guid userID, int black, int blue, int red, int green, int white )
         {
@@ -46,7 +50,6 @@ namespace TmcData
             new ICTDEntities().UpdateOrderStatusByID(orderId, statusId);
         }
 
-<<<<<<< HEAD
         public static void CancelOrder(int orderId)
         {
             new ICTDEntities().CancelOrder(orderId);
@@ -55,7 +58,24 @@ namespace TmcData
         public static ComponentEventLogView GetLatestAlarm()
         {
             return new ICTDEntities().ComponentEventLogViews.LastOrDefault();
-=======
+        }
+//<<<<<<< HEAD
+
+        public static List<string> GetEnvironmentSourceTypes()
+        {
+            return new ICTDEntities().EnvironmentLogViews.Where(x => !String.IsNullOrWhiteSpace(x.Source)).Select(y => y.Source).Distinct().ToList();
+        }
+
+        public static List<string> GetAlarmTypes()
+        {
+            return new ICTDEntities().ComponentEventLogViews.Where(x => !String.IsNullOrWhiteSpace(x.LogType)).Where(y => y.LogType.Equals("Warning", StringComparison.InvariantCultureIgnoreCase) || y.LogType.Equals("Error", StringComparison.InvariantCultureIgnoreCase) || y.LogType.Equals("Alarm", StringComparison.InvariantCultureIgnoreCase)).Select(z => z.LogType).Distinct().ToList();
+        }
+
+        //public static List<string> GetAlarmTypes()
+        //{
+        //    return new ICTDEntities().ComponentCycleLogViews.Where(x => !String.IsNullOrWhiteSpace(x.
+        //}
+//=======
         public static void AddEnvironmentalReading(int sourceID, DateTime timestamp, float reading, string type)
         {
             new ICTDEntities().AddNewEnvironmentLog(timestamp, sourceID, reading, type);
@@ -64,7 +84,7 @@ namespace TmcData
         public static void AddEnvironmentalReading(Source source, DateTime timestamp, float reading, EnvironmentType type)
         {
             new ICTDEntities().AddNewEnvironmentLog(timestamp, (int)source, reading, type.ToString());
->>>>>>> a23523713e84d8b9ec01ca16e506d0ca063b9f63
         }
+//>>>>>>> 3b3917f1d3e63e203885016745ce6b04af9be3dd
     }
 }
