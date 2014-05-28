@@ -29,6 +29,8 @@ namespace Tmc.Vision
         private Camera camera;
         private Image<Bgr, Byte> img;
         private Image<Bgr, Byte> ab;
+        private List<Tablet> tabletList = new List<Tablet>();
+
         Form1 f;
         List<Tablet> TabletList = new List<Tablet>();
 
@@ -89,7 +91,7 @@ namespace Tmc.Vision
         /// <returns>return position of viable tablets and state</returns>
         public List<Tablet> GetVisibleTablets()
         {
-            List<Tablet> tablet = new List<Tablet>();           
+            tabletList.Clear();           
             //img = camera.GetImage(1);
             img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/sort30.jpg");
 
@@ -105,16 +107,19 @@ namespace Tmc.Vision
                 CalculateTrueCordXYmm(ChessboardPoints, new PointF(circle.Center.X, circle.Center.Y));//424, 466));//454, 503));//423,464));//594, 750));//253, 525));
                 CircleF[] abc = OtherTabletsNear(circles, circle);
                 //HistogramImage(img, circles);
-                DetectGoodPickupTablet(img, circles);
+                
             }
+            DetectGoodPickupTablet(img, circles);
+
             f.pictureBox2_draw(ab);
-            DetectOverLap();
-            DetectDamagedTablet();CvInvoke.cvWaitKey(0); 
-            return FillListOfGoodTablets(ChessboardPoints, circles);
+            //DetectOverLap();
+            //DetectDamagedTablet();
+            CvInvoke.cvWaitKey(0); 
+            //return FillListOfGoodTablets(ChessboardPoints, circles);
             //GetXYZForTablets();
             
 
-            return tablet;
+            return tabletList;
         }
 
         public void Calibration()
@@ -323,13 +328,13 @@ namespace Tmc.Vision
                     (circ.Center.Y == targ.Center.Y) && (circ.Area == targ.Area));
         }
 
-        /// <summary>
+        /*/// <summary>
         /// will detect if tablet has been covered by another tablet
         /// </summary>
         private void DetectOverLap()
         {
 
-        }
+        }*/
 
 
         //private void GetXYZForTablets()
@@ -337,13 +342,13 @@ namespace Tmc.Vision
 
         //}
 
-        /// <summary>
+        /*/// <summary>
         /// Determins if tablet is damaged
         /// </summary>
         private void DetectDamagedTablet()
         {
 
-        }
+        }*/
 
         private float[][] ImagesToHisto(List<Image<Bgr, Byte>> tabletList)
         {
@@ -359,30 +364,30 @@ namespace Tmc.Vision
 
         private void DetectGoodPickupTablet(Image<Bgr, Byte> src, CircleF[] tablets)
         {
+            Tablet tab = new Tablet();
             foreach (CircleF tablet in tablets)
             {
-                //var tabletList = new List<Image<Bgr, Byte>>();
-                //tabletList = TabletColour(src, tablet);
-                float[][] abca = ImagesToHisto(TabletColour(src, tablet));//HsvValueFloatArray(tabletList[0]);
-                //for (int i = 1; i < tabletList.Capacity - 1; i++)
-                //{
-                //    float[][] abc = HsvValueFloatArray(tabletList[i]);
-                //    abca = addFloats(abca, abc);
-                //}
+                float[][] abca = ImagesToHisto(GetTablet(src, tablet));
 
-                int[][] huex = getHighLowHSV(abca, 50, HSVdata.Hue);
-                int[][] satx = getHighLowHSV(abca, 50, HSVdata.Sat);
-                int[][] valx = getHighLowHSV(abca, 50, HSVdata.Val);
+                int[][] hue = getHighLowHSV(abca, 50, HSVdata.Hue);
+                int[][] sat = getHighLowHSV(abca, 50, HSVdata.Sat);
+                int[][] val = getHighLowHSV(abca, 50, HSVdata.Val);
 
-                if (FirstPass(huex, satx, valx, tablet, tablets) == true)
+                if (FirstPass(hue, sat, val, tablet, tablets) == true)
                 {
-                    ab.Draw(tablet, new Bgr(Color.Red), 2);
-                    //HistogramViewer.Show(oneTablet.Convert<Hsv, Byte>());
+                    ab.Draw(tablet, new Bgr(Color.Green), 4);
+                    tab.LocationPoint = CalculateTrueCordXYmm(ChessboardPoints, new PointF(tablet.Center.X, tablet.Center.Y));
+                    tab.Color = detectColour(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletColoursRanges);
+                    tabletList.Add(tab);
+                }
+                else 
+                {
+                    ab.Draw(tablet, new Bgr(Color.Red), 4);
                 }
             }
         }
 
-        /// <summary>
+        /*/// <summary>
         /// 
         /// </summary>
         /// <param name="src"></param>
@@ -425,7 +430,7 @@ namespace Tmc.Vision
                 
 
                  var tabletList = new List<Image<Bgr, Byte>>();
-                tabletList = TabletColour(src, tablet);
+                tabletList = GetTablet(src, tablet);
                 float[][] abca = HsvValueFloatArray(tabletList[0]);
                 for (int i = 1; i < tabletList.Capacity - 1; i++)
                 {
@@ -449,7 +454,7 @@ namespace Tmc.Vision
                     //HistogramViewer.Show(oneTablet.Convert<Hsv, Byte>());
                 }
 
-                TabletColour(src, tablet);
+                GetTablet(src, tablet);
 
                 //HistogramViewer.Show(oneTablet.Convert<Hsv, Byte>());
                 //HistogramViewer.Show(oneTablet.Convert<Hsv, Byte>());
@@ -458,7 +463,7 @@ namespace Tmc.Vision
             //HistogramViewer.Show(src);
 
             //CvInvoke.cvWaitKey(0);
-        }
+        }*/
 
         private bool FirstPass(int[][] hue, int[][] sat, int[][] val, CircleF circle, CircleF[] circles)
         {
@@ -495,7 +500,7 @@ namespace Tmc.Vision
 
         }
 
-        private bool ChoseCheckType(int[][] hue, int[][] sat, int[][] val, CircleF circle,CircleF[] circles)
+        /*private bool ChoseCheckType(int[][] hue, int[][] sat, int[][] val, CircleF circle,CircleF[] circles)
         {
             if ((hue.GetLength(0) == 1) && (sat.GetLength(0) == 1) && (val.GetLength(0) == 1))
             {
@@ -519,7 +524,7 @@ namespace Tmc.Vision
                     
                 }
             }
-        }
+        }*/
 
         private float[][] addFloats(float[][] srcFloat, float[][] srcFloatAdd)
         { 
@@ -535,7 +540,7 @@ namespace Tmc.Vision
             return srcFloat;
         }
 
-        private List<Image<Bgr, Byte>> TabletColour(Image<Bgr, Byte> src, CircleF tablet)
+        private List<Image<Bgr, Byte>> GetTablet(Image<Bgr, Byte> src, CircleF tablet)
         {
             var TabletList = new List<Image<Bgr, Byte>>();
 
@@ -556,10 +561,6 @@ namespace Tmc.Vision
             points[1].X = (int)(tablet.Center.X - (tablet.Radius * angle2));
             points[1].Y = (int)(tablet.Center.Y - (Math.Sin(41 * (Math.PI / 180)) * rad));
 
-            //Image<Bgr, Byte> LS1 = CropImage(src, points[1].X, points[1].Y, points[0].X - points[1].X, ((int)tablet.Center.Y - points[1].Y) * 2);
-
-            
-
             points[2].X = (int)(tablet.Center.X - (tablet.Radius * angle3));
             points[2].Y = (int)(tablet.Center.Y - (Math.Sin(37 * (Math.PI / 180)) * rad));
 
@@ -572,10 +573,6 @@ namespace Tmc.Vision
             points[5].X = (int)(tablet.Center.X - (tablet.Radius * angle6));
             points[5].Y = (int)(tablet.Center.Y - (Math.Sin(16 * (Math.PI / 180)) * rad));
             
-            //(int)(tablet.Center.X - (tablet.Radius * angle1));
-            //(int)(tablet.Center.Y - (tablet.Radius * angle1));
-            //h = (int)((tablet.Radius * angle1) * 2);
-            //ht = (int)((tablet.Radius * angle1) * 2);
 
 
 
@@ -644,24 +641,6 @@ namespace Tmc.Vision
             //Image<Bgr, Byte> TS4 = CropImage(src, points[4].X, points[4].Y, ((int)tablet.Center.Y - points[4].Y) * 2, points[3].X - points[4].X);
             //Image<Bgr, Byte> TS5 = CropImage(src, points[5].X, points[5].Y, ((int)tablet.Center.Y - points[5].Y) * 2, points[4].X - points[5].X);
 
-
-
-            /*CvInvoke.cvShowImage("first", LS1);
-            CvInvoke.cvShowImage("first2", LS2);
-            CvInvoke.cvShowImage("first3", LS3);
-            CvInvoke.cvShowImage("first4", LS4);
-            CvInvoke.cvShowImage("first5", LS5);
-
-            CvInvoke.cvShowImage("firstr", RS1);
-            CvInvoke.cvShowImage("first2r", RS2);
-            CvInvoke.cvShowImage("first3r", RS3);
-            CvInvoke.cvShowImage("first4r", RS4);
-            CvInvoke.cvShowImage("first5r", RS5);
-
-            CvInvoke.cvShowImage("firstrt", TS1);
-            CvInvoke.cvShowImage("first2rt", TS2);
-            CvInvoke.cvShowImage("first3rt", TS3);
-            CvInvoke.cvShowImage("first4rt", TS4);*/
             CvInvoke.cvShowImage("MID", MID);
 
             Image<Bgr, Byte> derp;

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Tmc.Common;
+
 namespace Tmc.Vision
 {
     static class Program
@@ -38,7 +40,7 @@ namespace Tmc.Vision
             sorter.Calibration();
             while (true)
             {
-                sorter.GetVisibleTablets();
+                List<Tablet> tabletList = sorter.GetVisibleTablets();
             }
             //CvInvoke.cvWaitKey(0);
         }
