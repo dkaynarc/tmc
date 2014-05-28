@@ -18,5 +18,6 @@ namespace TmcData
         public string Source { get; set; }
         public double Reading { get; set; }
         public System.DateTime Timestamp { get; set; }
+        public string Type { get; set; }
     }
 }

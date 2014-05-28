@@ -15,6 +15,18 @@ namespace Tmc.Scada.App
         public environmentControl()
         {
             InitializeComponent();
+
+            Teperature = listView1.Items[0].SubItems[1];
+            Humidity = listView1.Items[1].SubItems[1];
+            Light = listView1.Items[2].SubItems[1];
+            Sound = listView1.Items[3].SubItems[1];
+            Dust = listView1.Items[4].SubItems[1];
         }
+
+        private ListViewItem.ListViewSubItem Teperature;
+        private ListViewItem.ListViewSubItem Humidity;
+        private ListViewItem.ListViewSubItem Light;
+        private ListViewItem.ListViewSubItem Sound;
+        private ListViewItem.ListViewSubItem Dust;
     }
 }

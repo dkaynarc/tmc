@@ -63,6 +63,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="DatabaseMappings.cs" />
     <Compile Include="EnvironmentLogBySource_Result.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>

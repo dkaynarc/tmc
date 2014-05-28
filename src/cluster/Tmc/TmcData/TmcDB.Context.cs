@@ -50,7 +50,7 @@ namespace TmcData
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddNewCycleLog", timestampParameter, cycleTimeParameter, sourceIDParameter);
         }
     
-        public virtual int AddNewEnvironmentLog(Nullable<System.DateTime> timestamp, Nullable<int> sourceID, Nullable<double> reading)
+        public virtual int AddNewEnvironmentLog(Nullable<System.DateTime> timestamp, Nullable<int> sourceID, Nullable<double> reading, string type)
         {
             var timestampParameter = timestamp.HasValue ?
                 new ObjectParameter("Timestamp", timestamp) :
@@ -64,7 +64,11 @@ namespace TmcData
                 new ObjectParameter("Reading", reading) :
                 new ObjectParameter("Reading", typeof(double));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddNewEnvironmentLog", timestampParameter, sourceIDParameter, readingParameter);
+            var typeParameter = type != null ?
+                new ObjectParameter("Type", type) :
+                new ObjectParameter("Type", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddNewEnvironmentLog", timestampParameter, sourceIDParameter, readingParameter, typeParameter);
         }
     
         public virtual int AddNewEventLog(Nullable<System.DateTime> timestamp, string description, Nullable<int> sourceID, string logType)
