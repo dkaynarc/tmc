@@ -41,6 +41,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>References\Conveyor.dll</HintPath>
     </Reference>
+    <Reference Include="RobotStudio.Services.RobApi, Version=5.60.5733.84, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\RobotStudio.Services.RobApi.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -53,6 +57,7 @@
     <Compile Include="ConveyorFactory.cs" />
     <Compile Include="Conveyors\BluetoothConveyor.cs" />
     <Compile Include="Conveyors\SerialConveyor.cs" />
+    <Compile Include="Strings\FileNames.cs" />
     <Compile Include="Robots\AssemblerRobot.cs" />
     <Compile Include="Contracts\IConveyor.cs" />
     <Compile Include="Contracts\IRobot.cs" />
@@ -73,41 +78,41 @@
     <Content Include="mod\AssemblerReturnMagazine.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\GetMagazine.mod">
+    <Content Include="mod\SorterGetMagazine.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\Grab_Tray_1.mod">
+    <Content Include="mod\LoaderGrabTray1.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\Grab_Tray_2.mod" />
-    <Content Include="mod\Grab_Tray_3.mod">
+    <Content Include="mod\LoaderGrabTray2.mod" />
+    <Content Include="mod\LoaderGrabTray3.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\Grab_Tray_4.mod">
+    <Content Include="mod\LoaderGrabTray4.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\Grab_Tray_5.mod">
+    <Content Include="mod\LoaderGrabTray5.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\Grab_Tray_6.mod">
+    <Content Include="mod\LoaderGrabTray6.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\MagazineHeights.mod">
+    <Content Include="mod\BaseRobotHomePosition.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\pickUpChip.mod">
+    <Content Include="mod\AssemblerMagazineHeights.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\PlaceTablet.mod">
+    <Content Include="mod\AssemblerPlaceTablet.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\ReturnMagazine.mod">
+    <Content Include="mod\SorterReturnMagazine.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\shakeProcedure.mod">
+    <Content Include="mod\SorterShake.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\SortChip.mod">
+    <Content Include="mod\SorterSortChip.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mod\SorterMagazineHeights.mod">
@@ -116,20 +121,18 @@
     <Content Include="mod\SorterMagazinePoints.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\testing_tablet.mod">
+    <Content Include="mod\AssemblerTrayPositions.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\Transfer_Tray.mod">
+    <Content Include="References\ABB.Robotics.Controllers.PC.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\TrayDropPositions.mod">
+    <Content Include="References\Conveyor.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\unloadProcedure.mod">
+    <Content Include="References\RobotStudio.Services.RobApi.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="References\ABB.Robotics.Controllers.PC.dll" />
-    <Content Include="References\Conveyor.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

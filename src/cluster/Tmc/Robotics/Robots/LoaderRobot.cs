@@ -12,13 +12,13 @@ namespace Tmc.Robotics
                 throw new ArgumentException("Tray Number must be between 1 and 6 inclusive");
             }
 
-            var fileName = string.Format("Grab_Tray_{0}.mod", trayNumber);
+            var fileName = string.Format(FileNames.Loader.GrabTray, trayNumber);
             this.RunRapidProgram(fileName);
         }
 
         public void Palletise()
         {
-            this.RunRapidProgram("this is a stub");
+            this.RunRapidProgram(FileNames.Loader.Palletise);
         }
     }
 }

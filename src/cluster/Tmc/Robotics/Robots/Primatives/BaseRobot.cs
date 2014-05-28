@@ -28,6 +28,16 @@ namespace Tmc.Robotics
             throw new NotImplementedException();
         }
 
+        public void SetSpeed(int speed)
+        {
+            if(speed < 0 || speed > 100)
+            {
+                throw new ArgumentException("Speed must be between 0 to 100.");
+            }
+
+            this.Controller.MotionSystem.SpeedRatio = speed;
+        }
+
         public void Initialise()
         {
             var networkScanner = new NetworkScanner();
@@ -53,7 +63,12 @@ namespace Tmc.Robotics
 
         public void Shutdown()
         {
+            this.ReturnToHomePosition();
+        }
 
+        public void ReturnToHomePosition()
+        {
+            this.RunRapidProgram(FileNames.Base.HomePosition);
         }
 
         public void SetParameters(Dictionary<string, string> parameters)
@@ -77,6 +92,11 @@ namespace Tmc.Robotics
             }
 
             this.RobotIPAddress = ip;
+        }
+
+        public void EmergencyStop()
+        {
+            this.Controller.Rapid.Stop(StopMode.Immediate);
         }
 
         protected void RunRapidProgram(string filename)
@@ -123,9 +143,9 @@ namespace Tmc.Robotics
                 text = text.Replace(parameter.Key, parameter.Value);
             }
 
-            File.WriteAllText(directory + "_temp.mod", text);
+            File.WriteAllText(directory + FileNames.Base.TempFile, text);
 
-            this.RunRapidProgram("_temp.mod");
+            this.RunRapidProgram(FileNames.Base.TempFile);
         }
 
         private void BeginControl()
