@@ -20,13 +20,6 @@ namespace Tmc.Scada.Core
         MoveBackward
     }
 
-    public enum ConveyorPosition
-    {
-        Left,
-        Middle,
-        Right
-    }
-
     public sealed class ConveyorController : ControllerBase
     {
         private Dictionary<ConveyorType, Type> _conveyorTypeMap;
@@ -38,7 +31,7 @@ namespace Tmc.Scada.Core
         {
             _conveyorTypeMap = new Dictionary<ConveyorType,Type> 
             {
-                { ConveyorType.Assembly, typeof(BluetoothConveyor) }, // TODO: Replace with correct type
+                { ConveyorType.Assembly, typeof(SerialConveyor) },
                 { ConveyorType.Sorting, typeof(BluetoothConveyor) }
             };
 
