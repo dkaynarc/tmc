@@ -47,7 +47,7 @@ namespace TmcTest.Robots
             }
         }
 
-       [TestMethod]
+        [TestMethod]
         public void GetTablet()
         {
             try
@@ -72,4 +72,5 @@ namespace TmcTest.Robots
                 Assert.Fail(ex.Message);
             }
         }
+    }
 }

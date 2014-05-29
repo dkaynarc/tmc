@@ -52,6 +52,11 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RobotsTest\AssemblerRobotTest.cs" />
+    <Compile Include="RobotsTest\BaseRobotTest.cs" />
+    <Compile Include="RobotsTest\LoaderRobotTest.cs" />
+    <Compile Include="RobotsTest\RobotUnitTest.cs" />
+    <Compile Include="RobotsTest\SorterRobotTest.cs" />
     <Compile Include="ScadaCoreTest\FileLogProviderTest.cs" />
     <Compile Include="ScadaCoreTest\UnitTest1.cs" />
   </ItemGroup>

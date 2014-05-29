@@ -17,7 +17,7 @@ namespace TmcTest.Robots
             _assembler = RobotFactory.CreateRobot<AssemblerRobot>();
 
             var dict = new Dictionary<string, string>();
-            dict.Add("IPAddress", "192.168.0.200");
+            dict.Add("IPAddress", "192.168.1.200");
 
             _assembler.SetParameters(dict);
             _assembler.Initialise();

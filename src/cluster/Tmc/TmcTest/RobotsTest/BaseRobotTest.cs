@@ -1,7 +1,4 @@
-﻿using ABB.Robotics.Controllers;
-using ABB.Robotics.Controllers.Discovery;
-using ABB.Robotics.Controllers.RapidDomain;
-using System;
+﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tmc.Robotics;
 using System.Collections.Generic;
@@ -55,7 +52,7 @@ namespace TmcTest.Robots
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void SetSpeed()
+        public void SetSpeedOutOfBounds()
         {
             _base.SetSpeed(101);
         }
@@ -75,7 +72,7 @@ namespace TmcTest.Robots
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Initialise()
+        public void InitialiseException()
         {
             _base.Initialise();
         }

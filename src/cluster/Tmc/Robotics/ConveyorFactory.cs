@@ -8,7 +8,7 @@ namespace Tmc.Robotics
 {
     public static class ConveyorFactory
     {
-        public static T CreateConveyor<T>() where T : class, IRobot
+        public static T CreateConveyor<T>() where T : class, IConveyor
         {
             var caseSwitch = new Dictionary<Type, Func<T>>
             {
