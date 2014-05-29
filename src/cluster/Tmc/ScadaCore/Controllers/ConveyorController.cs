@@ -26,13 +26,30 @@ namespace Tmc.Scada.Core
         private BluetoothConveyor _bluetoothConveyor;
 
         private Dictionary<ConveyorAction, Action<IConveyor>> _actionMap;
+        private Dictionary<ConveyorType, IConveyor> _conveyorTypeMap;
+
+        private Dictionary<ConveyorType, PassiveStateMachine<ConveyorPosition, ConveyorAction>> _fsmMap;
 
         public ConveyorController(ClusterConfig config) : base(config)
         {
             _serialConveyor = config.Conveyors[typeof(SerialConveyor)] as SerialConveyor;
             _bluetoothConveyor = config.Conveyors[typeof(BluetoothConveyor)] as BluetoothConveyor;
 
-            
+            _conveyorTypeMap = new Dictionary<ConveyorType, IConveyor>()
+            {
+                {ConveyorType.Sorting, _bluetoothConveyor},
+                {ConveyorType.Assembly, _serialConveyor}
+            };
+
+            _actionMap = new Dictionary<ConveyorAction, Action<IConveyor>>()
+            {
+                {ConveyorAction.MoveForward, x => x.MoveForward() },
+                {ConveyorAction.MoveBackward, x => x.MoveBackward() }
+            };
+
+            _fsmMap = new Dictionary<ConveyorType, PassiveStateMachine<ConveyorPosition, ConveyorAction>>();
+            _fsmMap.Add(ConveyorType.Assembly, CreateStateMachine(ConveyorType.Assembly));
+            _fsmMap.Add(ConveyorType.Sorting, CreateStateMachine(ConveyorType.Sorting));
         }
 
         public override void Begin(ControllerParams parameters)
@@ -54,19 +71,19 @@ namespace Tmc.Scada.Core
 
         public ConveyorPosition GetCurrentPosition(ConveyorType type)
         {
-            return _conveyorPositionMap[type];
+            return _conveyorTypeMap[type].Position;
         }
 
         public bool CanMoveForward(ConveyorType type)
         {
             if (type == ConveyorType.Assembly)
             {
-                return (_conveyorPositionMap[type] == ConveyorPosition.Right) ||
-                    (_conveyorPositionMap[type] == ConveyorPosition.Middle);
+                return (_conveyorTypeMap[type].Position == ConveyorPosition.Right) ||
+                    (_conveyorTypeMap[type].Position == ConveyorPosition.Middle);
             }
             else
             {
-                return _conveyorPositionMap[type] == ConveyorPosition.Right;
+                return _conveyorTypeMap[type].Position == ConveyorPosition.Right;
             }
         }
 
@@ -74,12 +91,12 @@ namespace Tmc.Scada.Core
         {
             if (type == ConveyorType.Assembly)
             {
-                return (_conveyorPositionMap[type] == ConveyorPosition.Middle) ||
-                    (_conveyorPositionMap[type] == ConveyorPosition.Left);
+                return (_conveyorTypeMap[type].Position == ConveyorPosition.Middle) ||
+                    (_conveyorTypeMap[type].Position == ConveyorPosition.Left);
             }
             else
             {
-                return _conveyorPositionMap[type] == ConveyorPosition.Left;
+                return _conveyorTypeMap[type].Position == ConveyorPosition.Left;
             }
         }
 
@@ -88,7 +105,6 @@ namespace Tmc.Scada.Core
             var fsm = new PassiveStateMachine<ConveyorPosition, ConveyorAction>();
 
             fsm.In(ConveyorPosition.Right)
-                .ExecuteOnEntry(() => _conveyorPositionMap[conveyorType] = ConveyorPosition.Right)
                 .On(ConveyorAction.MoveForward)
                     .If<ConveyorType>(type => type == ConveyorType.Assembly)
                         .Goto(ConveyorPosition.Middle)
@@ -98,7 +114,6 @@ namespace Tmc.Scada.Core
                         .Execute(() => MoveConveyorAsync(conveyorType, ConveyorAction.MoveForward));
 
             fsm.In(ConveyorPosition.Middle)
-                .ExecuteOnEntry(() => _conveyorPositionMap[conveyorType] = ConveyorPosition.Middle)
                 .On(ConveyorAction.MoveForward)
                     .Goto(ConveyorPosition.Left)
                     .Execute(() => MoveConveyorAsync(conveyorType, ConveyorAction.MoveForward))
@@ -107,7 +122,6 @@ namespace Tmc.Scada.Core
                     .Execute(() => MoveConveyorAsync(conveyorType, ConveyorAction.MoveBackward));
 
             fsm.In(ConveyorPosition.Left)
-                .ExecuteOnEntry(() => _conveyorPositionMap[conveyorType] = ConveyorPosition.Left)
                 .On(ConveyorAction.MoveBackward)
                     .If<ConveyorType>(type => type == ConveyorType.Assembly)
                         .Goto(ConveyorPosition.Middle)
@@ -125,7 +139,7 @@ namespace Tmc.Scada.Core
         {
             Task.Run(() =>
                 {
-                    _conveyorActionMap[action](_conveyorTypeMap[type] as IConveyor);
+                    _actionMap[action](_conveyorTypeMap[type] as IConveyor);
                     IsRunning = false;
                     OnCompleted(new ControllerEventArgs() { OperationStatus = ControllerOperationStatus.Succeeded });
                 });
