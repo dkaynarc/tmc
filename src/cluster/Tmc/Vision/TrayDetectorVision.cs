@@ -19,7 +19,7 @@ namespace Tmc.Vision
     {
         private int minRadius, maxRadius, cannyThresh, cannyAccumThresh;
         private double dp, minDist;
-        private Hsv[,] HSVTabletColoursRanges = new Hsv[5, 2];
+        private Hsv[,] HSVTabletcolorsRanges = new Hsv[5, 2];
 
 
 
@@ -58,40 +58,40 @@ namespace Tmc.Vision
             f.Show();
             this.camera = camera;
             
-            HSVTabletColoursRanges[(int)TabletColors.Green,(int)HSVRange.Low].Hue         = 76;
-            HSVTabletColoursRanges[(int)TabletColors.Green,(int)HSVRange.Low].Satuation   = 24;
-            HSVTabletColoursRanges[(int)TabletColors.Green,(int)HSVRange.Low].Value       = 139;
-            HSVTabletColoursRanges[(int)TabletColors.Green,(int)HSVRange.High].Hue        = 87;
-            HSVTabletColoursRanges[(int)TabletColors.Green,(int)HSVRange.High].Satuation  = 96;
-            HSVTabletColoursRanges[(int)TabletColors.Green,(int)HSVRange.High].Value      = 226;
+            HSVTabletcolorsRanges[(int)TabletColors.Green,(int)HSVRange.Low].Hue         = 76;
+            HSVTabletcolorsRanges[(int)TabletColors.Green,(int)HSVRange.Low].Satuation   = 24;
+            HSVTabletcolorsRanges[(int)TabletColors.Green,(int)HSVRange.Low].Value       = 139;
+            HSVTabletcolorsRanges[(int)TabletColors.Green,(int)HSVRange.High].Hue        = 87;
+            HSVTabletcolorsRanges[(int)TabletColors.Green,(int)HSVRange.High].Satuation  = 96;
+            HSVTabletcolorsRanges[(int)TabletColors.Green,(int)HSVRange.High].Value      = 226;
 
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue            = 176;
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation      = 119;//93;
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value          = 200;//198;
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue           = 5;//171;
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation     = 194;//128;
-            HSVTabletColoursRanges[(int)TabletColors.Red, (int)HSVRange.High].Value         = 360;//250;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue            = 176;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation      = 119;//93;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value          = 200;//198;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue           = 5;//171;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation     = 194;//128;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Value         = 360;//250;
 
-            HSVTabletColoursRanges[(int)TabletColors.White,(int)HSVRange.Low].Hue         = 51;
-            HSVTabletColoursRanges[(int)TabletColors.White,(int)HSVRange.Low].Satuation   = 6;
-            HSVTabletColoursRanges[(int)TabletColors.White,(int)HSVRange.Low].Value       = 244;
-            HSVTabletColoursRanges[(int)TabletColors.White,(int)HSVRange.High].Hue        = 91;
-            HSVTabletColoursRanges[(int)TabletColors.White,(int)HSVRange.High].Satuation  = 12;
-            HSVTabletColoursRanges[(int)TabletColors.White,(int)HSVRange.High].Value      = 250;
+            HSVTabletcolorsRanges[(int)TabletColors.White,(int)HSVRange.Low].Hue         = 51;
+            HSVTabletcolorsRanges[(int)TabletColors.White,(int)HSVRange.Low].Satuation   = 6;
+            HSVTabletcolorsRanges[(int)TabletColors.White,(int)HSVRange.Low].Value       = 244;
+            HSVTabletcolorsRanges[(int)TabletColors.White,(int)HSVRange.High].Hue        = 91;
+            HSVTabletcolorsRanges[(int)TabletColors.White,(int)HSVRange.High].Satuation  = 12;
+            HSVTabletcolorsRanges[(int)TabletColors.White,(int)HSVRange.High].Value      = 250;
 
-            HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.Low].Hue          = 115;
-            HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.Low].Satuation    = 76;
-            HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.Low].Value        = 69;
-            HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.High].Hue         = 126;
-            HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.High].Satuation   = 125;
-            HSVTabletColoursRanges[(int)TabletColors.Blue,(int)HSVRange.High].Value       = 213;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue,(int)HSVRange.Low].Hue          = 115;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue,(int)HSVRange.Low].Satuation    = 76;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue,(int)HSVRange.Low].Value        = 69;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue,(int)HSVRange.High].Hue         = 126;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue,(int)HSVRange.High].Satuation   = 125;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue,(int)HSVRange.High].Value       = 213;
 
-            HSVTabletColoursRanges[(int)TabletColors.Black,(int)HSVRange.Low].Hue         = 102;
-            HSVTabletColoursRanges[(int)TabletColors.Black,(int)HSVRange.Low].Satuation   = 15;
-            HSVTabletColoursRanges[(int)TabletColors.Black,(int)HSVRange.Low].Value       = 90;
-            HSVTabletColoursRanges[(int)TabletColors.Black,(int)HSVRange.High].Hue        = 145;
-            HSVTabletColoursRanges[(int)TabletColors.Black,(int)HSVRange.High].Satuation  = 39;
-            HSVTabletColoursRanges[(int)TabletColors.Black,(int)HSVRange.High].Value      = 167;
+            HSVTabletcolorsRanges[(int)TabletColors.Black,(int)HSVRange.Low].Hue         = 102;
+            HSVTabletcolorsRanges[(int)TabletColors.Black,(int)HSVRange.Low].Satuation   = 15;
+            HSVTabletcolorsRanges[(int)TabletColors.Black,(int)HSVRange.Low].Value       = 90;
+            HSVTabletcolorsRanges[(int)TabletColors.Black,(int)HSVRange.High].Hue        = 145;
+            HSVTabletcolorsRanges[(int)TabletColors.Black,(int)HSVRange.High].Satuation  = 39;
+            HSVTabletcolorsRanges[(int)TabletColors.Black,(int)HSVRange.High].Value      = 167;
 
 
             //this.camera.ConnectionString = new Uri(@"http://192.168.0.190:8080/photoaf.jpg");
@@ -214,11 +214,11 @@ namespace Tmc.Vision
         private void DetectTabletsInTray()
         {         
             f.getValue(ref minRadius, ref maxRadius, ref dp, ref minDist, ref cannyThresh,ref cannyAccumThresh);
-            tablets = DetectTablets(imgTray, minRadius, maxRadius, dp, minDist, cannyThresh, cannyAccumThresh, f);
+            tablets = DetectTablets(imgTray, minRadius, maxRadius, dp, minDist, cannyThresh, cannyAccumThresh);
         }
 
         /// <summary>
-        /// Used to detect the colour of the tablet, only recognises good tablets and assemble the tray list
+        /// Used to detect the color of the tablet, only recognises good tablets and assemble the tray list
         /// </summary>
         /// <todo>
         /// move to vision base and make it more advance with the color detect
@@ -228,7 +228,7 @@ namespace Tmc.Vision
             Rectangle rect = new Rectangle();
             Image<Bgr, byte> oneTablet;
             double dotAngle = 0.607;//result of of cos(ang) which use to multiply radius to give us the dot product
-            TabletColors tabletColour;
+            TabletColors tabletcolor;
             int cellInTray;
 
 
@@ -253,9 +253,9 @@ namespace Tmc.Vision
 
                 oneTablet = imgTray.GetSubRect(rect);
                 CvInvoke.cvShowImage("Test Window", oneTablet); //Show the image
-                tabletColour    = detectColour(oneTablet, HSVTabletColoursRanges);
+                tabletcolor    = detectcolor(oneTablet, HSVTabletcolorsRanges);
                 cellInTray      = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
-                trayList.Cells[cellInTray] = new Tablet { Color = tabletColour };
+                trayList.Cells[cellInTray] = new Tablet { Color = tabletcolor };
             }
             f.trayFill(trayList);
         }

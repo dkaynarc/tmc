@@ -47,7 +47,7 @@ namespace Tmc.Vision
         /// <param name="cannyAccumThresh">
         /// 
         /// </param>
-        public CircleF[] DetectTablets(Image<Bgr, Byte> src, int minRadius, int maxRadius, double dp, double minDist, int cannyThresh, int cannyAccumThresh, Form1 f)
+        public CircleF[] DetectTablets(Image<Bgr, Byte> src, int minRadius, int maxRadius, double dp, double minDist, int cannyThresh, int cannyAccumThresh)
         {//double dp, double minDist
             Image<Gray, Byte> graySoft = src.Convert<Gray, Byte>();
             Image<Gray, Byte> gray = graySoft;
@@ -58,7 +58,7 @@ namespace Tmc.Vision
 
             Image<Gray, Byte> cannyEdges = gray.Canny(cannyThreshold.Intensity, cannyThresholdLinking.Intensity);
 
-            f.pictureBox1_draw(gray);
+            //f.pictureBox1_draw(gray);
             CircleF[] circles = gray.HoughCircles(
                 cannyThreshold,
                 circleAccumulatorThreshold,
@@ -81,7 +81,7 @@ namespace Tmc.Vision
             //f.pictureBox2_draw(a);
 
             #endif
-            CvInvoke.cvWaitKey(40);//remove move later
+            //CvInvoke.cvWaitKey(40);//remove move later
             return circles;
         }
         /*
@@ -90,7 +90,7 @@ namespace Tmc.Vision
             const int width = 9;
             const int height = 6;
             Size patternSize = new Size(width, height);
-            Bgr[] line_colour_array = new Bgr[width * height]; // just for displaying coloured lines of detected chessboard
+            Bgr[] line_color_array = new Bgr[width * height]; // just for displaying colored lines of detected chessboard
             Image<Gray, Byte>[] Frame_array_buffer = new Image<Gray, byte>[100];
             MCvPoint3D32f[][] corners_object_list = new MCvPoint3D32f[Frame_array_buffer.Length][];
             PointF[][] corners_points_list = new PointF[Frame_array_buffer.Length][];
@@ -103,16 +103,16 @@ namespace Tmc.Vision
         /// <param name="src">
         /// Input image of whichw e want to determin the color
         /// </param>
-        /// <param name="HSVTabletColourRange">
-        /// 2d array containing all the color ranges of tablets also has min and max for each colour, uses HSV color range
+        /// <param name="HSVTabletcolorRange">
+        /// 2d array containing all the color ranges of tablets also has min and max for each color, uses HSV color range
         /// </param>
         /// <returns>
-        /// Returns the colour of the tablet with enum TabletColors
+        /// Returns the color of the tablet with enum TabletColors
         /// </returns>
         /// <todo>
         /// add the ol, oh into the function
         /// </todo>
-        public TabletColors detectColour(Image<Bgr, byte> src, Hsv[,] HSVTabletColourRange)
+        public TabletColors detectcolor(Image<Bgr, byte> src, Hsv[,] HSVTabletcolorRange)
         {
             int ol = 5;
             int oh = 5;
@@ -122,23 +122,23 @@ namespace Tmc.Vision
             Hsv abc;
             hsv.AvgSdv(out abc, out srcScalar);
             //TabletColors
-            if (true == InHSVRange(abc, HSVTabletColourRange, TabletColors.Green, ol, oh))
+            if (true == InHSVRange(abc, HSVTabletcolorRange, TabletColors.Green, ol, oh))
             {//green
                 return TabletColors.Green;
             }
-            else if (true == InHSVRange(abc, HSVTabletColourRange, TabletColors.Red, ol, oh))
+            else if (true == InHSVRange(abc, HSVTabletcolorRange, TabletColors.Red, ol, oh))
             {//red
                 return TabletColors.Red;
             }
-            else if (true == InHSVRange(abc, HSVTabletColourRange, TabletColors.White, ol, oh))
+            else if (true == InHSVRange(abc, HSVTabletcolorRange, TabletColors.White, ol, oh))
             {//white
                 return TabletColors.White;
             }
-            else if (true == InHSVRange(abc, HSVTabletColourRange, TabletColors.Blue, ol, oh))
+            else if (true == InHSVRange(abc, HSVTabletcolorRange, TabletColors.Blue, ol, oh))
             {//blue
                 return TabletColors.Blue;
             }
-            else if (true == InHSVRange(abc, HSVTabletColourRange, TabletColors.Black, ol, oh))
+            else if (true == InHSVRange(abc, HSVTabletcolorRange, TabletColors.Black, ol, oh))
             {//black
                 return TabletColors.Black;
             }
@@ -148,28 +148,28 @@ namespace Tmc.Vision
             }
         }
 
-        public TabletColors detectColour(Hsv srcHSV, Hsv[,] HSVTabletColourRange)
+        public TabletColors detectcolor(Hsv srcHSV, Hsv[,] HSVTabletcolorRange)
         {
             int ol = 0;
             int oh = 0;
 
-            if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.Green, ol, oh))
+            if (true == InHSVRange(srcHSV, HSVTabletcolorRange, TabletColors.Green, ol, oh))
             {//green
                 return TabletColors.Green;
             }
-            else if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.Red, ol, oh))
+            else if (true == InHSVRange(srcHSV, HSVTabletcolorRange, TabletColors.Red, ol, oh))
             {//red
                 return TabletColors.Red;
             }
-            else if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.White, ol, oh))
+            else if (true == InHSVRange(srcHSV, HSVTabletcolorRange, TabletColors.White, ol, oh))
             {//white
                 return TabletColors.White;
             }
-            else if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.Blue, ol, oh))
+            else if (true == InHSVRange(srcHSV, HSVTabletcolorRange, TabletColors.Blue, ol, oh))
             {//blue
                 return TabletColors.Blue;
             }
-            else if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.Black, ol, oh))
+            else if (true == InHSVRange(srcHSV, HSVTabletcolorRange, TabletColors.Black, ol, oh))
             {//black
                 return TabletColors.Black;
             }
@@ -179,30 +179,30 @@ namespace Tmc.Vision
             }
         }
 
-        public void detectColour(int[][] hue, int[][] sat, int[][] val, Hsv[,] HSVTabletColourRange)
+        public void detectcolor(int[][] hue, int[][] sat, int[][] val, Hsv[,] HSVTabletcolorRange)
         {
             int ol = 0;
             int oh = 0;
             //for(int i = 0; i < hue.GetLength(0); i++)
             //{
               /*  int srcHSV;
-                if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.Green, ol, oh))
+                if (true == InHSVRange(srcHSV, HSVTabletcolorRange, TabletColors.Green, ol, oh))
                 {//green
                     return TabletColors.Green;
                 }
-                else if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.Red, ol, oh))
+                else if (true == InHSVRange(srcHSV, HSVTabletcolorRange, TabletColors.Red, ol, oh))
                 {//red
                     return TabletColors.Red;
                 }
-                else if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.White, ol, oh))
+                else if (true == InHSVRange(srcHSV, HSVTabletcolorRange, TabletColors.White, ol, oh))
                 {//white
                     return TabletColors.White;
                 }
-                else if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.Blue, ol, oh))
+                else if (true == InHSVRange(srcHSV, HSVTabletcolorRange, TabletColors.Blue, ol, oh))
                 {//blue
                     return TabletColors.Blue;
                 }
-                else if (true == InHSVRange(srcHSV, HSVTabletColourRange, TabletColors.Black, ol, oh))
+                else if (true == InHSVRange(srcHSV, HSVTabletcolorRange, TabletColors.Black, ol, oh))
                 {//black
                     return TabletColors.Black;
                 }
@@ -222,7 +222,7 @@ namespace Tmc.Vision
         /// <param name="targetHsv">
         /// The range that we want the color to be in
         /// </param>
-        /// <param name="colour">
+        /// <param name="color">
         /// THe color that we want it to be in range of since the 'targetHsv' can be indexed for colors
         /// </param>
         /// <param name="lowerLimitExtra">
@@ -237,36 +237,36 @@ namespace Tmc.Vision
         /// <todo>
         /// make lowerLimitsExtra in to HSV or make overload for it
         /// </todo>
-        public bool InHSVRange(Hsv srcHsv, Hsv[,] targetHsv, TabletColors colour, int lowerLimitExtra, int higherLimitExtra)
+        public bool InHSVRange(Hsv srcHsv, Hsv[,] targetHsv, TabletColors color, int lowerLimitExtra, int higherLimitExtra)
         {
-            if (targetHsv[(int)colour, (int)HSVRange.Low].Hue < targetHsv[(int)colour, (int)HSVRange.High].Hue)
+            if (targetHsv[(int)color, (int)HSVRange.Low].Hue < targetHsv[(int)color, (int)HSVRange.High].Hue)
             {
-                return ((srcHsv.Hue >= (targetHsv[(int)colour, (int)HSVRange.Low].Hue - lowerLimitExtra)) &&             //lower values
-                (srcHsv.Satuation >= (targetHsv[(int)colour, (int)HSVRange.Low].Satuation - lowerLimitExtra)) &&
-                (srcHsv.Value >= (targetHsv[(int)colour, (int)HSVRange.Low].Value - lowerLimitExtra)) &&
-                (srcHsv.Hue <= (targetHsv[(int)colour, (int)HSVRange.High].Hue + higherLimitExtra)) &&               //higher values
-                (srcHsv.Satuation <= (targetHsv[(int)colour, (int)HSVRange.High].Satuation + higherLimitExtra)) &&
-                (srcHsv.Value <= (targetHsv[(int)colour, (int)HSVRange.High].Value + higherLimitExtra)));
+                return ((srcHsv.Hue >= (targetHsv[(int)color, (int)HSVRange.Low].Hue - lowerLimitExtra)) &&             //lower values
+                (srcHsv.Satuation >= (targetHsv[(int)color, (int)HSVRange.Low].Satuation - lowerLimitExtra)) &&
+                (srcHsv.Value >= (targetHsv[(int)color, (int)HSVRange.Low].Value - lowerLimitExtra)) &&
+                (srcHsv.Hue <= (targetHsv[(int)color, (int)HSVRange.High].Hue + higherLimitExtra)) &&               //higher values
+                (srcHsv.Satuation <= (targetHsv[(int)color, (int)HSVRange.High].Satuation + higherLimitExtra)) &&
+                (srcHsv.Value <= (targetHsv[(int)color, (int)HSVRange.High].Value + higherLimitExtra)));
             }
             else
             {
-                if (srcHsv.Hue >= (targetHsv[(int)colour, (int)HSVRange.Low].Hue - lowerLimitExtra))
+                if (srcHsv.Hue >= (targetHsv[(int)color, (int)HSVRange.Low].Hue - lowerLimitExtra))
                 {
-                    return ((srcHsv.Hue >= (targetHsv[(int)colour, (int)HSVRange.Low].Hue - lowerLimitExtra)) &&             //lower values
-                    (srcHsv.Satuation >= (targetHsv[(int)colour, (int)HSVRange.Low].Satuation - lowerLimitExtra)) &&
-                    (srcHsv.Value >= (targetHsv[(int)colour, (int)HSVRange.Low].Value - lowerLimitExtra)) &&
+                    return ((srcHsv.Hue >= (targetHsv[(int)color, (int)HSVRange.Low].Hue - lowerLimitExtra)) &&             //lower values
+                    (srcHsv.Satuation >= (targetHsv[(int)color, (int)HSVRange.Low].Satuation - lowerLimitExtra)) &&
+                    (srcHsv.Value >= (targetHsv[(int)color, (int)HSVRange.Low].Value - lowerLimitExtra)) &&
                     (srcHsv.Hue <= (179)) &&               //higher values
-                    (srcHsv.Satuation <= (targetHsv[(int)colour, (int)HSVRange.High].Satuation + higherLimitExtra)) &&
-                    (srcHsv.Value <= (targetHsv[(int)colour, (int)HSVRange.High].Value + higherLimitExtra)));
+                    (srcHsv.Satuation <= (targetHsv[(int)color, (int)HSVRange.High].Satuation + higherLimitExtra)) &&
+                    (srcHsv.Value <= (targetHsv[(int)color, (int)HSVRange.High].Value + higherLimitExtra)));
                 }
-                else if (srcHsv.Hue <= (targetHsv[(int)colour, (int)HSVRange.High].Hue + higherLimitExtra))
+                else if (srcHsv.Hue <= (targetHsv[(int)color, (int)HSVRange.High].Hue + higherLimitExtra))
                 {
                     return ((srcHsv.Hue >= (0)) &&             //lower values
-                    (srcHsv.Satuation >= (targetHsv[(int)colour, (int)HSVRange.Low].Satuation - lowerLimitExtra)) &&
-                    (srcHsv.Value >= (targetHsv[(int)colour, (int)HSVRange.Low].Value - lowerLimitExtra)) &&
-                    (srcHsv.Hue <= (targetHsv[(int)colour, (int)HSVRange.High].Hue + higherLimitExtra)) &&               //higher values
-                    (srcHsv.Satuation <= (targetHsv[(int)colour, (int)HSVRange.High].Satuation + higherLimitExtra)) &&
-                    (srcHsv.Value <= (targetHsv[(int)colour, (int)HSVRange.High].Value + higherLimitExtra)));
+                    (srcHsv.Satuation >= (targetHsv[(int)color, (int)HSVRange.Low].Satuation - lowerLimitExtra)) &&
+                    (srcHsv.Value >= (targetHsv[(int)color, (int)HSVRange.Low].Value - lowerLimitExtra)) &&
+                    (srcHsv.Hue <= (targetHsv[(int)color, (int)HSVRange.High].Hue + higherLimitExtra)) &&               //higher values
+                    (srcHsv.Satuation <= (targetHsv[(int)color, (int)HSVRange.High].Satuation + higherLimitExtra)) &&
+                    (srcHsv.Value <= (targetHsv[(int)color, (int)HSVRange.High].Value + higherLimitExtra)));
                 }
                 else return false;
             }
@@ -341,7 +341,7 @@ namespace Tmc.Vision
         /// This function allows you to remove everything(change to black) in a image apart from the color you want(change to white)
         /// </summary>
         /// <param name="src">
-        /// Image that you want to remove every colour apart from yours
+        /// Image that you want to remove every color apart from yours
         /// </param>
         /// <param name="targetHsv">
         /// THe color range you don't want to be removed, need specify high and low values, uses HSV color range
@@ -560,6 +560,145 @@ namespace Tmc.Vision
                 //a++;
             }
             return src;
+        }
+
+        public float[][] addFloats(float[][] srcFloat, float[][] srcFloatAdd)
+        {
+            //float[,] values= new float[3,256];
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 256; j++)
+                {
+                    srcFloat[i][j] += srcFloatAdd[i][j];
+                }
+            }
+            return srcFloat;
+        }
+
+        public List<Image<Bgr, Byte>> GetTablet(Image<Bgr, Byte> src, CircleF tablet)
+        {
+            var TabletList = new List<Image<Bgr, Byte>>();
+
+            double angle1 = Math.Cos(45 * (Math.PI / 180));
+            double angle2 = Math.Cos(41 * (Math.PI / 180));
+            double angle3 = Math.Cos(37 * (Math.PI / 180));
+            double angle4 = Math.Cos(31.5 * (Math.PI / 180));
+            double angle5 = Math.Cos(24 * (Math.PI / 180));
+            double angle6 = Math.Cos(16 * (Math.PI / 180));
+
+            Point[] points = new Point[11];
+
+            float rad = tablet.Radius - 4;
+
+            points[0].X = (int)(tablet.Center.X - (tablet.Radius * angle1));
+            points[0].Y = (int)(tablet.Center.Y - (Math.Sin(45 * (Math.PI / 180)) * rad));
+
+            points[1].X = (int)(tablet.Center.X - (tablet.Radius * angle2));
+            points[1].Y = (int)(tablet.Center.Y - (Math.Sin(41 * (Math.PI / 180)) * rad));
+
+            points[2].X = (int)(tablet.Center.X - (tablet.Radius * angle3));
+            points[2].Y = (int)(tablet.Center.Y - (Math.Sin(37 * (Math.PI / 180)) * rad));
+
+            points[3].X = (int)(tablet.Center.X - (tablet.Radius * angle4));
+            points[3].Y = (int)(tablet.Center.Y - (Math.Sin(31.5 * (Math.PI / 180)) * rad));
+
+            points[4].X = (int)(tablet.Center.X - (tablet.Radius * angle5));
+            points[4].Y = (int)(tablet.Center.Y - (Math.Sin(24 * (Math.PI / 180)) * rad));
+
+            points[5].X = (int)(tablet.Center.X - (tablet.Radius * angle6));
+            points[5].Y = (int)(tablet.Center.Y - (Math.Sin(16 * (Math.PI / 180)) * rad));
+
+
+
+
+
+
+            Image<Bgr, Byte> MID = CropImage(src, (int)(tablet.Center.X - (rad * angle1)), (int)(tablet.Center.Y - (rad * angle1)), (int)((rad * angle1) * 2), (int)((rad * angle1) * 2));
+
+            Image<Bgr, Byte> LS1 = CropImage(src, points[1].X, points[1].Y, points[0].X - points[1].X, ((int)tablet.Center.Y - points[1].Y) * 2);
+            Image<Bgr, Byte> LS2 = CropImage(src, points[2].X, points[2].Y, points[1].X - points[2].X, ((int)tablet.Center.Y - points[2].Y) * 2);
+            Image<Bgr, Byte> LS3 = CropImage(src, points[3].X, points[3].Y, points[2].X - points[3].X, ((int)tablet.Center.Y - points[3].Y) * 2);
+            Image<Bgr, Byte> LS4 = CropImage(src, points[4].X, points[4].Y, points[3].X - points[4].X, ((int)tablet.Center.Y - points[4].Y) * 2);
+            Image<Bgr, Byte> LS5 = CropImage(src, points[5].X, points[5].Y, points[4].X - points[5].X, ((int)tablet.Center.Y - points[5].Y) * 2);
+            //Image<Bgr, Byte> LS6 = CropImage(src, points[1].X, points[1].Y, points[0].X - points[1].X, ((int)tablet.Center.Y - points[1].Y) * 2);
+            Image<Bgr, Byte> RS1 = CropImage(src, ((int)tablet.Center.X + ((int)tablet.Center.X - points[1].X)) - (points[0].X - points[1].X), points[1].Y, points[0].X - points[1].X, ((int)tablet.Center.Y - points[1].Y) * 2);
+            Image<Bgr, Byte> RS2 = CropImage(src, ((int)tablet.Center.X + ((int)tablet.Center.X - points[2].X)) - (points[1].X - points[2].X), points[2].Y, points[1].X - points[2].X, ((int)tablet.Center.Y - points[2].Y) * 2);
+            Image<Bgr, Byte> RS3 = CropImage(src, ((int)tablet.Center.X + ((int)tablet.Center.X - points[3].X)) - (points[2].X - points[3].X), points[3].Y, points[2].X - points[3].X, ((int)tablet.Center.Y - points[3].Y) * 2);
+            Image<Bgr, Byte> RS4 = CropImage(src, ((int)tablet.Center.X + ((int)tablet.Center.X - points[4].X)) - (points[3].X - points[4].X), points[4].Y, points[3].X - points[4].X, ((int)tablet.Center.Y - points[4].Y) * 2);
+            Image<Bgr, Byte> RS5 = CropImage(src, ((int)tablet.Center.X + ((int)tablet.Center.X - points[5].X)) - (points[4].X - points[5].X), points[5].Y, points[4].X - points[5].X, ((int)tablet.Center.Y - points[5].Y) * 2);
+
+            Image<Bgr, Byte> TS1 = CropImage(src, points[0].X + (points[1].Y - points[0].Y), points[0].Y - ((points[0].X - points[1].X)), ((int)tablet.Center.Y - points[1].Y) * 2, points[0].X - points[1].X);
+            Image<Bgr, Byte> TS2 = CropImage(src, points[0].X + (points[2].Y - points[0].Y), points[0].Y - ((points[0].X - points[2].X)), ((int)tablet.Center.Y - points[2].Y) * 2, points[1].X - points[2].X);
+            Image<Bgr, Byte> TS3 = CropImage(src, points[0].X + (points[3].Y - points[0].Y), points[0].Y - ((points[0].X - points[3].X)), ((int)tablet.Center.Y - points[3].Y) * 2, points[2].X - points[3].X);
+            Image<Bgr, Byte> TS4 = CropImage(src, points[0].X + (points[4].Y - points[0].Y), points[0].Y - ((points[0].X - points[4].X)), ((int)tablet.Center.Y - points[4].Y) * 2, points[3].X - points[4].X);
+            Image<Bgr, Byte> TS5 = CropImage(src, points[0].X + (points[5].Y - points[0].Y), points[0].Y - ((points[0].X - points[5].X)), ((int)tablet.Center.Y - points[5].Y) * 2, points[4].X - points[5].X);
+
+            Image<Bgr, Byte> BS1 = CropImage(src, points[0].X + (points[1].Y - points[0].Y), points[0].Y - ((points[0].X - points[1].X)), ((int)tablet.Center.Y - points[1].Y) * 2, points[0].X - points[1].X);
+            Image<Bgr, Byte> BS2 = CropImage(src, points[0].X + (points[2].Y - points[0].Y), points[0].Y - ((points[0].X - points[2].X)), ((int)tablet.Center.Y - points[2].Y) * 2, points[1].X - points[2].X);
+            Image<Bgr, Byte> BS3 = CropImage(src, points[0].X + (points[3].Y - points[0].Y), points[0].Y - ((points[0].X - points[3].X)), ((int)tablet.Center.Y - points[3].Y) * 2, points[2].X - points[3].X);
+            Image<Bgr, Byte> BS4 = CropImage(src, points[0].X + (points[4].Y - points[0].Y), points[0].Y - ((points[0].X - points[4].X)), ((int)tablet.Center.Y - points[4].Y) * 2, points[3].X - points[4].X);
+            Image<Bgr, Byte> BS5 = CropImage(src, points[0].X + (points[5].Y - points[0].Y), points[0].Y - ((points[0].X - points[5].X)), ((int)tablet.Center.Y - points[5].Y) * 2, points[4].X - points[5].X);
+
+            TabletList.Add(MID);
+
+            TabletList.Add(LS1);
+            TabletList.Add(LS2);
+            TabletList.Add(LS3);
+            TabletList.Add(LS4);
+            TabletList.Add(LS5);
+
+            TabletList.Add(RS1);
+            TabletList.Add(RS2);
+            TabletList.Add(RS3);
+            TabletList.Add(RS4);
+            TabletList.Add(RS5);
+
+            TabletList.Add(TS1);
+            TabletList.Add(TS2);
+            TabletList.Add(TS3);
+            TabletList.Add(TS4);
+            TabletList.Add(TS5);
+
+            points[6].X = points[0].X + (points[1].Y - points[0].Y);
+            points[6].Y = (points[0].Y - ((points[0].X - points[1].X)));
+
+            points[7].X = points[0].X + (points[2].Y - points[0].Y);
+            points[7].Y = points[0].Y - ((points[0].X - points[2].X));
+            points[8].X = points[0].X + (points[3].Y - points[0].Y);
+            points[8].Y = points[0].Y - ((points[0].X - points[3].X));
+            points[9].X = points[0].X + (points[4].Y - points[0].Y);
+            points[9].Y = points[0].Y - ((points[0].X - points[4].X));
+            points[10].X = points[0].X + (points[5].Y - points[0].Y);
+            points[10].Y = points[0].Y - ((points[0].X - points[5].X));//points[0].Y - ((points[5].Y - points[0].Y) );
+
+            //Image<Bgr, Byte> TS2 = CropImage(src, points[2].X, points[2].Y, ((int)tablet.Center.Y - points[2].Y) * 2, points[1].X - points[2].X);
+            //Image<Bgr, Byte> TS3 = CropImage(src, points[3].X, points[3].Y, ((int)tablet.Center.Y - points[3].Y) * 2, points[2].X - points[3].X);
+            //Image<Bgr, Byte> TS4 = CropImage(src, points[4].X, points[4].Y, ((int)tablet.Center.Y - points[4].Y) * 2, points[3].X - points[4].X);
+            //Image<Bgr, Byte> TS5 = CropImage(src, points[5].X, points[5].Y, ((int)tablet.Center.Y - points[5].Y) * 2, points[4].X - points[5].X);
+
+            CvInvoke.cvShowImage("MID", MID);
+
+            Image<Bgr, Byte> derp;
+
+            //derp = DrawPoints(src, points);
+
+            //CvInvoke.cvShowImage("Test Window3", derp);
+            //CvInvoke.cvWaitKey(0);
+
+            return TabletList;
+        }
+
+        public float[][] ImagesToHisto(List<Image<Bgr, Byte>> tabletList)
+        {
+            //tabletList = Tabletcolor(src, tablet);
+            float[][] abca = HsvValueFloatArray(tabletList[0]);
+            for (int i = 1; i < tabletList.Capacity - 1; i++)
+            {
+                float[][] abc = HsvValueFloatArray(tabletList[i]);
+                abca = addFloats(abca, abc);
+            }
+            return abca;
         }
 
         public double Mag(PointF a, PointF b)

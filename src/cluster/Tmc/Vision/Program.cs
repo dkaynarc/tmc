@@ -34,7 +34,7 @@ namespace Tmc.Vision
             Camera c = new Camera();
             //c.SetParameters(new Dictionary<string, string> { { "Name", "TestCam1" }, { "ConnectionString", "http://192.168.0.11:8080/photo.jpg" } });//"http://192.168.0.11:8080/photo.jpg"
             c.Initialise();
-            //TrayDetectorVision tray = new TrayDetectorVision(c);
+            //TrayDetectorV2ision tray = new TrayDetectorVision(c);
             //tray.GetTabletsInTray();
             SorterVision sorter = new SorterVision(c);
             sorter.Calibration();
