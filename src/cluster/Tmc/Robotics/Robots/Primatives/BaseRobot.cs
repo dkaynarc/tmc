@@ -42,9 +42,9 @@ namespace Tmc.Robotics
         {
             var networkScanner = new NetworkScanner();
 
-            for(int i = 0; i < 5; i++)
+            for(int i = 0; i < 10; i++)
             {
-                Thread.Sleep(250);
+                Thread.Sleep(100);
                 networkScanner.Scan();
             }
 

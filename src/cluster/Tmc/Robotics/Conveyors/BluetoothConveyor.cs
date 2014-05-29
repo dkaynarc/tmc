@@ -73,12 +73,14 @@ namespace Tmc.Robotics
         public void MoveForward()
         {
             _serialPort.Write(Protocol.MoveForward);
+            _serialPort.Write(Protocol.MoveForward);
             Thread.Sleep(WaitTime);
             this.Position = ConveyorPosition.Left;
         }
 
         public void MoveBackward()
         {
+            _serialPort.Write(Protocol.MoveBackward);
             _serialPort.Write(Protocol.MoveBackward);
             Thread.Sleep(WaitTime);
             this.Position = ConveyorPosition.Right;
