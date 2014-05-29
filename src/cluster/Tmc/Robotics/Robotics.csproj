@@ -57,6 +57,7 @@
     <Compile Include="ConveyorFactory.cs" />
     <Compile Include="Conveyors\BluetoothConveyor.cs" />
     <Compile Include="Conveyors\SerialConveyor.cs" />
+    <Compile Include="Enums\ConveyorPosition.cs" />
     <Compile Include="Strings\FileNames.cs" />
     <Compile Include="Robots\AssemblerRobot.cs" />
     <Compile Include="Contracts\IConveyor.cs" />

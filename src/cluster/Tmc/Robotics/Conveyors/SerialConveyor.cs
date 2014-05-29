@@ -12,8 +12,8 @@ namespace Tmc.Robotics
     public class SerialConveyor : IConveyor
     {
         public string Name { get; set; }
+        public ConveyorPosition Position { get; private set; }
         private string _portName;
-        private int _position;
 
         public HardwareStatus GetStatus()
         {
@@ -22,7 +22,7 @@ namespace Tmc.Robotics
 
         public void Initialise()
         {
-            _position = 0;
+            Position = ConveyorPosition.Right;
 
             Conveyor.initialisePLC();
             Thread.Sleep(500);
@@ -54,34 +54,34 @@ namespace Tmc.Robotics
 
         public void MoveForward()
         {
-            switch(_position)
+            switch(Position)
             {
-                case 0:
+                case ConveyorPosition.Right:
                     Conveyor.rightToMiddle();
-                    _position++;
+                    Position++;
                     break;
-                case 1:
+                case ConveyorPosition.Middle:
                     Conveyor.middleToLeft();
-                    _position++;
+                    Position++;
                     break;
-                case 2:
+                case ConveyorPosition.Left:
                     throw new Exception("Conveyor is at its most forward position");
             }
         }
 
         public void MoveBackward()
         {
-            switch(_position)
+            switch(Position)
             {
-                case 0:
+                case ConveyorPosition.Right:
                     throw new Exception("Conveyor is at its most backward position");
-                case 1:
+                case ConveyorPosition.Middle:
                     Conveyor.middleToRight();
-                    _position--;
+                    Position--;
                     break;
-                case 2:
+                case ConveyorPosition.Left:
                     Conveyor.leftToMiddle();
-                    _position--;
+                    Position--;
                     break;
             }
         }

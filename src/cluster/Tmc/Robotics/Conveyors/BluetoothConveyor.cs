@@ -20,17 +20,22 @@ namespace Tmc.Robotics
         public string Name { get; set; }
         public string PortName { get; set; }
         public int WaitTime { get; set; }
+        public ConveyorPosition Position { get; private set; }
+
+        private HardwareStatus _status;
 
         private SerialPort _serialPort;
 
         public BluetoothConveyor()
         {
             _serialPort = new SerialPort();
+            _status = HardwareStatus.Operational;
+            this.Position = ConveyorPosition.Right;
         }
 
         public HardwareStatus GetStatus()
         {
-            throw new NotImplementedException();
+            return _status;
         }
 
         public void Initialise()
@@ -62,18 +67,21 @@ namespace Tmc.Robotics
             {
                 _serialPort.Close();
             }
+            _status = HardwareStatus.Offline;
         }
 
         public void MoveForward()
         {
             _serialPort.Write(Protocol.MoveForward);
             Thread.Sleep(WaitTime);
+            this.Position = ConveyorPosition.Left;
         }
 
         public void MoveBackward()
         {
             _serialPort.Write(Protocol.MoveBackward);
             Thread.Sleep(WaitTime);
+            this.Position = ConveyorPosition.Right;
         }
 
         public void SetParameters(Dictionary<string, string> parameters)
@@ -96,5 +104,7 @@ namespace Tmc.Robotics
                 }
             }
         }
+
+        
     }
 }

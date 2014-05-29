@@ -22,34 +22,17 @@ namespace Tmc.Scada.Core
 
     public sealed class ConveyorController : ControllerBase
     {
-        private Dictionary<ConveyorType, Type> _conveyorTypeMap;
-        private Dictionary<ConveyorAction, Action<IConveyor>> _conveyorActionMap;
-        private Dictionary<ConveyorType, ConveyorPosition> _conveyorPositionMap;
-        private Dictionary<ConveyorType, PassiveStateMachine<ConveyorPosition, ConveyorAction>> _fsmMap;
+        private SerialConveyor _serialConveyor;
+        private BluetoothConveyor _bluetoothConveyor;
+
+        private Dictionary<ConveyorAction, Action<IConveyor>> _actionMap;
 
         public ConveyorController(ClusterConfig config) : base(config)
         {
-            _conveyorTypeMap = new Dictionary<ConveyorType,Type> 
-            {
-                { ConveyorType.Assembly, typeof(SerialConveyor) },
-                { ConveyorType.Sorting, typeof(BluetoothConveyor) }
-            };
+            _serialConveyor = config.Conveyors[typeof(SerialConveyor)] as SerialConveyor;
+            _bluetoothConveyor = config.Conveyors[typeof(BluetoothConveyor)] as BluetoothConveyor;
 
-            _conveyorActionMap = new Dictionary<ConveyorAction, Action<IConveyor>>
-            {
-                { ConveyorAction.MoveForward, x => x.MoveForward() },
-                { ConveyorAction.MoveBackward, x => x.MoveBackward() }
-            };
-
-            _conveyorPositionMap = new Dictionary<ConveyorType, ConveyorPosition>
-            {
-                { ConveyorType.Assembly, ConveyorPosition.Right },
-                { ConveyorType.Sorting, ConveyorPosition.Right}
-            };
             
-            _fsmMap = new Dictionary<ConveyorType, PassiveStateMachine<ConveyorPosition, ConveyorAction>>();
-            _fsmMap.Add(ConveyorType.Assembly, CreateStateMachine(ConveyorType.Assembly));
-            _fsmMap.Add(ConveyorType.Sorting, CreateStateMachine(ConveyorType.Sorting));
         }
 
         public override void Begin(ControllerParams parameters)
