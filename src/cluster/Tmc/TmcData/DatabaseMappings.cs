@@ -8,11 +8,11 @@ namespace TmcData
 {
     public enum EnvironmentType
     {
-        Temperature,
-        Humidity,
-        Light,
-        Sound,
-        Dust
+        Humidity = 1,
+        Temperature = 2,
+        Light =3,
+        Sound =4,
+        Dust =5
     }
 
     public enum Source

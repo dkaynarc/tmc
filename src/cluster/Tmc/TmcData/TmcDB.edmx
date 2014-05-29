@@ -4,52 +4,9 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ICTDModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityContainer Name="ICTDModelStoreContainer">
-          <EntitySet Name="ComponentCycleLogView" EntityType="ICTDModel.Store.ComponentCycleLogView" store:Type="Views" store:Schema="dbo" store:Name="ComponentCycleLogView">
-            <DefiningQuery>SELECT 
-      [ComponentCycleLogView].[Name] AS [Name], 
-      [ComponentCycleLogView].[ID] AS [ID], 
-      [ComponentCycleLogView].[Timestamp] AS [Timestamp], 
-      [ComponentCycleLogView].[CycleTime] AS [CycleTime]
-      FROM [dbo].[ComponentCycleLogView] AS [ComponentCycleLogView]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="ComponentEventLogView" EntityType="ICTDModel.Store.ComponentEventLogView" store:Type="Views" store:Schema="dbo" store:Name="ComponentEventLogView">
-            <DefiningQuery>SELECT 
-      [ComponentEventLogView].[Name] AS [Name], 
-      [ComponentEventLogView].[Timestamp] AS [Timestamp], 
-      [ComponentEventLogView].[Description] AS [Description], 
-      [ComponentEventLogView].[ID] AS [ID], 
-      [ComponentEventLogView].[LogType] AS [LogType]
-      FROM [dbo].[ComponentEventLogView] AS [ComponentEventLogView]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="EnvironmentLogView" EntityType="ICTDModel.Store.EnvironmentLogView" store:Type="Views" store:Schema="dbo" store:Name="EnvironmentLogView">
-            <DefiningQuery>SELECT 
-      [EnvironmentLogView].[ID] AS [ID], 
-      [EnvironmentLogView].[Source] AS [Source], 
-      [EnvironmentLogView].[Reading] AS [Reading], 
-      [EnvironmentLogView].[Timestamp] AS [Timestamp], 
-      [EnvironmentLogView].[Type] AS [Type]
-      FROM [dbo].[EnvironmentLogView] AS [EnvironmentLogView]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="OrderListView" EntityType="ICTDModel.Store.OrderListView" store:Type="Views" store:Schema="dbo" store:Name="OrderListView">
-            <DefiningQuery>SELECT 
-      [OrderListView].[OrderID] AS [OrderID], 
-      [OrderListView].[Name] AS [Name], 
-      [OrderListView].[Black] AS [Black], 
-      [OrderListView].[Blue] AS [Blue], 
-      [OrderListView].[Red] AS [Red], 
-      [OrderListView].[Green] AS [Green], 
-      [OrderListView].[White] AS [White], 
-      [OrderListView].[StartTime] AS [StartTime], 
-      [OrderListView].[EndTime] AS [EndTime], 
-      [OrderListView].[NumberOfProducts] AS [NumberOfProducts]
-      FROM [dbo].[OrderListView] AS [OrderListView]</DefiningQuery>
-          </EntitySet>
-        </EntityContainer>
+    <Schema Namespace="ICTDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'ICTD.dbo.ComponentCycleLogView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'ICTD.dbo.ComponentCycleLogView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ComponentCycleLogView">
           <Key>
             <PropertyRef Name="ID" />
@@ -60,8 +17,7 @@
           <Property Name="CycleTime" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'ICTD.dbo.ComponentEventLogView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'ICTD.dbo.ComponentEventLogView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ComponentEventLogView">
           <Key>
             <PropertyRef Name="ID" />
@@ -70,11 +26,10 @@
           <Property Name="Timestamp" Type="datetime" />
           <Property Name="Description" Type="nvarchar" MaxLength="255" />
           <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="LogType" Type="nvarchar" MaxLength="255" />
+          <Property Name="LogType" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'ICTD.dbo.EnvironmentLogView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'ICTD.dbo.EnvironmentLogView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="EnvironmentLogView">
           <Key>
             <PropertyRef Name="ID" />
@@ -88,8 +43,7 @@
           <Property Name="Type" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="OrderListView">
           <Key>
             <PropertyRef Name="OrderID" />
@@ -101,7 +55,7 @@
             <PropertyRef Name="White" />
           </Key>
           <Property Name="OrderID" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Black" Type="int" Nullable="false" />
           <Property Name="Blue" Type="int" Nullable="false" />
           <Property Name="Red" Type="int" Nullable="false" />
@@ -120,13 +74,13 @@
           <Parameter Name="Timestamp" Type="datetime" Mode="In" />
           <Parameter Name="SourceID" Type="int" Mode="In" />
           <Parameter Name="Reading" Type="float" Mode="In" />
-          <Parameter Name="Type" Type="nvarchar" Mode="In" />
+          <Parameter Name="TypeID" Type="int" Mode="In" />
         </Function>
         <Function Name="AddNewEventLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Timestamp" Type="datetime" Mode="In" />
           <Parameter Name="Description" Type="nvarchar" Mode="In" />
           <Parameter Name="SourceID" Type="int" Mode="In" />
-          <Parameter Name="LogType" Type="nvarchar" Mode="In" />
+          <Parameter Name="LogTypeID" Type="int" Mode="In" />
         </Function>
         <Function Name="AddNewOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserID" Type="uniqueidentifier" Mode="In" />
@@ -169,6 +123,48 @@
           <Parameter Name="OrderID" Type="int" Mode="In" />
           <Parameter Name="ProductNumber" Type="int" Mode="In" />
         </Function>
+        <EntityContainer Name="ICTDModelStoreContainer">
+          <EntitySet Name="ComponentCycleLogView" EntityType="Self.ComponentCycleLogView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ComponentCycleLogView].[Name] AS [Name], 
+    [ComponentCycleLogView].[ID] AS [ID], 
+    [ComponentCycleLogView].[Timestamp] AS [Timestamp], 
+    [ComponentCycleLogView].[CycleTime] AS [CycleTime]
+    FROM [dbo].[ComponentCycleLogView] AS [ComponentCycleLogView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ComponentEventLogView" EntityType="Self.ComponentEventLogView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ComponentEventLogView].[Name] AS [Name], 
+    [ComponentEventLogView].[Timestamp] AS [Timestamp], 
+    [ComponentEventLogView].[Description] AS [Description], 
+    [ComponentEventLogView].[ID] AS [ID], 
+    [ComponentEventLogView].[LogType] AS [LogType]
+    FROM [dbo].[ComponentEventLogView] AS [ComponentEventLogView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="EnvironmentLogView" EntityType="Self.EnvironmentLogView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [EnvironmentLogView].[ID] AS [ID], 
+    [EnvironmentLogView].[Source] AS [Source], 
+    [EnvironmentLogView].[Reading] AS [Reading], 
+    [EnvironmentLogView].[Timestamp] AS [Timestamp], 
+    [EnvironmentLogView].[Type] AS [Type]
+    FROM [dbo].[EnvironmentLogView] AS [EnvironmentLogView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="OrderListView" EntityType="Self.OrderListView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [OrderListView].[OrderID] AS [OrderID], 
+    [OrderListView].[Name] AS [Name], 
+    [OrderListView].[Black] AS [Black], 
+    [OrderListView].[Blue] AS [Blue], 
+    [OrderListView].[Red] AS [Red], 
+    [OrderListView].[Green] AS [Green], 
+    [OrderListView].[White] AS [White], 
+    [OrderListView].[StartTime] AS [StartTime], 
+    [OrderListView].[EndTime] AS [EndTime], 
+    [OrderListView].[NumberOfProducts] AS [NumberOfProducts]
+    FROM [dbo].[OrderListView] AS [OrderListView]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -186,13 +182,13 @@
             <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
             <Parameter Name="SourceID" Mode="In" Type="Int32" />
             <Parameter Name="Reading" Mode="In" Type="Double" />
-            <Parameter Name="Type" Mode="In" Type="String" />
+            <Parameter Name="TypeID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="AddNewEventLog">
             <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
             <Parameter Name="Description" Mode="In" Type="String" />
             <Parameter Name="SourceID" Mode="In" Type="Int32" />
-            <Parameter Name="LogType" Mode="In" Type="String" />
+            <Parameter Name="LogTypeID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="AddNewOrder">
             <Parameter Name="UserID" Mode="In" Type="Guid" />
@@ -297,7 +293,7 @@
           <Property Type="DateTime" Name="Timestamp" Precision="3" />
           <Property Type="String" Name="Description" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="LogType" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LogType" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="OrderListView">
           <Key>
@@ -445,6 +441,7 @@
         <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

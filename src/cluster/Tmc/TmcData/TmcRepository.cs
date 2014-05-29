@@ -44,19 +44,19 @@ namespace TmcData
             new ICTDEntities().UpdateOrderStatusByID(orderId, statusId);
         }
 
-        public static void AddEnvironmentalReading(int sourceID, DateTime timestamp, float reading, string type)
+        public static void AddEnvironmentalReading(int sourceID, DateTime timestamp, float reading, int typeID)
         {
-            new ICTDEntities().AddNewEnvironmentLog(timestamp, sourceID, reading, type);
+            new ICTDEntities().AddNewEnvironmentLog(timestamp, sourceID, reading, typeID);
         }
 
         public static void AddEnvironmentalReading(Source source, DateTime timestamp, float reading, EnvironmentType type)
         {
-            new ICTDEntities().AddNewEnvironmentLog(timestamp, (int)source, reading, type.ToString());
+            new ICTDEntities().AddNewEnvironmentLog(timestamp, (int)source, reading, (int)type);
         }
 
-        public static void AddNewEventLog(DateTime timestamp, string description, int sourceID, string logType)
+        public static void AddNewEventLog(DateTime timestamp, string description, int sourceID, int logTypeID)
         {
-            new ICTDEntities().AddNewEventLog(timestamp, description, sourceID, logType);
+            new ICTDEntities().AddNewEventLog(timestamp, description, sourceID, logTypeID);
         }
     }
 }
