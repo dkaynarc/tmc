@@ -542,6 +542,7 @@ namespace Tmc.Vision
             return HsvList.ToArray();
         }
 
+
         public Image<Bgr, Byte> DrawPoints(Image<Bgr, Byte> src, Point[] points)
         {
             foreach (Point point in points)
@@ -562,6 +563,17 @@ namespace Tmc.Vision
             return src;
         }
 
+        /// <summary>
+        /// Adds two floats together of size [3][256], currently used to add histograms
+        /// </summary>
+        /// <param name="srcFloat">
+        /// The source float we want to add to
+        /// </param>
+        /// <param name="srcFloatAdd">
+        /// The flaot we want to add to srcFloat
+        /// </param>
+        /// <returns></returns>
+        /// <todo>function name not very discriptive</todo>
         public float[][] addFloats(float[][] srcFloat, float[][] srcFloatAdd)
         {
             //float[,] values= new float[3,256];
@@ -576,6 +588,18 @@ namespace Tmc.Vision
             return srcFloat;
         }
 
+        /// <summary>
+        /// Get us an image of a full tablet, Since tablet round we need lots of smaller image to get all data from it
+        /// </summary>
+        /// <param name="src">
+        /// src image where to tablet is in
+        /// </param>
+        /// <param name="tablet">
+        /// the location of tablet in the source image
+        /// </param>
+        /// <returns>
+        /// List of images of the tablet
+        /// </returns>
         public List<Image<Bgr, Byte>> GetTablet(Image<Bgr, Byte> src, CircleF tablet)
         {
             var TabletList = new List<Image<Bgr, Byte>>();
@@ -689,6 +713,15 @@ namespace Tmc.Vision
             return TabletList;
         }
 
+        /// <summary>
+        /// Convert image to a HSV histogram
+        /// </summary>
+        /// <param name="tabletList">
+        /// List of image we want to get HSV histgram data from
+        /// </param>
+        /// <returns>
+        /// Histogram for HSV of the imput images combined
+        /// </returns>
         public float[][] ImagesToHisto(List<Image<Bgr, Byte>> tabletList)
         {
             //tabletList = Tabletcolor(src, tablet);

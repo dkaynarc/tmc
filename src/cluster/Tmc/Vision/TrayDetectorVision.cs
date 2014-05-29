@@ -104,6 +104,7 @@ namespace Tmc.Vision
         /// <returns>
         /// it returns the state of the tray
         /// </returns>
+        /// <todo>use the new function in vision base to detect tablet colour</todo>
         public Tray<Tablet> GetTabletsInTray()
         {
             //img = camera.GetImage();
