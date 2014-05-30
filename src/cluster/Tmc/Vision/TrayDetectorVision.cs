@@ -30,8 +30,11 @@ namespace Tmc.Vision
         private CircleF[] tablets;
         private double Angle;
         Tray<Tablet> trayList = new Tray<Tablet>();
+
+
         
-        
+        private List<Rectangle> listOfCells = new List<Rectangle>();
+
 
         /// <summary>
         /// 
@@ -98,6 +101,8 @@ namespace Tmc.Vision
             this.camera.ConnectionString = new Uri(@"https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-ash3/t1.0-9/10247212_10202692742692192_8562559696417032763_n.jpg");
         }
 
+
+
         /// <summary>
         /// This function is resoncible for working out the state of trays
         /// </summary>
@@ -107,7 +112,7 @@ namespace Tmc.Vision
         public Tray<Tablet> GetTabletsInTray()
         {
             //img = camera.GetImage();
-            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/trayY4.jpg");
+            img = new Image<Bgr, byte>("C:/Users/user/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/trayY4.jpg");
             //img = camera.GetImageHttp(new Uri(@"http://www.wwrd.com.au/images/P/2260248_Fable%20s-4%2016cm%20Accent%20Plates-652383734586-co.jpg"));
             string win1 = "Test Window"; //The name of the window
             CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
@@ -116,19 +121,42 @@ namespace Tmc.Vision
 
             DetectTray(src);//make a ref angle
 
-             trayList.Angle = Angle;
+            trayList.Angle = Angle;
 
 
-            foreach (Point traypoint in trayPoints)
-            {//draw dots just for debuging atm
+            Console.WriteLine("List of cells detected" + listOfCells.Count());
+
+ 
+
+
+
+           for (int i = 0; i < listOfCells.Count(); i++)
+           {
                 Rectangle rect = new Rectangle();
-                rect.X = traypoint.X;
-                rect.Y = traypoint.Y;
-                rect.Width = 2;
-                rect.Height = 2;
-                src.Draw(rect, new Bgr(Color.Red), 6);
-            }
+                rect.X = listOfCells.ElementAt(i).X;
+                rect.Y = listOfCells.ElementAt(i).Y;
+                rect.Width = listOfCells.ElementAt(i).Width;
+                rect.Height = listOfCells.ElementAt(i).Height;
 
+                src.Draw(rect, new Bgr(Color.Green), 1);
+           }
+
+
+/*
+                foreach (Point traypoint in trayPoints)
+                {//draw dots just for debuging atm
+                    Rectangle rect = new Rectangle();
+                    rect.X = traypoint.X;
+                    rect.Y = traypoint.Y;
+                    rect.Width = 2;
+                    rect.Height = 2;
+
+
+
+
+                    src.Draw(rect, new Bgr(Color.Red), 6);
+                }
+*/
             CvInvoke.cvShowImage(win1, src); //Show the image
 
             CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
@@ -186,7 +214,7 @@ namespace Tmc.Vision
             //work out the points
             trayPoints[1].X = line[1].X;
             trayPoints[1].Y = line[1].Y;
-
+            
             trayPoints[3].X = line[0].X;
             trayPoints[3].Y = line[0].Y;
 
@@ -195,6 +223,11 @@ namespace Tmc.Vision
 
             trayPoints[2].X = (line[0].X - x);
             trayPoints[2].Y = (line[0].Y + y);
+
+
+
+                //Getting all the tray cells and store into a list of rect
+                DetectTrayCells(trayPoints);
 
             //work out the value we need to crop the image 
             int xOrig   = Math.Min(Math.Min(trayPoints[0].X, trayPoints[2].X), Math.Min(trayPoints[1].X, trayPoints[3].X));
@@ -207,6 +240,40 @@ namespace Tmc.Vision
             CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
             return true;
         }
+
+        /// <summary>
+        /// Getting all the tray cells and store into a list of rect
+        /// </summary>
+        /// <param name="trayPoints"></param>
+        private void DetectTrayCells(Point[] trayPoints)
+        {
+            //getting the distance of trays
+
+            int width = trayPoints[1].X - trayPoints[0].X;
+            int height = trayPoints[2].Y - trayPoints[0].Y;
+            int widthOfCell = width/3;
+            int heightOfCell = height/3;
+
+            // tray 0
+            for(int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    Rectangle rect = new Rectangle();
+                    rect.X = trayPoints[0].X + (j * widthOfCell);
+                    rect.Y = trayPoints[0].Y + (i * heightOfCell);
+                    rect.Width = widthOfCell;
+                    rect.Height = heightOfCell;
+                    listOfCells.Add(rect);
+
+                    Console.WriteLine("Cell " + listOfCells.Count() + ":" + rect.X + "," + rect.Y + " w:" + rect.Width + " h:" + rect.Height);
+
+                }
+            }
+
+        }
+
+
 
         /// <summary>
         /// Ussed to detect tablets in the tray
