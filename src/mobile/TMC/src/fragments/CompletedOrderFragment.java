@@ -1,18 +1,18 @@
 package fragments;
 
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import model.Constants;
 import model.Order;
 import ictd.activities.R;
 import adapters.CompletedOrderAdapter;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -54,9 +54,10 @@ public class CompletedOrderFragment extends ListFragment
 		{
 			DatePickerFragment newFragment = new DatePickerFragment();
 			newFragment.setTextView((TextView) v);
-			newFragment.show(getActivity().getFragmentManager(), "datePicker");
+			newFragment.show(getActivity().getFragmentManager(), "datePicker");		
 		}
 	};
+	private TextView totalCount;
 
 	/**
 	 * Sets the layouts of the fragment and rows, places the list of completed
@@ -82,7 +83,7 @@ public class CompletedOrderFragment extends ListFragment
 		to.setText(DateFormat.format(Constants.DATE_FORMAT, now));
 		to.setOnClickListener(mDateListener);
 		
-//		TextView totalCount = (TextView) rootView.findViewById(R.id.completedorders_totalcount_tv);
+    	totalCount = (TextView) rootView.findViewById(R.id.completedorders_totalcount_tv);
 		
 		return rootView;
 	}
@@ -127,6 +128,10 @@ public class CompletedOrderFragment extends ListFragment
 				}).show();
 	}
 
+	
+	
+	
+	
 	// private class
 	private class ResultReceiver extends BroadcastReceiver
 	{
@@ -139,12 +144,15 @@ public class CompletedOrderFragment extends ListFragment
 		}
 	}
 
+	
+	
+	
+	
 	private void handleCompletedOrders(String response)
 	{
 		Log.v("MAD", response);
 
-		CompletedOrderAdapter adapter = (CompletedOrderAdapter) getListView()
-				.getAdapter();
+		CompletedOrderAdapter adapter = (CompletedOrderAdapter) getListView() .getAdapter();
 		adapter.clear();
 
 		ArrayList<Order> orders = new ArrayList<Order>();
@@ -175,22 +183,44 @@ public class CompletedOrderFragment extends ListFragment
 
 		adapter.addAll(orders);
 		adapter.notifyDataSetChanged();
-
+        totalCount.setText(Integer.toString(orders.size()));
+		
 	}
 
+	
+	
+	
 	public void onStart()
 	{
 		receiver = new ResultReceiver();
-		getActivity().registerReceiver(
-				receiver,
-				new IntentFilter(Integer
-						.toString(Constants.UPDATE_COMPLETED_ORDERS_COMMAND)));
+		getActivity().registerReceiver(	receiver, new IntentFilter(Integer.toString(Constants.UPDATE_COMPLETED_ORDERS_COMMAND)));
 
 		// update completed orders here
-		makeService(Constants.UPDATE_COMPLETED_ORDERS_COMMAND);
+		makeService(Constants.UPDATE_COMPLETED_ORDERS_COMMAND, getCurrentDate(), getCurrentDate());
 		super.onStart();
 	}
 
+	
+	
+	
+	private String getCurrentDate() 
+	{
+		Calendar calendar = Calendar.getInstance();
+	
+		SimpleDateFormat format = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.ENGLISH);
+	    try
+	    {
+		  String dt = format.format(calendar.getTime());
+          return dt;
+	    }
+	    catch(Exception exc)
+	   {
+		 return null;
+	   }
+	}
+
+	
+	
 	@Override
 	public void onStop()
 	{
@@ -198,10 +228,15 @@ public class CompletedOrderFragment extends ListFragment
 		super.onStop();
 	}
 
-	private void makeService(int command)
+	
+	
+	
+	private void makeService(int command, String from, String to)
 	{
 		Intent service = new Intent(getActivity(), services.SynchService.class);
 		Bundle parcel = new Bundle();
+		parcel.putString("from", from);
+		parcel.putString("to", to);
 		parcel.putInt("command", command);
 		service.putExtra("parcel", parcel);
 
@@ -211,15 +246,26 @@ public class CompletedOrderFragment extends ListFragment
 		getActivity().startService(service);
 	}
 
-	public static class DatePickerFragment extends DialogFragment implements
+	
+	
+	
+	
+	
+	
+	
+	
+	@SuppressLint("ValidFragment")
+	public class DatePickerFragment extends DialogFragment implements
 			DatePickerDialog.OnDateSetListener
 	{
-		private static TextView mTextView = null;
+		private TextView mTextView = null;
 
 		public void setTextView(TextView textView)
 		{
 			mTextView = textView;
 		}
+		
+		
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -253,14 +299,12 @@ public class CompletedOrderFragment extends ListFragment
 					calendar.setTime(format.parse(((TextView) getActivity()
 							.findViewById(R.id.completedorders_to_tv))
 							.getText().toString()));
-					datePickerDialog.getDatePicker().setMaxDate(
-							calendar.getTimeInMillis());
 				}
 				catch (java.text.ParseException e)
 				{
-					datePickerDialog.getDatePicker().setMaxDate(
-							Calendar.getInstance().getTimeInMillis());
 				}
+				datePickerDialog.getDatePicker().setMaxDate(
+						Calendar.getInstance().getTimeInMillis());
 				break;
 			case R.id.completedorders_to_tv:
 
@@ -285,10 +329,20 @@ public class CompletedOrderFragment extends ListFragment
 			return datePickerDialog;
 		}
 
+		
+		
 		public void onDateSet(DatePicker view, int year, int month, int day)
 		{
 			mTextView.setText(new StringBuilder().append(day).append("/")
 					.append(month + 1).append("/").append(year));
+			
+			if(mTextView.getId() == R.id.completedorders_to_tv)
+			{
+				TextView to = (TextView)getActivity().findViewById(R.id.completedorders_to_tv);
+				TextView from = (TextView)getActivity().findViewById(R.id.completedorders_from_tv);
+				makeService(Constants.UPDATE_COMPLETED_ORDERS_COMMAND, from.getText().toString(), to.getText().toString() );
+			}
+			
 		}
 	}
 

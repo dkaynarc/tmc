@@ -51,8 +51,11 @@
     <string name="createorder_ownerlabel_tv">Owner:</string>
     <string name="createorder_ownername_tv">error</string>
     <string name="orderrow_orderidlabel_tv">Order ID:</string>
+    <string name="id_label_text">Event ID:</string>
     <string name="orderrow_orderownerlabel_tv">Owner:</string>
+    <string name="orderrow_eventypelabel_tv">Type:</string>
     <string name="orderrow_orderstatuslabel_tv">Status:</string>
+    <string name="alarmrow_descriptionlabel_tv">Description:</string>
     <string name="error">error</string>
     <string name="module_logout">LOGOUT</string>
     <string name="environment_dustlabel_tv">Dust:</string>
