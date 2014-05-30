@@ -35,7 +35,7 @@ public class ModuleAdapter extends FragmentPagerAdapter
 	public Fragment getItem(int position)
 	{
 		Fragment fragment;
-		if (Constants.USER.equals(Constants.OPERATOR)) // Please implement this SERGEI
+		if (Constants.USER.equals(Constants.OPERATOR))
 		{
 			switch (position)
 			{
