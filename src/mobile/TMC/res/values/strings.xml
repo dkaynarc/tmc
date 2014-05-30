@@ -69,5 +69,6 @@
     <string name="completedorders_tolabel_tv">To:</string>
     <string name="completedorders_fromlabel_tv">From:</string>
     <string name="default_date">dd/mm/yyyy</string>
+    <string name="loginactivity_operator_cb">Operator</string>
 
 </resources>

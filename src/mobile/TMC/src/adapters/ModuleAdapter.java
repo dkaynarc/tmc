@@ -35,22 +35,37 @@ public class ModuleAdapter extends FragmentPagerAdapter
 	public Fragment getItem(int position)
 	{
 		Fragment fragment;
-		switch (position)
+		if (Constants.USER.equals(Constants.OPERATOR)) // Please implement this SERGEI
 		{
-		case 0:
-			fragment = new MachineStatusFragment();
-			break;
-		case 1:
-			fragment = new OrderQueueFragment();
-			break;
-		case 2:
-			fragment = new CompletedOrderFragment();
-			break;
-		case 3:
-			fragment = new EnvironmentFragment();
-			break;
-		default:
-			fragment = new AlarmsFragment();
+			switch (position)
+			{
+			case 0:
+				fragment = new MachineStatusFragment();
+				break;
+			case 1:
+				fragment = new OrderQueueFragment();
+				break;
+			case 2:
+				fragment = new CompletedOrderFragment();
+				break;
+			case 3:
+				fragment = new EnvironmentFragment();
+				break;
+			default:
+				fragment = new AlarmsFragment();
+			}
+		}
+		else
+		{
+			switch (position)
+			{
+			case 0:
+				fragment = new OrderQueueFragment();
+				break;
+			default:
+				fragment = new CompletedOrderFragment();
+				break;
+			}
 		}
 		Bundle args = new Bundle();
 		fragment.setArguments(args);
@@ -64,7 +79,10 @@ public class ModuleAdapter extends FragmentPagerAdapter
 	@Override
 	public int getCount()
 	{
-		return 5;
+		if (Constants.USER.equals(Constants.OPERATOR))
+			return 5;
+		else
+			return 2;
 	}
 
 	/**
@@ -74,19 +92,29 @@ public class ModuleAdapter extends FragmentPagerAdapter
 	@Override
 	public CharSequence getPageTitle(int position)
 	{
-		switch (position)
+		if (Constants.USER.equals(Constants.OPERATOR))
 		{
-		case 0:
-			return Constants.MACHINE_STATUS;
-		case 1:
-			return Constants.ORDER_QUEUE;
-		case 2:
-			return Constants.COMPLETED_ORDERS;
-		case 3:
-			return Constants.ENVIRONMENT;
-		case 4:
-			return Constants.ALARMS;
+			switch (position)
+			{
+			case 0:
+				return Constants.MACHINE_STATUS;
+			case 1:
+				return Constants.ORDER_QUEUE;
+			case 2:
+				return Constants.COMPLETED_ORDERS;
+			case 3:
+				return Constants.ENVIRONMENT;
+			default:
+				return Constants.ALARMS;
+			}
 		}
-		return null;
+		else
+			switch (position)
+			{
+			case 0:
+				return Constants.ORDER_QUEUE;
+			default:
+				return Constants.COMPLETED_ORDERS;
+			}
 	}
 }

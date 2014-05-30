@@ -113,4 +113,7 @@ public class Constants
 	public static final CharSequence ENV_UPDATE_FAIL = "Environment data update failed";
 	public static final String ALARMS = "ALARMS";
 	public static final String DATE_FORMAT = "dd/MM/yyyy";
+	public static String USER = "OPERATOR";
+	public static final String OPERATOR = "OPERATOR";
+	public static final String ORDERER = "ORDERER";
 }
