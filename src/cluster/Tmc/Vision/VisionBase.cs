@@ -23,8 +23,7 @@ namespace Tmc.Vision
 
         public enum HSVdata { Hue = 0, Sat, Val };
 
-        public enum TC { Black = 0, White, Red, Blue, Green, Bad, Na };
-
+        //public enum TC { Black = 0, White, Red, Blue, Green, Bad, Na };
 
         /// <summary>
         /// This Function lets us detect circles in an image
@@ -36,30 +35,43 @@ namespace Tmc.Vision
         /// THis is the input image in which we want to find the circles
         /// </param>
         /// <param name="minRadius">
-        /// smallest circle diameter that will be detected, note this is in pixcels
+        /// smallest circle diameter that will be detected, note this is in pixcels. 
+        /// Minimal radius of the circles to search for
         /// </param>
         /// <param name="maxRadius">
-        /// biggest circle diameter that will be detected, note this is in pixcels
+        /// biggest circle diameter that will be detected, note this is in pixcels. 
+        /// Maximal radius of the circles to search for
+        /// </param>
+        /// <param name="dp">
+        /// Resolution of the accumulator used to detect centers of the circles. For
+        /// example, if it is 1, the accumulator will have the same resolution as the
+        /// input image, if it is 2 - accumulator will have twice smaller width and height,
+        /// etc
+        /// </param>
+        /// <param name="minDist">
+        /// Minimum distance between centers of the detected circles. If the parameter
+        /// is too small, multiple neighbor circles may be falsely detected in addition
+        /// to a true one. If it is too large, some circles may be missed
         /// </param>
         /// <param name="cannyThresh">
-        /// 
+        /// The higher threshold of the two passed to Canny edge detector (the lower
+        /// one will be twice smaller).
         /// </param>
         /// <param name="cannyAccumThresh">
-        /// 
+        /// Accumulator threshold at the center detection stage. The smaller it is, the
+        /// more false circles may be detected. Circles, corresponding to the larger
+        /// accumulator values, will be returned first
         /// </param>
         public CircleF[] DetectTablets(Image<Bgr, Byte> src, int minRadius, int maxRadius, double dp, double minDist, int cannyThresh, int cannyAccumThresh)
-        {//double dp, double minDist
-            Image<Gray, Byte> gray = src.Convert<Gray, Byte>(); //convert source image to grayscale
-            //Image<Gray, Byte> gray = graySoft;                      
+        {
+            Image<Gray, Byte> gray = src.Convert<Gray, Byte>(); //convert source image to grayscale                  
 
+            //Set canny edge value we are going to use in houghtransform
             Gray cannyThreshold = new Gray(cannyThresh);
             Gray cannyThresholdLinking = new Gray(100);
             Gray circleAccumulatorThreshold = new Gray(cannyAccumThresh);
 
-            Image<Gray, Byte> cannyEdges = gray.Canny(cannyThreshold.Intensity, cannyThresholdLinking.Intensity);
-
-            //f.pictureBox1_draw(gray);
-            CircleF[] circles = gray.HoughCircles(
+            CircleF[] circles = gray.HoughCircles(//detect the circles
                 cannyThreshold,
                 circleAccumulatorThreshold,
                 dp,
@@ -68,21 +80,7 @@ namespace Tmc.Vision
                 maxRadius
                 )[0]; //Get the circles from the first channel
 
-            //#if true
-            
-            //Image<Bgr, Byte> a = src.Clone();
-            //foreach (CircleF circle in circles)
-            //{
-            //    a.Draw(circle, new Bgr(Color.Red), 2);
-            //}
-
-            
-
-            ////f.pictureBox2_draw(a);
-
-            //#endif
-            //CvInvoke.cvWaitKey(40);//remove move later
-            return circles;
+            return circles;//return the circles found
         }
         
 
@@ -100,7 +98,7 @@ namespace Tmc.Vision
         /// Returns the color of the tablet with enum TabletColors
         /// </returns>
         /// <todo>
-        /// add the ol, oh into the function
+        /// add the ol, oh into the function, this function will not be used in the future
         /// </todo>
         public TabletColors detectcolor(Image<Bgr, byte> src, Hsv[,] HSVTabletcolorRange)
         {
@@ -137,7 +135,19 @@ namespace Tmc.Vision
                 return TabletColors.Unknown;
             }
         }
-
+        
+        /// <summary>
+        /// detects the colo bassed on the HSV range given
+        /// </summary>
+        /// <param name="srcHSV">
+        /// the Hsv value we want to check is a color we know or dont
+        /// </param>
+        /// <param name="HSVTabletcolorRange">
+        /// the range of colors we know
+        /// </param>
+        /// <returns>
+        /// Color of the tablet
+        /// </returns>
         public TabletColors detectcolor(Hsv srcHSV, Hsv[,] HSVTabletcolorRange)
         {
             int ol = 0;
@@ -168,41 +178,6 @@ namespace Tmc.Vision
                 return TabletColors.Unknown;
             }
         }
-
-        /*public void detectcolor(int[][] hue, int[][] sat, int[][] val, Hsv[,] HSVTabletcolorRange)
-        {
-            int ol = 0;
-            int oh = 0;
-            //for(int i = 0; i < hue.GetLength(0); i++)
-            //{
-         */
-              /*  int srcHSV;
-                if (true == InHSVRange(srcHSV, HSVTabletcolorRange, TabletColors.Green, ol, oh))
-                {//green
-                    return TabletColors.Green;
-                }
-                else if (true == InHSVRange(srcHSV, HSVTabletcolorRange, TabletColors.Red, ol, oh))
-                {//red
-                    return TabletColors.Red;
-                }
-                else if (true == InHSVRange(srcHSV, HSVTabletcolorRange, TabletColors.White, ol, oh))
-                {//white
-                    return TabletColors.White;
-                }
-                else if (true == InHSVRange(srcHSV, HSVTabletcolorRange, TabletColors.Blue, ol, oh))
-                {//blue
-                    return TabletColors.Blue;
-                }
-                else if (true == InHSVRange(srcHSV, HSVTabletcolorRange, TabletColors.Black, ol, oh))
-                {//black
-                    return TabletColors.Black;
-                }
-                else
-                {
-                    return TabletColors.Unknown;
-                }
-            //}
-        }*/
 
         /// <summary>
         /// Tells us if the the HSV color is in range
@@ -751,6 +726,70 @@ namespace Tmc.Vision
         public double Mag(PointF a, PointF b)
         {
             return Math.Sqrt(Math.Pow((a.X - b.X),2) + Math.Pow((a.Y - b.Y),2) );
+        }
+
+        /// <summary>
+        /// Gives us the identity of nearby tablets which appear to be inside the radius of our tablet
+        /// </summary>
+        /// <param name="knowTablets">
+        /// the list of all the tablets in the picture
+        /// </param>
+        /// <param name="targetTablet">
+        /// this is the tablet that we want to check if it is near other tablets which are witin its radius
+        /// </param>
+        /// <returns>
+        /// the tablets which are with the radius of our targetTablet
+        /// </returns>
+        public CircleF[] OtherTabletsNear(CircleF[] knowTablets, CircleF targetTablet)
+        {
+            var circleList = new List<CircleF>();
+
+            foreach (CircleF knowTablet in knowTablets)
+            {
+                double Mag = Math.Sqrt(Math.Pow((targetTablet.Center.X - knowTablet.Center.X), 2) + Math.Pow((targetTablet.Center.Y - knowTablet.Center.Y), 2));
+                int a = 0;
+                bool b = checkCircles(knowTablet, targetTablet);
+                if ((Mag <= targetTablet.Radius) && (checkCircles(knowTablet, targetTablet) == false))
+                {//center is in the radius of the circle
+                    a++;
+                    circleList.Add(knowTablet);
+                    //int a = 0;
+                    //targetTablet
+                }
+                if ((Mag < (targetTablet.Radius + knowTablet.Radius)) && (checkCircles(knowTablet, targetTablet) == false))
+                {//if the circle crosses over
+
+                    if (a < 1)
+                    {
+                        circleList.Add(knowTablet);
+                    }
+
+                    a++;
+                    //int a = 0;
+                }
+            }
+
+            return circleList.ToArray();
+
+            //return knowTablets;
+        }
+
+        /// <summary>
+        /// Checks if the 2 circles given are the same or not
+        /// </summary>
+        /// <param name="circ">
+        /// first circle
+        /// </param>
+        /// <param name="targ">
+        /// second circle
+        /// </param>
+        /// <returns>
+        /// returns true if the circles the same, false if it is diffrent
+        /// </returns>
+        public bool checkCircles(CircleF circ, CircleF targ)
+        {
+            return ((circ.Radius == targ.Radius) && (circ.Center.X == targ.Center.X) &&
+                    (circ.Center.Y == targ.Center.Y) && (circ.Area == targ.Area));
         }
     }
 }
