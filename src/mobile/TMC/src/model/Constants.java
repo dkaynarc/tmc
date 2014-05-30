@@ -113,4 +113,7 @@ public class Constants
 	public static final String ALARMS = "ALARMS";
 	public static final String DATE_FORMAT = "dd/MM/yyyy";
 	public static final int GET_ALARM_COMMAND = 12;
+	public static String USER = "OPERATOR";
+	public static final String OPERATOR = "OPERATOR";
+	public static final String ORDERER = "ORDERER";
 }
