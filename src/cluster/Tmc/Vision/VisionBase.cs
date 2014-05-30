@@ -49,8 +49,8 @@ namespace Tmc.Vision
         /// </param>
         public CircleF[] DetectTablets(Image<Bgr, Byte> src, int minRadius, int maxRadius, double dp, double minDist, int cannyThresh, int cannyAccumThresh)
         {//double dp, double minDist
-            Image<Gray, Byte> graySoft = src.Convert<Gray, Byte>();
-            Image<Gray, Byte> gray = graySoft;
+            Image<Gray, Byte> gray = src.Convert<Gray, Byte>(); //convert source image to grayscale
+            //Image<Gray, Byte> gray = graySoft;                      
 
             Gray cannyThreshold = new Gray(cannyThresh);
             Gray cannyThresholdLinking = new Gray(100);
@@ -68,33 +68,23 @@ namespace Tmc.Vision
                 maxRadius
                 )[0]; //Get the circles from the first channel
 
-            #if true
+            //#if true
             
-            Image<Bgr, Byte> a = src.Clone();
-            foreach (CircleF circle in circles)
-            {
-                a.Draw(circle, new Bgr(Color.Red), 2);
-            }
+            //Image<Bgr, Byte> a = src.Clone();
+            //foreach (CircleF circle in circles)
+            //{
+            //    a.Draw(circle, new Bgr(Color.Red), 2);
+            //}
 
             
 
-            //f.pictureBox2_draw(a);
+            ////f.pictureBox2_draw(a);
 
-            #endif
+            //#endif
             //CvInvoke.cvWaitKey(40);//remove move later
             return circles;
         }
-        /*
-        public void calibration(Image<Bgr, byte> src)
-        {
-            const int width = 9;
-            const int height = 6;
-            Size patternSize = new Size(width, height);
-            Bgr[] line_color_array = new Bgr[width * height]; // just for displaying colored lines of detected chessboard
-            Image<Gray, Byte>[] Frame_array_buffer = new Image<Gray, byte>[100];
-            MCvPoint3D32f[][] corners_object_list = new MCvPoint3D32f[Frame_array_buffer.Length][];
-            PointF[][] corners_points_list = new PointF[Frame_array_buffer.Length][];
-        }*/
+        
 
 
         /// <summary>
@@ -179,12 +169,13 @@ namespace Tmc.Vision
             }
         }
 
-        public void detectcolor(int[][] hue, int[][] sat, int[][] val, Hsv[,] HSVTabletcolorRange)
+        /*public void detectcolor(int[][] hue, int[][] sat, int[][] val, Hsv[,] HSVTabletcolorRange)
         {
             int ol = 0;
             int oh = 0;
             //for(int i = 0; i < hue.GetLength(0); i++)
             //{
+         */
               /*  int srcHSV;
                 if (true == InHSVRange(srcHSV, HSVTabletcolorRange, TabletColors.Green, ol, oh))
                 {//green
@@ -209,9 +200,9 @@ namespace Tmc.Vision
                 else
                 {
                     return TabletColors.Unknown;
-                }*/
+                }
             //}
-        }
+        }*/
 
         /// <summary>
         /// Tells us if the the HSV color is in range
@@ -542,7 +533,18 @@ namespace Tmc.Vision
             return HsvList.ToArray();
         }
 
-
+        /// <summary>
+        /// draws points on the image
+        /// </summary>
+        /// <param name="src">
+        /// source image we want to draw on
+        /// </param>
+        /// <param name="points">
+        /// The points we want to draw
+        /// </param>
+        /// <returns>
+        /// Image with the points on them
+        /// </returns>
         public Image<Bgr, Byte> DrawPoints(Image<Bgr, Byte> src, Point[] points)
         {
             foreach (Point point in points)
@@ -734,6 +736,18 @@ namespace Tmc.Vision
             return abca;
         }
 
+        /// <summary>
+        /// gives us distance between 2 points
+        /// </summary>
+        /// <param name="a">
+        /// point a
+        /// </param>
+        /// <param name="b">
+        /// point b
+        /// </param>
+        /// <returns>
+        /// distance between point a and b
+        /// </returns>
         public double Mag(PointF a, PointF b)
         {
             return Math.Sqrt(Math.Pow((a.X - b.X),2) + Math.Pow((a.Y - b.Y),2) );

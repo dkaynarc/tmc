@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using Emgu.CV;
-using Emgu.CV.CvEnum;
+using Emgu.CV.CvEnum; 
 using Emgu.CV.Structure;
 using Emgu.CV.GPU;
 using Tmc.Common;
