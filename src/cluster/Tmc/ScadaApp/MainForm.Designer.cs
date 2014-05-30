@@ -62,11 +62,9 @@
             this.tabEnvironment = new System.Windows.Forms.TabPage();
             this.environmentControl1 = new Tmc.Scada.App.environmentControl();
             this.tabOrders = new System.Windows.Forms.TabPage();
-            this.order1 = new Tmc.Scada.App.Order();
             this.tabCalibration = new System.Windows.Forms.TabPage();
             this.calibrationControl1 = new Tmc.Scada.App.CalibrationControl();
             this.tabReports = new System.Windows.Forms.TabPage();
-            this.reportControl1 = new Tmc.Scada.App.ReportControl();
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
@@ -75,9 +73,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
             this.tabPlantMimic.SuspendLayout();
             this.tabEnvironment.SuspendLayout();
-            this.tabOrders.SuspendLayout();
             this.tabCalibration.SuspendLayout();
-            this.tabReports.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -101,6 +97,7 @@
             this.loginAndLogoutButton.Name = "loginAndLogoutButton";
             this.loginAndLogoutButton.Size = new System.Drawing.Size(41, 22);
             this.loginAndLogoutButton.Text = "Login";
+            this.loginAndLogoutButton.Click += new System.EventHandler(this.loginAndLogoutButton_Click);
             // 
             // currentUserLabel
             // 
@@ -379,20 +376,12 @@
             // 
             // tabOrders
             // 
-            this.tabOrders.Controls.Add(this.order1);
             this.tabOrders.Location = new System.Drawing.Point(4, 29);
             this.tabOrders.Name = "tabOrders";
             this.tabOrders.Size = new System.Drawing.Size(687, 354);
             this.tabOrders.TabIndex = 4;
             this.tabOrders.Text = "Orders";
             this.tabOrders.UseVisualStyleBackColor = true;
-            // 
-            // order1
-            // 
-            this.order1.Location = new System.Drawing.Point(30, 12);
-            this.order1.Name = "order1";
-            this.order1.Size = new System.Drawing.Size(639, 364);
-            this.order1.TabIndex = 0;
             // 
             // tabCalibration
             // 
@@ -414,22 +403,12 @@
             // 
             // tabReports
             // 
-            this.tabReports.Controls.Add(this.reportControl1);
             this.tabReports.Location = new System.Drawing.Point(4, 29);
             this.tabReports.Name = "tabReports";
             this.tabReports.Size = new System.Drawing.Size(687, 354);
             this.tabReports.TabIndex = 5;
             this.tabReports.Text = "Reports";
             this.tabReports.UseVisualStyleBackColor = true;
-            // 
-            // reportControl1
-            // 
-            this.reportControl1.Location = new System.Drawing.Point(-4, 0);
-            this.reportControl1.Name = "reportControl1";
-            this.reportControl1.SelectedEndDate = new System.DateTime(2014, 5, 22, 14, 42, 45, 131);
-            this.reportControl1.SelectedStartDate = new System.DateTime(2014, 5, 21, 14, 42, 45, 131);
-            this.reportControl1.Size = new System.Drawing.Size(691, 358);
-            this.reportControl1.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -451,9 +430,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).EndInit();
             this.tabPlantMimic.ResumeLayout(false);
             this.tabEnvironment.ResumeLayout(false);
-            this.tabOrders.ResumeLayout(false);
             this.tabCalibration.ResumeLayout(false);
-            this.tabReports.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

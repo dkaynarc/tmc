@@ -27,6 +27,14 @@ namespace Tmc.Scada.App
         private Timer timer;
         private int lastAlarmId;
 
+        /* Authentication code
+         * public SCADAUserManager UserManager
+           {
+               get { return new SCADAUserManager(); }
+           }
+         * 
+         */
+
         public MainForm()
         {
             InitializeComponent();
@@ -306,6 +314,63 @@ namespace Tmc.Scada.App
                     this.DismissAlarmNotifcation(e.RowIndex);
                 }
             }
+        }
+
+        private void loginAndLogoutButton_Click(object sender, EventArgs e)
+        {
+            if (loginAndLogoutButton.Text == "Login")
+            {
+                login();
+            }
+            else
+            {
+                logout();
+            }
+        }
+
+        private void login()
+        {
+            LoginForm loginForm = new LoginForm();
+        }
+
+        public void Authenticate(string username, string password)
+        {
+            if (authenticate(username,password))
+            {
+                this.currentUserLabel.Text = username;
+            }
+            else
+            {
+                MessageBox.Show("Invalid credentials");
+            }
+        }
+
+        private bool authenticate(string username, string password)
+        {/*
+            try
+            {
+                var user = UserManager.Find(username, password);
+
+                if (user != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception exc)
+            {
+                return false;
+            }  */
+
+            return true; // obviously remove this
+        }
+
+        private void logout()
+        {
+            
         }
     }
 }
