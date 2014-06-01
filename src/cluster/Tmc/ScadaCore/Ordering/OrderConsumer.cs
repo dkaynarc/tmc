@@ -41,7 +41,7 @@ namespace Tmc.Scada.Core
         {
             this._orderQueue = new Queue<Order>();
 
-            foreach (var orderInfo in TmcRepository.OrderInfo())
+            foreach (var orderInfo in TmcRepository.GetOrdersByStatus((int) OrderStatus.Open))
             {
                 var order = new Order();
                 order.Configuration.AddTablet(TabletColors.Black, orderInfo.Black);

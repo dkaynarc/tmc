@@ -15,6 +15,7 @@ namespace TmcData
     public partial class OrderListView
     {
         public int OrderID { get; set; }
+        public int StatusID { get; set; }
         public string Name { get; set; }
         public int Black { get; set; }
         public int Blue { get; set; }
