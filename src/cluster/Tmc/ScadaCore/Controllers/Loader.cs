@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Tmc.Robotics;
+using Tmc.Sensors;
 
 namespace Tmc.Scada.Core
 {
@@ -14,25 +15,10 @@ namespace Tmc.Scada.Core
 
     public sealed class Loader : ControllerBase
     {
-        //TODO: Remove this class when the PLC is implemented place.
-        private class MockPlc
-        {
-            public Dictionary<int, bool> TrayMagazine { get; private set; }
-
-            public MockPlc()
-            {
-                TrayMagazine = new Dictionary<int, bool>();
-                for (int i = 0; i < 5; i++)
-                {
-                    TrayMagazine.Add(i, (i % 2) == 0);
-                }
-            }
-        }
-
         private LoaderRobot _loaderRobot;
-        //private PlcSensor _traySensor;
-        private MockPlc _traySensor;
+        private IPlc _traySensor;
         private Dictionary<LoaderAction, Action> _actionMap;
+        private Dictionary<PlcAttachedSwitch, int> _traySwitchMap;
 
         public Loader(ClusterConfig config) : base(config)
         {
@@ -43,12 +29,30 @@ namespace Tmc.Scada.Core
             };
 
             _loaderRobot = config.Robots[typeof(LoaderRobot)] as LoaderRobot;
-            _traySensor = new MockPlc();
+            _traySensor = config.Plcs["MainPlc"] as IPlc;
+            _traySwitchMap = CreateTraySwitchMap();
 
             if (_loaderRobot == null)
             {
                 throw new ArgumentException("Could not retrieve a LoaderRobot from ClusterConfig");
             }
+            if (_traySensor == null)
+            {
+                throw new ArgumentException("Could not retrieve a Plc from ClusterConfig");
+            }
+        }
+
+        private Dictionary<PlcAttachedSwitch, int> CreateTraySwitchMap()
+        {
+            return new Dictionary<PlcAttachedSwitch, int>
+            {
+                { PlcAttachedSwitch.Tray1, 1 },
+                { PlcAttachedSwitch.Tray2, 2 },
+                { PlcAttachedSwitch.Tray3, 3 },
+                { PlcAttachedSwitch.Tray4, 4 },
+                { PlcAttachedSwitch.Tray5, 5 },
+                { PlcAttachedSwitch.Tray6, 6 }
+            };
         }
 
         public override void Begin(ControllerParams parameters)
@@ -76,13 +80,16 @@ namespace Tmc.Scada.Core
         private bool TrySelectShelf(out int shelfIndex)
         {
             shelfIndex = -1;
-            var availableTrays = _traySensor.TrayMagazine.Where(x => x.Value == true).Select(y => y.Key).ToList();
+            var switchStates = _traySensor.GetSwitchStates();
+            var availableTrays = switchStates.Where(x => x.Value == true && x.Key.ToString().Contains("Tray"))
+                                                .Select(y => y.Key).ToList();
+
             if (availableTrays.Count == 0)
             {
                 return false;
             }
 
-            shelfIndex = availableTrays[0];
+            shelfIndex = _traySwitchMap[availableTrays[0]];
             return true;
         }
 
