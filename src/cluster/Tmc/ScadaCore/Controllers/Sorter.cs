@@ -15,7 +15,8 @@ namespace Tmc.Scada.Core
     {
         Sort,
         LoadToConveyor,
-        LoadToBuffer
+        LoadToBuffer,
+        Undefined
     }
 
     public sealed class Sorter : ControllerBase
@@ -61,6 +62,8 @@ namespace Tmc.Scada.Core
                         case SorterAction.LoadToConveyor:
                             LoadToConveyorAsync();
                             break;
+                        default: // no action
+                            break;
                     }
                 }
             }
@@ -72,7 +75,11 @@ namespace Tmc.Scada.Core
             {
                 _cancelTokenSource.Cancel();
                 IsRunning = false;
-                OnCompleted(new ControllerEventArgs() { OperationStatus = ControllerOperationStatus.Cancelled });
+                OnCompleted(new SorterCompletedEventArgs() 
+                { 
+                    OperationStatus = ControllerOperationStatus.Cancelled,
+                    Action = SorterAction.Undefined
+                });
             }
         }
 
@@ -83,7 +90,11 @@ namespace Tmc.Scada.Core
                 {
                     var status = Sort(mag, ct);
                     IsRunning = false;
-                    OnCompleted(new ControllerEventArgs() { OperationStatus = status });
+                    OnCompleted(new SorterCompletedEventArgs() 
+                    {
+                        OperationStatus = status,
+                        Action = SorterAction.Sort
+                    });
                 }, ct);
         }
 
@@ -93,7 +104,11 @@ namespace Tmc.Scada.Core
                 {
                     var status = LoadToConveyor();
                     IsRunning = false;
-                    OnCompleted(new ControllerEventArgs() { OperationStatus = status });
+                    OnCompleted(new SorterCompletedEventArgs() 
+                    {
+                        OperationStatus = status,
+                        Action = SorterAction.LoadToConveyor
+                    });
                 });
         }
 
@@ -103,7 +118,11 @@ namespace Tmc.Scada.Core
                 {
                     var status = LoadToConveyor();
                     IsRunning = false;
-                    OnCompleted(new ControllerEventArgs() { OperationStatus = status });
+                    OnCompleted(new SorterCompletedEventArgs() 
+                    { 
+                        OperationStatus = status,
+                        Action = SorterAction.LoadToBuffer
+                    });
                 });
         }
 
@@ -195,6 +214,11 @@ namespace Tmc.Scada.Core
     public class SorterParams : ControllerParams
     {
         public TabletMagazine Magazine;
+        public SorterAction Action;
+    }
+
+    public class SorterCompletedEventArgs : ControllerEventArgs
+    {
         public SorterAction Action;
     }
 }
