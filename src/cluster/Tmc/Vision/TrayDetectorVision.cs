@@ -12,6 +12,9 @@ using Emgu.CV.GPU;
 using Tmc.Common;
 using Emgu.CV.Features2D;
 
+using System.Drawing.Imaging;
+using System.IO;
+
 
 namespace Tmc.Vision
 {
@@ -44,7 +47,7 @@ namespace Tmc.Vision
         public enum pMinMax { Max   = 0, Min };
 
 
-        Form1 f;
+        //Form1 f;
 
         /// <summary>
         /// Constructor for this class
@@ -54,8 +57,8 @@ namespace Tmc.Vision
         /// </param>
         public TrayDetectorVision(Camera camera)
         {
-            f = new Form1();
-            f.Show();
+            //f = new Form1();
+            //f.Show();
             this.camera = camera;
             
             HSVTabletcolorsRanges[(int)TabletColors.Green,(int)HSVRange.Low].Hue         = 76;
@@ -102,7 +105,7 @@ namespace Tmc.Vision
             cannyAccumThresh = 100;
 
             //this.camera.ConnectionString = new Uri(@"http://192.168.0.190:8080/photoaf.jpg");
-            this.camera.ConnectionString = new Uri(@"https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-ash3/t1.0-9/10247212_10202692742692192_8562559696417032763_n.jpg");
+            //this.camera.ConnectionString = new Uri(@"https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-ash3/t1.0-9/10247212_10202692742692192_8562559696417032763_n.jpg");
         }
 
         /// <summary>
@@ -117,14 +120,15 @@ namespace Tmc.Vision
             //img = camera.GetImage();
             img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/tray22.jpg");
             //img = camera.GetImageHttp(new Uri(@"http://www.wwrd.com.au/images/P/2260248_Fable%20s-4%2016cm%20Accent%20Plates-652383734586-co.jpg"));
-            string win1 = "Test Window"; //The name of the window
-            CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
+            //string win1 = "Test Window"; //The name of the window
+            //CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
 
             Image<Bgr, Byte> src = CropImage(img, 0, 777, img.Cols, 902);//reduce the image so we only see the coveour and tray
 
 
-            CvInvoke.cvShowImage(win1, src); //Show the croped image
-            CvInvoke.cvWaitKey(0);
+           //src.toBitmap().save("Croped to only covyour");
+            //CvInvoke.cvShowImage(win1, src); //Show the croped image
+            //CvInvoke.cvWaitKey(0);
 
             DetectTray(src);//make a ref angle
 
@@ -141,13 +145,13 @@ namespace Tmc.Vision
                 src.Draw(rect, new Bgr(Color.Red), 6);
             }
 
-            CvInvoke.cvShowImage(win1, src); //Show the image
+            //CvInvoke.cvShowImage(win1, src); //Show the image
 
-            CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
+            //CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
             DetectTabletsInTray();
             DetectTabletType();
-            CvInvoke.cvWaitKey(0);
-            CvInvoke.cvDestroyWindow(win1); //Destory the window
+            //CvInvoke.cvWaitKey(0);
+            //CvInvoke.cvDestroyWindow(win1); //Destory the window
 
             return trayList;
         }
@@ -188,8 +192,8 @@ namespace Tmc.Vision
            
              
             //double Mag = Math.Sqrt(Math.Pow((line[0].X - line[1].X),2) + Math.Pow((line[0].Y - line[1].Y),2) );
-            CvInvoke.cvShowImage("Test Window", col); //Show the image
-            CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
+            //CvInvoke.cvShowImage("Test Window", col); //Show the image
+            //CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
             
             
             int x = line[0].Y - line[1].Y;
@@ -215,8 +219,8 @@ namespace Tmc.Vision
             int yHeight = Math.Max(Math.Max(trayPoints[0].Y, trayPoints[2].Y), Math.Max(trayPoints[1].Y, trayPoints[3].Y)) - yOrig;
 
             imgTray = CropImage(src, xOrig, yOrig, xWidth, yHeight);//crop the image
-            CvInvoke.cvShowImage("Test Window", imgTray); //Show the image
-            CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
+            //CvInvoke.cvShowImage("Test Window", imgTray); //Show the image
+            //CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
             return true;
         }
 
@@ -276,9 +280,9 @@ namespace Tmc.Vision
                     trayList.Cells[i] = new Tablet { Color = TabletColors.Unknown };//TabletColors.Unknown;
                 }
             }
-            f.trayFill(trayList);
-            CvInvoke.cvShowImage("Test Window", imgTray); //Show the image
-            CvInvoke.cvWaitKey(0);
+            //f.trayFill(trayList);
+            //CvInvoke.cvShowImage("Test Window", imgTray); //Show the image
+            //CvInvoke.cvWaitKey(0);
         }
 
         /// <summary>
@@ -352,6 +356,7 @@ namespace Tmc.Vision
             }
             return count;
         }
+
         /// <summary>
         /// This Function gives us the cell a tablet is in givent it's location in the tray
         /// </summary>

@@ -580,6 +580,9 @@ namespace Tmc.Vision
         /// <returns>
         /// List of images of the tablet
         /// </returns>
+        /// <todo>
+        /// do bottom part of chip corectly
+        /// </todo>
         public List<Image<Bgr, Byte>> GetTablet(Image<Bgr, Byte> src, CircleF tablet)
         {
             var TabletList = new List<Image<Bgr, Byte>>();
@@ -674,22 +677,7 @@ namespace Tmc.Vision
             points[9].X = points[0].X + (points[4].Y - points[0].Y);
             points[9].Y = points[0].Y - ((points[0].X - points[4].X));
             points[10].X = points[0].X + (points[5].Y - points[0].Y);
-            points[10].Y = points[0].Y - ((points[0].X - points[5].X));//points[0].Y - ((points[5].Y - points[0].Y) );
-
-            //Image<Bgr, Byte> TS2 = CropImage(src, points[2].X, points[2].Y, ((int)tablet.Center.Y - points[2].Y) * 2, points[1].X - points[2].X);
-            //Image<Bgr, Byte> TS3 = CropImage(src, points[3].X, points[3].Y, ((int)tablet.Center.Y - points[3].Y) * 2, points[2].X - points[3].X);
-            //Image<Bgr, Byte> TS4 = CropImage(src, points[4].X, points[4].Y, ((int)tablet.Center.Y - points[4].Y) * 2, points[3].X - points[4].X);
-            //Image<Bgr, Byte> TS5 = CropImage(src, points[5].X, points[5].Y, ((int)tablet.Center.Y - points[5].Y) * 2, points[4].X - points[5].X);
-
-            CvInvoke.cvShowImage("MID", MID);
-
-            Image<Bgr, Byte> derp;
-
-            //derp = DrawPoints(src, points);
-
-            //CvInvoke.cvShowImage("Test Window3", derp);
-            //CvInvoke.cvWaitKey(0);
-
+            points[10].Y = points[0].Y - ((points[0].X - points[5].X));
             return TabletList;
         }
 

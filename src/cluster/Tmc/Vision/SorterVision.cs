@@ -33,7 +33,7 @@ namespace Tmc.Vision
         
         
         private Image<Bgr, Byte> ab;
-        Form1 f;
+        //Form1 f;
 
         /// <summary>
         /// constructor for sorter vision, do all initilasation here
@@ -43,8 +43,8 @@ namespace Tmc.Vision
         /// </param>
         public SorterVision(Camera camera)
         {
-            f = new Form1();
-            f.Show();
+            //f = new Form1();
+            //f.Show();
             this.camera = camera;
             //do calibration
             //this.camera.ConnectionString = new Uri(@"http://192.168.0.190:8080/photoaf.jpg");
@@ -102,8 +102,8 @@ namespace Tmc.Vision
         public List<Tablet> GetVisibleTablets()
         {
             tabletList.Clear();//clear tablets from last use       
-            //img = camera.GetImage(1);
-            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/sort30.jpg");
+            img = camera.GetImage(1);
+            //img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/sort30.jpg");
 
             //f.getValue(ref minRadius, ref maxRadius, ref dp, ref minDist, ref cannyThresh, ref cannyAccumThresh);
 
@@ -121,10 +121,10 @@ namespace Tmc.Vision
             }*/
             DetectGoodPickupTablets(img, circles);
 
-            f.pictureBox2_draw(ab);
+            //f.pictureBox2_draw(ab);
             //DetectOverLap();
             //DetectDamagedTablet();
-            CvInvoke.cvWaitKey(0); 
+            //CvInvoke.cvWaitKey(0); 
             //return FillListOfGoodTablets(ChessboardPoints, circles);
             //GetXYZForTablets();
             
@@ -137,14 +137,9 @@ namespace Tmc.Vision
         /// </summary>
         public void Calibration()
         {
-            Image<Bgr, Byte> img2 = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/chess2.jpg");
-            //PointF[] 
-            ChessboardPoints = FindPattern(img2.Convert<Gray, Byte>(), new Size(12, 9));
-            //if(ChessboardPoints == null
-            //throw (ChessboardPoint);//ChessboardPoints = FindPattern(camera.GetImage(1).Convert<Gray, Byte>(), new Size(12, 9));
-
-
-
+            Image<Bgr, Byte> chessB = camera.GetImage(1);
+            //Image<Bgr, Byte> chessB = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/chess2.jpg");
+            ChessboardPoints = FindPattern(chessB.Convert<Gray, Byte>(), new Size(12, 9));            
         }
 
 
@@ -162,8 +157,8 @@ namespace Tmc.Vision
         /// </returns>
         private PointF[] FindPattern(Emgu.CV.Image<Gray, byte> src, Size dim)
         {
-            string win1 = "Test Window"; //The name of the window
-            CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
+            //string win1 = "Test Window"; //The name of the window
+            //CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
             Image<Bgr, Byte> colr = src.Convert<Bgr, Byte>();
             PointF[] checkerBoardPoints = Emgu.CV.CameraCalibration.FindChessboardCorners(src, dim, Emgu.CV.CvEnum.CALIB_CB_TYPE.ADAPTIVE_THRESH | Emgu.CV.CvEnum.CALIB_CB_TYPE.FILTER_QUADS);//CALIB_CB_TYPE.DEFAULT);
 
@@ -188,9 +183,9 @@ namespace Tmc.Vision
                      a++;
                  }
              }
-             CvInvoke.cvShowImage(win1, colr); //Show the image
+             //CvInvoke.cvShowImage(win1, colr); //Show the image
               
-             CvInvoke.cvWaitKey(0);
+             //CvInvoke.cvWaitKey(0);
              return checkerBoardPoints;
         }
 
@@ -366,17 +361,17 @@ namespace Tmc.Vision
             CircleF[] CBL = DetectTablets(BL, minRadius, maxRadius, dp, minDist, cannyThresh, 30);
             CircleF[] CBR = DetectTablets(BR, minRadius, maxRadius, dp, minDist, cannyThresh, 30);
 
-            CvInvoke.cvShowImage("TL", TL);
-            CvInvoke.cvShowImage("TR", TR);
-            CvInvoke.cvShowImage("BL", BL);
-            CvInvoke.cvShowImage("BR", BR);
+            //CvInvoke.cvShowImage("TL", TL);
+            //CvInvoke.cvShowImage("TR", TR);
+            //CvInvoke.cvShowImage("BL", BL);
+            //CvInvoke.cvShowImage("BR", BR);
 
             foreach (CircleF qwe in CTL)
             {
                 tabletImage.Draw(qwe, new Bgr(Color.Red), 1); 
             }
-            CvInvoke.cvShowImage("TLL", tabletImage);
-            CvInvoke.cvWaitKey(0);
+            //CvInvoke.cvShowImage("TLL", tabletImage);
+            //CvInvoke.cvWaitKey(0);
             return true;
         }
 
