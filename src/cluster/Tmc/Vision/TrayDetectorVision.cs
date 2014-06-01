@@ -255,11 +255,13 @@ namespace Tmc.Vision
                 {
                     imgTray.Draw(tablet, new Bgr(Color.Green), 1);
                     tabletcolor = detectcolor(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletcolorsRanges);
+                    imgTray = CoverTablet(imgTray, tablet, 3);
                 }
                 else
                 {
                     tabletcolor = TabletColors.Unknown;
                     imgTray.Draw(tablet, new Bgr(Color.Red), 1);
+                    imgTray = CoverTablet(imgTray, tablet, 3);
                 }
                 cellInTray      = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
                 cellInTray      = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
@@ -280,6 +282,48 @@ namespace Tmc.Vision
         }
 
         /// <summary>
+        /// lets us cover up a tablet with black
+        /// </summary>
+        /// <param name="src">
+        /// source image we use to cover up tablet
+        /// </param>
+        /// <param name="tablet">
+        /// lication of tablet in src
+        /// </param>
+        /// <param name="extra">
+        /// how much bigger to we want the cover up t be
+        /// </param>
+        /// <returns>
+        /// the image with covered up tablet
+        /// </returns>
+        private Image<Bgr, Byte> CoverTablet(Image<Bgr, Byte> src, CircleF tablet, int extra)
+        {
+            Image<Bgr, Byte> ret = src.Clone();
+
+            int blue = 0;
+            int green = 0;
+            int red = 0;
+
+            Bgr coverColor = new Bgr(blue, green, red);
+
+            int x = (int)(tablet.Center.X - tablet.Radius) - extra;
+            int y = (int)(tablet.Center.Y - tablet.Radius) - extra;
+
+            int wide = (int)(tablet.Radius*2) + extra*2;
+
+            for (int i = y; i < wide+y; i++)
+            {
+                for (int j = x; j < wide+x; j++)
+                {
+                    ret[i, j] = coverColor;
+
+                }
+            }
+            return ret;
+
+        }
+
+        /// <summary>
         /// This function tells us how many tablets we have detected in each cell
         /// </summary>
         /// <param name="src">
@@ -294,7 +338,7 @@ namespace Tmc.Vision
         /// <returns>
         /// Number of tablets on the cell
         /// </returns>
-        private int DetectIfMoreThenOneTableInCell(Image<Bgr, Byte> src,CircleF[] tablets, int cell)
+        private int DetectIfMoreThenOneTableInCell(Image<Bgr, Byte> src, CircleF[] tablets, int cell)
         {
             int count = 0;
             int cellInTray;
