@@ -14,13 +14,13 @@ namespace Tmc.Scada.Core
         public bool LoggingEnabled { get; set; }
         private ScadaEngine _engine;
         private List<IHardware> _hardware;
-        //private List<HardwareLogEntry> Log { get; set; }
+        private List<HardwareStatus> _previoushardwareStatus;
+        public event EventHandler<HardwareEventArgs> StatusChanged;
         private Timer _updateTimer;
 
         public HardwareMonitor(ClusterConfig config)
         {
             _hardware = config.GetAllHardware();
-            //Log = new List<HardwareLogEntry>();
             int updateTime = 1000;
 
             if (!Int32.TryParse(ConfigurationManager.AppSettings["HardwareMonitorUpdateRateMsec"], out updateTime))
@@ -30,6 +30,11 @@ namespace Tmc.Scada.Core
             }
             this._updateTimer = new Timer(updateTime);
             this._updateTimer.Elapsed += new ElapsedEventHandler((s, e) => this.Update());
+
+            for (int i = 0; i < _hardware.Count; i++)
+            {
+                _previoushardwareStatus[i] = _hardware[i].GetStatus();
+            }
         }
 
         public void Start()
@@ -44,23 +49,44 @@ namespace Tmc.Scada.Core
 
         private void Update()
         {
-            while (LoggingEnabled)
+            for (int i = 0; i < _hardware.Count; i++)
             {
-                foreach (var hardware in _hardware)
+                if ((_hardware[i].GetStatus() == HardwareStatus.Failed))
                 {
-                    LogType logType;
-                    if ((hardware.GetStatus() == HardwareStatus.Failed)) 
-                    {
-                        logType = LogType.Error;
-                    }
-                    else
-                    {
-                        logType = LogType.Message;
-                    }
-                    //Log.Add(new HardwareLogEntry(hardware.Name, hardware.GetStatus(), logType));
-                    // enter in the database
+                    Logger.Instance.Write(new LogEntry(_hardware[i].Name + " has failed",
+               LogType.Error));
                 }
+
+                if (_hardware[i].GetStatus() != _previoushardwareStatus[i])
+                {
+                    OnStatusChanged(new HardwareEventArgs(_hardware[i]));
+                }
+                _previoushardwareStatus[i] = _hardware[i].GetStatus();
             }
+        }
+
+        protected virtual void OnStatusChanged(HardwareEventArgs e)
+        {
+            var handler = StatusChanged;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+    }
+
+    public class HardwareEventArgs : EventArgs
+    {
+        private IHardware _hardware;
+
+        public HardwareEventArgs(IHardware hardware)
+        {
+            _hardware = hardware;
+        }
+
+        public IHardware hardware
+        {
+            get { return _hardware; }
         }
     }
 }

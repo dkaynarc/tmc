@@ -6,30 +6,14 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Configuration;
 using Tmc.Common;
+using TmcData;
 
 namespace Tmc.Scada.Core
 {
     public class OrderConsumer
     {
-        private class MockOrderSource
-        {
-            public List<Order> Orders {get; set; }
-
-            public MockOrderSource()
-            {
-                Orders = new List<Order>();
-                for (int i = 0; i < 2; i++)
-                {
-                    var order = new Order { Id = "TestOrder#" + i };
-                    order.Configuration.AddTablet(TabletColors.Blue, i * 2);
-                    order.Configuration.AddTablet(TabletColors.Green, i + 2);
-                    Orders.Add(order);
-                }
-            }
-        }
-
         private static OrderConsumer _instance;
-        
+
         public static OrderConsumer Instance
         {
             get
@@ -43,16 +27,24 @@ namespace Tmc.Scada.Core
         }
 
         private Queue<Order> _orderQueue;
-        // TODO: Replace with DB
-        private MockOrderSource _orderSource;
         private Timer _updateTimer;
+        public List<Order> Orders { get; set; }
 
         public OrderConsumer()
         {
             this._orderQueue = new Queue<Order>();
 
-            // TODO: Replace with DB
-            this._orderSource = new MockOrderSource();
+            foreach (var orderInfo in TmcRepository.OrderInfo())
+            {
+                var order = new Order();
+                order.Configuration.AddTablet(TabletColors.Black, orderInfo.Black);
+                order.Configuration.AddTablet(TabletColors.Blue, orderInfo.Blue);
+                order.Configuration.AddTablet(TabletColors.Green, orderInfo.Green);
+                order.Configuration.AddTablet(TabletColors.Red, orderInfo.Red);
+                order.Configuration.AddTablet(TabletColors.White, orderInfo.White);
+                Orders.Add(order);
+            }
+
             int updateTime = 1000;
             if (!Int32.TryParse(ConfigurationManager.AppSettings["OrderConsumerUpdateRateMsec"], out updateTime))
             {
@@ -85,7 +77,7 @@ namespace Tmc.Scada.Core
 
         private void Update()
         {
-            foreach (var order in this._orderSource.Orders)
+            foreach (var order in this.Orders)
             {
                 if (!this._orderQueue.Contains(order) && order.Status == OrderStatus.Open)
                 {
