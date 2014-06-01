@@ -99,7 +99,7 @@ public class Constants
 	//public static final String SERVER_URL = "http://stesha.com.au/api/Server/";
 	// public static final String SERVER_URL =
 	// "http://172.19.14.237:9000/api/Server/";
-	public static final String SERVER_URL = "http://192.168.1.3:9000/api/Server/";
+	public static final String SERVER_URL = "http://192.168.1.2:9000/api/Server/";
 	public static final String ENVIRONMENT = "ENVIRONMENT";
 	public static final String BLACK = "Black";
 	public static final String BLUE = "Blue";

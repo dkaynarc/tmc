@@ -60,10 +60,6 @@ public class LoginActivity extends Activity
 	public void onLoginClicked(View v)
 	{
 		// //////////////////// SERGEI: PLEASE IMPLEMENT THIS, WILL REMOVE CHECKBOX ONCE YOU HAVE
-		if (((CheckBox) findViewById(R.id.loginactivity_operator_cb)).isChecked()) 
-			Constants.USER = Constants.OPERATOR;
-		else
-			Constants.USER = Constants.ORDERER;
 				
 		String userName = ((EditText) findViewById(R.id.loginactivity_username_et))
 				.getText().toString();

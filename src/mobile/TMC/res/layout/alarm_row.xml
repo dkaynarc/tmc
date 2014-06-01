@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants" >
+
+
+
+    <TextView
+        android:id="@+id/alarm_id_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:text="@string/id_label_text" />
+    
+    <TextView
+        android:id="@+id/alarm_id_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/alarm_id_label"
+        android:layout_marginLeft="5dp"
+        android:text="@string/error"/>
+
+    
+    
+    
+    <TextView
+        android:id="@+id/alarm_type_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/alarm_id_label"
+        android:layout_marginLeft="5dp"
+        android:text="@string/orderrow_eventypelabel_tv"  />
+    
+    <TextView
+        android:id="@+id/alarm_type_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/alarm_id_label"
+        android:layout_toRightOf="@+id/alarm_type_label"
+        android:layout_marginLeft="5dp"
+        android:text="@string/error"/> 
+
+    
+
+    
+    
+        
+    <TextView
+        android:id="@+id/alarm_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/alarm_type_label"
+        android:layout_marginLeft="5dp"
+        android:text="@string/alarmrow_time_tv" />
+    
+    <TextView
+        android:id="@+id/alarm_time_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/alarm_type_value"
+        android:layout_toRightOf="@+id/alarm_time_label"       
+        android:layout_marginLeft="5dp"
+        android:textSize="50sp"
+        android:text="@string/error" />
+    
+    
+        <TextView
+        android:id="@+id/alarm_description_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/alarm_time_label"
+        android:layout_marginLeft="5dp"
+        android:text="@string/alarmrow_descriptionlabel_tv" />
+    
+    
+    
+    <TextView
+        android:id="@+id/alarm_description_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/alarm_time_value"
+        android:layout_toRightOf="@+id/alarm_description_label"   
+        android:layout_marginLeft="5dp"
+        android:textSize="50sp"
+        android:text="@string/error" />
+
+    
+
+
+</RelativeLayout>

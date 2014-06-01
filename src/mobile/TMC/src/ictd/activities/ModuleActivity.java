@@ -118,12 +118,7 @@ public class ModuleActivity extends FragmentActivity implements
 											Constants.APP_PERSISTANCE, 0);
 									SharedPreferences.Editor ed = preferences
 											.edit();
-									ed.remove(Constants.USERNAME_KEY);// watch
-																		// out
-																		// for
-																		// null
-																		// reference
-																		// exception
+									ed.remove(Constants.USERNAME_KEY);
 									ed.commit();
 									// ////////////////////////////////
 									finish();

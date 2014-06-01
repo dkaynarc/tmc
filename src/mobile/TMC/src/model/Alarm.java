@@ -2,23 +2,38 @@ package model;
 
 public class Alarm {
 
-	public Alarm(String string, String string2, String string3) {
-		// TODO Auto-generated constructor stub
+	
+	private CharSequence id = null;
+	private CharSequence type = null;
+	private CharSequence description = null;
+	private CharSequence time = null;
+	
+	public Alarm(String id, String type, String description, String time) 
+	{
+		this.id = id;
+		this.type = type;
+		this.description = description;
+	    this.time = time;
 	}
 
-	public CharSequence getId() {
-		// TODO Auto-generated method stub
-		return null;
+	public CharSequence getId()
+	{	
+		return id;
 	}
 
-	public CharSequence getType() {
-		// TODO Auto-generated method stub
-		return null;
+	public CharSequence getType() 
+	{
+		return type;
 	}
 
-	public CharSequence getDescription() {
-		// TODO Auto-generated method stub
-		return null;
+	public CharSequence getDescription() 
+	{	
+		return description;
 	}
 
+	public CharSequence getTime() 
+	{	
+		return time;
+	}
+	
 }

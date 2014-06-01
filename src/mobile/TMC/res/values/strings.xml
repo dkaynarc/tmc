@@ -56,6 +56,7 @@
     <string name="orderrow_eventypelabel_tv">Type:</string>
     <string name="orderrow_orderstatuslabel_tv">Status:</string>
     <string name="alarmrow_descriptionlabel_tv">Description:</string>
+    <string name="alarmrow_time_tv">Time:</string>
     <string name="error">error</string>
     <string name="module_logout">LOGOUT</string>
     <string name="environment_dustlabel_tv">Dust:</string>

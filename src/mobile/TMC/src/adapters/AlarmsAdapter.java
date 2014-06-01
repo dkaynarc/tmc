@@ -30,7 +30,7 @@ public class AlarmsAdapter extends ArrayAdapter<Alarm>
 		if (v == null)
 		{
 			LayoutInflater vi = (LayoutInflater) getContext().getSystemService(	Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.order_row, null);
+			v = vi.inflate(R.layout.alarm_row, null);
 		}
 		
 		Alarm alarm = mObjects.get(position);
@@ -40,17 +40,15 @@ public class AlarmsAdapter extends ArrayAdapter<Alarm>
 					.findViewById(R.id.alarm_id_value);
 			TextView type = (TextView) v
 					.findViewById(R.id.alarm_type_value);
+		    TextView time = (TextView) v
+					.findViewById(R.id.alarm_time_value);
 			TextView description = (TextView) v
 					.findViewById(R.id.alarm_description_value);
 			
-			
-			
 				id.setText(alarm.getId());
-		
 				type.setText(alarm.getType());
-			
+				time.setText(alarm.getTime());
 				description.setText(alarm.getDescription());
-			
 		}
 		else
 			v = convertView;

@@ -113,7 +113,8 @@ public class AlarmsFragment extends ListFragment
 					Alarm alarm = new Alarm(
 							jObj.getString("Id"),
 							jObj.getString("Type"), 
-							jObj.getString("Description"));
+							jObj.getString("Description"),
+							jObj.getString("Time"));
 
 					alarms.add(alarm);
 				}
