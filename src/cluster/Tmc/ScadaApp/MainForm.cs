@@ -17,6 +17,10 @@ namespace Tmc.Scada.App
         public MainForm()
         {
             InitializeComponent();
+
+            var plc = new Plc();
+            plc.SetParameters(new Dictionary<string, string> { { "IPAddress", "127.0.0.1" } });
+            plc.Initialise();
         }
     }
 }
