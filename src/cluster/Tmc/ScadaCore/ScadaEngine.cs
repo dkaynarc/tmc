@@ -17,15 +17,26 @@ namespace Tmc.Scada.Core
         public OrderConsumer OrderConsumer { get; set; }
         internal TabletMagazine TabletMagazine { get; set; }
         //private HardwareMonitor _hardwareMonitor;
-        private EnvironmentMonitor _environmentMonitor;
+        //private EnvironmentMonitor _environmentMonitor;
+        private ISequencer _sequencer;
 
         public ScadaEngine()
         {
-            this.ClusterConfig = ClusterFactory.Instance.CreateCluster("./Configuration/ClusterConfig.xml");
-            this._environmentMonitor = new EnvironmentMonitor(this.ClusterConfig);
+            this.Create(@"./Configuration/ClusterConfig.xml");
+        }
+
+        public ScadaEngine(string configFile)
+        {
+            this.Create(configFile);
+        }
+
+        private void Create(string configFile)
+        {
+            this.ClusterConfig = ClusterFactory.Instance.CreateCluster(configFile);
+            //this._environmentMonitor = new EnvironmentMonitor(this.ClusterConfig);
             //this._hardwareMonitor = new HardwareMonitor(this);
-            this.TabletMagazine = new TabletMagazine(); 
-            //this._sequencer = new FSMSequencer(this);
+            this.TabletMagazine = new TabletMagazine();
+            this._sequencer = new FSMSequencer(this);
             this.OrderConsumer = new OrderConsumer();
         }
 

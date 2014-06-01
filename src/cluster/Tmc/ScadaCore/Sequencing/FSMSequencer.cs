@@ -14,10 +14,17 @@ using Tmc.Common;
 
 namespace Tmc.Scada.Core.Sequencing
 {
+    public enum OperationMode
+    {
+        SortOnly,
+        AssembleOnly,
+        Normal
+    }
+
     public class FSMSequencer : ISequencer
     {
         public string Name { get; set; }
-        public bool Enabled { get; private set; }
+        public OperationMode Mode { get; set; }
 
         private PassiveStateMachine<State, Trigger> _fsm;
         private ScadaEngine _engine;
@@ -55,6 +62,30 @@ namespace Tmc.Scada.Core.Sequencing
             Create();
         }
 
+        #region Public Methods
+
+        public void Start()
+        {
+            _fsm.Fire(Trigger.Start);
+        }
+
+        public void Stop()
+        {
+            _fsm.Fire(Trigger.Stop);
+        }
+
+        public void Shutdown()
+        {
+            _fsm.Fire(Trigger.Shutdown);
+        }
+
+        public void Resume()
+        {
+            _fsm.Fire(Trigger.Resume);
+        }
+
+        #endregion
+
         private void Create()
         {
             CreateSortingStates();
@@ -64,11 +95,19 @@ namespace Tmc.Scada.Core.Sequencing
             _fsm.Initialize(State.Shutdown);
         }
 
+        #region State machine
+
         private void CreateGlobalStates()
         {
             _fsm.In(State.Startup)
                 .On(Trigger.Completed)
-                    .Goto(State.Sorting);
+                    .If(() => Mode == OperationMode.Normal)
+                        .Goto(State.Sorting)
+                    .If(() => Mode == OperationMode.AssembleOnly)
+                        .Goto(State.Idle)
+                    .If(() => Mode == OperationMode.SortOnly)
+                        .Goto(State.Sorting);
+                      
 
             _fsm.In(State.Shutdown)
                 .On(Trigger.Start)
@@ -76,7 +115,9 @@ namespace Tmc.Scada.Core.Sequencing
 
             _fsm.In(State.Stopped)
                 .On(Trigger.Shutdown)
-                    .Goto(State.Shutdown);
+                    .Goto(State.Shutdown)
+                .On(Trigger.Resume)
+                    .Goto(State.Running);
 
             _fsm.DefineHierarchyOn(State.Running)
                 .WithHistoryType(HistoryType.Deep)
@@ -175,7 +216,6 @@ namespace Tmc.Scada.Core.Sequencing
 
         private void CreateAssemblingStates()
         {
-            // TODO: Review the necessity of this state.
             _fsm.In(State.Idle)
                 .On(Trigger.Completed)
                     .Goto(State.LoadingTray)
@@ -296,16 +336,19 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.Shutdown);
 
             // Skip this state because the palletiser robot is inactive.
-            _fsm.In(State.Palletising)
-                .ExecuteOnEntry(() => _fsm.Fire(Trigger.Completed))
-                .On(Trigger.Completed)
-                    .Goto(State.Idle)
-                .On(Trigger.Stop)
-                    .Goto(State.Stopped)
-                .On(Trigger.Shutdown)
-                    .Goto(State.Shutdown);
+            //_fsm.In(State.Palletising)
+            //    .ExecuteOnEntry(() => _fsm.Fire(Trigger.Completed))
+            //    .On(Trigger.Completed)
+            //        .Goto(State.Idle)
+            //    .On(Trigger.Stop)
+            //        .Goto(State.Stopped)
+            //    .On(Trigger.Shutdown)
+            //        .Goto(State.Shutdown);
         }
 
+        #endregion
+
+        #region Event handlers
         private void BindEvents()
         {
             _assembler.Completed += Assembler_Completed;
@@ -314,6 +357,7 @@ namespace Tmc.Scada.Core.Sequencing
             _palletiser.Completed += Palletiser_Completed;
             _sorter.Completed += Sorter_Completed;
             _trayVerifier.Completed += TrayVerifier_Completed;
+            _orderConsumer.OrdersAvailable += Idle_Completed;
         }
 
         private void Assembler_Completed(object sender, ControllerEventArgs e)
@@ -355,5 +399,12 @@ namespace Tmc.Scada.Core.Sequencing
                 _fsm.Fire(Trigger.Invalid, args.VerificationMode);
             }
         }
+
+        private void Idle_Completed(object sender, EventArgs e)
+        {
+            _fsm.Fire(Trigger.Completed);
+        }
+
+        #endregion
     }
 }

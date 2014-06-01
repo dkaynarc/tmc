@@ -9,6 +9,9 @@ namespace Tmc.Scada.Core.Sequencing
     public interface ISequencer
     {
         string Name { get; set; }
-        bool Enabled { get; }
+        void Start();
+        void Stop();
+        void Resume();
+        void Shutdown();
     }
 }

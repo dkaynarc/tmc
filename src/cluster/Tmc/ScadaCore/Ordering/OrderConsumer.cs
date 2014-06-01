@@ -52,6 +52,8 @@ namespace Tmc.Scada.Core
         private MockOrderSource _orderSource;
         private Timer _updateTimer;
 
+        public event EventHandler OrdersAvailable;
+
         public OrderConsumer()
         {
             this._orderQueue = new Queue<Order>();
@@ -97,6 +99,19 @@ namespace Tmc.Scada.Core
                     order.Status = OrderStatus.Pending;
                     this._orderQueue.Enqueue(order);
                 }
+            }
+            if (_orderQueue.Count > 0)
+            {
+                OnOrdersAvailable(new EventArgs());
+            }
+        }
+
+        private void OnOrdersAvailable(EventArgs e)
+        {
+            var handler = OrdersAvailable;
+            if (handler != null)
+            {
+                handler(this, e);
             }
         }
     }
