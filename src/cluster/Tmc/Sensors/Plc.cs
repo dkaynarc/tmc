@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region Header
+/// FileName: Plc.cs
+/// Author: Denis Kaynarca (denis@dkaynarca.com)
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,19 +14,7 @@ using AxASADTCPLib;
 
 namespace Tmc.Sensors
 {
-    public enum PlcAttachedSwitch
-    {
-        Tray4 = 0,
-        Tray1,
-        Tray2,
-        Tray3,
-        Tray5,
-        Tray6,
-        PlcEmergencyStop,
-        ScadaEmergencyStop
-    }
-
-    public sealed class Plc : IHardware, IDisposable
+    public sealed class Plc : IPlc, IDisposable
     {
         private HardwareStatus _hwStatus;
         private string _nodeIpAddress;
@@ -99,7 +92,7 @@ namespace Tmc.Sensors
             }
         }
 
-        public Dictionary<PlcAttachedSwitch, bool> GetSwitchStates()
+        public IDictionary<PlcAttachedSwitch, bool> GetSwitchStates()
         {
             UpdateAllSwitchStates();
             return this._switchStates;

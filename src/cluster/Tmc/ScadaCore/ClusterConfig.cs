@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region Header
+/// FileName: ClusterConfig.cs
+/// Author: Denis Kaynarca (denis@dkaynarca.com)
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tmc.Common;
@@ -15,6 +20,7 @@ namespace Tmc.Scada.Core
         public Dictionary<Type, IConveyor> Conveyors;
         public Dictionary<string, ICamera> Cameras;
         public Dictionary<string, ISensor> Sensors;
+        public Dictionary<string, IPlc> Plcs;
         public Dictionary<Type, IController> Controllers;
         
         public ClusterConfig()
@@ -24,6 +30,7 @@ namespace Tmc.Scada.Core
             Conveyors = new Dictionary<Type, IConveyor>();
             Cameras = new Dictionary<string, ICamera>();
             Sensors = new Dictionary<string, ISensor>();
+            Plcs = new Dictionary<string, IPlc>();
             Controllers = new Dictionary<Type, IController>();
         }
 
@@ -34,6 +41,8 @@ namespace Tmc.Scada.Core
             hardware.AddRange(Conveyors.Values.ToList());
             hardware.AddRange(Cameras.Values.ToList());
             hardware.AddRange(Sensors.Values.ToList());
+            hardware.AddRange(Plcs.Values.ToList());
+
             return hardware;
         }
     }

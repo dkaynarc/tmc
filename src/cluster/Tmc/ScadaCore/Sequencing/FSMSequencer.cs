@@ -1,4 +1,9 @@
-﻿using System;
+﻿#region Header
+/// FileName: FSMSequencer.cs
+/// Author: Denis Kaynarca (denis@dkaynarca.com)
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

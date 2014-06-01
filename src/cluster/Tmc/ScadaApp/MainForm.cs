@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tmc.Sensors;
+using Tmc.Scada.Core;
 
 
 namespace Tmc.Scada.App
@@ -17,10 +18,6 @@ namespace Tmc.Scada.App
         public MainForm()
         {
             InitializeComponent();
-
-            var plc = new Plc();
-            plc.SetParameters(new Dictionary<string, string> { { "IPAddress", "127.0.0.1" } });
-            plc.Initialise();
         }
     }
 }

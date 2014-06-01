@@ -24,7 +24,7 @@ namespace Tmc.Robotics
             var caseSwitch = new Dictionary<Type, Func<IConveyor>>
             {
                 {typeof(BluetoothConveyor), () => { return BuildBluetoothConveyor(); }},
-                {typeof(BluetoothConveyor), () => { return BuildSerialConveyor(); }}
+                {typeof(SerialConveyor), () => { return BuildSerialConveyor(); }}
             };
 
             return caseSwitch[type]();
