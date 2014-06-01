@@ -1,15 +1,13 @@
 ﻿#region Header
+
 /// FileName: FSMSequencer.cs
 /// Author: Denis Kaynarca (denis@dkaynarca.com)
-#endregion
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml.Linq;
-using System.Diagnostics;
+#endregion Header
+
 using Appccelerate.StateMachine;
+using System;
+using System.Diagnostics;
 using Tmc.Common;
 
 namespace Tmc.Scada.Core.Sequencing
@@ -23,20 +21,20 @@ namespace Tmc.Scada.Core.Sequencing
 
     public class FSMSequencer : ISequencer
     {
-        public string Name { get; set; }
         public bool IsRunning { get; private set; }
+
         public OperationMode Mode { get; set; }
 
-        private PassiveStateMachine<State, Trigger> _fsm;
-        private ScadaEngine _engine;
-        private ConveyorController _conveyorController;
+        public string Name { get; set; }
         private Assembler _assembler;
+        private ConveyorController _conveyorController;
+        private ScadaEngine _engine;
+        private PassiveStateMachine<State, Trigger> _fsm;
         private Loader _loader;
+        private OrderConsumer _orderConsumer;
+        private Palletiser _palletiser;
         private Sorter _sorter;
         private TrayVerifier _trayVerifier;
-        private Palletiser _palletiser;
-        private OrderConsumer _orderConsumer;
-
         public FSMSequencer(ScadaEngine engine)
         {
             this._engine = engine;
@@ -62,16 +60,20 @@ namespace Tmc.Scada.Core.Sequencing
 
         #region Public Methods
 
-        public void StartSequencing()
+        public void FireResumeTrigger()
         {
-            _fsm.Start();
-            IsRunning = true;
+            if (IsRunning)
+            {
+                _fsm.Fire(Trigger.Resume);
+            }
         }
 
-        public void StopSequencing()
+        public void FireShutdownTrigger()
         {
-            _fsm.Stop();
-            IsRunning = false;
+            if (IsRunning)
+            {
+                _fsm.Fire(Trigger.Shutdown);
+            }
         }
 
         public void FireStartTrigger()
@@ -90,25 +92,21 @@ namespace Tmc.Scada.Core.Sequencing
             }
         }
 
-        public void FireShutdownTrigger()
+        public void StartSequencing()
         {
-            if (IsRunning)
-            {
-                _fsm.Fire(Trigger.Shutdown);
-            }
+            _fsm.Start();
+            IsRunning = true;
         }
 
-        public void FireResumeTrigger()
+        public void StopSequencing()
         {
-            if (IsRunning)
-            {
-                _fsm.Fire(Trigger.Resume);
-            }
+            _fsm.Stop();
+            IsRunning = false;
         }
-
-        #endregion
+        #endregion Public Methods
 
         #region State machine
+
         private void Create()
         {
             CreateSortingStates();
@@ -116,146 +114,6 @@ namespace Tmc.Scada.Core.Sequencing
             CreateGlobalStates();
 
             _fsm.Initialize(State.Shutdown);
-        }
-
-        private void CreateGlobalStates()
-        {
-            _fsm.In(State.Startup)
-                .On(Trigger.Completed)
-                    .If(() => Mode == OperationMode.Normal)
-                        .Goto(State.Sorting)
-                    .If(() => Mode == OperationMode.AssembleOnly)
-                        .Goto(State.Idle)
-                    .If(() => Mode == OperationMode.SortOnly)
-                        .Goto(State.Sorting);
-                      
-
-            _fsm.In(State.Shutdown)
-                .On(Trigger.Start)
-                    .Goto(State.Startup);
-
-            _fsm.In(State.Stopped)
-                .On(Trigger.Shutdown)
-                    .Goto(State.Shutdown)
-                .On(Trigger.Resume)
-                    .Goto(State.Running);
-
-            _fsm.DefineHierarchyOn(State.Running)
-                .WithHistoryType(HistoryType.Deep)
-                .WithInitialSubState(State.Startup)
-                .WithSubState(State.Idle)
-                .WithSubState(State.LoadingTray)
-                .WithSubState(State.AssemblyConveyorMovingForward)
-                .WithSubState(State.VerifyingTray)
-                .WithSubState(State.Assembling)
-                .WithSubState(State.AssemblyConveyorMovingBackward)
-                .WithSubState(State.PlacingTrayInBuffer)
-                .WithSubState(State.Palletising)
-                .WithSubState(State.Sorting)
-                .WithSubState(State.PlacingTabletMagazineInSortingBuffer)
-                .WithSubState(State.PlacingTabletMagazineInAssemblyBuffer)
-                .WithSubState(State.PlacingTabletMagazineOnSortingConveyorFromSorter)
-                .WithSubState(State.PlacingTabletMagazineOnSortingConveyorFromAssembler)
-                .WithSubState(State.SortingConveyorMovingForward)
-                .WithSubState(State.SortingConveyorMovingBackward);
-        }
-        
-        private void CreateSortingStates()
-        {
-            _fsm.In(State.Sorting)
-                .ExecuteOnEntry(() =>
-                {
-                    _sorter.Begin(new SorterParams
-                    {
-                        Action = SorterAction.Sort,
-                        Magazine = _engine.TabletMagazine
-                    });
-                })
-                .On(Trigger.Completed)
-                    .Goto(State.PlacingTabletMagazineOnSortingConveyorFromSorter)
-                .On(Trigger.Stop)
-                    .Goto(State.Stopped)
-                    .Execute(() => _sorter.Cancel())
-                .On(Trigger.Shutdown)
-                    .Goto(State.Shutdown);
-
-            _fsm.In(State.PlacingTabletMagazineOnSortingConveyorFromSorter)
-                .ExecuteOnEntry(() => 
-                {
-                    _sorter.Begin(new SorterParams
-                    {
-                        Action = SorterAction.LoadToConveyor
-                    });
-                })
-                .On(Trigger.Completed)
-                    .Goto(State.SortingConveyorMovingBackward)
-                .On(Trigger.Stop)
-                    .Goto(State.Stopped)
-                .On(Trigger.Shutdown)
-                    .Goto(State.Shutdown);
-
-            _fsm.In(State.SortingConveyorMovingBackward)
-                .ExecuteOnEntry(() =>
-                {
-                    _conveyorController.Begin(new ConveyorControllerParams
-                    {
-                        ConveyorType = ConveyorType.Sorting,
-                        ConveyorAction = ConveyorAction.MoveBackward
-                    });
-                })
-                .On(Trigger.Completed)
-                    .Goto(State.PlacingTabletMagazineInAssemblyBuffer)
-                .On(Trigger.Stop)
-                    .Goto(State.Stopped)
-                .On(Trigger.Shutdown)
-                    .Goto(State.Shutdown);
-            
-            _fsm.In(State.PlacingTabletMagazineInAssemblyBuffer)
-                .On(Trigger.Completed)
-                    .Goto(State.Idle)
-                .On(Trigger.Stop)
-                    .Goto(State.Stopped)
-                .On(Trigger.Shutdown)
-                    .Goto(State.Shutdown);
-
-            _fsm.In(State.PlacingTabletMagazineOnSortingConveyorFromAssembler)
-                .On(Trigger.Completed)
-                    .Goto(State.SortingConveyorMovingForward)
-                .On(Trigger.Stop)
-                    .Goto(State.Stopped)
-                .On(Trigger.Shutdown)
-                    .Goto(State.Shutdown);
-
-            _fsm.In(State.SortingConveyorMovingForward)
-                .ExecuteOnEntry(() =>
-                {
-                    _conveyorController.Begin(new ConveyorControllerParams
-                    {
-                        ConveyorType = ConveyorType.Sorting,
-                        ConveyorAction = ConveyorAction.MoveForward
-                    });
-                })
-                .On(Trigger.Completed)
-                    .Goto(State.PlacingTabletMagazineInSortingBuffer)
-                .On(Trigger.Stop)
-                    .Goto(State.Stopped)
-                .On(Trigger.Shutdown)
-                    .Goto(State.Shutdown);
-
-            _fsm.In(State.PlacingTabletMagazineInSortingBuffer)
-                .ExecuteOnEntry(() => 
-                {
-                    _sorter.Begin(new SorterParams
-                    {
-                        Action = SorterAction.LoadToBuffer
-                    });
-                })
-                .On(Trigger.Completed)
-                    .Goto(State.Sorting)
-                .On(Trigger.Stop)
-                    .Goto(State.Stopped)
-                .On(Trigger.Shutdown)
-                    .Goto(State.Shutdown);
         }
 
         private void CreateAssemblingStates()
@@ -287,14 +145,15 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.Shutdown);
 
             _fsm.In(State.AssemblyConveyorMovingForward)
-                .ExecuteOnEntry(() => 
-                { 
+                .ExecuteOnEntry(() =>
+                {
                     _conveyorController.Begin(new ConveyorControllerParams
                         {
                             ConveyorType = ConveyorType.Assembly,
                             ConveyorAction = ConveyorAction.MoveForward,
                             Sender = this
-                        }); })
+                        });
+                })
                 .On(Trigger.Completed)
                     .If(() => _conveyorController.CanMoveForward(ConveyorType.Assembly))
                         .Goto(State.VerifyingTray)
@@ -365,7 +224,7 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.Shutdown);
 
             _fsm.In(State.PlacingTrayInBuffer)
-                .ExecuteOnEntry(() => 
+                .ExecuteOnEntry(() =>
                 {
                     _loader.Begin(new LoaderParams()
                     {
@@ -381,9 +240,153 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.Shutdown);
         }
 
-        #endregion
+        private void CreateGlobalStates()
+        {
+            _fsm.In(State.Startup)
+                .On(Trigger.Completed)
+                    .If(() => Mode == OperationMode.Normal)
+                        .Goto(State.Sorting)
+                    .If(() => Mode == OperationMode.AssembleOnly)
+                        .Goto(State.Idle)
+                    .If(() => Mode == OperationMode.SortOnly)
+                        .Goto(State.Sorting);
+
+            _fsm.In(State.Shutdown)
+                .On(Trigger.Start)
+                    .Goto(State.Startup);
+
+            _fsm.In(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown)
+                .On(Trigger.Resume)
+                    .Goto(State.Running);
+
+            _fsm.DefineHierarchyOn(State.Running)
+                .WithHistoryType(HistoryType.Deep)
+                .WithInitialSubState(State.Startup)
+                .WithSubState(State.Idle)
+                .WithSubState(State.LoadingTray)
+                .WithSubState(State.AssemblyConveyorMovingForward)
+                .WithSubState(State.VerifyingTray)
+                .WithSubState(State.Assembling)
+                .WithSubState(State.AssemblyConveyorMovingBackward)
+                .WithSubState(State.PlacingTrayInBuffer)
+                .WithSubState(State.Palletising)
+                .WithSubState(State.Sorting)
+                .WithSubState(State.PlacingTabletMagazineInSortingBuffer)
+                .WithSubState(State.PlacingTabletMagazineInAssemblyBuffer)
+                .WithSubState(State.PlacingTabletMagazineOnSortingConveyorFromSorter)
+                .WithSubState(State.PlacingTabletMagazineOnSortingConveyorFromAssembler)
+                .WithSubState(State.SortingConveyorMovingForward)
+                .WithSubState(State.SortingConveyorMovingBackward);
+        }
+
+        private void CreateSortingStates()
+        {
+            _fsm.In(State.Sorting)
+                .ExecuteOnEntry(() =>
+                {
+                    _sorter.Begin(new SorterParams
+                    {
+                        Action = SorterAction.Sort,
+                        Magazine = _engine.TabletMagazine
+                    });
+                })
+                .On(Trigger.Completed)
+                    .Goto(State.PlacingTabletMagazineOnSortingConveyorFromSorter)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                    .Execute(() => _sorter.Cancel())
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.PlacingTabletMagazineOnSortingConveyorFromSorter)
+                .ExecuteOnEntry(() =>
+                {
+                    _sorter.Begin(new SorterParams
+                    {
+                        Action = SorterAction.LoadToConveyor
+                    });
+                })
+                .On(Trigger.Completed)
+                    .Goto(State.SortingConveyorMovingBackward)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.SortingConveyorMovingBackward)
+                .ExecuteOnEntry(() =>
+                {
+                    _conveyorController.Begin(new ConveyorControllerParams
+                    {
+                        ConveyorType = ConveyorType.Sorting,
+                        ConveyorAction = ConveyorAction.MoveBackward
+                    });
+                })
+                .On(Trigger.Completed)
+                    .Goto(State.PlacingTabletMagazineInAssemblyBuffer)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.PlacingTabletMagazineInAssemblyBuffer)
+                .On(Trigger.Completed)
+                    .Goto(State.Idle)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.PlacingTabletMagazineOnSortingConveyorFromAssembler)
+                .On(Trigger.Completed)
+                    .Goto(State.SortingConveyorMovingForward)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.SortingConveyorMovingForward)
+                .ExecuteOnEntry(() =>
+                {
+                    _conveyorController.Begin(new ConveyorControllerParams
+                    {
+                        ConveyorType = ConveyorType.Sorting,
+                        ConveyorAction = ConveyorAction.MoveForward
+                    });
+                })
+                .On(Trigger.Completed)
+                    .Goto(State.PlacingTabletMagazineInSortingBuffer)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.PlacingTabletMagazineInSortingBuffer)
+                .ExecuteOnEntry(() =>
+                {
+                    _sorter.Begin(new SorterParams
+                    {
+                        Action = SorterAction.LoadToBuffer
+                    });
+                })
+                .On(Trigger.Completed)
+                    .Goto(State.Sorting)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+        }
+        #endregion State machine
 
         #region Event handlers
+
+        private void Assembler_Completed(object sender, ControllerEventArgs e)
+        {
+            _fsm.Fire(Trigger.Completed);
+        }
+
         private void BindEvents()
         {
             _assembler.Completed += Assembler_Completed;
@@ -393,16 +396,14 @@ namespace Tmc.Scada.Core.Sequencing
             _sorter.Completed += Sorter_Completed;
             _trayVerifier.Completed += TrayVerifier_Completed;
             // The Idle_Completed handler is not registered here. It is registered/unregistered
-            // in the Entry/Exit callbacks for the Idle event. 
+            // in the Entry/Exit callbacks for the Idle event.
         }
-
-        private void Assembler_Completed(object sender, ControllerEventArgs e)
+        private void ConveyorController_Completed(object sender, ControllerEventArgs e)
         {
-            var args = e as AssemblerEventArgs;
             _fsm.Fire(Trigger.Completed);
         }
 
-        private void ConveyorController_Completed(object sender, ControllerEventArgs e)
+        private void Idle_Completed(object sender, EventArgs e)
         {
             _fsm.Fire(Trigger.Completed);
         }
@@ -426,7 +427,7 @@ namespace Tmc.Scada.Core.Sequencing
         private void TrayVerifier_Completed(object sender, ControllerEventArgs e)
         {
             var args = e as OnVerificationCompleteEventArgs;
-            
+
             if (args.VerificationResult == VerificationResult.Valid)
             {
                 _fsm.Fire(Trigger.Valid, args.VerificationMode);
@@ -436,12 +437,6 @@ namespace Tmc.Scada.Core.Sequencing
                 _fsm.Fire(Trigger.Invalid, args.VerificationMode);
             }
         }
-
-        private void Idle_Completed(object sender, EventArgs e)
-        {
-            _fsm.Fire(Trigger.Completed);
-        }
-
-        #endregion
+        #endregion Event handlers
     }
 }
