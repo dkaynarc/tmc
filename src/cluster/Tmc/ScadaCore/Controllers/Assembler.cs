@@ -9,12 +9,20 @@ using Tmc.Common;
 
 namespace Tmc.Scada.Core
 {
+    public enum AssemblerAction
+    {
+        Assemble,
+        GetTabletMagazine,
+        ReturnTabletMagazine
+    }
     public sealed class Assembler : ControllerBase
     {
         private AssemblerRobot _assemblerRobot;
         private CancellationTokenSource _cancelTokenSource;
+        private Dictionary<AssemblerAction, Action<AssemblerParams>> _actionMap;
 
-        public Assembler(ClusterConfig config) : base(config)
+        public Assembler(ClusterConfig config)
+            : base(config)
         {
             _assemblerRobot = config.Robots[typeof(AssemblerRobot)] as AssemblerRobot;
             this._cancelTokenSource = new CancellationTokenSource();
@@ -23,7 +31,14 @@ namespace Tmc.Scada.Core
             {
                 throw new ArgumentException("Could not retrieve a AssemblerRobot from ClusterConfig");
             }
-        }  
+
+            _actionMap = new Dictionary<AssemblerAction, Action<AssemblerParams>>()
+            {
+                { AssemblerAction.Assemble, (x) => AssembleAsync(x.Magazine, x.OrderConfiguration) },
+                { AssemblerAction.GetTabletMagazine, (x) => GetTabletMagazineAsync() },
+                { AssemblerAction.ReturnTabletMagazine, (x) => ReturnTabletMagazineAsync() }
+            };
+        }
         public override void Begin(ControllerParams parameters)
         {
             var p = parameters as AssemblerParams;
@@ -32,7 +47,7 @@ namespace Tmc.Scada.Core
                 if (!IsRunning)
                 {
                     IsRunning = true;
-                    AssembleAsync(p.Magazine, p.OrderConfiguration);
+                    _actionMap[p.Action](p);
                 }
             }
             else
@@ -71,7 +86,7 @@ namespace Tmc.Scada.Core
                 Logger.Instance.Write(new LogEntry("Not enough tablets to complete the order, Please refill tablet magazine"));
                 OnCompleted(new AssemblerEventArgs() { OperationStatus = AssemblerOperationStatus.TabletRefill });
                 IsRunning = false;
-            }            
+            }
             else
             {
                 Task.Run(() =>
@@ -83,12 +98,62 @@ namespace Tmc.Scada.Core
             }
         }
 
+        private ControllerOperationStatus GetTabletMagazine()
+        {
+            var status = ControllerOperationStatus.Succeeded;
+            try
+            {
+                _assemblerRobot.GetMagazine();
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Write(new LogEntry(ex));
+                status = ControllerOperationStatus.Failed;
+            }
+            return status;
+        }
+
+        private void GetTabletMagazineAsync()
+        {
+            Task.Run(() =>
+            {
+                var status = GetTabletMagazine();
+                IsRunning = false;
+                OnCompleted(new ControllerEventArgs() { OperationStatus = status });
+            });
+        }
+
+        private ControllerOperationStatus ReturnTabletMagazine()
+        {
+            var status = ControllerOperationStatus.Succeeded;
+            try
+            {
+                _assemblerRobot.ReturnMagazine();
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Write(new LogEntry(ex));
+                status = ControllerOperationStatus.Failed;
+            }
+            return status;
+        }
+
+        private void ReturnTabletMagazineAsync()
+        {
+            Task.Run(() =>
+            {
+                var status = ReturnTabletMagazine();
+                IsRunning = false;
+                OnCompleted(new ControllerEventArgs() { OperationStatus = status });
+            });
+        }
+
         private ControllerOperationStatus Assemble(TabletMagazine mag, OrderConfiguration orderConfiguration, CancellationToken ct) //TODO Check for tray index outofbound
         {
             var status = ControllerOperationStatus.Succeeded;
             try
             {
-                int trayIndex = 0;                                                      
+                int trayIndex = 0;
                 foreach (var pair in orderConfiguration.Tablets.Where(x => x.Value > 0))
                 {
                     var numTablets = pair.Value;
@@ -122,6 +187,7 @@ namespace Tmc.Scada.Core
     {
         public TabletMagazine Magazine;
         public OrderConfiguration OrderConfiguration;
+        public AssemblerAction Action { get; set; }
     }
 
     public enum AssemblerOperationStatus
