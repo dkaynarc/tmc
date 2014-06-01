@@ -21,6 +21,9 @@ namespace Tmc.Vision
         /// </summary>
         public enum HSVRange { Low = 0, High };
 
+        /// <summary>
+        /// 
+        /// </summary>
         public enum HSVdata { Hue = 0, Sat, Val };
 
         //public enum TC { Black = 0, White, Red, Blue, Green, Bad, Na };

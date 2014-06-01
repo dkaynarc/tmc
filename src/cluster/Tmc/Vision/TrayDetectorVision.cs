@@ -22,7 +22,7 @@ namespace Tmc.Vision
         private Hsv[,] HSVTabletcolorsRanges = new Hsv[5, 2];
 
 
-
+        
         private Camera camera;
         private Point[] trayPoints = new Point[4];
         private Image<Bgr, Byte> img;
@@ -120,9 +120,12 @@ namespace Tmc.Vision
             string win1 = "Test Window"; //The name of the window
             CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
 
-            Image<Bgr, Byte> src = CropImage(img, 0, 777, img.Cols, 902);//reduce the image so we only see the 
-            CvInvoke.cvShowImage(win1, src); //Show the image
+            Image<Bgr, Byte> src = CropImage(img, 0, 777, img.Cols, 902);//reduce the image so we only see the coveour and tray
+
+
+            CvInvoke.cvShowImage(win1, src); //Show the croped image
             CvInvoke.cvWaitKey(0);
+
             DetectTray(src);//make a ref angle
 
              trayList.Angle = Angle;
@@ -226,7 +229,7 @@ namespace Tmc.Vision
             tablets = DetectTablets(imgTray, minRadius, maxRadius, dp, minDist, cannyThresh, cannyAccumThresh);
         }
 
-
+        
 
         /// <summary>
         /// Used to detect the color of the tablet, only recognises good tablets and assemble the tray list
@@ -258,15 +261,53 @@ namespace Tmc.Vision
                     tabletcolor = TabletColors.Unknown;
                     imgTray.Draw(tablet, new Bgr(Color.Red), 1);
                 }
-                cellInTray = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
+                cellInTray      = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
                 cellInTray      = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
                 trayList.Cells[cellInTray] = new Tablet { Color = tabletcolor };
+            }
+            for (int i = 0; i < 9; i++)
+            {//check we only have one tablet ineach cell
+                int count;
+                count = DetectIfMoreThenOneTableInCell(imgTray, tablets, i);
+                if(count > 1)
+                {
+                    trayList.Cells[i] = new Tablet { Color = TabletColors.Unknown };//TabletColors.Unknown;
+                }
             }
             f.trayFill(trayList);
             CvInvoke.cvShowImage("Test Window", imgTray); //Show the image
             CvInvoke.cvWaitKey(0);
         }
 
+        /// <summary>
+        /// This function tells us how many tablets we have detected in each cell
+        /// </summary>
+        /// <param name="src">
+        /// Image of the tray
+        /// </param>
+        /// <param name="tablets">
+        /// list of tablets
+        /// </param>
+        /// <param name="cell">
+        /// The cell we are testing
+        /// </param>
+        /// <returns>
+        /// Number of tablets on the cell
+        /// </returns>
+        private int DetectIfMoreThenOneTableInCell(Image<Bgr, Byte> src,CircleF[] tablets, int cell)
+        {
+            int count = 0;
+            int cellInTray;
+            foreach (CircleF tablet in tablets)
+            {
+                cellInTray = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
+                if (cellInTray == cell)
+                {
+                    count++;
+                }            
+            }
+            return count;
+        }
         /// <summary>
         /// This Function gives us the cell a tablet is in givent it's location in the tray
         /// </summary>
