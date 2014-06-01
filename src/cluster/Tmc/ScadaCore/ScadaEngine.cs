@@ -32,7 +32,17 @@ namespace Tmc.Scada.Core
 
         private void Create(string configFile)
         {
-            this.ClusterConfig = ClusterFactory.Instance.CreateCluster(configFile);
+            try
+            {
+                this.ClusterConfig = ClusterFactory.Instance.CreateCluster(configFile);
+            }
+            catch (Exception ex)
+            {
+                var outer = new Exception("Unable to initialise the cluster configuration", ex);
+                
+                Logger.Instance.Write(new LogEntry(outer, LogType.Error));
+                return;
+            }
             //this._environmentMonitor = new EnvironmentMonitor(this.ClusterConfig);
             //this._hardwareMonitor = new HardwareMonitor(this);
             this.TabletMagazine = new TabletMagazine();

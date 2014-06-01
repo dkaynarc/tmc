@@ -113,10 +113,12 @@ namespace Tmc.Scada.Core
                 }
                 catch(Exception ex)
                 {
-                    Logger.Instance.Write(new LogEntry(ex));
-                    throw new InvalidOperationException(
+                    var outer = new InvalidOperationException(
                         String.Format("Failed to initialise hardware item Type: {0}, Name: {1}",
-                        hw.GetType().ToString(), hw.Name));
+                        hw.GetType().ToString(), hw.Name), ex);
+
+                    Logger.Instance.Write(new LogEntry(outer));
+                    throw outer;
                 }
 
                 if (hw is IRobot)
@@ -140,7 +142,7 @@ namespace Tmc.Scada.Core
                     config.Plcs.Add(hw.Name, hw as IPlc);
                 }
             }
-
+             
             config.Controllers = CreateControllers(config);
 
             return config;
