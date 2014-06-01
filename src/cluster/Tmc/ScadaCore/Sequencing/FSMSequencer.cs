@@ -142,14 +142,30 @@ namespace Tmc.Scada.Core.Sequencing
         private void CreateSortingStates()
         {
             _fsm.In(State.Sorting)
+                .ExecuteOnEntry(() =>
+                {
+                    _sorter.Begin(new SorterParams
+                    {
+                        Action = SorterAction.Sort,
+                        Magazine = _engine.TabletMagazine
+                    });
+                })
                 .On(Trigger.Completed)
                     .Goto(State.PlacingTabletMagazineOnSortingConveyorFromSorter)
                 .On(Trigger.Stop)
                     .Goto(State.Stopped)
+                    .Execute(() => _sorter.Cancel())
                 .On(Trigger.Shutdown)
                     .Goto(State.Shutdown);
 
             _fsm.In(State.PlacingTabletMagazineOnSortingConveyorFromSorter)
+                .ExecuteOnEntry(() => 
+                {
+                    _sorter.Begin(new SorterParams
+                    {
+                        Action = SorterAction.LoadToConveyor
+                    });
+                })
                 .On(Trigger.Completed)
                     .Goto(State.SortingConveyorMovingBackward)
                 .On(Trigger.Stop)
@@ -206,6 +222,13 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.Shutdown);
 
             _fsm.In(State.PlacingTabletMagazineInSortingBuffer)
+                .ExecuteOnEntry(() => 
+                {
+                    _sorter.Begin(new SorterParams
+                    {
+                        Action = SorterAction.LoadToBuffer
+                    });
+                })
                 .On(Trigger.Completed)
                     .Goto(State.Sorting)
                 .On(Trigger.Stop)
@@ -383,7 +406,8 @@ namespace Tmc.Scada.Core.Sequencing
 
         private void Sorter_Completed(object sender, ControllerEventArgs e)
         {
-            _fsm.Fire(Trigger.Completed);
+            var args = e as SorterCompletedEventArgs;
+            _fsm.Fire(Trigger.Completed, args.Action);
         }
 
         private void TrayVerifier_Completed(object sender, ControllerEventArgs e)
