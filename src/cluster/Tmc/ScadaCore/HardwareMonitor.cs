@@ -12,7 +12,6 @@ namespace Tmc.Scada.Core
     public class HardwareMonitor
     {
         public bool LoggingEnabled { get; set; }
-        private ScadaEngine _engine;
         private List<IHardware> _hardware;
         private List<HardwareStatus> _previoushardwareStatus;
         public event EventHandler<HardwareEventArgs> StatusChanged;
@@ -21,6 +20,7 @@ namespace Tmc.Scada.Core
         public HardwareMonitor(ClusterConfig config)
         {
             _hardware = config.GetAllHardware();
+            _previoushardwareStatus = new List<HardwareStatus>();
             int updateTime = 1000;
 
             if (!Int32.TryParse(ConfigurationManager.AppSettings["HardwareMonitorUpdateRateMsec"], out updateTime))
