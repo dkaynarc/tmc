@@ -4,7 +4,7 @@
   <Hardware Type="SorterRobot" Name="SorterRobot" IPAddress="127.0.0.1"/>
   <Hardware Type="AssemblerRobot" Name="AssemblerRobot" IPAddress="127.0.0.1"/>
   <Hardware Type="PalletiserRobot" Name="PalletiserRobot" IPAddress="127.0.0.1"/>-->
-  <Hardware Type="BluetoothConveyor">
+  <!--<Hardware Type="BluetoothConveyor">
     <Name>SorterConveyor</Name>
     <PortName>COM3</PortName>
     <WaitTime>1000</WaitTime>
@@ -12,7 +12,7 @@
   <Hardware Type="SerialConveyor">
     <Name>AssemblyConveyor</Name>
     <PortName>COM5</PortName>
-  </Hardware>
+  </Hardware> -->
   <!--The vision project will need to be converted into a Class Library
       before it can be created using this file-->
   <!--<Hardware Type="Camera">

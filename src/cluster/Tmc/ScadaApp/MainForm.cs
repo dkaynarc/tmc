@@ -18,8 +18,6 @@ namespace Tmc.Scada.App
         public MainForm()
         {
             InitializeComponent();
-
-            var engine = new ScadaEngine();
         }
     }
 }
