@@ -65,7 +65,7 @@
             this.Npar1.Size = new System.Drawing.Size(120, 22);
             this.Npar1.TabIndex = 1;
             this.Npar1.Value = new decimal(new int[] {
-            5,
+            2,
             0,
             0,
             0});
@@ -82,7 +82,7 @@
             this.Npar2.Size = new System.Drawing.Size(120, 22);
             this.Npar2.TabIndex = 2;
             this.Npar2.Value = new decimal(new int[] {
-            35,
+            83,
             0,
             0,
             0});
@@ -99,7 +99,7 @@
             this.Nmin.Size = new System.Drawing.Size(120, 22);
             this.Nmin.TabIndex = 3;
             this.Nmin.Value = new decimal(new int[] {
-            13,
+            60,
             0,
             0,
             0});
@@ -116,7 +116,7 @@
             this.Nmax.Size = new System.Drawing.Size(120, 22);
             this.Nmax.TabIndex = 4;
             this.Nmax.Value = new decimal(new int[] {
-            17,
+            63,
             0,
             0,
             0});
@@ -125,7 +125,8 @@
             // 
             this.pictureBox2.Location = new System.Drawing.Point(564, 13);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(573, 383);
+            this.pictureBox2.Size = new System.Drawing.Size(829, 866);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 5;
             this.pictureBox2.TabStop = false;
             // 
@@ -152,7 +153,7 @@
             this.Npar3.Size = new System.Drawing.Size(120, 22);
             this.Npar3.TabIndex = 7;
             this.Npar3.Value = new decimal(new int[] {
-            17,
+            26,
             0,
             0,
             65536});
@@ -252,7 +253,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1152, 557);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(1458, 880);
             this.Controls.Add(this.cell6);
             this.Controls.Add(this.cell3);
             this.Controls.Add(this.cell0);

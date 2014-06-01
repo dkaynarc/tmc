@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Tmc.Common;
+
 namespace Tmc.Vision
 {
     static class Program
@@ -34,7 +36,13 @@ namespace Tmc.Vision
             c.Initialise();
             TrayDetectorVision tray = new TrayDetectorVision(c);
             tray.GetTabletsInTray();
-
+            SorterVision sorter = new SorterVision(c);
+            sorter.Calibration();
+            while (true)
+            {
+                List<Tablet> tabletList = sorter.GetVisibleTablets();
+            }
+            //CvInvoke.cvWaitKey(0);
         }
     }
 }

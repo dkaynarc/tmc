@@ -15,6 +15,7 @@ namespace Tmc.Common
         public const int MiddleCellIndex = 4;
 
         public List<T> Cells { get; set; }
+        public double Angle { get; set; }
 
         public Tray()
         {
