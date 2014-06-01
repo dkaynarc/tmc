@@ -33,17 +33,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
@@ -59,19 +55,6 @@
     <Compile Include="ComponentEventLogView.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="CycleLogBySource_Result.cs">
-      <DependentUpon>TmcDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DatabaseMappings.cs" />
-    <Compile Include="EnvironmentLogBySource_Result.cs">
-      <DependentUpon>TmcDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EnvironmentLogView.cs">
-      <DependentUpon>TmcDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EventLogBySource_Result.cs">
-      <DependentUpon>TmcDB.tt</DependentUpon>
-    </Compile>
     <Compile Include="FiltCompCyclLogBySour_Result.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
@@ -79,9 +62,6 @@
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
     <Compile Include="FiltOrdeList_Result.cs">
-      <DependentUpon>TmcDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="OrderConfigByOrder_Result.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
     <Compile Include="OrderListView.cs">
@@ -138,7 +118,11 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+<<<<<<< HEAD
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+=======
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+>>>>>>> parent of 7439fcc... Revert "Framework for UI established"
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
