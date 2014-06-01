@@ -35,4 +35,8 @@
     <IPAddress>127.0.0.1</IPAddress>
     <PortName>10001</PortName>
   </Hardware>-->
+  <Hardware Type="Plc">
+    <Name>MainPlc</Name>
+    <IPAddress>127.0.0.1</IPAddress> <!-- Temp -->
+  </Hardware>
 </Cluster>

@@ -135,6 +135,10 @@ namespace Tmc.Scada.Core
                 {
                     config.Cameras.Add(hw.Name, hw as ICamera);
                 }
+                else if (hw is IPlc)
+                {
+                    config.Plcs.Add(hw.Name, hw as IPlc);
+                }
             }
 
             config.Controllers = CreateControllers(config);
@@ -163,7 +167,8 @@ namespace Tmc.Scada.Core
                 { typeof(ICamera),      () => { return CreateCamera() as IHardware; }},
                 { typeof(ISensor),      () => { return CreateSensor() as IHardware; }},
                 { typeof(IRobot),       () => { return CreateRobot(type) as IHardware; }},
-                { typeof(IConveyor),    () => { return CreateConveyor(type) as IHardware; }}
+                { typeof(IConveyor),    () => { return CreateConveyor(type) as IHardware; }},
+                { typeof(IPlc),         () => { return CreatePlc() as IHardware; }}
             };
 
             var interfaces = type.GetInterfaces();
@@ -198,6 +203,11 @@ namespace Tmc.Scada.Core
         private IConveyor CreateConveyor(Type type)
         {
             return ConveyorFactory.CreateConveyor(type);
+        }
+
+        private IPlc CreatePlc()
+        {
+            return new Plc();
         }
 
         private ClusterTemplate LoadClusterTemplate(XElement xElement)

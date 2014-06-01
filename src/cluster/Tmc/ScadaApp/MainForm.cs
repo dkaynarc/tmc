@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tmc.Sensors;
+using Tmc.Scada.Core;
 
 
 namespace Tmc.Scada.App
@@ -17,6 +18,8 @@ namespace Tmc.Scada.App
         public MainForm()
         {
             InitializeComponent();
+
+            var engine = new ScadaEngine();
         }
     }
 }
