@@ -139,8 +139,8 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy /Q /Y "C:\Emgu\emgucv-windows-universal-cuda 2.9.0.1922\bin\*.dll" "$(TargetDir)"
+xcopy /I /E /Q /Y "C:\Emgu\emgucv-windows-universal-cuda 2.9.0.1922\bin\x86" "$(TargetDir)\x86"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

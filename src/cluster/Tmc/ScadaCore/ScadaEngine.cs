@@ -42,23 +42,34 @@ namespace Tmc.Scada.Core
 
         public void Initialise()
         {
+            this._sequencer.StartSequencing();
+            Logger.Instance.Write(new LogEntry("TMC control system initialised", LogType.Message));
         }
 
         public void Start()
         {
             //_environmentMonitor.Log(); // Should be run on a separate thread
+            this._sequencer.FireStartTrigger();
+            Logger.Instance.Write(new LogEntry("Cluster operation started", LogType.Message));
         }
 
         public void Stop()
         {
+            this._sequencer.FireStopTrigger();
+            Logger.Instance.Write(new LogEntry("Cluster operation stopped", LogType.Message));
         }
 
         public void Resume()
         {
+            this._sequencer.FireResumeTrigger();
+            Logger.Instance.Write(new LogEntry("Cluster operation resumed", LogType.Message));
         }
 
         public void EmergencyStop()
         {
+            Logger.Instance.Write(new LogEntry("Emergency stop command given", LogType.Warning));
+            _sequencer.FireStopTrigger();
+            _sequencer.StopSequencing();
         }
     }
 }
