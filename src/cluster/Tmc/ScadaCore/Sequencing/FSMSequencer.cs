@@ -24,6 +24,7 @@ namespace Tmc.Scada.Core.Sequencing
     public class FSMSequencer : ISequencer
     {
         public string Name { get; set; }
+        public bool IsRunning { get; private set; }
         public OperationMode Mode { get; set; }
 
         private PassiveStateMachine<State, Trigger> _fsm;
@@ -47,8 +48,6 @@ namespace Tmc.Scada.Core.Sequencing
             this._loader = _engine.ClusterConfig.Controllers[typeof(Loader)] as Loader;
             this._sorter = _engine.ClusterConfig.Controllers[typeof(Sorter)] as Sorter;
             this._trayVerifier = _engine.ClusterConfig.Controllers[typeof(TrayVerifier)] as TrayVerifier;
-            this._palletiser = _engine.ClusterConfig.Controllers[typeof(Palletiser)] as Palletiser;
-
             this._orderConsumer = _engine.OrderConsumer;
 
             Debug.Assert(this._conveyorController != null);
@@ -56,36 +55,60 @@ namespace Tmc.Scada.Core.Sequencing
             Debug.Assert(this._loader != null);
             Debug.Assert(this._sorter != null);
             Debug.Assert(this._trayVerifier != null);
-            Debug.Assert(this._palletiser != null);
 
             _fsm = new PassiveStateMachine<State, Trigger>();
-            Create();
+            this.Create();
         }
 
         #region Public Methods
 
-        public void Start()
+        public void StartSequencing()
         {
-            _fsm.Fire(Trigger.Start);
+            _fsm.Start();
+            IsRunning = true;
         }
 
-        public void Stop()
+        public void StopSequencing()
         {
-            _fsm.Fire(Trigger.Stop);
+            _fsm.Stop();
+            IsRunning = false;
         }
 
-        public void Shutdown()
+        public void FireStartTrigger()
         {
-            _fsm.Fire(Trigger.Shutdown);
+            if (IsRunning)
+            {
+                _fsm.Fire(Trigger.Start);
+            }
         }
 
-        public void Resume()
+        public void FireStopTrigger()
         {
-            _fsm.Fire(Trigger.Resume);
+            if (IsRunning)
+            {
+                _fsm.Fire(Trigger.Stop);
+            }
+        }
+
+        public void FireShutdownTrigger()
+        {
+            if (IsRunning)
+            {
+                _fsm.Fire(Trigger.Shutdown);
+            }
+        }
+
+        public void FireResumeTrigger()
+        {
+            if (IsRunning)
+            {
+                _fsm.Fire(Trigger.Resume);
+            }
         }
 
         #endregion
 
+        #region State machine
         private void Create()
         {
             CreateSortingStates();
@@ -94,8 +117,6 @@ namespace Tmc.Scada.Core.Sequencing
 
             _fsm.Initialize(State.Shutdown);
         }
-
-        #region State machine
 
         private void CreateGlobalStates()
         {
@@ -240,6 +261,8 @@ namespace Tmc.Scada.Core.Sequencing
         private void CreateAssemblingStates()
         {
             _fsm.In(State.Idle)
+                .ExecuteOnEntry(() => _orderConsumer.OrdersAvailable += Idle_Completed)
+                .ExecuteOnExit(() => _orderConsumer.OrdersAvailable -= Idle_Completed)
                 .On(Trigger.Completed)
                     .Goto(State.LoadingTray)
                 .On(Trigger.Stop)
@@ -351,22 +374,11 @@ namespace Tmc.Scada.Core.Sequencing
                     });
                 })
                 .On(Trigger.Completed)
-                    //.Goto(State.Palletising)
                     .Goto(State.Idle)
                 .On(Trigger.Stop)
                     .Goto(State.Stopped)
                 .On(Trigger.Shutdown)
                     .Goto(State.Shutdown);
-
-            // Skip this state because the palletiser robot is inactive.
-            //_fsm.In(State.Palletising)
-            //    .ExecuteOnEntry(() => _fsm.Fire(Trigger.Completed))
-            //    .On(Trigger.Completed)
-            //        .Goto(State.Idle)
-            //    .On(Trigger.Stop)
-            //        .Goto(State.Stopped)
-            //    .On(Trigger.Shutdown)
-            //        .Goto(State.Shutdown);
         }
 
         #endregion
@@ -380,7 +392,8 @@ namespace Tmc.Scada.Core.Sequencing
             _palletiser.Completed += Palletiser_Completed;
             _sorter.Completed += Sorter_Completed;
             _trayVerifier.Completed += TrayVerifier_Completed;
-            _orderConsumer.OrdersAvailable += Idle_Completed;
+            // The Idle_Completed handler is not registered here. It is registered/unregistered
+            // in the Entry/Exit callbacks for the Idle event. 
         }
 
         private void Assembler_Completed(object sender, ControllerEventArgs e)
