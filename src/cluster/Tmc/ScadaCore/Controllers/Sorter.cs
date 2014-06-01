@@ -11,12 +11,20 @@ using System.Threading;
 
 namespace Tmc.Scada.Core
 {
+    public enum SorterAction
+    {
+        Sort,
+        LoadToConveyor,
+        LoadToBuffer
+    }
+
     public sealed class Sorter : ControllerBase
     {
         public int MaxShakeRetryAttempts { get; set; }
         private SorterVision _vision;
         private SorterRobot _robot;
-        private CancellationTokenSource _cancelTokenSource; 
+        private CancellationTokenSource _cancelTokenSource;
+        private Dictionary<SorterAction, Action> _actionMap;
 
         public Sorter(ClusterConfig config) : base(config)
         {
@@ -24,6 +32,8 @@ namespace Tmc.Scada.Core
             this._vision = new SorterVision(config.Cameras["SorterCamera"] as Camera);
             this._robot = config.Robots[typeof(SorterRobot)] as SorterRobot;
             this._cancelTokenSource = new CancellationTokenSource();
+
+            _actionMap = new Dictionary<SorterAction, Action>();
 
             if (_vision == null)
             {
@@ -69,6 +79,56 @@ namespace Tmc.Scada.Core
                 }, ct);
         }
 
+        private void LoadToConveyorAsync()
+        {
+            Task.Run(() =>
+                {
+                    var status = LoadToConveyor();
+                    IsRunning = false;
+                    OnCompleted(new ControllerEventArgs() { OperationStatus = status });
+                });
+        }
+
+        private void LoadToBufferAsync()
+        {
+            Task.Run(() =>
+                {
+                    var status = LoadToConveyor();
+                    IsRunning = false;
+                    OnCompleted(new ControllerEventArgs() { OperationStatus = status });
+                });
+        }
+
+        private ControllerOperationStatus LoadToConveyor()
+        {
+            var status = ControllerOperationStatus.Succeeded;
+            try
+            {
+                _robot.ReturnMagazine();
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Write(new LogEntry(ex));
+                status = ControllerOperationStatus.Failed;
+            }
+            return status;
+        }
+
+        private ControllerOperationStatus LoadToBuffer()
+        {
+            var status = ControllerOperationStatus.Succeeded;
+            try
+            {
+                _robot.GetMagazine();
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Write(new LogEntry(ex));
+                status = ControllerOperationStatus.Failed;
+            }
+            return status;
+        }
+
         private ControllerOperationStatus Sort(TabletMagazine mag, CancellationToken ct)
         {
             var status = ControllerOperationStatus.Succeeded;
@@ -103,7 +163,7 @@ namespace Tmc.Scada.Core
             var visibleTablets = _vision.GetVisibleTablets();
             while ((visibleTablets.Count() < 0) && (shakeRetryAttempts < MaxShakeRetryAttempts))
             {
-                //_robot.Shake();
+                _robot.Shake();
                 visibleTablets = _vision.GetVisibleTablets();
                 shakeRetryAttempts++;
             }
@@ -127,5 +187,6 @@ namespace Tmc.Scada.Core
     public class SorterParams : ControllerParams
     {
         public TabletMagazine Magazine;
+        public SorterAction Action;
     }
 }
