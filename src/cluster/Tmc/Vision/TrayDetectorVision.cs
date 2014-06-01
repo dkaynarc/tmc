@@ -117,8 +117,8 @@ namespace Tmc.Vision
         /// <todo>use the new function in vision base to detect tablet colour</todo>
         public Tray<Tablet> GetTabletsInTray()
         {
-            //img = camera.GetImage();
-            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/tray22.jpg");
+            img = camera.GetImage();
+            //img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/tray22.jpg");
             //img = camera.GetImageHttp(new Uri(@"http://www.wwrd.com.au/images/P/2260248_Fable%20s-4%2016cm%20Accent%20Plates-652383734586-co.jpg"));
             //string win1 = "Test Window"; //The name of the window
             //CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
