@@ -1,8 +1,10 @@
-﻿using System;
+﻿#region Header
+/// FileName: ConfigTemplates.cs
+/// Author: Denis Kaynarca (denis@dkaynarca.com)
+#endregion
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tmc.Scada.Core
 {
