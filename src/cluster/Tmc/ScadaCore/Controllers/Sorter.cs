@@ -24,7 +24,6 @@ namespace Tmc.Scada.Core
         private SorterVision _vision;
         private SorterRobot _robot;
         private CancellationTokenSource _cancelTokenSource;
-        private Dictionary<SorterAction, Action> _actionMap;
 
         public Sorter(ClusterConfig config) : base(config)
         {
@@ -32,8 +31,6 @@ namespace Tmc.Scada.Core
             this._vision = new SorterVision(config.Cameras["SorterCamera"] as Camera);
             this._robot = config.Robots[typeof(SorterRobot)] as SorterRobot;
             this._cancelTokenSource = new CancellationTokenSource();
-
-            _actionMap = new Dictionary<SorterAction, Action>();
 
             if (_vision == null)
             {
@@ -53,7 +50,18 @@ namespace Tmc.Scada.Core
                 if (!IsRunning)
                 {
                     IsRunning = true;
-                    SortAsync(p.Magazine);
+                    switch (p.Action)
+                    {
+                        case SorterAction.Sort: 
+                            SortAsync(p.Magazine);
+                            break;
+                        case SorterAction.LoadToBuffer:
+                            LoadToBufferAsync();
+                            break;
+                        case SorterAction.LoadToConveyor:
+                            LoadToConveyorAsync();
+                            break;
+                    }
                 }
             }
         }
