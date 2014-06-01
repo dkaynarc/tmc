@@ -9,11 +9,19 @@ using Tmc.Common;
 
 namespace Tmc.Scada.Core
 {
+    public enum AssemblerAction
+    {
+        Assemble,
+        GetTabletMagazine,
+        ReturnTabletMagazine
+    }
     public sealed class Assembler : ControllerBase
     {
+        
         public Tray<Tablet> LastOrderTray;
         private AssemblerRobot _assemblerRobot;
         private CancellationTokenSource _cancelTokenSource;
+        private Dictionary<AssemblerAction, Action<AssemblerParams>> _actionMap;
 
         public Assembler(ClusterConfig config) : base(config)
         {
@@ -25,6 +33,13 @@ namespace Tmc.Scada.Core
             {
                 throw new ArgumentException("Could not retrieve a AssemblerRobot from ClusterConfig");
             }
+
+            _actionMap = new Dictionary<AssemblerAction, Action<AssemblerParams>>()
+            {
+                { AssemblerAction.Assemble, (x) => AssembleAsync(x.Magazine, x.OrderConfiguration) },
+                { AssemblerAction.GetTabletMagazine, (x) => GetTabletMagazineAsync() },
+                { AssemblerAction.ReturnTabletMagazine, (x) => ReturnTabletMagazineAsync() }
+            };
         }  
         public override void Begin(ControllerParams parameters)
         {
@@ -34,7 +49,7 @@ namespace Tmc.Scada.Core
                 if (!IsRunning)
                 {
                     IsRunning = true;
-                    AssembleAsync(p.Magazine, p.OrderConfiguration);
+                    _actionMap[p.Action](p);
                 }
             }
             else
@@ -119,6 +134,56 @@ namespace Tmc.Scada.Core
             return status;
         }
 
+        private ControllerOperationStatus GetTabletMagazine()
+        {
+            var status = ControllerOperationStatus.Succeeded;
+            try
+            {
+                _assemblerRobot.GetMagazine();
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Write(new LogEntry(ex));
+                status = ControllerOperationStatus.Failed;
+            }
+            return status;
+        }
+
+        private void GetTabletMagazineAsync()
+        {
+            Task.Run(() =>
+            {
+                var status = GetTabletMagazine();
+                IsRunning = false;
+                OnCompleted(new ControllerEventArgs() { OperationStatus = status });
+            });
+        }
+
+        private ControllerOperationStatus ReturnTabletMagazine()
+        {
+            var status = ControllerOperationStatus.Succeeded;
+            try
+            {
+                _assemblerRobot.ReturnMagazine();
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.Write(new LogEntry(ex));
+                status = ControllerOperationStatus.Failed;
+            }
+            return status;
+        }
+
+        private void ReturnTabletMagazineAsync()
+        {
+            Task.Run(() =>
+            {
+                var status = ReturnTabletMagazine();
+                IsRunning = false;
+                OnCompleted(new ControllerEventArgs() { OperationStatus = status });
+            });
+        }
+
         private Tray<Tablet> MapOrderToTray(OrderConfiguration orderConfig)
         {
             int trayIndex = 0;
@@ -155,6 +220,7 @@ namespace Tmc.Scada.Core
     {
         public TabletMagazine Magazine;
         public OrderConfiguration OrderConfiguration;
+        public AssemblerAction Action { get; set; }
     }
 
     public enum AssemblerOperationStatus

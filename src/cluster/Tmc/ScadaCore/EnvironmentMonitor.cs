@@ -39,12 +39,11 @@ namespace Tmc.Scada.Core
 
         private void InitialiseSensorProperties()
         {
-            SensorProperties.Add("Temperature", new Tuple<string, float, float>("°C", 50, 10));
-            SensorProperties.Add("Temperature", new Tuple<string, float, float>("°C", 50, 10));
-            SensorProperties.Add("Temperature", new Tuple<string, float, float>("°C", 50, 10));
-            SensorProperties.Add("Temperature", new Tuple<string, float, float>("°C", 50, 10));
-            SensorProperties.Add("Temperature", new Tuple<string, float, float>("°C", 50, 10));
-            SensorProperties.Add("Temperature", new Tuple<string, float, float>("°C", 50, 10));
+            SensorProperties.Add("Temperature", new Tuple<string, float, float>("°C", 50, 0));
+            SensorProperties.Add("Humidity", new Tuple<string, float, float>("%", 30, 10));
+            SensorProperties.Add("Light", new Tuple<string, float, float>("lux", 50, 10));
+            SensorProperties.Add("Sound", new Tuple<string, float, float>("dB", 50, 10));
+            SensorProperties.Add("Dust", new Tuple<string, float, float>("particles/cubic metre", 50, 10));
         }
 
         public void Start()
@@ -59,22 +58,23 @@ namespace Tmc.Scada.Core
 
         private void Update()
         {
-            while (LoggingEnabled)
+            int sourceID = 7;
+            foreach (var sensor in _sensors)
             {
-                foreach (var sensor in _sensors)
+                LogType logType;
+                if ((sensor.GetData() > SensorProperties[sensor.Channel].Item2) || (sensor.GetData() < SensorProperties[sensor.Channel].Item3))
                 {
-                    LogType logType;
-                    if ((sensor.GetData() > SensorProperties[sensor.Channel].Item2) || (sensor.GetData() < SensorProperties[sensor.Channel].Item3)) 
-                    {
-                        logType = LogType.Warning;
-                    }
-                    else
-                    {
-                        logType = LogType.Message;
-                    }
-                    Log.Add(new EnvironmentLogEntry(sensor.Channel, sensor.GetData(), SensorProperties[sensor.Channel].Item1, logType));
-                    // enter in the database once its merged with scada
+                    logType = LogType.Warning;
+                    Logger.Instance.Write(new LogEntry(sensor.Name + " has failed",
+               LogType.Warning));
                 }
+                else
+                {
+                    logType = LogType.Message;
+                }
+                Log.Add(new EnvironmentLogEntry(sensor.Channel, sensor.GetData(), SensorProperties[sensor.Channel].Item1, logType));
+                TmcRepository.AddEnvironmentalReading(sourceID, DateTime.Now, sensor.GetData(), sourceID);
+                sourceID += 1;
             }
         }
     }
