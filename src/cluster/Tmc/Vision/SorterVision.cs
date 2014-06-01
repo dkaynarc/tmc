@@ -12,12 +12,10 @@ using Emgu.CV.GPU;
 using Tmc.Common;
 using Emgu.CV.Features2D;
 using Emgu.CV.UI;
-//using Emgu.CV.CameraCalibration;
 
 namespace Tmc.Vision
 {
 
-    //[Calib3D.SupportedPattern(typeof(CheckerBoardPattern))]
 
     public class SorterVision : VisionBase
     {
@@ -306,69 +304,6 @@ namespace Tmc.Vision
             return TabletList;
         }*/
 
-        /// <summary>
-        /// Gives us the identity of nearby tablets which appear to be inside the radius of our tablet
-        /// </summary>
-        /// <param name="knowTablets">
-        /// the list of all the tablets in the picture
-        /// </param>
-        /// <param name="targetTablet">
-        /// this is the tablet that we want to check if it is near other tablets which are witin its radius
-        /// </param>
-        /// <returns>
-        /// the tablets which are with the radius of our targetTablet
-        /// </returns>
-        private CircleF[] OtherTabletsNear(CircleF[] knowTablets, CircleF targetTablet)
-        {
-            var circleList = new List<CircleF>();
-
-            foreach(CircleF knowTablet in knowTablets)
-            {
-                double Mag = Math.Sqrt(Math.Pow((targetTablet.Center.X - knowTablet.Center.X), 2) + Math.Pow((targetTablet.Center.Y - knowTablet.Center.Y), 2));
-                int a = 0;
-                bool b = checkCircles(knowTablet, targetTablet);
-                if ((Mag <= targetTablet.Radius) && (checkCircles(knowTablet,targetTablet) == false))
-                {//center is in the radius of the circle
-                    a++;
-                    circleList.Add(knowTablet);
-                    //int a = 0;
-                    //targetTablet
-                }
-                if ((Mag < (targetTablet.Radius + knowTablet.Radius)) && (checkCircles(knowTablet, targetTablet) == false))
-                {//if the circle crosses over
-                    
-                    if (a < 1)
-                    {
-                        circleList.Add(knowTablet);
-                    }
-                    
-                    a++;
-                    //int a = 0;
-                }
-            }
-
-            return circleList.ToArray();
-
-            //return knowTablets;
-        }
-
-        /// <summary>
-        /// Checks if the 2 circles given are the same or not
-        /// </summary>
-        /// <param name="circ">
-        /// first circle
-        /// </param>
-        /// <param name="targ">
-        /// second circle
-        /// </param>
-        /// <returns>
-        /// returns true if the circles the same, false if it is diffrent
-        /// </returns>
-        private bool checkCircles(CircleF circ, CircleF targ)
-        {
-            return ((circ.Radius == targ.Radius) && (circ.Center.X == targ.Center.X) &&
-                    (circ.Center.Y == targ.Center.Y) && (circ.Area == targ.Area));
-        }
 
 
         /*/// <summary>
@@ -399,12 +334,13 @@ namespace Tmc.Vision
                 int[][] sat = getHighLowHSV(abca, 50, HSVdata.Sat);
                 int[][] val = getHighLowHSV(abca, 50, HSVdata.Val);
 
-                if (FirstPass(hue, sat, val, tablet, tablets) == true)
+                if (FirstPass(hue, sat, val, tablet, tablets, HSVTabletcolorsRanges) == true)
                 {
                     ab.Draw(tablet, new Bgr(Color.Green), 6);
                     tab.LocationPoint = CalculateTrueCordXYmm(ChessboardPoints, new PointF(tablet.Center.X, tablet.Center.Y));
                     tab.Color = detectcolor(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletcolorsRanges);
                     tabletList.Add(tab);
+                    IsVisableTablet(src, tablet);
                 }
                 else 
                 {
@@ -413,58 +349,36 @@ namespace Tmc.Vision
             }
         }
         
-        /// <summary>
-        /// This function uses the histogram to see if there is more then one color on the tablet we are looking at
-        /// </summary>
-        /// <param name="hue">
-        /// The hue spikes on the historgram
-        /// </param>
-        /// <param name="sat">
-        /// The saturation spikes on the historgram
-        /// </param>
-        /// <param name="val">
-        /// The value spikes on the historgram
-        /// </param>
-        /// <param name="circle">Not used</param>
-        /// <param name="circles">Not used</param>
-        /// <returns>
-        /// True if tablet is ok and is a color we know, Flase if a unknown tablet or overlaped by other tablets
-        /// </returns>
-        private bool FirstPass(int[][] hue, int[][] sat, int[][] val, CircleF circle, CircleF[] circles)
+        
+        //private bool SecondPass(
+
+        private bool IsVisableTablet(Image<Bgr, Byte> src, CircleF tablet)
         {
-            if ((hue.GetLength(0) == 1) && (sat.GetLength(0) == 1) && (val.GetLength(0) == 1))
-            {
-                TabletColors a = detectcolor(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletcolorsRanges);
-                if (a != TabletColors.Unknown) return true;
-                else return false;
-            }
-            else
-            {
-                TabletColors b = detectcolor(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletcolorsRanges);
-                int hueM = hue.GetLength(0) - 1;
-                int satM = sat.GetLength(0) - 1;
-                int valM = val.GetLength(0) - 1;
-                TabletColors c = detectcolor(new Hsv((hue[hueM][0] + hue[hueM][1]) / 2, (sat[satM][0] + sat[satM][1]) / 2, (val[valM][0] + val[valM][1]) / 2), HSVTabletcolorsRanges);
-                if (hue.GetLength(0) > 2)
-                {
-                    hueM = ((hue.GetLength(0) - 1) / 2);
-                }
-                if (sat.GetLength(0) > 2)
-                {
-                    satM = ((sat.GetLength(0) - 1) / 2);
-                }
-                if (val.GetLength(0) > 2)
-                {
-                    valM = ((val.GetLength(0) - 1) / 2);
-                }
-                TabletColors d = detectcolor(new Hsv((hue[hueM][0] + hue[hueM][1]) / 2, (sat[satM][0] + sat[satM][1]) / 2, (val[valM][0] + val[valM][1]) / 2), HSVTabletcolorsRanges);
+            int expand = 4;
+            Image<Bgr, Byte> tabletImage    = CropImage(src, ((int)tablet.Center.X - (int)tablet.Radius) - expand, ((int)tablet.Center.Y - (int)tablet.Radius) - expand, ((int)tablet.Radius * 2) + expand*2, ((int)tablet.Radius * 2) + expand*2);
+            Image<Bgr, byte> TL             = CropImage(src, ((int)tablet.Center.X - (int)tablet.Radius) - expand, ((int)tablet.Center.Y - (int)tablet.Radius) - expand, ((int)tablet.Radius) + expand, ((int)tablet.Radius) + expand);
+            Image<Bgr, byte> TR             = CropImage(src, ((int)tablet.Center.X), ((int)tablet.Center.Y - (int)tablet.Radius) - expand, ((int)tablet.Radius) + expand, ((int)tablet.Radius) + expand);
+            Image<Bgr, byte> BL             = CropImage(src, ((int)tablet.Center.X - (int)tablet.Radius) - expand, ((int)tablet.Center.Y), ((int)tablet.Radius) + expand, ((int)tablet.Radius * 2) + expand * 2);
+            Image<Bgr, byte> BR             = CropImage(src, ((int)tablet.Center.X ) , ((int)tablet.Center.Y ) , ((int)tablet.Radius) + expand , ((int)tablet.Radius) + expand );
 
-                if ((b != TabletColors.Unknown) && (b == c) && (b == d)) return true;
-                else return false;
-            }
+            CircleF[] CTL = DetectTablets(tabletImage, minRadius, maxRadius, dp, minDist, cannyThresh, 50);
+            CircleF[] CTR = DetectTablets(TR, minRadius, maxRadius, dp, minDist, cannyThresh, 10);
+            CircleF[] CBL = DetectTablets(BL, minRadius, maxRadius, dp, minDist, cannyThresh, 30);
+            CircleF[] CBR = DetectTablets(BR, minRadius, maxRadius, dp, minDist, cannyThresh, 30);
 
+            CvInvoke.cvShowImage("TL", TL);
+            CvInvoke.cvShowImage("TR", TR);
+            CvInvoke.cvShowImage("BL", BL);
+            CvInvoke.cvShowImage("BR", BR);
+
+            foreach (CircleF qwe in CTL)
+            {
+                tabletImage.Draw(qwe, new Bgr(Color.Red), 1); 
+            }
+            CvInvoke.cvShowImage("TLL", tabletImage);
+            CvInvoke.cvWaitKey(0);
+            return true;
         }
-
 
     }
 }

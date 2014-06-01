@@ -791,5 +791,58 @@ namespace Tmc.Vision
             return ((circ.Radius == targ.Radius) && (circ.Center.X == targ.Center.X) &&
                     (circ.Center.Y == targ.Center.Y) && (circ.Area == targ.Area));
         }
+
+        /// <summary>
+        /// This function uses the histogram to see if there is more then one color on the tablet we are looking at
+        /// </summary>
+        /// <param name="hue">
+        /// The hue spikes on the historgram
+        /// </param>
+        /// <param name="sat">
+        /// The saturation spikes on the historgram
+        /// </param>
+        /// <param name="val">
+        /// The value spikes on the historgram
+        /// </param>
+        /// <param name="circle">Not used</param>
+        /// <param name="circles">Not used</param>
+        /// <returns>
+        /// True if tablet is ok and is a color we know, Flase if a unknown tablet or overlaped by other tablets
+        /// </returns>
+        public bool FirstPass(int[][] hue, int[][] sat, int[][] val, CircleF circle, CircleF[] circles, Hsv[,] HSVTabletcolorsRanges)
+        {
+            if ((hue.GetLength(0) == 1) && (sat.GetLength(0) == 1) && (val.GetLength(0) == 1))
+            {
+                TabletColors a = detectcolor(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletcolorsRanges);
+                if (a != TabletColors.Unknown) return true;
+                else return false;
+            }
+            else
+            {
+                TabletColors b = detectcolor(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletcolorsRanges);
+                int hueM = hue.GetLength(0) - 1;
+                int satM = sat.GetLength(0) - 1;
+                int valM = val.GetLength(0) - 1;
+                TabletColors c = detectcolor(new Hsv((hue[hueM][0] + hue[hueM][1]) / 2, (sat[satM][0] + sat[satM][1]) / 2, (val[valM][0] + val[valM][1]) / 2), HSVTabletcolorsRanges);
+                if (hue.GetLength(0) > 2)
+                {
+                    hueM = ((hue.GetLength(0) - 1) / 2);
+                }
+                if (sat.GetLength(0) > 2)
+                {
+                    satM = ((sat.GetLength(0) - 1) / 2);
+                }
+                if (val.GetLength(0) > 2)
+                {
+                    valM = ((val.GetLength(0) - 1) / 2);
+                }
+                TabletColors d = detectcolor(new Hsv((hue[hueM][0] + hue[hueM][1]) / 2, (sat[satM][0] + sat[satM][1]) / 2, (val[valM][0] + val[valM][1]) / 2), HSVTabletcolorsRanges);
+
+                if ((b != TabletColors.Unknown) && (b == c) && (b == d)) return true;
+                else return false;
+            }
+
+        }
+
     }
 }

@@ -93,6 +93,13 @@ namespace Tmc.Vision
             HSVTabletcolorsRanges[(int)TabletColors.Black,(int)HSVRange.High].Satuation  = 39;
             HSVTabletcolorsRanges[(int)TabletColors.Black,(int)HSVRange.High].Value      = 167;
 
+            minRadius = 55;
+            maxRadius = 59;
+
+            dp = 2.6;
+            minDist = 20;
+            cannyThresh = 2;
+            cannyAccumThresh = 100;
 
             //this.camera.ConnectionString = new Uri(@"http://192.168.0.190:8080/photoaf.jpg");
             this.camera.ConnectionString = new Uri(@"https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-ash3/t1.0-9/10247212_10202692742692192_8562559696417032763_n.jpg");
@@ -108,13 +115,14 @@ namespace Tmc.Vision
         public Tray<Tablet> GetTabletsInTray()
         {
             //img = camera.GetImage();
-            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/trayY4.jpg");
+            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/tray22.jpg");
             //img = camera.GetImageHttp(new Uri(@"http://www.wwrd.com.au/images/P/2260248_Fable%20s-4%2016cm%20Accent%20Plates-652383734586-co.jpg"));
             string win1 = "Test Window"; //The name of the window
             CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
 
-            Image<Bgr, Byte> src = CropImage(img, 0, 300, img.Cols, 400);//reduce the image so we only see the 
-
+            Image<Bgr, Byte> src = CropImage(img, 0, 777, img.Cols, 902);//reduce the image so we only see the 
+            CvInvoke.cvShowImage(win1, src); //Show the image
+            CvInvoke.cvWaitKey(0);
             DetectTray(src);//make a ref angle
 
              trayList.Angle = Angle;
@@ -214,9 +222,11 @@ namespace Tmc.Vision
         /// </summary>
         private void DetectTabletsInTray()
         {         
-            f.getValue(ref minRadius, ref maxRadius, ref dp, ref minDist, ref cannyThresh,ref cannyAccumThresh);
+            //f.getValue(ref minRadius, ref maxRadius, ref dp, ref minDist, ref cannyThresh,ref cannyAccumThresh);
             tablets = DetectTablets(imgTray, minRadius, maxRadius, dp, minDist, cannyThresh, cannyAccumThresh);
         }
+
+
 
         /// <summary>
         /// Used to detect the color of the tablet, only recognises good tablets and assemble the tray list
@@ -226,39 +236,35 @@ namespace Tmc.Vision
         /// </todo>
         private void DetectTabletType()
         {
-            Rectangle rect = new Rectangle();
-            Image<Bgr, byte> oneTablet;
-            double dotAngle = 0.607;//result of of cos(ang) which use to multiply radius to give us the dot product
             TabletColors tabletcolor;
             int cellInTray;
 
 
             foreach (CircleF tablet in tablets)
             {
+                float[][] abca = ImagesToHisto(GetTablet(imgTray, tablet));
 
-                rect.X      = (int)(tablet.Center.X - (tablet.Radius * dotAngle)); 
-                rect.Y      = (int)(tablet.Center.Y - (tablet.Radius * dotAngle));
-                rect.Width  = (int)((tablet.Radius * dotAngle) * 2);
-                rect.Height = (int)((tablet.Radius * dotAngle) * 2);
+                int[][] hue = getHighLowHSV(abca, 50, HSVdata.Hue);
+                int[][] sat = getHighLowHSV(abca, 50, HSVdata.Sat);
+                int[][] val = getHighLowHSV(abca, 50, HSVdata.Val);
 
-                if (rect.X < 0) rect.X = 0;
-                if (rect.Y < 0) rect.Y = 0;
-                if ((rect.X + rect.Width) > imgTray.Cols)
-                { 
-                    rect.Width -= (rect.X + rect.Width) - imgTray.Cols;
-                }
-                if ((rect.Y + rect.Height) > imgTray.Rows)
+                if (FirstPass(hue, sat, val, tablet, tablets, HSVTabletcolorsRanges) == true)
                 {
-                    rect.Height -= (rect.Y + rect.Height) - imgTray.Rows;
+                    imgTray.Draw(tablet, new Bgr(Color.Green), 1);
+                    tabletcolor = detectcolor(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletcolorsRanges);
                 }
-
-                oneTablet = imgTray.GetSubRect(rect);
-                CvInvoke.cvShowImage("Test Window", oneTablet); //Show the image
-                tabletcolor    = detectcolor(oneTablet, HSVTabletcolorsRanges);
+                else
+                {
+                    tabletcolor = TabletColors.Unknown;
+                    imgTray.Draw(tablet, new Bgr(Color.Red), 1);
+                }
+                cellInTray = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
                 cellInTray      = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
                 trayList.Cells[cellInTray] = new Tablet { Color = tabletcolor };
             }
             f.trayFill(trayList);
+            CvInvoke.cvShowImage("Test Window", imgTray); //Show the image
+            CvInvoke.cvWaitKey(0);
         }
 
         /// <summary>
