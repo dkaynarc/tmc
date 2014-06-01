@@ -34,7 +34,7 @@ namespace APIServerWeb
             repository = new ICTDEntities();
 
 
-            /*  SCADAUser user = new SCADAUser();
+            /*SCADAUser user = new SCADAUser();
               user.UserName = "carlo";
               try { var result = UserManager.Create(user,"1");      }
               catch(Exception exc)
@@ -168,7 +168,7 @@ namespace APIServerWeb
         [HttpGet]
         public string ResumeScada()
         {
-            /*try
+            try
             {
                 ScadaConnectionManager.ScadaClient.Resume();
                 return "Scada resumed successfully";
@@ -176,14 +176,14 @@ namespace APIServerWeb
             catch (EndpointNotFoundException)
             {
                 return SCADA_UNAVAILABLE_MESSAGE;
-            }*/
-            return "success";
+            }
+            //return "success";
         }
 
         [HttpGet]
         public string EmergencyStopScada()
         {
-            /* try
+             try
              {
                  ScadaConnectionManager.ScadaClient.EmergencyStop();
                  return "success";
@@ -191,8 +191,8 @@ namespace APIServerWeb
              catch (EndpointNotFoundException)
              {
                  return SCADA_UNAVAILABLE_MESSAGE;
-             }*/
-            return "success";
+             }
+            //return "success";
         }
 
 
@@ -253,31 +253,53 @@ namespace APIServerWeb
 
 
 
-        [HttpGet]
-        public HttpResponseMessage GetOrders(String orderParam)
+       [HttpGet]
+        public HttpResponseMessage GetCompleteOrders(string var1, string var2, string var3, 
+                                                              string var4, string var5, string var6)
         {
 
+            DateTime start = new DateTime(Convert.ToInt32(var3), Convert.ToInt32(var2), Convert.ToInt32(var1));
+            DateTime end = new DateTime(Convert.ToInt32(var6), Convert.ToInt32(var5), Convert.ToInt32(var4));
+
+            IEnumerable<OrderParcel> parcels = new LinkedList<OrderParcel>();
             IEnumerable<Order> orders = new LinkedList<Order>();
+            IEnumerable<Order> sortedOrders = new LinkedList<Order>();
 
-            if (orderParam.Equals("complete"))
-            {
-                orders = repository.Orders.Where(p => p != null).Where(p => p.StatusID == 3); // status id 3 - the order is complete
-            }
-            else
-            {
-                orders = repository.Orders.Where(p => p != null).Where(p => p.StatusID != 3); // status id 3 - the order is complete
-
-            }
             try
             {
-                LinkedList<OrderParcel> parcels = CopyOrders(orders);
+                orders = repository.Orders.Where(p => p != null).Where(p => p.StatusID == 3);
+                sortedOrders = orders.Where(p => p.EndTime.Value.Date >= start.Date && p.EndTime.Value.Date <= end.Date);
+                parcels = CopyOrders(sortedOrders);  
                 return Request.CreateResponse(HttpStatusCode.OK, parcels);
             }
             catch (Exception exc)
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, exc.ToString());
-            }
+            }            
         }
+
+
+
+
+               [HttpGet]
+               public HttpResponseMessage GetIncompleteOrders()
+               {
+
+                   IEnumerable<Order> orders = new LinkedList<Order>();
+                   orders = repository.Orders.Where(p => p != null).Where(p => p.StatusID != 3); // status id 3 - the order is complete
+
+                   try
+                   {
+                       LinkedList<OrderParcel> parcels = CopyOrders(orders);
+                       return Request.CreateResponse(HttpStatusCode.OK, parcels);
+                   }
+                   catch (Exception exc)
+                   {
+                       return Request.CreateResponse(HttpStatusCode.InternalServerError, exc.ToString());
+                   }
+               }
+
+
 
 
 
