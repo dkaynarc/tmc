@@ -39,43 +39,43 @@ namespace Tmc.Sensors
                 //test1.Shutdown();
                 */
                 
-                Sensor test2 = new Sensor();
-                test2.Name = "LightSensor";
-                test2.Channel = "ambience";
-                test2.IPAddress = "172.19.200.66";
-                test2.PortName = "9001";
-                Sensor test = new Sensor();
-                test.Name = "TemperatureSensor";
-                test.Channel = "temperature";
-                test.IPAddress = "172.19.200.66";
-                test.PortName = "9001";
-                Sensor test1 = new Sensor();
-                test1.Name = "SoundSensor";
-                test1.Channel = "sound";
-                test1.IPAddress = "172.19.200.66";
-                test1.PortName = "9001";
-                Sensor test3 = new Sensor();
-                test3.Name = "DustSensor";
-                test3.Channel = "dust";
-                test3.IPAddress = "172.19.200.66";
-                test3.PortName = "9001";
+                Sensor light = new Sensor();
+                light.Name = "LightSensor";
+                light.Channel = "ambience";
+                light.IPAddress = "172.19.200.66";
+                light.PortName = "9000";
+                Sensor temperature = new Sensor();
+                temperature.Name = "TemperatureSensor";
+                temperature.Channel = "temperature";
+                temperature.IPAddress = "172.19.200.66";
+                temperature.PortName = "9000";
+                Sensor sound = new Sensor();
+                sound.Name = "SoundSensor";
+                sound.Channel = "sound";
+                sound.IPAddress = "172.19.200.66";
+                sound.PortName = "9000";
+                Sensor humidity = new Sensor();
+                humidity.Name = "HumiditySensor";
+                humidity.Channel = "humidity";
+                humidity.IPAddress = "172.19.200.66";
+                humidity.PortName = "9000";
 
-                test2.Initialise(); //connection 2
-                test.Initialise(); //connection 1
-                test1.Initialise(); //connection 1
-                test3.Initialise(); //connection 1
+                light.Initialise(); //connection 2
+                temperature.Initialise(); //connection 1
+                humidity.Initialise(); //connection 1
+                sound.Initialise(); //connection 1
                 
 
                 while(true)
                 {
-                    float result2 = test2.getData();
+                    float result2 = light.getData();
                     Console.WriteLine("Light Result " + result2);
-                    float result = test.getData();
+                    float result = temperature.getData();
                     Console.WriteLine("Temperature Result " + result);
-                    float result1 = test1.getData();
+                    float result1 = sound.getData();
                     Console.WriteLine("Sound Result " + result1);
-                    float result3 = test3.getData();
-                    Console.WriteLine("Dust Result " + result3);
+                    float result3 = humidity.getData();
+                    Console.WriteLine("Humidity Result " + result3);
                     Console.ReadLine();
                 }
 
