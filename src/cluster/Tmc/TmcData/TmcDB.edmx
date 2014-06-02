@@ -47,15 +47,16 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
         <EntityType Name="OrderListView">
           <Key>
             <PropertyRef Name="OrderID" />
-            <PropertyRef Name="Name" />
+            <PropertyRef Name="Status" />
             <PropertyRef Name="Black" />
             <PropertyRef Name="Blue" />
             <PropertyRef Name="Red" />
             <PropertyRef Name="Green" />
             <PropertyRef Name="White" />
+            <PropertyRef Name="StatusID" />
           </Key>
           <Property Name="OrderID" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Black" Type="int" Nullable="false" />
           <Property Name="Blue" Type="int" Nullable="false" />
           <Property Name="Red" Type="int" Nullable="false" />
@@ -64,6 +65,9 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
           <Property Name="StartTime" Type="datetime" />
           <Property Name="EndTime" Type="datetime" />
           <Property Name="NumberOfProducts" Type="int" />
+          <Property Name="StatusID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" />
         </EntityType>
         <Function Name="AddNewCycleLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Timestamp" Type="datetime" Mode="In" />
@@ -153,7 +157,7 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
           <EntitySet Name="OrderListView" EntityType="Self.OrderListView" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [OrderListView].[OrderID] AS [OrderID], 
-    [OrderListView].[Name] AS [Name], 
+    [OrderListView].[Status] AS [Status], 
     [OrderListView].[Black] AS [Black], 
     [OrderListView].[Blue] AS [Blue], 
     [OrderListView].[Red] AS [Red], 
@@ -161,7 +165,10 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
     [OrderListView].[White] AS [White], 
     [OrderListView].[StartTime] AS [StartTime], 
     [OrderListView].[EndTime] AS [EndTime], 
-    [OrderListView].[NumberOfProducts] AS [NumberOfProducts]
+    [OrderListView].[NumberOfProducts] AS [NumberOfProducts], 
+    [OrderListView].[StatusID] AS [StatusID], 
+    [OrderListView].[UserID] AS [UserID], 
+    [OrderListView].[UserName] AS [UserName]
     FROM [dbo].[OrderListView] AS [OrderListView]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
@@ -172,7 +179,6 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
         <EntityContainer Name="ICTDEntities" p1:LazyLoadingEnabled="true">
           <EntitySet Name="ComponentCycleLogViews" EntityType="ICTDModel.ComponentCycleLogView" />
           <EntitySet Name="ComponentEventLogViews" EntityType="ICTDModel.ComponentEventLogView" />
-          <EntitySet Name="OrderListViews" EntityType="ICTDModel.OrderListView" />
           <FunctionImport Name="AddNewCycleLog">
             <Parameter Name="Timestamp" Mode="In" Type="DateTime" />
             <Parameter Name="CycleTime" Mode="In" Type="Int32" />
@@ -236,6 +242,7 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
             <Parameter Name="OrderStatus" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="EnvironmentLogViews" EntityType="ICTDModel.EnvironmentLogView" />
+          <EntitySet Name="OrderListViews" EntityType="ICTDModel.OrderListView" />
         </EntityContainer>
         <ComplexType Name="FiltCompCyclLogBySour_Result">
           <Property Type="String" Name="Name" Nullable="true" MaxLength="50" />
@@ -295,27 +302,6 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
           <Property Type="Int32" Name="ID" Nullable="false" />
           <Property Type="String" Name="LogType" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="OrderListView">
-          <Key>
-            <PropertyRef Name="OrderID" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Black" />
-            <PropertyRef Name="Blue" />
-            <PropertyRef Name="Red" />
-            <PropertyRef Name="Green" />
-            <PropertyRef Name="White" />
-          </Key>
-          <Property Type="Int32" Name="OrderID" Nullable="false" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="Black" Nullable="false" />
-          <Property Type="Int32" Name="Blue" Nullable="false" />
-          <Property Type="Int32" Name="Red" Nullable="false" />
-          <Property Type="Int32" Name="Green" Nullable="false" />
-          <Property Type="Int32" Name="White" Nullable="false" />
-          <Property Type="DateTime" Name="StartTime" Precision="3" />
-          <Property Type="DateTime" Name="EndTime" Precision="3" />
-          <Property Type="Int32" Name="NumberOfProducts" />
-        </EntityType>
         <ComplexType Name="CycleLogBySource_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
           <Property Type="DateTime" Name="Timestamp" Nullable="true" Precision="23" />
@@ -356,6 +342,31 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
           <Property Type="DateTime" Name="Timestamp" Nullable="false" Precision="3" />
           <Property Type="String" Name="Type" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="OrderListView">
+          <Key>
+            <PropertyRef Name="OrderID" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="Black" />
+            <PropertyRef Name="Blue" />
+            <PropertyRef Name="Red" />
+            <PropertyRef Name="Green" />
+            <PropertyRef Name="White" />
+            <PropertyRef Name="StatusID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Black" Type="Int32" Nullable="false" />
+          <Property Name="Blue" Type="Int32" Nullable="false" />
+          <Property Name="Red" Type="Int32" Nullable="false" />
+          <Property Name="Green" Type="Int32" Nullable="false" />
+          <Property Name="White" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="NumberOfProducts" Type="Int32" />
+          <Property Name="StatusID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -383,22 +394,6 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="OrderListViews">
-            <EntityTypeMapping TypeName="ICTDModel.OrderListView">
-              <MappingFragment StoreEntitySet="OrderListView">
-                <ScalarProperty Name="NumberOfProducts" ColumnName="NumberOfProducts" />
-                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="White" ColumnName="White" />
-                <ScalarProperty Name="Green" ColumnName="Green" />
-                <ScalarProperty Name="Red" ColumnName="Red" />
-                <ScalarProperty Name="Blue" ColumnName="Blue" />
-                <ScalarProperty Name="Black" ColumnName="Black" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="AddNewCycleLog" FunctionName="ICTDModel.Store.AddNewCycleLog" />
           <FunctionImportMapping FunctionImportName="AddNewEnvironmentLog" FunctionName="ICTDModel.Store.AddNewEnvironmentLog" />
           <FunctionImportMapping FunctionImportName="AddNewEventLog" FunctionName="ICTDModel.Store.AddNewEventLog" />
@@ -422,6 +417,25 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
                 <ScalarProperty Name="Reading" ColumnName="Reading" />
                 <ScalarProperty Name="Source" ColumnName="Source" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderListViews">
+            <EntityTypeMapping TypeName="ICTDModel.OrderListView">
+              <MappingFragment StoreEntitySet="OrderListView">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="NumberOfProducts" ColumnName="NumberOfProducts" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="White" ColumnName="White" />
+                <ScalarProperty Name="Green" ColumnName="Green" />
+                <ScalarProperty Name="Red" ColumnName="Red" />
+                <ScalarProperty Name="Blue" ColumnName="Blue" />
+                <ScalarProperty Name="Black" ColumnName="Black" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

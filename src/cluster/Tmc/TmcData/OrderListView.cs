@@ -15,7 +15,7 @@ namespace TmcData
     public partial class OrderListView
     {
         public int OrderID { get; set; }
-        public string Name { get; set; }
+        public string Status { get; set; }
         public int Black { get; set; }
         public int Blue { get; set; }
         public int Red { get; set; }
@@ -24,5 +24,8 @@ namespace TmcData
         public Nullable<System.DateTime> StartTime { get; set; }
         public Nullable<System.DateTime> EndTime { get; set; }
         public Nullable<int> NumberOfProducts { get; set; }
+        public int StatusID { get; set; }
+        public string UserID { get; set; }
+        public string UserName { get; set; }
     }
 }
