@@ -103,7 +103,7 @@ namespace Tmc.Vision
         {
             tabletList.Clear();//clear tablets from last use       
             img = camera.GetImage(1);
-            //img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/sort30.jpg");
+            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/sort30.jpg");
 
             //f.getValue(ref minRadius, ref maxRadius, ref dp, ref minDist, ref cannyThresh, ref cannyAccumThresh);
 
@@ -137,8 +137,8 @@ namespace Tmc.Vision
         /// </summary>
         public void Calibration()
         {
-            Image<Bgr, Byte> chessB = camera.GetImage(1);
-            //Image<Bgr, Byte> chessB = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/chess2.jpg");
+            //Image<Bgr, Byte> chessB = camera.GetImage(1);
+            Image<Bgr, Byte> chessB = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/chess2.jpg");
             ChessboardPoints = FindPattern(chessB.Convert<Gray, Byte>(), new Size(12, 9));            
         }
 

@@ -835,5 +835,12 @@ namespace Tmc.Vision
 
         }
 
+        public void saveImage(Image<Bgr, Byte> src, string filename)
+        {
+        #if DEBUG
+            src.Save(filename);
+        #endif
+        }
+
     }
 }
