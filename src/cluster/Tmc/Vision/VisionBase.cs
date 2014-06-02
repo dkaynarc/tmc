@@ -378,6 +378,8 @@ namespace Tmc.Vision
         {
             Rectangle rect = new Rectangle();
 
+            Image<Bgr, Byte> crop = src.Clone();
+
             rect.X = x;
             rect.Y = y;
             rect.Width = width;
@@ -409,10 +411,10 @@ namespace Tmc.Vision
             {
                 rect.Height = src.Rows - rect.Y;
             }
-            
-                
 
-            return src.GetSubRect(rect);
+
+
+            return crop.GetSubRect(rect);
         }
 
         /// <summary>

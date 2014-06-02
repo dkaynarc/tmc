@@ -25,8 +25,6 @@ namespace Tmc.Vision
         private double dp, minDist;
         private Hsv[,] HSVTabletcolorsRanges = new Hsv[5, 2];
 
-
-        
         private Camera camera;
         private Point[] trayPoints = new Point[4];
         private Image<Bgr, Byte> img;
@@ -47,9 +45,6 @@ namespace Tmc.Vision
         /// </summary>
         public enum pMinMax { Max   = 0, Min };
 
-
-        //Form1 f;
-
         /// <summary>
         /// Constructor for this class
         /// </summary>
@@ -58,8 +53,6 @@ namespace Tmc.Vision
         /// </param>
         public TrayDetectorVision(Camera camera)
         {
-            //f = new Form1();
-            //f.Show();
             this.camera = camera;
             Debug.Listeners.Add(listener);
             
@@ -122,9 +115,7 @@ namespace Tmc.Vision
             //img = camera.GetImage();
             img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/trayBL2.jpg");
             //img = camera.GetImageHttp(new Uri(@"http://www.wwrd.com.au/images/P/2260248_Fable%20s-4%2016cm%20Accent%20Plates-652383734586-co.jpg"));
-            //string win1 = "Test Window"; //The name of the window
-            //CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
-
+            
             Image<Bgr, Byte> src = CropImage(img, 0, 777, img.Cols, 902);//reduce the image so we only see the coveour and tray
 
             saveImage(src, "croped Image.jpg");
@@ -143,14 +134,11 @@ namespace Tmc.Vision
                 rect.Height = 2;
                 src.Draw(rect, new Bgr(Color.Red), 6);
             }
+            
+            saveImage(src, "Image with points.jpg");
 
-            //CvInvoke.cvShowImage(win1, src); //Show the image
-
-            //CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
             DetectTabletsInTray();
             DetectTabletType();
-            //CvInvoke.cvWaitKey(0);
-            //CvInvoke.cvDestroyWindow(win1); //Destory the window
 
             return trayList;
         }
@@ -202,10 +190,6 @@ namespace Tmc.Vision
 
             saveImage(col, "only yellow.jpg");
             
-            //CvInvoke.cvShowImage("Test Window", col); //Show the image
-            //CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
-            
-            
             int x = line[0].Y - line[1].Y;
             int y = line[0].X - line[1].X;
 
@@ -229,9 +213,6 @@ namespace Tmc.Vision
             int yHeight = Math.Max(Math.Max(trayPoints[0].Y, trayPoints[2].Y), Math.Max(trayPoints[1].Y, trayPoints[3].Y)) - yOrig;
 
             imgTray = CropImage(src, xOrig, yOrig, xWidth, yHeight);//crop the image
-            
-            //CvInvoke.cvShowImage("Test Window", imgTray); //Show the image
-            //CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
 
             saveImage(imgTray, "only tray.jpg");
 
@@ -242,12 +223,9 @@ namespace Tmc.Vision
         /// Ussed to detect tablets in the tray
         /// </summary>
         private void DetectTabletsInTray()
-        {         
-            //f.getValue(ref minRadius, ref maxRadius, ref dp, ref minDist, ref cannyThresh,ref cannyAccumThresh);
+        {                     
             tablets = DetectTablets(imgTray, minRadius, maxRadius, dp, minDist, cannyThresh, cannyAccumThresh);
         }
-
-        
 
         /// <summary>
         /// Used to detect the color of the tablet, only recognises good tablets and assemble the tray list
@@ -288,8 +266,6 @@ namespace Tmc.Vision
                 
                 Debug.WriteLine(DateTime.Now.ToString("h:mm:ss tt>>  ") + "cell: " + cellInTray + " has tablet:" + tabletcolor.ToString());
                 Debug.Flush();
-
-                //Debug
             }
             for (int i = 0; i < 9; i++)
             {//check we only have one tablet ineach cell
@@ -303,9 +279,6 @@ namespace Tmc.Vision
                     Debug.Flush();
                 }
             }
-            //f.trayFill(trayList);
-
-
 
             saveImage(imgTray, "tray with circles.jpg");
         }
@@ -345,7 +318,6 @@ namespace Tmc.Vision
                 for (int j = x; j < wide+x; j++)
                 {
                     ret[i, j] = coverColor;
-
                 }
             }
             return ret;
