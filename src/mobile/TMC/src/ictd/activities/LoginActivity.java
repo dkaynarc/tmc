@@ -15,7 +15,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -59,7 +58,6 @@ public class LoginActivity extends Activity
 
 	public void onLoginClicked(View v)
 	{
-		// //////////////////// SERGEI: PLEASE IMPLEMENT THIS, WILL REMOVE CHECKBOX ONCE YOU HAVE
 				
 		String userName = ((EditText) findViewById(R.id.loginactivity_username_et))
 				.getText().toString();
