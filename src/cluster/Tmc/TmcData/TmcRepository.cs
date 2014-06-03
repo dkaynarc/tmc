@@ -65,5 +65,15 @@ namespace TmcData
         {
             _entities.AddNewEventLog(timestamp, description, sourceID, logTypeID);
         }
+
+        public static ComponentEventLogView GetLatestAlarm()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void CancelOrder(int orderID)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

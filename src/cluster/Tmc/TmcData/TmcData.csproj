@@ -80,6 +80,11 @@
     <Compile Include="CycleLogBySource_Result.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Datasets\ReportDataSet.Designer.cs">
+      <DependentUpon>ReportDataSet.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="DatabaseMappings.cs" />
     <Compile Include="EnvironmentLogBySource_Result.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
@@ -106,6 +111,7 @@
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportController.cs" />
     <Compile Include="TmcDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -137,6 +143,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
+    <None Include="Datasets\ReportDataSet.xsc">
+      <DependentUpon>ReportDataSet.xsd</DependentUpon>
+    </None>
+    <EmbeddedResource Include="Datasets\ReportDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ReportDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="Datasets\ReportDataSet.xss">
+      <DependentUpon>ReportDataSet.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="TmcDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

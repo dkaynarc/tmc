@@ -87,5 +87,14 @@ namespace Tmc.Scada.Core
             _sequencer.FireStopTrigger();
             _sequencer.StopSequencing();
         }
+
+        public string GetOperationStatus()
+        {
+            return "";
+        }
+
+        public void SetOperatingMode(string mode)
+        {
+        }
     }
 }
