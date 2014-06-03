@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Tmc.Common
 {
@@ -20,6 +21,22 @@ namespace Tmc.Common
         {
             Color = TabletColors.Unknown;
             LocationPoint = new PointF(0, 0);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            var other = obj as Tablet;
+            if (other == null)
+            {
+                return false;
+            }
+
+            return (this.Color == other.Color);
         }
     }
 }

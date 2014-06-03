@@ -25,5 +25,21 @@ namespace Tmc.Common
                 Cells.Add(null);
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            var other = obj as Tray<T>;
+            if (other == null)
+            {
+                return false;
+            }
+
+            return this.Cells.SequenceEqual(other.Cells);
+        }
     }
 }
