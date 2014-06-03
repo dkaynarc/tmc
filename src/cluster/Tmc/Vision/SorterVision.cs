@@ -108,7 +108,7 @@ namespace Tmc.Vision
         {
             TabletList.Clear();//clear tablets from last use
             //img = camera.GetImage(1);
-            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/sort35.jpg");
+            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/sort32.jpg");
 
             //f.getValue(ref minRadius, ref maxRadius, ref dp, ref minDist, ref cannyThresh, ref cannyAccumThresh);
 
@@ -407,13 +407,13 @@ namespace Tmc.Vision
                             TabletList.Insert(0,tab);
                         }
                         else 
-                        {
+                        {//otherwise add to the end
                             TabletList.Add(tab);
                         }
                         drawTab.Draw(tablet, new Bgr(Color.Red), 2);
                     }
                     else
-                    {
+                    {//unknown tablet
                         tab.LocationPoint = CalculateTrueCordXYmm(ChessboardPoints, new PointF(tablet.Center.X, tablet.Center.Y));
                         tab.Color = TabletColors.Unknown;
                         TabletList.Add(tab);
