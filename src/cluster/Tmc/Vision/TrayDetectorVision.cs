@@ -100,8 +100,8 @@ namespace Tmc.Vision
         /// <todo>use the new function in vision base to detect tablet colour</todo>
         public Tray<Tablet> GetTabletsInTray()
         {
-            //img = camera.GetImage();
-            img = new Image<Bgr, byte>("C:/Users/Denis/Dropbox/ICT DESIGN/Assignment 3/vision/cal/tray100.jpg");
+            img = camera.GetImage();//C:/Users/leonid/Dropbox/ICT DESIGN/Assignment 3/vision/cal
+            //img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICT DESIGN/Assignment 3/vision/cal/tray100.jpg");
             //img = camera.GetImageHttp(new Uri(@"http://www.wwrd.com.au/images/P/2260248_Fable%20s-4%2016cm%20Accent%20Plates-652383734586-co.jpg"));
 
             Image<Bgr, Byte> src = CropImage(img, 0, 777, img.Cols, 902);//reduce the image so we only see the coveour and tray

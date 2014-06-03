@@ -24,10 +24,6 @@ namespace Tmc.Vision
         private Image<Bgr, Byte> img;
 
         private List<Tablet> TabletList = new List<Tablet>();
-        //List<Tablet> TabletList = new List<Tablet>();
-
-        //private Image<Bgr, Byte> ab;
-        //Form1 f;
 
         /// <summary>
         /// constructor for sorter vision, do all initilasation here
@@ -37,12 +33,8 @@ namespace Tmc.Vision
         /// </param>
         public SorterVision(Camera camera)
         {
-            //f = new Form1();
-            //f.Show();
             this.camera = camera;
             //do calibration
-            //this.camera.ConnectionString = new Uri(@"http://192.168.0.190:8080/photoaf.jpg");
-            //this.camera.ConnectionString = new Uri(@"https://fbcdn-sphotos-b-a.akamaihd.net/hphotos-ak-frc3/t1.0-9/10270404_10202712962477674_682458036245271256_n.jpg");
 
             HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 46;
             HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 55;//75;
@@ -95,30 +87,13 @@ namespace Tmc.Vision
         public List<Tablet> GetVisibleTablets()
         {
             TabletList.Clear();//clear tablets from last use
-            //img = camera.GetImage(1);
-            img = new Image<Bgr, byte>("C:/Users/Denis/Dropbox/ICT DESIGN/Assignment 3/vision/cal/sort32.jpg");
-
-            //f.getValue(ref minRadius, ref maxRadius, ref dp, ref minDist, ref cannyThresh, ref cannyAccumThresh);
+            img = camera.GetImage(1);
+            //img = new Image<Bgr, byte>("C:/Users/Denis/Dropbox/ICT DESIGN/Assignment 3/vision/cal/sort32.jpg");
 
             CircleF[] circles = DetectTablets(img, minRadius, maxRadius, dp, minDist, cannyThresh, cannyAccumThresh);
-            //PointF[] points = FindPattern(img.Convert<Gray, Byte>(), new Size(12, 9));
-            //CircleF
-            //CvInvoke.cvWaitKey(0);
-            //ab = img.Clone();
-            /*foreach (CircleF circle in circles)
-            {
-                CalculateTrueCordXYmm(ChessboardPoints, new PointF(circle.Center.X, circle.Center.Y));
-                CircleF[] abc = OtherTabletsNear(circles, circle);
-                //HistogramImage(img, circles);
-            }*/
+            
             DetectGoodPickupTablets(img, circles);
 
-            //f.pictureBox2_draw(ab);
-            //DetectOverLap();
-            //DetectDamagedTablet();
-            //CvInvoke.cvWaitKey(0);
-            //return FillListOfGoodTablets(ChessboardPoints, circles);
-            //GetXYZForTablets();
 
             return TabletList;
         }
@@ -128,8 +103,7 @@ namespace Tmc.Vision
         /// </summary>
         public void Calibration()
         {
-            //Image<Bgr, Byte> chessB = camera.GetImage(1);
-            Image<Bgr, Byte> chessB = new Image<Bgr, byte>("C:/Users/Denis/Dropbox/ICT DESIGN/Assignment 3/vision/cal/chess2.jpg");
+            Image<Bgr, Byte> chessB = camera.GetImage(1);
             ChessboardPoints = FindPattern(chessB.Convert<Gray, Byte>(), new Size(12, 9));
         }
 
