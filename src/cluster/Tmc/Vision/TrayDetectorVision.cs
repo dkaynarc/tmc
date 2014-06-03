@@ -140,6 +140,10 @@ namespace Tmc.Vision
             DetectTabletsInTray();
             DetectTabletType();
 
+
+            
+
+
             return trayList;
         }
 

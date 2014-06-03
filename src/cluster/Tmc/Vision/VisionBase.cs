@@ -85,8 +85,6 @@ namespace Tmc.Vision
 
             return circles;//return the circles found
         }
-        
-
 
         /// <summary>
         /// This function tells us what color the source image is
@@ -733,19 +731,19 @@ namespace Tmc.Vision
         /// <returns>
         /// the tablets which are with the radius of our targetTablet
         /// </returns>
-        public CircleF[] OtherTabletsNear(CircleF[] knowTablets, CircleF targetTablet)
+        public bool OtherTabletsNear(CircleF[] knowTablets, CircleF targetTablet)
         {
-            var circleList = new List<CircleF>();
-
+            //var circleList = new List<CircleF>();
+            int a = 0;
             foreach (CircleF knowTablet in knowTablets)
             {
                 double Mag = Math.Sqrt(Math.Pow((targetTablet.Center.X - knowTablet.Center.X), 2) + Math.Pow((targetTablet.Center.Y - knowTablet.Center.Y), 2));
-                int a = 0;
+                
                 bool b = checkCircles(knowTablet, targetTablet);
                 if ((Mag <= targetTablet.Radius) && (checkCircles(knowTablet, targetTablet) == false))
                 {//center is in the radius of the circle
                     a++;
-                    circleList.Add(knowTablet);
+                    //circleList.Add(knowTablet);
                     //int a = 0;
                     //targetTablet
                 }
@@ -754,7 +752,7 @@ namespace Tmc.Vision
 
                     if (a < 1)
                     {
-                        circleList.Add(knowTablet);
+                        //circleList.Add(knowTablet);
                     }
 
                     a++;
@@ -762,7 +760,7 @@ namespace Tmc.Vision
                 }
             }
 
-            return circleList.ToArray();
+            return (a == 0);// circleList.ToArray();
 
             //return knowTablets;
         }
@@ -837,6 +835,15 @@ namespace Tmc.Vision
 
         }
 
+        /// <summary>
+        /// saves image but only in debug
+        /// </summary>
+        /// <param name="src">
+        /// image to save
+        /// </param>
+        /// <param name="filename">
+        /// location to save and name
+        /// </param>
         public void saveImage(Image<Bgr, Byte> src, string filename)
         {
         #if DEBUG
