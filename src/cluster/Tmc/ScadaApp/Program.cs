@@ -6,7 +6,7 @@ using System.Windows.Forms;
 //using Tmc.Scada.Core;
 
 //////////////////////// added by Sergei for authentication and user management
-using ApiServerWeb.Authentication;
+//using ApiServerWeb.Authentication;
 //////////////////////////////////////////////////////////////////////////////
 
 namespace Tmc.Scada.App
