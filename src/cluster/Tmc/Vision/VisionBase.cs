@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Drawing;
-using Emgu.CV;
-using Emgu.CV.CvEnum;
+﻿using Emgu.CV;
 using Emgu.CV.Structure;
-using Emgu.CV.GPU;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 using Tmc.Common;
-
 
 namespace Tmc.Vision
 {
@@ -22,7 +15,7 @@ namespace Tmc.Vision
         public enum HSVRange { Low = 0, High };
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public enum HSVdata { Hue = 0, Sat, Val };
 
@@ -38,11 +31,11 @@ namespace Tmc.Vision
         /// THis is the input image in which we want to find the circles
         /// </param>
         /// <param name="minRadius">
-        /// smallest circle diameter that will be detected, note this is in pixcels. 
+        /// smallest circle diameter that will be detected, note this is in pixcels.
         /// Minimal radius of the circles to search for
         /// </param>
         /// <param name="maxRadius">
-        /// biggest circle diameter that will be detected, note this is in pixcels. 
+        /// biggest circle diameter that will be detected, note this is in pixcels.
         /// Maximal radius of the circles to search for
         /// </param>
         /// <param name="dp">
@@ -67,7 +60,7 @@ namespace Tmc.Vision
         /// </param>
         public CircleF[] DetectTablets(Image<Bgr, Byte> src, int minRadius, int maxRadius, double dp, double minDist, int cannyThresh, int cannyAccumThresh)
         {
-            Image<Gray, Byte> gray = src.Convert<Gray, Byte>(); //convert source image to grayscale                  
+            Image<Gray, Byte> gray = src.Convert<Gray, Byte>(); //convert source image to grayscale
 
             //Set canny edge value we are going to use in houghtransform
             Gray cannyThreshold = new Gray(cannyThresh);
@@ -136,7 +129,7 @@ namespace Tmc.Vision
                 return TabletColors.Unknown;
             }
         }
-        
+
         /// <summary>
         /// detects the colo bassed on the HSV range given
         /// </summary>
@@ -268,7 +261,7 @@ namespace Tmc.Vision
                 (srcHsv.Satuation <= (targetHsv[(int)HSVRange.High].Satuation + higherLimitExtra)) &&
                 (srcHsv.Value <= (targetHsv[(int)HSVRange.High].Value + higherLimitExtra)));
             }
-            else 
+            else
             {
                 if (srcHsv.Hue >= (targetHsv[(int)HSVRange.Low].Hue - lowerLimitExtra))
                 {
@@ -296,7 +289,6 @@ namespace Tmc.Vision
         {
             if (type == 0)
             {
- 
             }
             foreach(Hsv allHsv in allHsvs)
             {
@@ -376,15 +368,13 @@ namespace Tmc.Vision
         {
             Rectangle rect = new Rectangle();
 
-            Image<Bgr, Byte> crop = src.Clone();
-
             rect.X = x;
             rect.Y = y;
             rect.Width = width;
             rect.Height = height;
-            if (x < 0 )
+            if (x < 0)
             {
-                rect.X = 0; 
+                rect.X = 0;
             }
             else if (x > src.Cols)
             {
@@ -410,9 +400,7 @@ namespace Tmc.Vision
                 rect.Height = src.Rows - rect.Y;
             }
 
-
-
-            return crop.GetSubRect(rect);
+            return src.GetSubRect(rect).Clone();
         }
 
         /// <summary>
@@ -438,9 +426,7 @@ namespace Tmc.Vision
                     {
                         hsvLH[(int)HSVRange.Low] = j;
                         toggle = 1;
-
                     }
-
                 }
                 else if (srcHSV[(int)hsvPart][j] < limit)
                 {
@@ -453,11 +439,9 @@ namespace Tmc.Vision
                 }
                 if ((j == 255) && (toggle == 1))
                 {
-
                     hsvLH[(int)HSVRange.High] = 255;
                     HsvList.Add(hsvLH.Clone() as int[]);
                     toggle = 0;
-
                 }
             }
             //}
@@ -616,11 +600,6 @@ namespace Tmc.Vision
             points[5].X = (int)(tablet.Center.X - (tablet.Radius * angle6));
             points[5].Y = (int)(tablet.Center.Y - (Math.Sin(16 * (Math.PI / 180)) * rad));
 
-
-
-
-
-
             Image<Bgr, Byte> MID = CropImage(src, (int)(tablet.Center.X - (rad * angle1)), (int)(tablet.Center.Y - (rad * angle1)), (int)((rad * angle1) * 2), (int)((rad * angle1) * 2));
 
             Image<Bgr, Byte> LS1 = CropImage(src, points[1].X, points[1].Y, points[0].X - points[1].X, ((int)tablet.Center.Y - points[1].Y) * 2);
@@ -716,7 +695,7 @@ namespace Tmc.Vision
         /// </returns>
         public double Mag(PointF a, PointF b)
         {
-            return Math.Sqrt(Math.Pow((a.X - b.X),2) + Math.Pow((a.Y - b.Y),2) );
+            return Math.Sqrt(Math.Pow((a.X - b.X), 2) + Math.Pow((a.Y - b.Y), 2));
         }
 
         /// <summary>
@@ -738,7 +717,7 @@ namespace Tmc.Vision
             foreach (CircleF knowTablet in knowTablets)
             {
                 double Mag = Math.Sqrt(Math.Pow((targetTablet.Center.X - knowTablet.Center.X), 2) + Math.Pow((targetTablet.Center.Y - knowTablet.Center.Y), 2));
-                
+
                 bool b = checkCircles(knowTablet, targetTablet);
                 if ((Mag <= targetTablet.Radius) && (checkCircles(knowTablet, targetTablet) == false))
                 {//center is in the radius of the circle
@@ -749,7 +728,6 @@ namespace Tmc.Vision
                 }
                 if ((Mag < (targetTablet.Radius + knowTablet.Radius)) && (checkCircles(knowTablet, targetTablet) == false))
                 {//if the circle crosses over
-
                     if (a < 1)
                     {
                         //circleList.Add(knowTablet);
@@ -832,7 +810,6 @@ namespace Tmc.Vision
                 if ((b != TabletColors.Unknown) && (b == c) && (b == d)) return true;
                 else return false;
             }
-
         }
 
         /// <summary>
@@ -846,10 +823,9 @@ namespace Tmc.Vision
         /// </param>
         public void saveImage(Image<Bgr, Byte> src, string filename)
         {
-        #if DEBUG
+#if DEBUG
             src.Save(filename);
-        #endif
+#endif
         }
-
     }
 }

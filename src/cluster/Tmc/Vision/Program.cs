@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 using Tmc.Common;
 
 namespace Tmc.Vision
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
         /// The main entry point for the application.
@@ -17,7 +14,7 @@ namespace Tmc.Vision
 
         //private Camera SorterCamera;
         //private Camera TrayCamera;
-        static void Main()
+        private static void Main()
         {
             //Form1();
             //Application.EnableVisualStyles();
@@ -29,7 +26,7 @@ namespace Tmc.Vision
             TestCamera();
         }
 
-        static void TestCamera()
+        private static void TestCamera()
         {
             Camera c = new Camera();
             //c.SetParameters(new Dictionary<string, string> { { "Name", "TestCam1" }, { "ConnectionString", "http://192.168.0.11:8080/photo.jpg" } });//"http://192.168.0.11:8080/photo.jpg"

@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Drawing;
-using Emgu.CV;
-using Emgu.CV.CvEnum;
+﻿using Emgu.CV;
 using Emgu.CV.Structure;
-using Emgu.CV.GPU;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 using Tmc.Common;
-using Emgu.CV.Features2D;
-using Emgu.CV.UI;
 
 namespace Tmc.Vision
 {
-
-
     public class SorterVision : VisionBase
     {
         private int minRadius;
@@ -27,16 +17,15 @@ namespace Tmc.Vision
         private double minDist;//expand dp
 
         private Hsv[,] HSVTabletcolorsRanges = new Hsv[5, 2];
-        
-        PointF[] ChessboardPoints = new PointF[107];
+
+        private PointF[] ChessboardPoints = new PointF[107];
         private Camera camera;
-        
+
         private Image<Bgr, Byte> img;
 
         private List<Tablet> TabletList = new List<Tablet>();
         //List<Tablet> TabletList = new List<Tablet>();
-        
-        
+
         //private Image<Bgr, Byte> ab;
         //Form1 f;
 
@@ -93,11 +82,10 @@ namespace Tmc.Vision
             minRadius = 60;
             maxRadius = 63;
 
-            dp                  = 2.6;
-            minDist             = 20;
-            cannyThresh         = 2;
-            cannyAccumThresh    = 83;
-
+            dp = 2.6;
+            minDist = 20;
+            cannyThresh = 2;
+            cannyAccumThresh = 83;
         }
 
         /// <summary>
@@ -108,7 +96,7 @@ namespace Tmc.Vision
         {
             TabletList.Clear();//clear tablets from last use
             //img = camera.GetImage(1);
-            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/sort32.jpg");
+            img = new Image<Bgr, byte>("C:/Users/Denis/Dropbox/ICT DESIGN/Assignment 3/vision/cal/sort32.jpg");
 
             //f.getValue(ref minRadius, ref maxRadius, ref dp, ref minDist, ref cannyThresh, ref cannyAccumThresh);
 
@@ -122,17 +110,15 @@ namespace Tmc.Vision
                 CalculateTrueCordXYmm(ChessboardPoints, new PointF(circle.Center.X, circle.Center.Y));
                 CircleF[] abc = OtherTabletsNear(circles, circle);
                 //HistogramImage(img, circles);
-                
             }*/
             DetectGoodPickupTablets(img, circles);
 
             //f.pictureBox2_draw(ab);
             //DetectOverLap();
             //DetectDamagedTablet();
-            //CvInvoke.cvWaitKey(0); 
+            //CvInvoke.cvWaitKey(0);
             //return FillListOfGoodTablets(ChessboardPoints, circles);
             //GetXYZForTablets();
-            
 
             return TabletList;
         }
@@ -143,10 +129,9 @@ namespace Tmc.Vision
         public void Calibration()
         {
             //Image<Bgr, Byte> chessB = camera.GetImage(1);
-            Image<Bgr, Byte> chessB = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/chess2.jpg");
-            ChessboardPoints = FindPattern(chessB.Convert<Gray, Byte>(), new Size(12, 9));            
+            Image<Bgr, Byte> chessB = new Image<Bgr, byte>("C:/Users/Denis/Dropbox/ICT DESIGN/Assignment 3/vision/cal/chess2.jpg");
+            ChessboardPoints = FindPattern(chessB.Convert<Gray, Byte>(), new Size(12, 9));
         }
-
 
         /// <summary>
         /// finds the chessboard in the image
@@ -169,29 +154,29 @@ namespace Tmc.Vision
 
             //CameraCalibration.CalibrateCamera(
 
-             int a = 0; 
+            int a = 0;
             foreach (PointF checkerBoardPoint in checkerBoardPoints)
-             {//draw dots just for debuging atm
-                 Rectangle rect = new Rectangle();
-                 rect.X = (int)checkerBoardPoint.X;
-                 rect.Y = (int)checkerBoardPoint.Y;
-                 rect.Width = 2;
-                 rect.Height = 2;
-                 if (a == 0)
-                 {
-                     colr.Draw(rect, new Bgr(Color.Blue), 1);
-                     a++;
-                 }
-                 else
-                 {
-                     colr.Draw(rect, new Bgr(Color.Red), 1);
-                     a++;
-                 }
-             }
-             //CvInvoke.cvShowImage(win1, colr); //Show the image
-              
-             //CvInvoke.cvWaitKey(0);
-             return checkerBoardPoints;
+            {//draw dots just for debuging atm
+                Rectangle rect = new Rectangle();
+                rect.X = (int)checkerBoardPoint.X;
+                rect.Y = (int)checkerBoardPoint.Y;
+                rect.Width = 2;
+                rect.Height = 2;
+                if (a == 0)
+                {
+                    colr.Draw(rect, new Bgr(Color.Blue), 1);
+                    a++;
+                }
+                else
+                {
+                    colr.Draw(rect, new Bgr(Color.Red), 1);
+                    a++;
+                }
+            }
+            //CvInvoke.cvShowImage(win1, colr); //Show the image
+
+            //CvInvoke.cvWaitKey(0);
+            return checkerBoardPoints;
         }
 
         /// <summary>
@@ -204,7 +189,7 @@ namespace Tmc.Vision
         /// the point we want the find the mm of
         /// </param>
         /// <returns>
-        /// gives back mm cordinates 
+        /// gives back mm cordinates
         /// </returns>
         /// <todo>
         /// make it so that board rotation dosent effect our mm return value
@@ -213,10 +198,9 @@ namespace Tmc.Vision
         /// if circle outside the chessboard then loc will be out of range so need to fix this
         /// </bug>
         private PointF CalculateTrueCordXYmm(PointF[] chessboard, PointF targetPoint)
-        { 
-            
-            Point ClosestPoint = getClosestPointToTargetOnChessboard(chessboard, targetPoint, new Size(12,9));//get closest point to 
-            
+        {
+            Point ClosestPoint = getClosestPointToTargetOnChessboard(chessboard, targetPoint, new Size(12, 9));//get closest point to
+
             int loc = ClosestPoint.X + ClosestPoint.Y;
             PointF locationXYmm = new PointF();
             double pixcelTommY;
@@ -236,17 +220,16 @@ namespace Tmc.Vision
             {//out side bounds
                 MagX = Math.Sqrt(Math.Pow((chessboard[loc - 12].X - chessboard[loc].X), 2) + Math.Pow((chessboard[loc - 12].Y - chessboard[loc].Y), 2));
             }
-            else 
+            else
             {
                 MagX = Math.Sqrt(Math.Pow((chessboard[0].X - chessboard[1].X), 2) + Math.Pow((chessboard[0].Y - chessboard[1].Y), 2));
             }
 
-
             pixcelTommY = 20 / MagY;//work out how much a pixcel is in mm
             pixcelTommX = 20 / MagX;
 
-            locationXYmm.X = (float)(pixcelTommX * ((targetPoint.X - chessboard[loc].X)) + ClosestPoint.X*20);      //work out location from origon
-            locationXYmm.Y = (float)(pixcelTommY * ((targetPoint.Y - chessboard[loc].Y)) + (ClosestPoint.Y/12)*20);
+            locationXYmm.X = (float)(pixcelTommX * ((targetPoint.X - chessboard[loc].X)) + ClosestPoint.X * 20);      //work out location from origon
+            locationXYmm.Y = (float)(pixcelTommY * ((targetPoint.Y - chessboard[loc].Y)) + (ClosestPoint.Y / 12) * 20);
 
             return targetPoint;
         }
@@ -269,7 +252,6 @@ namespace Tmc.Vision
         private Point getClosestPointToTargetOnChessboard(PointF[] chessboard, PointF target, Size board)
         {
             Point closestPoint = new Point(0, 0);
-            
 
             for (int i = 0; i < board.Width; i++)
             {
@@ -283,7 +265,7 @@ namespace Tmc.Vision
                 }
             }
 
-            for (int i = 0; i < board.Width*board.Height; i += board.Width)
+            for (int i = 0; i < board.Width * board.Height; i += board.Width)
             {
                 if (target.Y > chessboard[i].Y)
                 {
@@ -298,24 +280,20 @@ namespace Tmc.Vision
             return closestPoint;
         }
 
-
         /*private List<Tablet> FillListOfGoodTablets(PointF[] chessboard, CircleF[] tablets)
         {
             return TabletList;
         }*/
-
-
 
         /*/// <summary>
         /// Determins if tablet is damaged
         /// </summary>
         private void DetectDamagedTablet()
         {
-
         }*/
-       
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="src">
         /// Image where the image where tablets are
@@ -349,7 +327,7 @@ namespace Tmc.Vision
                 else
                 {
                     drawTab.Draw(tablet, new Bgr(Color.White), 2);
-                }    
+                }
             }
 
             foreach (CircleF tablet in tablets)
@@ -364,7 +342,7 @@ namespace Tmc.Vision
                 {
                     foreach (CircleF tabl in TabletsInList)
                     {
-                        if(checkCircles(tabl, tablet))
+                        if (checkCircles(tabl, tablet))
                         {
                             a++;
                         }
@@ -387,7 +365,7 @@ namespace Tmc.Vision
                 //CvInvoke.cvWaitKey(0);
             }
 
-            foreach(CircleF tablet in TabletsInList)
+            foreach (CircleF tablet in TabletsInList)
             {
                 Tablet tab = new Tablet();
                 if ((IsVisableTablet(src, tablet, 5) == true) || (OtherTabletsNear(TabletsInList.ToArray(), tablet) == true))
@@ -404,9 +382,9 @@ namespace Tmc.Vision
                         tab.Color = detectcolor(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletcolorsRanges);
                         if ((IsVisableTablet(src, tablet, 8) == true))
                         {//if it's right color and we can detect it's on top pop to start of the list
-                            TabletList.Insert(0,tab);
+                            TabletList.Insert(0, tab);
                         }
-                        else 
+                        else
                         {//otherwise add to the end
                             TabletList.Add(tab);
                         }
@@ -425,7 +403,7 @@ namespace Tmc.Vision
 
             saveImage(drawTab, "sorter tablets.jpg");
         }
-        
+
         /// <summary>
         /// lets as darken image apart from one corner
         /// </summary>
@@ -441,8 +419,8 @@ namespace Tmc.Vision
         private Image<Bgr, Byte> darkenCircle(Image<Bgr, Byte> src, int part)
         {
             Image<Bgr, Byte> darken = src.Clone();
-            int halfx = src.Cols/2;
-            int halfy = src.Rows/2;
+            int halfx = src.Cols / 2;
+            int halfy = src.Rows / 2;
             //if ((part == 3) || (part == 4))
             if ((part == 3) || (part == 4) || (part == 2))
             {
@@ -515,11 +493,11 @@ namespace Tmc.Vision
             int countBL = 0;
             int countBR = 0;
 
-            Image<Bgr, Byte> tabletImage    = CropImage(src, ((int)tablet.Center.X - (int)tablet.Radius) - expand, ((int)tablet.Center.Y - (int)tablet.Radius) - expand, ((int)tablet.Radius * 2) + expand*2, ((int)tablet.Radius * 2) + expand*2);
-            Image<Bgr, byte> TL             = darkenCircle(tabletImage, 1);//CropImage(src, ((int)tablet.Center.X - (int)tablet.Radius) - expand, ((int)tablet.Center.Y - (int)tablet.Radius) - expand, ((int)tablet.Radius) + expand, ((int)tablet.Radius) + expand);
-            Image<Bgr, byte> TR             = darkenCircle(tabletImage, 2);//CropImage(src, ((int)tablet.Center.X), ((int)tablet.Center.Y - (int)tablet.Radius) - expand, ((int)tablet.Radius) + expand, ((int)tablet.Radius) + expand);
-            Image<Bgr, byte> BL             = darkenCircle(tabletImage, 3);//CropImage(src, ((int)tablet.Center.X - (int)tablet.Radius) - expand, ((int)tablet.Center.Y), ((int)tablet.Radius) + expand, ((int)tablet.Radius * 2) + expand * 2);
-            Image<Bgr, byte> BR             = darkenCircle(tabletImage, 4);//CropImage(src, ((int)tablet.Center.X ) , ((int)tablet.Center.Y ) , ((int)tablet.Radius) + expand , ((int)tablet.Radius) + expand );
+            Image<Bgr, Byte> tabletImage = CropImage(src, ((int)tablet.Center.X - (int)tablet.Radius) - expand, ((int)tablet.Center.Y - (int)tablet.Radius) - expand, ((int)tablet.Radius * 2) + expand * 2, ((int)tablet.Radius * 2) + expand * 2);
+            Image<Bgr, byte> TL = darkenCircle(tabletImage, 1);//CropImage(src, ((int)tablet.Center.X - (int)tablet.Radius) - expand, ((int)tablet.Center.Y - (int)tablet.Radius) - expand, ((int)tablet.Radius) + expand, ((int)tablet.Radius) + expand);
+            Image<Bgr, byte> TR = darkenCircle(tabletImage, 2);//CropImage(src, ((int)tablet.Center.X), ((int)tablet.Center.Y - (int)tablet.Radius) - expand, ((int)tablet.Radius) + expand, ((int)tablet.Radius) + expand);
+            Image<Bgr, byte> BL = darkenCircle(tabletImage, 3);//CropImage(src, ((int)tablet.Center.X - (int)tablet.Radius) - expand, ((int)tablet.Center.Y), ((int)tablet.Radius) + expand, ((int)tablet.Radius * 2) + expand * 2);
+            Image<Bgr, byte> BR = darkenCircle(tabletImage, 4);//CropImage(src, ((int)tablet.Center.X ) , ((int)tablet.Center.Y ) , ((int)tablet.Radius) + expand , ((int)tablet.Radius) + expand );
             //minDist, cannyThresh
             CircleF[] CTL = DetectTablets(TL, minRadius - 2, maxRadius + 2, dp, 2.6, 2, 40);
             CircleF[] CTR = DetectTablets(TR, minRadius - 2, maxRadius + 2, dp, 2.6, 2, 40);
@@ -540,7 +518,7 @@ namespace Tmc.Vision
             {
                 if ((qwe.Center.X > (cX - padding)) && (qwe.Center.X < (cX + padding))
                     && (qwe.Center.Y > (cY - padding)) && (qwe.Center.Y < (cY + padding)))
-                       countTR++;
+                    countTR++;
                 tabletImage.Draw(qwe, new Bgr(Color.Red), 1);
             }
             foreach (CircleF qwe in CTL)
@@ -548,7 +526,7 @@ namespace Tmc.Vision
                 if ((qwe.Center.X > (cX - padding)) && (qwe.Center.X < (cX + padding))
                     && (qwe.Center.Y > (cY - padding)) && (qwe.Center.Y < (cY + padding)))
                     countTL++;
-                tabletImage.Draw(qwe, new Bgr(Color.Blue), 1); 
+                tabletImage.Draw(qwe, new Bgr(Color.Blue), 1);
             }
             foreach (CircleF qwe in CBL)
             {
@@ -569,6 +547,5 @@ namespace Tmc.Vision
             if ((countTL >= 1) && (countTR >= 1) && (countBL >= 1) && (countBR >= 1)) saveImage(tabletImage, tablet.Center.X + "good.jpg");
             return ((countTL >= 1) && (countTR >= 1) && (countBL >= 1) && (countBR >= 1));
         }
-
     }
 }
