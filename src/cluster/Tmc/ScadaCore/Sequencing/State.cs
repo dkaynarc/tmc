@@ -17,6 +17,7 @@ namespace Tmc.Scada.Core.Sequencing
         AssemblyConveyorMovingBackward,
         PlacingTrayInBuffer,
         Palletising,
+        OrderComplete,
         //Sorting Process States
         Sorting,
         PlacingTabletMagazineInSortingBuffer,
