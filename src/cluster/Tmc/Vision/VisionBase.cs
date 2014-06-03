@@ -12,14 +12,14 @@ namespace Tmc.Vision
         /// <summary>
         /// This is used for lower and higher HSV values
         /// </summary>
-        public enum HSVRange { Low = 0, High };
+        protected enum HSVRange { Low = 0, High };
 
         /// <summary>
         ///
         /// </summary>
-        public enum HSVdata { Hue = 0, Sat, Val };
+        protected enum HSVdata { Hue = 0, Sat, Val };
 
-        //public enum TC { Black = 0, White, Red, Blue, Green, Bad, Na };
+        //protected enum TC { Black = 0, White, Red, Blue, Green, Bad, Na };
 
         /// <summary>
         /// This Function lets us detect circles in an image
@@ -58,7 +58,7 @@ namespace Tmc.Vision
         /// more false circles may be detected. Circles, corresponding to the larger
         /// accumulator values, will be returned first
         /// </param>
-        public CircleF[] DetectTablets(Image<Bgr, Byte> src, int minRadius, int maxRadius, double dp, double minDist, int cannyThresh, int cannyAccumThresh)
+        protected CircleF[] DetectTablets(Image<Bgr, Byte> src, int minRadius, int maxRadius, double dp, double minDist, int cannyThresh, int cannyAccumThresh)
         {
             Image<Gray, Byte> gray = src.Convert<Gray, Byte>(); //convert source image to grayscale
 
@@ -94,7 +94,7 @@ namespace Tmc.Vision
         /// <todo>
         /// add the ol, oh into the function, this function will not be used in the future
         /// </todo>
-        public TabletColors detectcolor(Image<Bgr, byte> src, Hsv[,] HSVTabletcolorRange)
+        protected TabletColors detectcolor(Image<Bgr, byte> src, Hsv[,] HSVTabletcolorRange)
         {
             int ol = 5;
             int oh = 5;
@@ -142,7 +142,7 @@ namespace Tmc.Vision
         /// <returns>
         /// Color of the tablet
         /// </returns>
-        public TabletColors detectcolor(Hsv srcHSV, Hsv[,] HSVTabletcolorRange)
+        protected TabletColors detectcolor(Hsv srcHSV, Hsv[,] HSVTabletcolorRange)
         {
             int ol = 0;
             int oh = 0;
@@ -197,7 +197,7 @@ namespace Tmc.Vision
         /// <todo>
         /// make lowerLimitsExtra in to HSV or make overload for it
         /// </todo>
-        public bool InHSVRange(Hsv srcHsv, Hsv[,] targetHsv, TabletColors color, int lowerLimitExtra, int higherLimitExtra)
+        protected bool InHSVRange(Hsv srcHsv, Hsv[,] targetHsv, TabletColors color, int lowerLimitExtra, int higherLimitExtra)
         {
             if (targetHsv[(int)color, (int)HSVRange.Low].Hue < targetHsv[(int)color, (int)HSVRange.High].Hue)
             {
@@ -250,7 +250,7 @@ namespace Tmc.Vision
         /// <returns>
         /// returns true if it is in range, false if it is not
         /// </returns>
-        public bool InHSVRange(Hsv srcHsv, Hsv[] targetHsv, int lowerLimitExtra, int higherLimitExtra)
+        protected bool InHSVRange(Hsv srcHsv, Hsv[] targetHsv, int lowerLimitExtra, int higherLimitExtra)
         {
             if (targetHsv[(int)HSVRange.Low].Hue < targetHsv[(int)HSVRange.High].Hue)
             {
@@ -285,7 +285,7 @@ namespace Tmc.Vision
             }
         }
 
-        /*public TabletColors InRange(int srcPeak, Hsv[,] allHsvs, int type)
+        /*protected TabletColors InRange(int srcPeak, Hsv[,] allHsvs, int type)
         {
             if (type == 0)
             {
@@ -308,7 +308,7 @@ namespace Tmc.Vision
         /// <returns>
         /// Returns the image with everything removed apart from what you wanted
         /// </returns>
-        public Image<Bgr, Byte> RemoveEverythingButRange(Image<Bgr, Byte> src, Hsv[] targetHsv)//, Hsv colorGood, Hsv colorBad)
+        protected Image<Bgr, Byte> RemoveEverythingButRange(Image<Bgr, Byte> src, Hsv[] targetHsv)//, Hsv colorGood, Hsv colorBad)
         {
             Image<Hsv, Byte> temp = src.Convert<Hsv, Byte>();
             Image<Bgr, Byte> dst;
@@ -364,7 +364,7 @@ namespace Tmc.Vision
         /// <returns>
         /// returns croped image
         /// </returns>
-        public Image<Bgr, Byte> CropImage(Image<Bgr, Byte> src, int x, int y, int width, int height)
+        protected Image<Bgr, Byte> CropImage(Image<Bgr, Byte> src, int x, int y, int width, int height)
         {
             Rectangle rect = new Rectangle();
 
@@ -410,7 +410,7 @@ namespace Tmc.Vision
         /// <param name="limit"></param>
         /// <param name="hsvPart"></param>
         /// <returns></returns>
-        public int[][] getHighLowHSV(float[][] srcHSV, int limit, HSVdata hsvPart)//int hsvPart)
+        protected int[][] getHighLowHSV(float[][] srcHSV, int limit, HSVdata hsvPart)//int hsvPart)
         {
             var HsvList = new List<int[]>();
 
@@ -457,7 +457,7 @@ namespace Tmc.Vision
         /// <returns>
         /// returns 2d array for hue sat and val
         /// </returns>
-        public float[][] HsvValueFloatArray(Image<Bgr, Byte> src)
+        protected float[][] HsvValueFloatArray(Image<Bgr, Byte> src)
         {
             var HsvList = new List<float[]>();
 
@@ -507,7 +507,7 @@ namespace Tmc.Vision
         /// <returns>
         /// Image with the points on them
         /// </returns>
-        public Image<Bgr, Byte> DrawPoints(Image<Bgr, Byte> src, Point[] points)
+        protected Image<Bgr, Byte> DrawPoints(Image<Bgr, Byte> src, Point[] points)
         {
             foreach (Point point in points)
             {//draw dots just for debuging atm
@@ -538,7 +538,7 @@ namespace Tmc.Vision
         /// </param>
         /// <returns></returns>
         /// <todo>function name not very discriptive</todo>
-        public float[][] addFloats(float[][] srcFloat, float[][] srcFloatAdd)
+        protected float[][] addFloats(float[][] srcFloat, float[][] srcFloatAdd)
         {
             //float[,] values= new float[3,256];
 
@@ -567,7 +567,7 @@ namespace Tmc.Vision
         /// <todo>
         /// do bottom part of chip corectly
         /// </todo>
-        public List<Image<Bgr, Byte>> GetTablet(Image<Bgr, Byte> src, CircleF tablet)
+        protected List<Image<Bgr, Byte>> GetTablet(Image<Bgr, Byte> src, CircleF tablet)
         {
             var TabletList = new List<Image<Bgr, Byte>>();
 
@@ -700,7 +700,7 @@ namespace Tmc.Vision
         /// <returns>
         /// Histogram for HSV of the imput images combined
         /// </returns>
-        public float[][] ImagesToHisto(List<Image<Bgr, Byte>> tabletList)
+        protected float[][] ImagesToHisto(List<Image<Bgr, Byte>> tabletList)
         {
             //tabletList = Tabletcolor(src, tablet);
             float[][] abca = HsvValueFloatArray(tabletList[0]);
@@ -724,7 +724,7 @@ namespace Tmc.Vision
         /// <returns>
         /// distance between point a and b
         /// </returns>
-        public double Mag(PointF a, PointF b)
+        protected double Mag(PointF a, PointF b)
         {
             return Math.Sqrt(Math.Pow((a.X - b.X), 2) + Math.Pow((a.Y - b.Y), 2));
         }
@@ -741,7 +741,7 @@ namespace Tmc.Vision
         /// <returns>
         /// the tablets which are with the radius of our targetTablet
         /// </returns>
-        public bool OtherTabletsNear(CircleF[] knowTablets, CircleF targetTablet)
+        protected bool OtherTabletsNear(CircleF[] knowTablets, CircleF targetTablet)
         {
             //var circleList = new List<CircleF>();
             int a = 0;
@@ -786,7 +786,7 @@ namespace Tmc.Vision
         /// <returns>
         /// returns true if the circles the same, false if it is diffrent
         /// </returns>
-        public bool checkCircles(CircleF circ, CircleF targ)
+        protected bool checkCircles(CircleF circ, CircleF targ)
         {
             return ((circ.Radius == targ.Radius) && (circ.Center.X == targ.Center.X) &&
                     (circ.Center.Y == targ.Center.Y) && (circ.Area == targ.Area));
@@ -809,7 +809,7 @@ namespace Tmc.Vision
         /// <returns>
         /// True if tablet is ok and is a color we know, Flase if a unknown tablet or overlaped by other tablets
         /// </returns>
-        public bool FirstPass(int[][] hue, int[][] sat, int[][] val, CircleF circle, CircleF[] circles, Hsv[,] HSVTabletcolorsRanges)
+        protected bool FirstPass(int[][] hue, int[][] sat, int[][] val, CircleF circle, CircleF[] circles, Hsv[,] HSVTabletcolorsRanges)
         {
             if ((hue.GetLength(0) == 1) && (sat.GetLength(0) == 1) && (val.GetLength(0) == 1))
             {
@@ -852,7 +852,7 @@ namespace Tmc.Vision
         /// <param name="filename">
         /// location to save and name
         /// </param>
-        public void saveImage(Image<Bgr, Byte> src, string filename)
+        protected void saveImage(Image<Bgr, Byte> src, string filename)
         {
 #if DEBUG
             src.Save(filename);
