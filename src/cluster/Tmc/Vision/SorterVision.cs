@@ -75,7 +75,7 @@ namespace Tmc.Vision
             HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 36;
             HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 49;
             HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 147;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 123;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 127;
             HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 109;
 
             HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Hue = 177;
@@ -320,10 +320,14 @@ namespace Tmc.Vision
         /// </param>
         private void DetectGoodPickupTablets(Image<Bgr, Byte> src, CircleF[] tablets)
         {
-            Tablet tab = new Tablet();
+            //Tablet tab = new Tablet();
+            List<Tablet> TabletList = new List<Tablet>();
+
             Image<Bgr, Byte> drawTab = src.Clone();
             foreach (CircleF tablet in tablets)
             {
+                Tablet tab = new Tablet();
+
                 float[][] abca = ImagesToHisto(GetTablet(src, tablet));
 
                 int[][] hue = getHighLowHSV(abca, 50, HSVdata.Hue);
@@ -335,8 +339,7 @@ namespace Tmc.Vision
                     drawTab.Draw(tablet, new Bgr(Color.Green), 6);
                     tab.LocationPoint = CalculateTrueCordXYmm(ChessboardPoints, new PointF(tablet.Center.X, tablet.Center.Y));
                     tab.Color = detectcolor(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletcolorsRanges);
-                    tabletList.Add(tab as Tablet);
-                    
+                    tabletList.Add(tab);// as Tablet);
                 }
                 else
                 {
@@ -344,52 +347,59 @@ namespace Tmc.Vision
                 }
                 
             }
+            int b = 0;
+            foreach (CircleF tablet in tablets)
+            {
+                Tablet tab = new Tablet();
+                float[][] abca = ImagesToHisto(GetTablet(src, tablet));
+                b++;
+                int[][] hue = getHighLowHSV(abca, 50, HSVdata.Hue);
+                int[][] sat = getHighLowHSV(abca, 50, HSVdata.Sat);
+                int[][] val = getHighLowHSV(abca, 50, HSVdata.Val);
 
-            //foreach (CircleF tablet in tablets)
-            //{
-            //    float[][] abca = ImagesToHisto(GetTablet(src, tablet));
-                
-            //    int[][] hue = getHighLowHSV(abca, 50, HSVdata.Hue);
-            //    int[][] sat = getHighLowHSV(abca, 50, HSVdata.Sat);
-            //    int[][] val = getHighLowHSV(abca, 50, HSVdata.Val);
-
-            //    int a = 0;
-            //    if (IsVisableTablet(src, tablet, 5) == true)
-            //    {
-            //        foreach (Tablet tabl in tabletList)
-            //        {
-            //            if ((tablet.Center.X == tabl.LocationPoint.X) && (tablet.Center.X == tabl.LocationPoint.X))
-            //            {
-            //                a++;
-            //            }
-            //        }
-            //        if (a > 0) break;
-            //        if (FirstPass(hue, sat, val, tablet, tablets, HSVTabletcolorsRanges) == true)
-            //        {
-            //            drawTab.Draw(tablet, new Bgr(Color.Blue), 6);
-            //            tab.LocationPoint = CalculateTrueCordXYmm(ChessboardPoints, new PointF(tablet.Center.X, tablet.Center.Y));
-            //            tab.Color = detectcolor(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletcolorsRanges);
-            //            tabletList.Add(tab);
-            //        }
-            //        else
-            //        {
-            //            drawTab.Draw(tablet, new Bgr(Color.Red), 2);
-            //            tab.LocationPoint = CalculateTrueCordXYmm(ChessboardPoints, new PointF(tablet.Center.X, tablet.Center.Y));
-            //            tab.Color = TabletColors.Unknown;
-            //            tabletList.Add(tab);
-            //            //CvInvoke.cvShowImage("TLsfs", src);
-            //            //CvInvoke.cvWaitKey(0);
-            //            //CvInvoke.cvShowImage("TL", );
-            //        }
-            //    }
-            //}
-            //foreach (Tablet tabl in tabletList)
-            //{
-            //    if ((tablet.Center.X == tabl.LocationPoint.X) && (tablet.Center.X == tabl.LocationPoint.X))
-            //    {
-            //        a++;
-            //    }
-            //}
+                int a;
+                a = 0;
+                if (IsVisableTablet(src, tablet, 5) == true)
+                {
+                    foreach (Tablet tabl in tabletList)
+                    {
+                        PointF currentTablet = CalculateTrueCordXYmm(ChessboardPoints, new PointF(tablet.Center.X, tablet.Center.Y));
+                        if ((currentTablet.X == tabl.LocationPoint.X) && (currentTablet.Y == tabl.LocationPoint.Y))
+                        {
+                            a++;
+                        }
+                    }
+                    if (a > 0)
+                    {
+                        continue;
+                    }
+                    if (FirstPass(hue, sat, val, tablet, tablets, HSVTabletcolorsRanges) == true)
+                    {
+                        drawTab.Draw(tablet, new Bgr(Color.Blue), 6);
+                        tab.LocationPoint = CalculateTrueCordXYmm(ChessboardPoints, new PointF(tablet.Center.X, tablet.Center.Y));
+                        tab.Color = detectcolor(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletcolorsRanges);
+                        tabletList.Add(tab);
+                    }
+                    else
+                    {
+                        drawTab.Draw(tablet, new Bgr(Color.Red), 2);
+                        tab.LocationPoint = CalculateTrueCordXYmm(ChessboardPoints, new PointF(tablet.Center.X, tablet.Center.Y));
+                        tab.Color = TabletColors.Unknown;
+                        tabletList.Add(tab);
+                        //CvInvoke.cvShowImage("TLsfs", src);
+                        //CvInvoke.cvWaitKey(0);
+                        //CvInvoke.cvShowImage("TL", );
+                    }
+                }
+                //CvInvoke.cvWaitKey(0);
+            }
+            foreach (Tablet tabl in tabletList)
+            {
+                if ((tablet.Center.X == tabl.LocationPoint.X) && (tablet.Center.X == tabl.LocationPoint.X))
+                {
+                    a++;
+                }
+            }
 
             saveImage(drawTab, "sorter tablets.jpg");
         }
@@ -455,17 +465,21 @@ namespace Tmc.Vision
         private bool IsVisableTablet(Image<Bgr, Byte> src, CircleF tablet, int padding)
         {
             int expand = 4;
-            int count = 0;
+            int countTL = 0;
+            int countTR = 0;
+            int countBL = 0;
+            int countBR = 0;
+
             Image<Bgr, Byte> tabletImage    = CropImage(src, ((int)tablet.Center.X - (int)tablet.Radius) - expand, ((int)tablet.Center.Y - (int)tablet.Radius) - expand, ((int)tablet.Radius * 2) + expand*2, ((int)tablet.Radius * 2) + expand*2);
             Image<Bgr, byte> TL             = darkenCircle(tabletImage, 1);//CropImage(src, ((int)tablet.Center.X - (int)tablet.Radius) - expand, ((int)tablet.Center.Y - (int)tablet.Radius) - expand, ((int)tablet.Radius) + expand, ((int)tablet.Radius) + expand);
             Image<Bgr, byte> TR             = darkenCircle(tabletImage, 2);//CropImage(src, ((int)tablet.Center.X), ((int)tablet.Center.Y - (int)tablet.Radius) - expand, ((int)tablet.Radius) + expand, ((int)tablet.Radius) + expand);
             Image<Bgr, byte> BL             = darkenCircle(tabletImage, 3);//CropImage(src, ((int)tablet.Center.X - (int)tablet.Radius) - expand, ((int)tablet.Center.Y), ((int)tablet.Radius) + expand, ((int)tablet.Radius * 2) + expand * 2);
             Image<Bgr, byte> BR             = darkenCircle(tabletImage, 4);//CropImage(src, ((int)tablet.Center.X ) , ((int)tablet.Center.Y ) , ((int)tablet.Radius) + expand , ((int)tablet.Radius) + expand );
-
-            CircleF[] CTL = DetectTablets(TL, minRadius - 2, maxRadius + 2, dp, minDist, cannyThresh, 35);
-            CircleF[] CTR = DetectTablets(TR, minRadius - 2, maxRadius + 2, dp, minDist, cannyThresh, 35);
-            CircleF[] CBL = DetectTablets(BL, minRadius - 2, maxRadius + 2, dp, minDist, cannyThresh, 35);
-            CircleF[] CBR = DetectTablets(BR, minRadius - 2, maxRadius + 2, dp, minDist, cannyThresh, 35);
+            //minDist, cannyThresh
+            CircleF[] CTL = DetectTablets(TL, minRadius, maxRadius, dp, 1.7, 2, 40);
+            CircleF[] CTR = DetectTablets(TR, minRadius, maxRadius, dp, 1.7, 2, 40);
+            CircleF[] CBL = DetectTablets(BL, minRadius, maxRadius, dp, 1.7, 2, 40);
+            CircleF[] CBR = DetectTablets(BR, minRadius, maxRadius, dp, 1.7, 2, 40);
 
             //darkenCircle(tabletImage, 3);
 
@@ -481,34 +495,34 @@ namespace Tmc.Vision
             {
                 if ((qwe.Center.X > (cX - padding)) && (qwe.Center.X < (cX + padding))
                     && (qwe.Center.Y > (cY - padding)) && (qwe.Center.Y < (cY + padding)))
-                       count++;
+                       countTR++;
                 tabletImage.Draw(qwe, new Bgr(Color.Red), 1);
             }
             foreach (CircleF qwe in CTL)
             {
                 if ((qwe.Center.X > (cX - padding)) && (qwe.Center.X < (cX + padding))
                     && (qwe.Center.Y > (cY - padding)) && (qwe.Center.Y < (cY + padding)))
-                    count++;
+                    countTL++;
                 tabletImage.Draw(qwe, new Bgr(Color.Blue), 1); 
             }
             foreach (CircleF qwe in CBL)
             {
                 if ((qwe.Center.X > (cX - padding)) && (qwe.Center.X < (cX + padding))
                     && (qwe.Center.Y > (cY - padding)) && (qwe.Center.Y < (cY + padding)))
-                    count++;
+                    countBL++;
                 tabletImage.Draw(qwe, new Bgr(Color.Green), 1);
             }
             foreach (CircleF qwe in CBR)
             {
                 if ((qwe.Center.X > (cX - padding)) && (qwe.Center.X < (cX + padding))
                     && (qwe.Center.Y > (cY - padding)) && (qwe.Center.Y < (cY + padding)))
-                    count++;
+                    countBR++;
                 tabletImage.Draw(qwe, new Bgr(Color.Purple), 1);
             }
             //CvInvoke.cvShowImage("TLL", tabletImage);
             //CvInvoke.cvWaitKey(0);
-            if(count == 4)saveImage(tabletImage, tablet.Center.X + "good.jpg");
-            return (count == 4);
+            if ((countTL >= 1) && (countTR >= 1) && (countBL >= 1) && (countBR >= 1)) saveImage(tabletImage, tablet.Center.X + "good.jpg");
+            return ((countTL >= 1) && (countTR >= 1) && (countBL >= 1) && (countBR >= 1));
         }
 
     }
