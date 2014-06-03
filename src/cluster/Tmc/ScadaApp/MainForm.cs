@@ -16,7 +16,13 @@ namespace Tmc.Scada.App
     public partial class MainForm : Form
     {
         //private ScadaEngine scadaEngine = new ScadaEngine();
+
+        /// <summary>
+        /// Data table used to store TMC alarms and warnings
+        /// </summary>
         private DataTable AlarmsDataTable = new DataTable();
+
+        // Constants for column names in the alarms data table so we don't need to check for spelling every time
         private const string ALARM_LIST_TAB_PAGE_NAME = "tabAlarmList";
         private const string ALARM_GRID_DISMISS_BUTTON_NAME = "alarmDismiss";
         private const string ALARM_GRID_ALARM_NUMBER_COLUMN_NAME = "alarmNumber";
@@ -24,7 +30,14 @@ namespace Tmc.Scada.App
         private const string ALARM_GRID_ALARM_MESSAGE_COLUMN_NAME = "alarmMessage";
         private const string ALARM_GRID_ALARM_DATETIME_COLUMN_NAME = "alarmDateTime";
 
+        /// <summary>
+        /// Timer used for the main form only; used to periodically get alarm updates from SCADA Core
+        /// </summary>
         private Timer timer;
+
+        /// <summary>
+        /// Tracks the Id value of the last alarm received
+        /// </summary>
         private int lastAlarmId;
 
         /* Authentication code
@@ -43,12 +56,18 @@ namespace Tmc.Scada.App
             this.InitialiseAlarmControls();
         }
 
+        /// <summary>
+        /// Super method to call other setup methods for the alarm controls set
+        /// </summary>
         private void InitialiseAlarmControls()
         {
             this.InitialiseAlarmDataTable();
             this.SetGridViewOptions();
         }
 
+        /// <summary>
+        /// Initialise the timer and its settings
+        /// </summary>
         private void InitialiseTimer()
         {
             this.timer = new Timer();
@@ -56,6 +75,11 @@ namespace Tmc.Scada.App
             timer.Tick += timer_Tick;
         }
 
+        /// <summary>
+        /// Timer tick event - called whenever the time hits the interval value
+        /// </summary>
+        /// <param name="sender">Timer as an object</param>
+        /// <param name="e">The event object</param>
         void timer_Tick(object sender, EventArgs e)
         {
             TmcData.ComponentEventLogView newAlarm = TmcRepository.GetLatestAlarm();
@@ -65,11 +89,21 @@ namespace Tmc.Scada.App
             }
         }
 
+        /// <summary>
+        /// Checks if the latest event item fetched from the database is a new event 
+        /// by checking the fetched event's Id with the latest alarm Id stored in the data table 
+        /// </summary>
+        /// <param name="newAlarm">The alarm object</param>
+        /// <returns>Boolean value stating whether the alarm is new</returns>
         private bool AlarmIsNew(TmcData.ComponentEventLogView newAlarm)
         {
             return this.AlarmsDataTable.Rows[AlarmsDataTable.Rows.Count - 1].Field<int>(ALARM_GRID_ALARM_NUMBER_COLUMN_NAME) < newAlarm.ID;
         }
 
+        /// <summary>
+        /// Updates the last alarm Id class variable
+        /// </summary>
+        /// <param name="alarmId">The new Id value to update to</param>
         private void UpdateLastAlarmId(int alarmId)
         {
             this.lastAlarmId = alarmId;
@@ -112,24 +146,37 @@ namespace Tmc.Scada.App
 
         #region Entry Point Method for Creating Alarm Notifications
 
+        /// <summary>
+        /// Adds new alarm entry to data table which in turn adds to the alarm bar
+        /// </summary>
+        /// <param name="alarmId">The Id of the new alarm</param>
+        /// <param name="alarmType">The type of the new alarm</param>
+        /// <param name="alarmDescription">The message of the new alarm</param>
+        /// <param name="alarmDateTime">The date and time this alarm was raised</param>
         private void AddAlarmEntryToDataTable(int alarmId, string alarmType, string alarmDescription, DateTime alarmDateTime)
         {
             DataRow alarmEntryRow = this.AlarmsDataTable.NewRow();
-            alarmEntryRow["alarmNumber"] = alarmId;
-            alarmEntryRow["alarmType"] = alarmType.ToString();
-            alarmEntryRow["alarmDescription"] = alarmDescription;
-            alarmEntryRow["alarmDateTime"] = alarmDateTime;
+            alarmEntryRow[ALARM_GRID_ALARM_NUMBER_COLUMN_NAME] = alarmId;
+            alarmEntryRow[ALARM_GRID_ALARM_TYPE_COLUMN_NAME] = alarmType.ToString();
+            alarmEntryRow[ALARM_GRID_ALARM_MESSAGE_COLUMN_NAME] = alarmDescription;
+            alarmEntryRow[ALARM_GRID_ALARM_DATETIME_COLUMN_NAME] = alarmDateTime;
 
             this.AlarmsDataTable.Rows.Add(alarmEntryRow);
             this.UpdateLastAlarmId(alarmId);
-            this.AddAlarmNotification(alarmType, alarmDescription, alarmDateTime);
-            this.AddDismissButtonColumnToGridView();
+            this.AddAlarmNotification(alarmType, alarmDescription, alarmDateTime); // add alarm notification to alarm bar on the UI
+            this.AddDismissButtonColumnToGridView(); // adds dismiss button for new alarm entry in the grid view control
         }
 
         #endregion
 
         #region Alarm Bar Methods
 
+        /// <summary>
+        /// Adds a visual alarm notification to the alarm bar on the main form
+        /// </summary>
+        /// <param name="alarmType">The type of the new alarm</param>
+        /// <param name="alarmMessage">The message of the new alarm</param>
+        /// <param name="alarmDateTime">The date and time of the new alarm being raised</param>
         private void AddAlarmNotification(string alarmType, string alarmMessage, DateTime alarmDateTime)
         {
             Label alarmTypeLabel = this.GenerateAlarmTypeLabel(alarmType);
@@ -146,31 +193,45 @@ namespace Tmc.Scada.App
             this.pnlAlarms.Controls.SetChildIndex(alarmDateTimeLabel, 2);
         }
 
+        /// <summary>
+        /// Removes alarm notification from the data table, the grid view and the alarm bar
+        /// </summary>
+        /// <param name="alarmIndex">The alarm index according to the grid view</param>
         private void DismissAlarmNotifcation(int alarmIndex)
         {
             if (this.pnlAlarms.Controls.Count > 0)
             {
+                // removes the visual alarm notification fromn the alarm bar
+                // loops 3 times to remove 3 labels; the type label, message label and date time label
                 for (int i = 0; i < 3; i++)
                 {
                     this.pnlAlarms.Controls.RemoveAt((this.pnlAlarms.Controls.Count - 1) - (alarmIndex * 3));
                 }
 
                 this.AlarmsDataTable.Rows.RemoveAt(alarmIndex);
-                this.dgvAlarmsGrid.DataSource = this.AlarmsDataTable;
+                this.RefreshAlarmGridView();
             }
         }
 
+        /// <summary>
+        /// Remove all alarm notifications from data table, grid view and alarm bar
+        /// </summary>
         private void DismissAllAlarmNotifications()
         {
             this.pnlAlarms.Controls.Clear();
             this.AlarmsDataTable.Clear();
-            this.dgvAlarmsGrid.DataSource = this.AlarmsDataTable;
+            this.RefreshAlarmGridView();
         }
 
         #endregion
 
         #region Alarm Bar Label Generation Methods
 
+        /// <summary>
+        /// Generates label to show alarm type on the alarm bar
+        /// </summary>
+        /// <param name="alarmType">The type of the alarm</param>
+        /// <returns>The formatted label object including the alarm type text</returns>
         private Label GenerateAlarmTypeLabel(string alarmType)
         {
             Label alarmNameLabel = new Label();
@@ -182,6 +243,11 @@ namespace Tmc.Scada.App
             return alarmNameLabel;
         }
 
+        /// <summary>
+        /// Generates label to show alarm message on the alarm bar
+        /// </summary>
+        /// <param name="alarmType">The alamr message</param>
+        /// <returns>The formatted label object including the alarm message text</returns>
         private Label GenerateAlarmMessageLabel(string alarmMessage)
         {
             Label alarmDescriptionLabel = new Label();
@@ -192,6 +258,11 @@ namespace Tmc.Scada.App
             return alarmDescriptionLabel;
         }
 
+        /// <summary>
+        /// Generates label to show alarm date and time on the alarm bar
+        /// </summary>
+        /// <param name="alarmType">The date and time of the alarm</param>
+        /// <returns>The formatted label object including the alarm date and time text</returns>
         private Label GenerateAlarmDateTimeLabel(DateTime alarmDateTime)
         {
             Label alarmDateTimeLabel = new Label();
@@ -206,23 +277,29 @@ namespace Tmc.Scada.App
 
         #region Alarm Data Table Methods
 
+        /// <summary>
+        /// Sets up the alarm data table's columns
+        /// </summary>
         private void InitialiseAlarmDataTable()
         {
-            this.AlarmsDataTable.Columns.Add("alarmNumber", typeof(int));
-            this.AlarmsDataTable.Columns.Add("alarmType", typeof(string));
-            this.AlarmsDataTable.Columns.Add("alarmDescription", typeof(string));
-            this.AlarmsDataTable.Columns.Add("alarmDateTime", typeof(DateTime));
+            this.AlarmsDataTable.Columns.Add(ALARM_GRID_ALARM_NUMBER_COLUMN_NAME, typeof(int));
+            this.AlarmsDataTable.Columns.Add(ALARM_GRID_ALARM_TYPE_COLUMN_NAME, typeof(string));
+            this.AlarmsDataTable.Columns.Add(ALARM_GRID_ALARM_MESSAGE_COLUMN_NAME, typeof(string));
+            this.AlarmsDataTable.Columns.Add(ALARM_GRID_ALARM_DATETIME_COLUMN_NAME, typeof(DateTime));
 
-            this.AlarmsDataTable.Columns["alarmNumber"].Caption = "Alarm #";
-            this.AlarmsDataTable.Columns["alarmType"].Caption = "Type";
-            this.AlarmsDataTable.Columns["alarmDescription"].Caption = "Description";
-            this.AlarmsDataTable.Columns["alarmDateTime"].Caption = "Date & Time";
+            this.AlarmsDataTable.Columns[ALARM_GRID_ALARM_NUMBER_COLUMN_NAME].Caption = "Alarm #";
+            this.AlarmsDataTable.Columns[ALARM_GRID_ALARM_TYPE_COLUMN_NAME].Caption = "Type";
+            this.AlarmsDataTable.Columns[ALARM_GRID_ALARM_MESSAGE_COLUMN_NAME].Caption = "Description";
+            this.AlarmsDataTable.Columns[ALARM_GRID_ALARM_DATETIME_COLUMN_NAME].Caption = "Date & Time";
         }
 
         #endregion
 
         #region Alarm Gridview Methods
 
+        /// <summary>
+        /// Set up alarm grid view options
+        /// </summary>
         private void SetGridViewOptions()
         {
             if (this.dgvAlarmsGrid.DataSource == null)
@@ -230,6 +307,7 @@ namespace Tmc.Scada.App
                 return;
             }
 
+            // set grid view to be read only; users cannot interact with it outside of using the dismiss button
             this.dgvAlarmsGrid.ReadOnly = true;
             this.dgvAlarmsGrid.AllowUserToAddRows = false;
             this.dgvAlarmsGrid.AllowUserToDeleteRows = false;
@@ -243,8 +321,12 @@ namespace Tmc.Scada.App
             this.dgvAlarmsGrid.Columns[ALARM_GRID_ALARM_DATETIME_COLUMN_NAME].DefaultCellStyle.Format = "dd/MM/yy HH:mm:ss";
         }
 
+        /// <summary>
+        /// Adds dismiss button column to alarm grid view
+        /// </summary>
         private void AddDismissButtonColumnToGridView()
         {
+            // if the column already exists, jump out
             if (this.dgvAlarmsGrid.Columns.Contains(ALARM_GRID_DISMISS_BUTTON_NAME))
             {
                 return;
@@ -258,6 +340,9 @@ namespace Tmc.Scada.App
             this.dgvAlarmsGrid.Columns.Add(buttonColumn);
         }
 
+        /// <summary>
+        /// Rebind the alarm grid view with the current alarm data table
+        /// </summary>
         public void RefreshAlarmGridView()
         {
             this.dgvAlarmsGrid.DataSource = this.AlarmsDataTable;
@@ -265,6 +350,9 @@ namespace Tmc.Scada.App
 
         #endregion
 
+        /// <summary>
+        /// Jump to alarms list page in the tab control
+        /// </summary>
         private void GoToAlarmsListTabPage()
         {
             this.tbcContentsTabControl.SelectTab(ALARM_LIST_TAB_PAGE_NAME);
@@ -285,9 +373,17 @@ namespace Tmc.Scada.App
             //this.scadaEngine.EmergencyStop();
         }
 
+        /// <summary>
+        /// Event method which triggers every time a different tab in the tab control is clicked
+        /// </summary>
+        /// <param name="sender">Tab control as an object</param>
+        /// <param name="e">Event object</param>
         private void tbcContentsTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             TabControl tabControl = sender as TabControl;
+
+            // when the user selects a tab page, disable all other user controls in every other tab page
+            // this will prevent the timers in those user controls from ticking
             for (int tabPageIndex = 0; tabPageIndex < tabControl.TabPages.Count; tabPageIndex++)
             {
                 foreach (Control control in tabControl.TabPages[tabPageIndex].Controls)
@@ -300,19 +396,17 @@ namespace Tmc.Scada.App
             }
         }
 
+        /// <summary>
+        /// Event method which triggers every time a cell in the alarm grid view is clicked
+        /// </summary>
+        /// <param name="sender">Grid view as an object</param>
+        /// <param name="e">Grid view cell event object</param>
         private void dgvAlarmsGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            // detects if the dismiss button is clicked
             if (this.dgvAlarmsGrid.Columns[e.ColumnIndex].Name == ALARM_GRID_DISMISS_BUTTON_NAME)
             {
-                if (this.pnlAlarms.Controls.Count > 0)
-                {
-                    for (int i = 0; i < 3; i++)
-                    {
-                        this.pnlAlarms.Controls.RemoveAt((this.pnlAlarms.Controls.Count - 1) - (e.RowIndex * 3));
-                    }
-
-                    this.DismissAlarmNotifcation(e.RowIndex);
-                }
+                this.DismissAlarmNotifcation(e.RowIndex);
             }
         }
 

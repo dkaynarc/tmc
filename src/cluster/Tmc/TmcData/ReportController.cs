@@ -10,6 +10,13 @@ namespace TmcData
 {
     public static class ReportController
     {
+        /// <summary>
+        /// Get envrionment report data from Entity model.
+        /// </summary>
+        /// <param name="startTime">The start date to get data from. </param>
+        /// <param name="endTime">The end date to get data from.</param>
+        /// <param name="sourcesToShow">List of sources to filter by.</param>
+        /// <returns>The result data table as an IEnumerable.</returns>
         public static IEnumerable GetEnvironmentReportData(DateTime startTime, DateTime endTime, List<string> sourcesToShow)
         {
             ReportDataSet.EnvironmentDataTableDataTable dataTable = new ReportDataSet.EnvironmentDataTableDataTable();
@@ -24,6 +31,7 @@ namespace TmcData
 
             //REAL THING
 
+            // LINQ query to get data from model
             var query = from q in new ICTDEntities().EnvironmentLogViews
                         where q.Timestamp >= startTime && q.Timestamp <= endTime && q.Source.Any(s => sourcesToShow.Contains(q.Source))
                         select new
@@ -33,7 +41,7 @@ namespace TmcData
                             Timestamp = q.Timestamp
                         };
 
-
+            // Cycle through query results to put values into data table
             foreach (var view in query)
             {
                 ReportDataSet.EnvironmentDataTableRow newRow = dataTable.NewEnvironmentDataTableRow();
@@ -46,6 +54,13 @@ namespace TmcData
             return dataTable.AsEnumerable();
         }
 
+        /// <summary>
+        /// Get alarm report data from Entity model.
+        /// </summary>
+        /// <param name="startTime">The start date to get data from.</param>
+        /// <param name="endTime">The end data to get data from.</param>
+        /// <param name="typesToShow">List of types to filter by.</param>
+        /// <returns>The result data table as an IEnumerable</returns>
         public static IEnumerable GetAlarmsReportData(DateTime startTime, DateTime endTime, List<string> typesToShow)
         {
             ReportDataSet.AlarmDataTableDataTable dataTable = new ReportDataSet.AlarmDataTableDataTable();
@@ -58,6 +73,8 @@ namespace TmcData
             //dataTable.AddAlarmDataTableRow(newRow);
 
             // REAL THING
+
+            // LINQ query to get data from model
             var query = from q in new ICTDEntities().ComponentEventLogViews
                         where q.Timestamp >= startTime && q.Timestamp <= endTime && q.LogType.Any(s => typesToShow.Contains(q.LogType))
                         select new
@@ -68,6 +85,7 @@ namespace TmcData
                             LogType = q.LogType
                         };
 
+            // Cycle through results to put values into data table
             foreach (var view in query)
             {
                 ReportDataSet.AlarmDataTableRow newRow = dataTable.NewAlarmDataTableRow();
@@ -80,44 +98,60 @@ namespace TmcData
             return dataTable.AsEnumerable();
         }
 
+        /// <summary>
+        /// Get cycle report data from Entity model.
+        /// </summary>
+        /// <param name="startTime">The start date to get data from. </param>
+        /// <param name="endTime">The end date to get data from.</param>
+        /// <returns>The result data table as an IEnumerable.</returns>
         public static IEnumerable GetCycleReportData(DateTime startTime, DateTime endTime)
         {
             ReportDataSet.CycleDataTableDataTable dataTable = new ReportDataSet.CycleDataTableDataTable();
 
             // TEST DATA
-            for (int i = 0; i < 3; i++)
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    ReportDataSet.CycleDataTableRow newRow = dataTable.NewCycleDataTableRow();
+            //    newRow.Timestamp = DateTime.Now.AddDays(i);
+            //    newRow.CycleTime = 50 + i * i;
+            //    dataTable.AddCycleDataTableRow(newRow);
+            //    newRow = dataTable.NewCycleDataTableRow();
+            //    newRow.Timestamp = DateTime.Now.AddDays(i);
+            //    newRow.CycleTime = 50 - i * i;
+            //    dataTable.AddCycleDataTableRow(newRow);
+            //}
+
+            //REAL THING
+
+            // LINQ query to get data from model
+            var query = (from q in new ICTDEntities().ComponentCycleLogViews
+                        where q.Timestamp >= startTime && q.Timestamp <= endTime
+                        orderby q.ID descending
+                        select new
+                        {
+                            Name = q.Name,
+                            Timestamp = q.Timestamp,
+                            CycleTime = q.CycleTime
+                        }).Take(100); // get top 100 results only
+
+            // loop through results to put values in data table
+            foreach (var view in query)
             {
                 ReportDataSet.CycleDataTableRow newRow = dataTable.NewCycleDataTableRow();
-                newRow.Timestamp = DateTime.Now.AddDays(i);
-                newRow.CycleTime = 50 + i * i;
-                dataTable.AddCycleDataTableRow(newRow);
-                newRow = dataTable.NewCycleDataTableRow();
-                newRow.Timestamp = DateTime.Now.AddDays(i);
-                newRow.CycleTime = 50 - i * i;
+                newRow.Timestamp = view.Timestamp.HasValue ? view.Timestamp.Value : DateTime.MinValue;
+                newRow.CycleTime = view.CycleTime.HasValue ? view.CycleTime.Value : 0;
                 dataTable.AddCycleDataTableRow(newRow);
             }
-
-            ////REAL THING
-            ////var query = from q in new ICTDEntities().ComponentCycleLogViews
-            ////            where q.Timestamp >= startTime && q.Timestamp <= endTime
-            ////            select new
-            ////            {
-            ////                Name = q.Name,
-            ////                Timestamp = q.Timestamp,
-            ////                CycleTime = q.CycleTime
-            ////            };
-
-            ////foreach (var view in query)
-            ////{
-            ////    ReportDataSet.CycleDataTableRow newRow = dataTable.NewCycleDataTableRow();
-            ////    newRow.Timestamp = view.Timestamp.HasValue ? view.Timestamp.Value : DateTime.MinValue;
-            ////    newRow.CycleTime = view.CycleTime.HasValue ? view.CycleTime.Value : 0;
-            ////    dataTable.AddCycleDataTableRow(newRow);
-            ////}
 
             return dataTable.AsEnumerable();
         }
 
+        /// <summary>
+        /// Get order report data from Entity model.
+        /// </summary>
+        /// <param name="startTime">The start date to get data from. </param>
+        /// <param name="endTime">The end date to get data from.</param>
+        /// <returns>The result data table as an IEnumerable.</returns>
         public static IEnumerable GetOrderReportData(DateTime startTime, DateTime endTime, string orderIdFilter = "")
         {
             ReportDataSet.OrderDataTableDataTable dataTable = new ReportDataSet.OrderDataTableDataTable();
@@ -139,6 +173,8 @@ namespace TmcData
             //}
 
             // REAL THING
+
+            // LINQ query to get data from model
             var query = from q in new ICTDEntities().OrderListViews
                         where q.StartTime >= startTime && q.EndTime <= endTime
                         select new
@@ -153,12 +189,14 @@ namespace TmcData
                             EndTime = q.EndTime
                         };
 
+            // get order from OrderId filter if applicable
             int id;
             if (!String.IsNullOrWhiteSpace(orderIdFilter) && Int32.TryParse(orderIdFilter, out id))
             {
                 query.FirstOrDefault(x => x.OrderId == id);
             }
 
+            // loop through results to put values in data table
             foreach (var view in query)
             {
                 ReportDataSet.OrderDataTableRow newRow = dataTable.NewOrderDataTableRow();
@@ -176,6 +214,12 @@ namespace TmcData
             return dataTable.AsEnumerable();
         }
 
+        /// <summary>
+        /// Get production report data from Entity model.
+        /// </summary>
+        /// <param name="startTime">The start date to get data from. </param>
+        /// <param name="endTime">The end date to get data from.</param>
+        /// <returns>The result data table as an IEnumerable.</returns>
         public static IEnumerable GetProductionReportData(DateTime startDate, DateTime endDate)
         {
             ReportDataSet.ProductionDataTableDataTable dataTable = new ReportDataSet.ProductionDataTableDataTable();
@@ -183,6 +227,8 @@ namespace TmcData
             // TEST DATA
 
             // REAL THING
+
+            // LINQ query to get data from model
             var query = from q in new ICTDEntities().OrderListViews
                         where q.StartTime >= startDate && q.EndTime <= endDate
                         select new
@@ -192,6 +238,7 @@ namespace TmcData
                             ProductsProduced = q.NumberOfProducts
                         };
 
+            // loop through results to put values in data table
             foreach (var view in query)
             {
                 ReportDataSet.ProductionDataTableRow newRow = dataTable.NewProductionDataTableRow();
