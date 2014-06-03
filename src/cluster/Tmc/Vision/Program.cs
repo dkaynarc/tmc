@@ -33,12 +33,15 @@ namespace Tmc.Vision
             c.Initialise();
             TrayDetectorVision tray = new TrayDetectorVision(c);
             Tray<Tablet> Tray = tray.GetTabletsInTray();
+           
+            /*
             SorterVision sorter = new SorterVision(c);
             sorter.Calibration();
             while (true)
             {
                 List<Tablet> tabletList = sorter.GetVisibleTablets();
-            }
+            }*/
+
             //CvInvoke.cvWaitKey(0);
         }
     }
