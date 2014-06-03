@@ -6,6 +6,8 @@
 #endregion Header
 
 using Appccelerate.StateMachine;
+using Appccelerate.StateMachine.Extensions;
+using Appccelerate.StateMachine.Machine;
 using System;
 using System.Diagnostics;
 using Tmc.Common;
@@ -17,6 +19,21 @@ namespace Tmc.Scada.Core.Sequencing
         SortOnly,
         AssembleOnly,
         Normal
+    }
+
+    public class StateLoggerExtension : ExtensionBase<State, Trigger>
+    {
+        public IState<State, Trigger> CurrentState { get; private set; }
+        public IState<State, Trigger> PreviousState { get; private set; }
+
+        public override void SwitchedState(IStateMachineInformation<State, Trigger> stateMachine, 
+            Appccelerate.StateMachine.Machine.IState<State, Trigger> oldState, 
+            Appccelerate.StateMachine.Machine.IState<State, Trigger> newState)
+        {
+            this.CurrentState = newState;
+            this.PreviousState = oldState;
+            base.SwitchedState(stateMachine, oldState, newState);
+        }
     }
 
     public class FSMSequencer : ISequencer
@@ -32,9 +49,10 @@ namespace Tmc.Scada.Core.Sequencing
         private PassiveStateMachine<State, Trigger> _fsm;
         private Loader _loader;
         private OrderConsumer _orderConsumer;
-        private Palletiser _palletiser;
         private Sorter _sorter;
         private TrayVerifier _trayVerifier;
+        private StateLoggerExtension _transitionLogger;
+
         public FSMSequencer(ScadaEngine engine)
         {
             this._engine = engine;
@@ -55,6 +73,8 @@ namespace Tmc.Scada.Core.Sequencing
             Debug.Assert(this._trayVerifier != null);
 
             _fsm = new PassiveStateMachine<State, Trigger>();
+            _transitionLogger = new StateLoggerExtension();
+            _fsm.AddExtension(_transitionLogger);
             this.Create();
         }
 
@@ -392,7 +412,6 @@ namespace Tmc.Scada.Core.Sequencing
             _assembler.Completed += Assembler_Completed;
             _conveyorController.Completed += ConveyorController_Completed;
             _loader.Completed += Loader_Completed;
-            _palletiser.Completed += Palletiser_Completed;
             _sorter.Completed += Sorter_Completed;
             _trayVerifier.Completed += TrayVerifier_Completed;
             // The Idle_Completed handler is not registered here. It is registered/unregistered
@@ -409,11 +428,6 @@ namespace Tmc.Scada.Core.Sequencing
         }
 
         private void Loader_Completed(object sender, ControllerEventArgs e)
-        {
-            _fsm.Fire(Trigger.Completed);
-        }
-
-        private void Palletiser_Completed(object sender, ControllerEventArgs e)
         {
             _fsm.Fire(Trigger.Completed);
         }
