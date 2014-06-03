@@ -12,7 +12,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_above="@+id/completedorders_totalcountlabel_tv"
-	    android:layout_below="@+id/completedorders_to_tv"
+	    android:layout_below="@+id/completedorders_to_b"
 	    android:layout_alignTop="@+id/android:empty"
 	    android:layout_centerHorizontal="true" >
 	</ListView>
@@ -32,7 +32,7 @@
 	    android:layout_height="match_parent"
 	    android:layout_above="@+id/completedorders_totalcountlabel_tv"
 	    android:layout_alignLeft="@+id/android:list"
-	    android:layout_below="@+id/completedorders_to_tv"
+	    android:layout_below="@+id/completedorders_to_b"
 	    android:text="@string/none" />
 
 	<TextView
@@ -54,30 +54,30 @@
 	    android:text="@string/completedorders_fromlabel_tv"
 	    android:textAppearance="?android:attr/textAppearanceLarge" />
 
-	<TextView
-	    android:id="@+id/completedorders_to_tv"
+	<Button
+	    android:id="@+id/completedorders_to_b"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignLeft="@+id/completedorders_tolabel_tv"
 	    android:layout_below="@+id/completedorders_tolabel_tv"
 	    android:text="@string/default_date"
-	    android:textAppearance="?android:attr/textAppearanceLarge" />
+	    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-	<TextView
-	    android:id="@+id/completedorders_from_tv"
+	<Button
+	    android:id="@+id/completedorders_from_b"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignLeft="@+id/completedorders_fromlabel_tv"
 	    android:layout_below="@+id/completedorders_fromlabel_tv"
 	    android:text="@string/default_date"
-	    android:textAppearance="?android:attr/textAppearanceLarge" />
+	    android:textAppearance="?android:attr/textAppearanceMedium" />
 
 	<TextView
 	    android:id="@+id/completedorders_tolabel_tv"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentTop="true"
-	    android:layout_toRightOf="@+id/completedorders_from_tv"
+	    android:layout_toRightOf="@+id/completedorders_from_b"
 	    android:layout_marginLeft="25dp"
 	    android:text="@string/completedorders_tolabel_tv"
 	    android:textAppearance="?android:attr/textAppearanceLarge" />

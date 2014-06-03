@@ -69,6 +69,7 @@
         android:onClick="onLoginClicked"
         android:text="@string/loginactivity_login_b" />
 
+
   <!--   <CheckBox
         android:id="@+id/loginactivity_operator_cb"
         android:layout_width="wrap_content"

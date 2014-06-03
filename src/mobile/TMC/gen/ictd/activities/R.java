@@ -180,9 +180,9 @@ public final class R {
         public static final int alarm_time_value=0x7f0a0025;
         public static final int alarm_type_label=0x7f0a0022;
         public static final int alarm_type_value=0x7f0a0023;
-        public static final int completedorders_from_tv=0x7f0a003a;
+        public static final int completedorders_from_b=0x7f0a003a;
         public static final int completedorders_fromlabel_tv=0x7f0a0038;
-        public static final int completedorders_to_tv=0x7f0a0036;
+        public static final int completedorders_to_b=0x7f0a0036;
         public static final int completedorders_tolabel_tv=0x7f0a0039;
         public static final int completedorders_totalcount_tv=0x7f0a0037;
         public static final int completedorders_totalcountlabel_tv=0x7f0a0035;

@@ -31,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -53,7 +54,7 @@ public class CompletedOrderFragment extends ListFragment
 		public void onClick(View v)
 		{
 			DatePickerFragment newFragment = new DatePickerFragment();
-			newFragment.setTextView((TextView) v);
+			newFragment.setButton((Button) v);
 			newFragment.show(getActivity().getFragmentManager(), "datePicker");		
 		}
 	};
@@ -75,9 +76,9 @@ public class CompletedOrderFragment extends ListFragment
 				R.layout.order_row, new ArrayList<Order>()));
 		
 		Calendar now = Calendar.getInstance();
-		TextView from = (TextView) rootView
-				.findViewById(R.id.completedorders_from_tv);
-		TextView to = (TextView) rootView.findViewById(R.id.completedorders_to_tv);
+		Button from = (Button) rootView
+				.findViewById(R.id.completedorders_from_b);
+		Button to = (Button) rootView.findViewById(R.id.completedorders_to_b);
 		from.setText(DateFormat.format(Constants.DATE_FORMAT, now));
 		from.setOnClickListener(mDateListener);
 		to.setText(DateFormat.format(Constants.DATE_FORMAT, now));
@@ -258,11 +259,11 @@ public class CompletedOrderFragment extends ListFragment
 	public class DatePickerFragment extends DialogFragment implements
 			DatePickerDialog.OnDateSetListener
 	{
-		private TextView mTextView = null;
+		private Button mButton = null;
 
-		public void setTextView(TextView textView)
+		public void setButton(Button button)
 		{
-			mTextView = textView;
+			mButton = button;
 		}
 		
 		
@@ -275,7 +276,7 @@ public class CompletedOrderFragment extends ListFragment
 					Constants.DATE_FORMAT, Locale.ENGLISH);
 			try
 			{
-				calendar.setTime(format.parse(mTextView.getText().toString()));
+				calendar.setTime(format.parse(mButton.getText().toString()));
 			}
 			catch (java.text.ParseException e)
 			{
@@ -291,13 +292,13 @@ public class CompletedOrderFragment extends ListFragment
 			DatePickerDialog datePickerDialog = new DatePickerDialog(
 					getActivity(), this, year, month, day);
 
-			switch (mTextView.getId())
+			switch (mButton.getId())
 			{
-			case R.id.completedorders_from_tv:
+			case R.id.completedorders_from_b:
 				try
 				{
-					calendar.setTime(format.parse(((TextView) getActivity()
-							.findViewById(R.id.completedorders_to_tv))
+					calendar.setTime(format.parse(((Button) getActivity()
+							.findViewById(R.id.completedorders_to_b))
 							.getText().toString()));
 				}
 				catch (java.text.ParseException e)
@@ -306,12 +307,12 @@ public class CompletedOrderFragment extends ListFragment
 				datePickerDialog.getDatePicker().setMaxDate(
 						Calendar.getInstance().getTimeInMillis());
 				break;
-			case R.id.completedorders_to_tv:
+			case R.id.completedorders_to_b:
 
 				try
 				{
-					calendar.setTime(format.parse(((TextView) getActivity()
-							.findViewById(R.id.completedorders_from_tv))
+					calendar.setTime(format.parse(((Button) getActivity()
+							.findViewById(R.id.completedorders_from_b))
 							.getText().toString()));
 					datePickerDialog.getDatePicker().setMinDate(
 							calendar.getTimeInMillis());
@@ -333,13 +334,13 @@ public class CompletedOrderFragment extends ListFragment
 		
 		public void onDateSet(DatePicker view, int year, int month, int day)
 		{
-			mTextView.setText(new StringBuilder().append(day).append("/")
+			mButton.setText(new StringBuilder().append(day).append("/")
 					.append(month + 1).append("/").append(year));
 			
-			if(mTextView.getId() == R.id.completedorders_to_tv)
+			if(mButton.getId() == R.id.completedorders_to_b)
 			{
-				TextView to = (TextView)getActivity().findViewById(R.id.completedorders_to_tv);
-				TextView from = (TextView)getActivity().findViewById(R.id.completedorders_from_tv);
+				Button to = (Button)getActivity().findViewById(R.id.completedorders_to_b);
+				Button from = (Button)getActivity().findViewById(R.id.completedorders_from_b);
 				makeService(Constants.UPDATE_COMPLETED_ORDERS_COMMAND, from.getText().toString(), to.getText().toString() );
 			}
 			
