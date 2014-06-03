@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Drawing;
-using Emgu.CV;
-using Emgu.CV.CvEnum;
+﻿using Emgu.CV;
 using Emgu.CV.Structure;
-using Emgu.CV.GPU;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 using Tmc.Common;
-
 
 namespace Tmc.Vision
 {
@@ -19,11 +12,14 @@ namespace Tmc.Vision
         /// <summary>
         /// This is used for lower and higher HSV values
         /// </summary>
-        public enum HSVRange { Low = 0, High };
+        protected enum HSVRange { Low = 0, High };
 
-        public enum HSVdata { Hue = 0, Sat, Val };
+        /// <summary>
+        ///
+        /// </summary>
+        protected enum HSVdata { Hue = 0, Sat, Val };
 
-        //public enum TC { Black = 0, White, Red, Blue, Green, Bad, Na };
+        //protected enum TC { Black = 0, White, Red, Blue, Green, Bad, Na };
 
         /// <summary>
         /// This Function lets us detect circles in an image
@@ -35,11 +31,11 @@ namespace Tmc.Vision
         /// THis is the input image in which we want to find the circles
         /// </param>
         /// <param name="minRadius">
-        /// smallest circle diameter that will be detected, note this is in pixcels. 
+        /// smallest circle diameter that will be detected, note this is in pixcels.
         /// Minimal radius of the circles to search for
         /// </param>
         /// <param name="maxRadius">
-        /// biggest circle diameter that will be detected, note this is in pixcels. 
+        /// biggest circle diameter that will be detected, note this is in pixcels.
         /// Maximal radius of the circles to search for
         /// </param>
         /// <param name="dp">
@@ -62,9 +58,9 @@ namespace Tmc.Vision
         /// more false circles may be detected. Circles, corresponding to the larger
         /// accumulator values, will be returned first
         /// </param>
-        public CircleF[] DetectTablets(Image<Bgr, Byte> src, int minRadius, int maxRadius, double dp, double minDist, int cannyThresh, int cannyAccumThresh)
+        protected CircleF[] DetectTablets(Image<Bgr, Byte> src, int minRadius, int maxRadius, double dp, double minDist, int cannyThresh, int cannyAccumThresh)
         {
-            Image<Gray, Byte> gray = src.Convert<Gray, Byte>(); //convert source image to grayscale                  
+            Image<Gray, Byte> gray = src.Convert<Gray, Byte>(); //convert source image to grayscale
 
             //Set canny edge value we are going to use in houghtransform
             Gray cannyThreshold = new Gray(cannyThresh);
@@ -82,8 +78,6 @@ namespace Tmc.Vision
 
             return circles;//return the circles found
         }
-        
-
 
         /// <summary>
         /// This function tells us what color the source image is
@@ -100,7 +94,7 @@ namespace Tmc.Vision
         /// <todo>
         /// add the ol, oh into the function, this function will not be used in the future
         /// </todo>
-        public TabletColors detectcolor(Image<Bgr, byte> src, Hsv[,] HSVTabletcolorRange)
+        protected TabletColors detectcolor(Image<Bgr, byte> src, Hsv[,] HSVTabletcolorRange)
         {
             int ol = 5;
             int oh = 5;
@@ -135,7 +129,7 @@ namespace Tmc.Vision
                 return TabletColors.Unknown;
             }
         }
-        
+
         /// <summary>
         /// detects the colo bassed on the HSV range given
         /// </summary>
@@ -148,7 +142,7 @@ namespace Tmc.Vision
         /// <returns>
         /// Color of the tablet
         /// </returns>
-        public TabletColors detectcolor(Hsv srcHSV, Hsv[,] HSVTabletcolorRange)
+        protected TabletColors detectcolor(Hsv srcHSV, Hsv[,] HSVTabletcolorRange)
         {
             int ol = 0;
             int oh = 0;
@@ -203,7 +197,7 @@ namespace Tmc.Vision
         /// <todo>
         /// make lowerLimitsExtra in to HSV or make overload for it
         /// </todo>
-        public bool InHSVRange(Hsv srcHsv, Hsv[,] targetHsv, TabletColors color, int lowerLimitExtra, int higherLimitExtra)
+        protected bool InHSVRange(Hsv srcHsv, Hsv[,] targetHsv, TabletColors color, int lowerLimitExtra, int higherLimitExtra)
         {
             if (targetHsv[(int)color, (int)HSVRange.Low].Hue < targetHsv[(int)color, (int)HSVRange.High].Hue)
             {
@@ -256,7 +250,7 @@ namespace Tmc.Vision
         /// <returns>
         /// returns true if it is in range, false if it is not
         /// </returns>
-        public bool InHSVRange(Hsv srcHsv, Hsv[] targetHsv, int lowerLimitExtra, int higherLimitExtra)
+        protected bool InHSVRange(Hsv srcHsv, Hsv[] targetHsv, int lowerLimitExtra, int higherLimitExtra)
         {
             if (targetHsv[(int)HSVRange.Low].Hue < targetHsv[(int)HSVRange.High].Hue)
             {
@@ -267,7 +261,7 @@ namespace Tmc.Vision
                 (srcHsv.Satuation <= (targetHsv[(int)HSVRange.High].Satuation + higherLimitExtra)) &&
                 (srcHsv.Value <= (targetHsv[(int)HSVRange.High].Value + higherLimitExtra)));
             }
-            else 
+            else
             {
                 if (srcHsv.Hue >= (targetHsv[(int)HSVRange.Low].Hue - lowerLimitExtra))
                 {
@@ -291,11 +285,10 @@ namespace Tmc.Vision
             }
         }
 
-        /*public TabletColors InRange(int srcPeak, Hsv[,] allHsvs, int type)
+        /*protected TabletColors InRange(int srcPeak, Hsv[,] allHsvs, int type)
         {
             if (type == 0)
             {
- 
             }
             foreach(Hsv allHsv in allHsvs)
             {
@@ -315,7 +308,7 @@ namespace Tmc.Vision
         /// <returns>
         /// Returns the image with everything removed apart from what you wanted
         /// </returns>
-        public Image<Bgr, Byte> RemoveEverythingButRange(Image<Bgr, Byte> src, Hsv[] targetHsv)//, Hsv colorGood, Hsv colorBad)
+        protected Image<Bgr, Byte> RemoveEverythingButRange(Image<Bgr, Byte> src, Hsv[] targetHsv)//, Hsv colorGood, Hsv colorBad)
         {
             Image<Hsv, Byte> temp = src.Convert<Hsv, Byte>();
             Image<Bgr, Byte> dst;
@@ -371,7 +364,7 @@ namespace Tmc.Vision
         /// <returns>
         /// returns croped image
         /// </returns>
-        public Image<Bgr, Byte> CropImage(Image<Bgr, Byte> src, int x, int y, int width, int height)
+        protected Image<Bgr, Byte> CropImage(Image<Bgr, Byte> src, int x, int y, int width, int height)
         {
             Rectangle rect = new Rectangle();
 
@@ -379,9 +372,9 @@ namespace Tmc.Vision
             rect.Y = y;
             rect.Width = width;
             rect.Height = height;
-            if (x < 0 )
+            if (x < 0)
             {
-                rect.X = 0; 
+                rect.X = 0;
             }
             else if (x > src.Cols)
             {
@@ -406,10 +399,8 @@ namespace Tmc.Vision
             {
                 rect.Height = src.Rows - rect.Y;
             }
-            
-                
 
-            return src.GetSubRect(rect);
+            return src.GetSubRect(rect).Clone();
         }
 
         /// <summary>
@@ -419,7 +410,7 @@ namespace Tmc.Vision
         /// <param name="limit"></param>
         /// <param name="hsvPart"></param>
         /// <returns></returns>
-        public int[][] getHighLowHSV(float[][] srcHSV, int limit, HSVdata hsvPart)//int hsvPart)
+        protected int[][] getHighLowHSV(float[][] srcHSV, int limit, HSVdata hsvPart)//int hsvPart)
         {
             var HsvList = new List<int[]>();
 
@@ -435,9 +426,7 @@ namespace Tmc.Vision
                     {
                         hsvLH[(int)HSVRange.Low] = j;
                         toggle = 1;
-
                     }
-
                 }
                 else if (srcHSV[(int)hsvPart][j] < limit)
                 {
@@ -450,11 +439,9 @@ namespace Tmc.Vision
                 }
                 if ((j == 255) && (toggle == 1))
                 {
-
                     hsvLH[(int)HSVRange.High] = 255;
                     HsvList.Add(hsvLH.Clone() as int[]);
                     toggle = 0;
-
                 }
             }
             //}
@@ -470,7 +457,7 @@ namespace Tmc.Vision
         /// <returns>
         /// returns 2d array for hue sat and val
         /// </returns>
-        public float[][] HsvValueFloatArray(Image<Bgr, Byte> src)
+        protected float[][] HsvValueFloatArray(Image<Bgr, Byte> src)
         {
             var HsvList = new List<float[]>();
 
@@ -520,7 +507,7 @@ namespace Tmc.Vision
         /// <returns>
         /// Image with the points on them
         /// </returns>
-        public Image<Bgr, Byte> DrawPoints(Image<Bgr, Byte> src, Point[] points)
+        protected Image<Bgr, Byte> DrawPoints(Image<Bgr, Byte> src, Point[] points)
         {
             foreach (Point point in points)
             {//draw dots just for debuging atm
@@ -551,7 +538,7 @@ namespace Tmc.Vision
         /// </param>
         /// <returns></returns>
         /// <todo>function name not very discriptive</todo>
-        public float[][] addFloats(float[][] srcFloat, float[][] srcFloatAdd)
+        protected float[][] addFloats(float[][] srcFloat, float[][] srcFloatAdd)
         {
             //float[,] values= new float[3,256];
 
@@ -577,7 +564,10 @@ namespace Tmc.Vision
         /// <returns>
         /// List of images of the tablet
         /// </returns>
-        public List<Image<Bgr, Byte>> GetTablet(Image<Bgr, Byte> src, CircleF tablet)
+        /// <todo>
+        /// do bottom part of chip corectly
+        /// </todo>
+        protected List<Image<Bgr, Byte>> GetTablet(Image<Bgr, Byte> src, CircleF tablet)
         {
             var TabletList = new List<Image<Bgr, Byte>>();
 
@@ -610,11 +600,6 @@ namespace Tmc.Vision
             points[5].X = (int)(tablet.Center.X - (tablet.Radius * angle6));
             points[5].Y = (int)(tablet.Center.Y - (Math.Sin(16 * (Math.PI / 180)) * rad));
 
-
-
-
-
-
             Image<Bgr, Byte> MID = CropImage(src, (int)(tablet.Center.X - (rad * angle1)), (int)(tablet.Center.Y - (rad * angle1)), (int)((rad * angle1) * 2), (int)((rad * angle1) * 2));
 
             Image<Bgr, Byte> LS1 = CropImage(src, points[1].X, points[1].Y, points[0].X - points[1].X, ((int)tablet.Center.Y - points[1].Y) * 2);
@@ -635,11 +620,34 @@ namespace Tmc.Vision
             Image<Bgr, Byte> TS4 = CropImage(src, points[0].X + (points[4].Y - points[0].Y), points[0].Y - ((points[0].X - points[4].X)), ((int)tablet.Center.Y - points[4].Y) * 2, points[3].X - points[4].X);
             Image<Bgr, Byte> TS5 = CropImage(src, points[0].X + (points[5].Y - points[0].Y), points[0].Y - ((points[0].X - points[5].X)), ((int)tablet.Center.Y - points[5].Y) * 2, points[4].X - points[5].X);
 
-            Image<Bgr, Byte> BS1 = CropImage(src, points[0].X + (points[1].Y - points[0].Y), points[0].Y - ((points[0].X - points[1].X)), ((int)tablet.Center.Y - points[1].Y) * 2, points[0].X - points[1].X);
-            Image<Bgr, Byte> BS2 = CropImage(src, points[0].X + (points[2].Y - points[0].Y), points[0].Y - ((points[0].X - points[2].X)), ((int)tablet.Center.Y - points[2].Y) * 2, points[1].X - points[2].X);
-            Image<Bgr, Byte> BS3 = CropImage(src, points[0].X + (points[3].Y - points[0].Y), points[0].Y - ((points[0].X - points[3].X)), ((int)tablet.Center.Y - points[3].Y) * 2, points[2].X - points[3].X);
-            Image<Bgr, Byte> BS4 = CropImage(src, points[0].X + (points[4].Y - points[0].Y), points[0].Y - ((points[0].X - points[4].X)), ((int)tablet.Center.Y - points[4].Y) * 2, points[3].X - points[4].X);
-            Image<Bgr, Byte> BS5 = CropImage(src, points[0].X + (points[5].Y - points[0].Y), points[0].Y - ((points[0].X - points[5].X)), ((int)tablet.Center.Y - points[5].Y) * 2, points[4].X - points[5].X);
+
+            // [Donald] - updating the BS codes for bottom side
+            int _widthOfCropS1 = ((int)tablet.Center.Y - points[1].Y) * 2;
+            int _heightOfCropS1 = points[0].X - points[1].X;
+            int _BS1_Y = points[0].Y + _heightOfCropS1;
+            Image<Bgr, Byte> BS1 = CropImage(src, points[0].X + (points[1].Y - points[0].Y), _BS1_Y, _widthOfCropS1, _heightOfCropS1);
+
+            int _widthOfCropS2 = ((int)tablet.Center.Y - points[2].Y) * 2;
+            int _heightOfCropS2 = points[1].X - points[2].X;
+            int _BS2_Y = _BS1_Y + _heightOfCropS2;
+            Image<Bgr, Byte> BS2 = CropImage(src, points[0].X + (points[2].Y - points[0].Y), _BS2_Y, _widthOfCropS2, _heightOfCropS2);
+
+            int _widthOfCropS3 = ((int)tablet.Center.Y - points[3].Y) * 2;
+            int _heightOfCropS3 = points[2].X - points[3].X;
+            int _BS3_Y = _BS2_Y + _heightOfCropS3;
+            Image<Bgr, Byte> BS3 = CropImage(src, points[0].X + (points[3].Y - points[0].Y), _BS3_Y, _widthOfCropS3, _heightOfCropS3);
+
+            int _widthOfCropS4 = ((int)tablet.Center.Y - points[4].Y) * 2;
+            int _heightOfCropS4 = points[3].X - points[4].X;
+            int _BS4_Y = _BS3_Y + _heightOfCropS4;
+            Image<Bgr, Byte> BS4 = CropImage(src, points[0].X + (points[4].Y - points[0].Y), _BS4_Y, _widthOfCropS4, _heightOfCropS4);
+
+            int _widthOfCropS5 = ((int)tablet.Center.Y - points[5].Y) * 2;
+            int _heightOfCropS5 = points[4].X - points[5].X;
+            int _BS5_Y = _BS4_Y + _heightOfCropS5;
+
+            Image<Bgr, Byte> BS5 = CropImage(src, points[0].X + (points[5].Y - points[0].Y), _BS5_Y, _widthOfCropS5, _heightOfCropS5);
+            // --- end of code change for BS
 
             TabletList.Add(MID);
 
@@ -661,6 +669,14 @@ namespace Tmc.Vision
             TabletList.Add(TS4);
             TabletList.Add(TS5);
 
+            //Donald - adding to tablet list for BS
+            TabletList.Add(BS1);
+            TabletList.Add(BS2);
+            TabletList.Add(BS3);
+            TabletList.Add(BS4);
+            TabletList.Add(BS5);
+
+
             points[6].X = points[0].X + (points[1].Y - points[0].Y);
             points[6].Y = (points[0].Y - ((points[0].X - points[1].X)));
 
@@ -671,22 +687,7 @@ namespace Tmc.Vision
             points[9].X = points[0].X + (points[4].Y - points[0].Y);
             points[9].Y = points[0].Y - ((points[0].X - points[4].X));
             points[10].X = points[0].X + (points[5].Y - points[0].Y);
-            points[10].Y = points[0].Y - ((points[0].X - points[5].X));//points[0].Y - ((points[5].Y - points[0].Y) );
-
-            //Image<Bgr, Byte> TS2 = CropImage(src, points[2].X, points[2].Y, ((int)tablet.Center.Y - points[2].Y) * 2, points[1].X - points[2].X);
-            //Image<Bgr, Byte> TS3 = CropImage(src, points[3].X, points[3].Y, ((int)tablet.Center.Y - points[3].Y) * 2, points[2].X - points[3].X);
-            //Image<Bgr, Byte> TS4 = CropImage(src, points[4].X, points[4].Y, ((int)tablet.Center.Y - points[4].Y) * 2, points[3].X - points[4].X);
-            //Image<Bgr, Byte> TS5 = CropImage(src, points[5].X, points[5].Y, ((int)tablet.Center.Y - points[5].Y) * 2, points[4].X - points[5].X);
-
-            CvInvoke.cvShowImage("MID", MID);
-
-            Image<Bgr, Byte> derp;
-
-            //derp = DrawPoints(src, points);
-
-            //CvInvoke.cvShowImage("Test Window3", derp);
-            //CvInvoke.cvWaitKey(0);
-
+            points[10].Y = points[0].Y - ((points[0].X - points[5].X));
             return TabletList;
         }
 
@@ -699,11 +700,11 @@ namespace Tmc.Vision
         /// <returns>
         /// Histogram for HSV of the imput images combined
         /// </returns>
-        public float[][] ImagesToHisto(List<Image<Bgr, Byte>> tabletList)
+        protected float[][] ImagesToHisto(List<Image<Bgr, Byte>> tabletList)
         {
             //tabletList = Tabletcolor(src, tablet);
             float[][] abca = HsvValueFloatArray(tabletList[0]);
-            for (int i = 1; i < tabletList.Capacity - 1; i++)
+            for (int i = 1; i < tabletList.Count - 1; i++)
             {
                 float[][] abc = HsvValueFloatArray(tabletList[i]);
                 abca = addFloats(abca, abc);
@@ -723,9 +724,9 @@ namespace Tmc.Vision
         /// <returns>
         /// distance between point a and b
         /// </returns>
-        public double Mag(PointF a, PointF b)
+        protected double Mag(PointF a, PointF b)
         {
-            return Math.Sqrt(Math.Pow((a.X - b.X),2) + Math.Pow((a.Y - b.Y),2) );
+            return Math.Sqrt(Math.Pow((a.X - b.X), 2) + Math.Pow((a.Y - b.Y), 2));
         }
 
         /// <summary>
@@ -740,28 +741,27 @@ namespace Tmc.Vision
         /// <returns>
         /// the tablets which are with the radius of our targetTablet
         /// </returns>
-        public CircleF[] OtherTabletsNear(CircleF[] knowTablets, CircleF targetTablet)
+        protected bool OtherTabletsNear(CircleF[] knowTablets, CircleF targetTablet)
         {
-            var circleList = new List<CircleF>();
-
+            //var circleList = new List<CircleF>();
+            int a = 0;
             foreach (CircleF knowTablet in knowTablets)
             {
                 double Mag = Math.Sqrt(Math.Pow((targetTablet.Center.X - knowTablet.Center.X), 2) + Math.Pow((targetTablet.Center.Y - knowTablet.Center.Y), 2));
-                int a = 0;
+
                 bool b = checkCircles(knowTablet, targetTablet);
                 if ((Mag <= targetTablet.Radius) && (checkCircles(knowTablet, targetTablet) == false))
                 {//center is in the radius of the circle
                     a++;
-                    circleList.Add(knowTablet);
+                    //circleList.Add(knowTablet);
                     //int a = 0;
                     //targetTablet
                 }
                 if ((Mag < (targetTablet.Radius + knowTablet.Radius)) && (checkCircles(knowTablet, targetTablet) == false))
                 {//if the circle crosses over
-
                     if (a < 1)
                     {
-                        circleList.Add(knowTablet);
+                        //circleList.Add(knowTablet);
                     }
 
                     a++;
@@ -769,7 +769,7 @@ namespace Tmc.Vision
                 }
             }
 
-            return circleList.ToArray();
+            return (a == 0);// circleList.ToArray();
 
             //return knowTablets;
         }
@@ -786,7 +786,7 @@ namespace Tmc.Vision
         /// <returns>
         /// returns true if the circles the same, false if it is diffrent
         /// </returns>
-        public bool checkCircles(CircleF circ, CircleF targ)
+        protected bool checkCircles(CircleF circ, CircleF targ)
         {
             return ((circ.Radius == targ.Radius) && (circ.Center.X == targ.Center.X) &&
                     (circ.Center.Y == targ.Center.Y) && (circ.Area == targ.Area));
@@ -809,7 +809,7 @@ namespace Tmc.Vision
         /// <returns>
         /// True if tablet is ok and is a color we know, Flase if a unknown tablet or overlaped by other tablets
         /// </returns>
-        public bool FirstPass(int[][] hue, int[][] sat, int[][] val, CircleF circle, CircleF[] circles, Hsv[,] HSVTabletcolorsRanges)
+        protected bool FirstPass(int[][] hue, int[][] sat, int[][] val, CircleF circle, CircleF[] circles, Hsv[,] HSVTabletcolorsRanges)
         {
             if ((hue.GetLength(0) == 1) && (sat.GetLength(0) == 1) && (val.GetLength(0) == 1))
             {
@@ -841,8 +841,22 @@ namespace Tmc.Vision
                 if ((b != TabletColors.Unknown) && (b == c) && (b == d)) return true;
                 else return false;
             }
-
         }
 
+        /// <summary>
+        /// saves image but only in debug
+        /// </summary>
+        /// <param name="src">
+        /// image to save
+        /// </param>
+        /// <param name="filename">
+        /// location to save and name
+        /// </param>
+        protected void saveImage(Image<Bgr, Byte> src, string filename)
+        {
+#if DEBUG
+            src.Save(filename);
+#endif
+        }
     }
 }

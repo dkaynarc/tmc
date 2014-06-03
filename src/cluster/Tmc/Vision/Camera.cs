@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Emgu.CV;
-using Emgu.CV.CvEnum;
+﻿using Emgu.CV;
 using Emgu.CV.Structure;
-using System.Drawing;
-using Tmc.Common;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Net;
+using Tmc.Common;
 
 namespace Tmc.Vision
 {
     public class Camera : ICamera
     {
         public string Name { get; set; }
+
         public Uri ConnectionString { get; set; }
 
         public Capture CaptureDevice { get { return _capture; } private set { _capture = value; } }
@@ -100,8 +95,8 @@ namespace Tmc.Vision
 
             var request = WebRequest.Create(ConnectionString);
 
-            using(var response = request.GetResponse())
-            using(var stream = response.GetResponseStream())
+            using (var response = request.GetResponse())
+            using (var stream = response.GetResponseStream())
             {
                 b = Bitmap.FromStream(stream) as Bitmap;
             }
@@ -155,7 +150,6 @@ namespace Tmc.Vision
             {
                 throw new InvalidOperationException("No connection string passed to camera");
             }
-            
         }
     }
 }
