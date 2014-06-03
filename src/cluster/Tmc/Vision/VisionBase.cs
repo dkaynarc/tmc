@@ -620,11 +620,34 @@ namespace Tmc.Vision
             Image<Bgr, Byte> TS4 = CropImage(src, points[0].X + (points[4].Y - points[0].Y), points[0].Y - ((points[0].X - points[4].X)), ((int)tablet.Center.Y - points[4].Y) * 2, points[3].X - points[4].X);
             Image<Bgr, Byte> TS5 = CropImage(src, points[0].X + (points[5].Y - points[0].Y), points[0].Y - ((points[0].X - points[5].X)), ((int)tablet.Center.Y - points[5].Y) * 2, points[4].X - points[5].X);
 
-            Image<Bgr, Byte> BS1 = CropImage(src, points[0].X + (points[1].Y - points[0].Y), points[0].Y - ((points[0].X - points[1].X)), ((int)tablet.Center.Y - points[1].Y) * 2, points[0].X - points[1].X);
-            Image<Bgr, Byte> BS2 = CropImage(src, points[0].X + (points[2].Y - points[0].Y), points[0].Y - ((points[0].X - points[2].X)), ((int)tablet.Center.Y - points[2].Y) * 2, points[1].X - points[2].X);
-            Image<Bgr, Byte> BS3 = CropImage(src, points[0].X + (points[3].Y - points[0].Y), points[0].Y - ((points[0].X - points[3].X)), ((int)tablet.Center.Y - points[3].Y) * 2, points[2].X - points[3].X);
-            Image<Bgr, Byte> BS4 = CropImage(src, points[0].X + (points[4].Y - points[0].Y), points[0].Y - ((points[0].X - points[4].X)), ((int)tablet.Center.Y - points[4].Y) * 2, points[3].X - points[4].X);
-            Image<Bgr, Byte> BS5 = CropImage(src, points[0].X + (points[5].Y - points[0].Y), points[0].Y - ((points[0].X - points[5].X)), ((int)tablet.Center.Y - points[5].Y) * 2, points[4].X - points[5].X);
+
+            // [Donald] - updating the BS codes for bottom side
+            int _widthOfCropS1 = ((int)tablet.Center.Y - points[1].Y) * 2;
+            int _heightOfCropS1 = points[0].X - points[1].X;
+            int _BS1_Y = points[0].Y + _heightOfCropS1;
+            Image<Bgr, Byte> BS1 = CropImage(src, points[0].X + (points[1].Y - points[0].Y), _BS1_Y, _widthOfCropS1, _heightOfCropS1);
+
+            int _widthOfCropS2 = ((int)tablet.Center.Y - points[2].Y) * 2;
+            int _heightOfCropS2 = points[1].X - points[2].X;
+            int _BS2_Y = _BS1_Y + _heightOfCropS2;
+            Image<Bgr, Byte> BS2 = CropImage(src, points[0].X + (points[2].Y - points[0].Y), _BS2_Y, _widthOfCropS2, _heightOfCropS2);
+
+            int _widthOfCropS3 = ((int)tablet.Center.Y - points[3].Y) * 2;
+            int _heightOfCropS3 = points[2].X - points[3].X;
+            int _BS3_Y = _BS2_Y + _heightOfCropS3;
+            Image<Bgr, Byte> BS3 = CropImage(src, points[0].X + (points[3].Y - points[0].Y), _BS3_Y, _widthOfCropS3, _heightOfCropS3);
+
+            int _widthOfCropS4 = ((int)tablet.Center.Y - points[4].Y) * 2;
+            int _heightOfCropS4 = points[3].X - points[4].X;
+            int _BS4_Y = _BS3_Y + _heightOfCropS4;
+            Image<Bgr, Byte> BS4 = CropImage(src, points[0].X + (points[4].Y - points[0].Y), _BS4_Y, _widthOfCropS4, _heightOfCropS4);
+
+            int _widthOfCropS5 = ((int)tablet.Center.Y - points[5].Y) * 2;
+            int _heightOfCropS5 = points[4].X - points[5].X;
+            int _BS5_Y = _BS4_Y + _heightOfCropS5;
+
+            Image<Bgr, Byte> BS5 = CropImage(src, points[0].X + (points[5].Y - points[0].Y), _BS5_Y, _widthOfCropS5, _heightOfCropS5);
+            // --- end of code change for BS
 
             TabletList.Add(MID);
 
@@ -645,6 +668,14 @@ namespace Tmc.Vision
             TabletList.Add(TS3);
             TabletList.Add(TS4);
             TabletList.Add(TS5);
+
+            //Donald - adding to tablet list for BS
+            TabletList.Add(BS1);
+            TabletList.Add(BS2);
+            TabletList.Add(BS3);
+            TabletList.Add(BS4);
+            TabletList.Add(BS5);
+
 
             points[6].X = points[0].X + (points[1].Y - points[0].Y);
             points[6].Y = (points[0].Y - ((points[0].X - points[1].X)));
