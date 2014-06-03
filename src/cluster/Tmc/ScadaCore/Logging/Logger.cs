@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using Tmc.Scada.Core.Logging;
 
 namespace Tmc.Scada.Core
 {
@@ -39,6 +40,7 @@ namespace Tmc.Scada.Core
             var fileName = ConfigurationManager.AppSettings["LogFile"].ToString();
             _logProviders = new List<ILogProvider>();
             _logProviders.Add(new FileLogProvider(fileName));
+            _logProviders.Add(new DatabaseLogProvider());
             DefaultStrategy = LogStrategy.All;
             Strategy = DefaultStrategy;
         }

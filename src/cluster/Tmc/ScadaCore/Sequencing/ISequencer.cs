@@ -15,5 +15,7 @@ namespace Tmc.Scada.Core.Sequencing
         void FireStopTrigger();
         void FireResumeTrigger();
         void FireShutdownTrigger();
+
+        StateLoggerExtension TransitionLogger { get; }
     }
 }

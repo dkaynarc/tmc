@@ -59,26 +59,38 @@ namespace Tmc.Scada.Core
         public void Start()
         {
             //_environmentMonitor.Log(); // Should be run on a separate thread
-            this._sequencer.FireStartTrigger();
-            Logger.Instance.Write(new LogEntry("Cluster operation started", LogType.Message));
+            if (_sequencer.TransitionLogger.CurrentState.Id == State.Shutdown)
+            {
+                this._sequencer.FireStartTrigger();
+                Logger.Instance.Write(new LogEntry("Cluster operation started", LogType.Message));
+            }
         }
 
         public void Stop()
         {
-            this._sequencer.FireStopTrigger();
-            Logger.Instance.Write(new LogEntry("Cluster operation stopped", LogType.Message));
+            if ((_sequencer.TransitionLogger.CurrentState.Id != State.Stopped) || (_sequencer.TransitionLogger.CurrentState.Id != State.Shutdown))
+            {
+                this._sequencer.FireStopTrigger();
+                Logger.Instance.Write(new LogEntry("Cluster operation stopped", LogType.Message));
+            }
         }
 
         public void Resume()
         {
-            this._sequencer.FireResumeTrigger();
-            Logger.Instance.Write(new LogEntry("Cluster operation resumed", LogType.Message));
+            if (_sequencer.TransitionLogger.CurrentState.Id == State.Stopped)
+            {
+                this._sequencer.FireResumeTrigger();
+                Logger.Instance.Write(new LogEntry("Cluster operation resumed", LogType.Message));
+            }
         }
 
         public void Shutdown()
         {
-            this._sequencer.FireShutdownTrigger();
-            Logger.Instance.Write(new LogEntry("Cluster operation shutdown", LogType.Message));
+            if (_sequencer.TransitionLogger.CurrentState.Id != State.Shutdown)
+            {
+                this._sequencer.FireShutdownTrigger();
+                Logger.Instance.Write(new LogEntry("Cluster operation shutdown", LogType.Message));
+            }
         }
 
         public void EmergencyStop()

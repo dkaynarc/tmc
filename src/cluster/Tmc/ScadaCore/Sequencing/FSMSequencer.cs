@@ -51,7 +51,7 @@ namespace Tmc.Scada.Core.Sequencing
         private OrderConsumer _orderConsumer;
         private Sorter _sorter;
         private TrayVerifier _trayVerifier;
-        private StateLoggerExtension _transitionLogger;
+        public StateLoggerExtension TransitionLogger { get; private set; }
 
         public FSMSequencer(ScadaEngine engine)
         {
@@ -73,8 +73,8 @@ namespace Tmc.Scada.Core.Sequencing
             Debug.Assert(this._trayVerifier != null);
 
             _fsm = new PassiveStateMachine<State, Trigger>();
-            _transitionLogger = new StateLoggerExtension();
-            _fsm.AddExtension(_transitionLogger);
+            TransitionLogger = new StateLoggerExtension();
+            _fsm.AddExtension(TransitionLogger);
             this.Create();
         }
 

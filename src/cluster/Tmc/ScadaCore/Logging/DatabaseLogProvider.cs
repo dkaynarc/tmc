@@ -13,20 +13,30 @@ namespace Tmc.Scada.Core.Logging
         public LogType DefaultLogLevel { get; set; }
         public LogStrategy ProvidedStrategy { get; set; }
 
-        public DatabaseLogProvider(string fileName, LogType defaultLogLevel = LogType.Warning)
+        public DatabaseLogProvider(LogType defaultLogLevel = LogType.Warning)
         {
             this.ProvidedStrategy = LogStrategy.Database;
             this.DefaultLogLevel = defaultLogLevel;
         }
 
-        public void Write(string message, int sourceID)
+        public void Write(string message)
         {
-            Write(message, DefaultLogLevel, sourceID);
+            Write(message, DefaultLogLevel);
         }
 
-        public void Write(string message, LogType level, int sourceID)
+        public void Write(string message, LogType level)
         {
-            TmcRepository.AddNewEventLog(DateTime.Now, message, sourceID, level.ToString());
+            Write(message, level, DateTime.Now);
+        }
+
+        public void Write(string message, LogType level, DateTime date)
+        {
+            TmcRepository.AddNewEventLog(date, message, (int)level);
+        }
+
+        public void Write(LogEntry entry)
+        {
+            Write(entry.Message, entry.Level, entry.TimeStamp);
         }
     }
 }

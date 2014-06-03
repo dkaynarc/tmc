@@ -80,6 +80,7 @@
     <Compile Include="ConfigTemplates.cs" />
     <Compile Include="Controllers\ConveyorController.cs" />
     <Compile Include="IScada.cs" />
+    <Compile Include="Logging\DatabaseLogProvider.cs" />
     <Compile Include="Logging\EnvironmentLogEntry.cs" />
     <Compile Include="Logging\FileLogProvider.cs" />
     <Compile Include="Logging\Logger.cs" />

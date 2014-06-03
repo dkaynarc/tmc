@@ -75,5 +75,10 @@ namespace TmcData
         {
             throw new NotImplementedException();
         }
+
+        public static void AddNewEventLog(DateTime date, string message, int p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
