@@ -50,6 +50,7 @@ namespace TmcData
             new ICTDEntities().UpdateOrderStatusByID(orderId, statusId);
         }
 
+<<<<<<< HEAD
         public static void CancelOrder(int orderId)
         {
             new ICTDEntities().CancelOrder(orderId);
@@ -59,7 +60,23 @@ namespace TmcData
         {
             return new ICTDEntities().ComponentEventLogViews.LastOrDefault();
         }
-//<<<<<<< HEAD
+        public static void AddEnvironmentalReading(int sourceID, DateTime timestamp, float reading, string type)
+=======
+        public static void AddEnvironmentalReading(int sourceID, DateTime timestamp, float reading, int typeID)
+>>>>>>> 6ba530eb76496ed8303ae49976a3e216df8b9dfa
+        {
+            new ICTDEntities().AddNewEnvironmentLog(timestamp, sourceID, reading, typeID);
+        }
+
+        public static void AddEnvironmentalReading(Source source, DateTime timestamp, float reading, EnvironmentType type)
+        {
+            new ICTDEntities().AddNewEnvironmentLog(timestamp, (int)source, reading, (int)type);
+        }
+
+        public static void AddNewEventLog(DateTime timestamp, string description, int sourceID, int logTypeID)
+        {
+            new ICTDEntities().AddNewEventLog(timestamp, description, sourceID, logTypeID);
+        }
 
         public static List<string> GetEnvironmentSourceTypes()
         {
@@ -75,16 +92,5 @@ namespace TmcData
         //{
         //    return new ICTDEntities().ComponentCycleLogViews.Where(x => !String.IsNullOrWhiteSpace(x.
         //}
-//=======
-        public static void AddEnvironmentalReading(int sourceID, DateTime timestamp, float reading, string type)
-        {
-            new ICTDEntities().AddNewEnvironmentLog(timestamp, sourceID, reading, type);
-        }
-
-        public static void AddEnvironmentalReading(Source source, DateTime timestamp, float reading, EnvironmentType type)
-        {
-            new ICTDEntities().AddNewEnvironmentLog(timestamp, (int)source, reading, type.ToString());
-        }
-//>>>>>>> 3b3917f1d3e63e203885016745ce6b04af9be3dd
     }
 }

@@ -9,6 +9,7 @@
         <EntityTypeShape EntityType="ICTDModel.ComponentEventLogView" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="ICTDModel.OrderListView" Width="1.5" PointX="0.75" PointY="3.75" />
         <EntityTypeShape EntityType="ICTDModel.EnvironmentLogView" Width="1.5" PointX="2.75" PointY="3.75" />
+        <EntityTypeShape EntityType="ICTDModel.OrderListView" Width="1.5" PointX="0.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

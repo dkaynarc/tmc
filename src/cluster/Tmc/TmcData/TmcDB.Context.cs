@@ -11,9 +11,8 @@ namespace TmcData
 {
     using System;
     using System.Data.Entity;
+    using System.Data.Entity.Core.Objects;
     using System.Data.Entity.Infrastructure;
-    using System.Data.Objects;
-    using System.Data.Objects.DataClasses;
     using System.Linq;
     
     public partial class ICTDEntities : DbContext
@@ -30,8 +29,8 @@ namespace TmcData
     
         public DbSet<ComponentCycleLogView> ComponentCycleLogViews { get; set; }
         public DbSet<ComponentEventLogView> ComponentEventLogViews { get; set; }
-        public DbSet<OrderListView> OrderListViews { get; set; }
         public DbSet<EnvironmentLogView> EnvironmentLogViews { get; set; }
+        public DbSet<OrderListView> OrderListViews { get; set; }
     
         public virtual int AddNewCycleLog(Nullable<System.DateTime> timestamp, Nullable<int> cycleTime, Nullable<int> sourceID)
         {
@@ -50,7 +49,7 @@ namespace TmcData
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddNewCycleLog", timestampParameter, cycleTimeParameter, sourceIDParameter);
         }
     
-        public virtual int AddNewEnvironmentLog(Nullable<System.DateTime> timestamp, Nullable<int> sourceID, Nullable<double> reading, string type)
+        public virtual int AddNewEnvironmentLog(Nullable<System.DateTime> timestamp, Nullable<int> sourceID, Nullable<double> reading, Nullable<int> typeID)
         {
             var timestampParameter = timestamp.HasValue ?
                 new ObjectParameter("Timestamp", timestamp) :
@@ -64,14 +63,14 @@ namespace TmcData
                 new ObjectParameter("Reading", reading) :
                 new ObjectParameter("Reading", typeof(double));
     
-            var typeParameter = type != null ?
-                new ObjectParameter("Type", type) :
-                new ObjectParameter("Type", typeof(string));
+            var typeIDParameter = typeID.HasValue ?
+                new ObjectParameter("TypeID", typeID) :
+                new ObjectParameter("TypeID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddNewEnvironmentLog", timestampParameter, sourceIDParameter, readingParameter, typeParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddNewEnvironmentLog", timestampParameter, sourceIDParameter, readingParameter, typeIDParameter);
         }
     
-        public virtual int AddNewEventLog(Nullable<System.DateTime> timestamp, string description, Nullable<int> sourceID, string logType)
+        public virtual int AddNewEventLog(Nullable<System.DateTime> timestamp, string description, Nullable<int> sourceID, Nullable<int> logTypeID)
         {
             var timestampParameter = timestamp.HasValue ?
                 new ObjectParameter("Timestamp", timestamp) :
@@ -85,11 +84,11 @@ namespace TmcData
                 new ObjectParameter("SourceID", sourceID) :
                 new ObjectParameter("SourceID", typeof(int));
     
-            var logTypeParameter = logType != null ?
-                new ObjectParameter("LogType", logType) :
-                new ObjectParameter("LogType", typeof(string));
+            var logTypeIDParameter = logTypeID.HasValue ?
+                new ObjectParameter("LogTypeID", logTypeID) :
+                new ObjectParameter("LogTypeID", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddNewEventLog", timestampParameter, descriptionParameter, sourceIDParameter, logTypeParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddNewEventLog", timestampParameter, descriptionParameter, sourceIDParameter, logTypeIDParameter);
         }
     
         public virtual int AddNewOrder(Nullable<System.Guid> userID, Nullable<int> black, Nullable<int> blue, Nullable<int> red, Nullable<int> green, Nullable<int> white)

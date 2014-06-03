@@ -61,12 +61,12 @@ namespace TmcData
         }
         public static void AddEnvironmentalReading(int sourceID, DateTime timestamp, float reading, string type)
         {
-            new ICTDEntities().AddNewEnvironmentLog(timestamp, sourceID, reading, type);
+            new ICTDEntities().AddNewEnvironmentLog(timestamp, sourceID, reading, typeID);
         }
 
         public static void AddEnvironmentalReading(Source source, DateTime timestamp, float reading, EnvironmentType type)
         {
-            new ICTDEntities().AddNewEnvironmentLog(timestamp, (int)source, reading, type.ToString());
+            new ICTDEntities().AddNewEnvironmentLog(timestamp, (int)source, reading, (int)type);
         }
 
         public static List<string> GetEnvironmentSourceTypes()
@@ -83,5 +83,10 @@ namespace TmcData
         //{
         //    return new ICTDEntities().ComponentCycleLogViews.Where(x => !String.IsNullOrWhiteSpace(x.
         //}
+
+        public static void AddNewEventLog(DateTime timestamp, string description, int sourceID, int logTypeID)
+        {
+            new ICTDEntities().AddNewEventLog(timestamp, description, sourceID, logTypeID);
+        }
     }
 }
