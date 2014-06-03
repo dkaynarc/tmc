@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Drawing;
-using Emgu.CV;
-using Emgu.CV.CvEnum; 
+﻿using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using Emgu.CV.GPU;
+using System;
+using System.Diagnostics;
+using System.Drawing;
 using Tmc.Common;
-using Emgu.CV.Features2D;
-
 
 namespace Tmc.Vision
 {
@@ -21,33 +14,24 @@ namespace Tmc.Vision
         private double dp, minDist;
         private Hsv[,] HSVTabletcolorsRanges = new Hsv[5, 2];
 
-
-
         private Camera camera;
         private Point[] trayPoints = new Point[4];
         private Image<Bgr, Byte> img;
         private Image<Bgr, Byte> imgTray;
         private CircleF[] tablets;
         private double Angle;
-        Tray<Tablet> trayList = new Tray<Tablet>();
-
-
-        
-        private List<Rectangle> listOfCells = new List<Rectangle>();
-
+        private Tray<Tablet> trayList = new Tray<Tablet>();
+        private TraceListener listener = new DelimitedListTraceListener(@"debugfileTray.txt");
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public enum Side    { Left  = 0, Right };
-        
+        public enum Side { Left = 0, Right };
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public enum pMinMax { Max   = 0, Min };
-
-
-        Form1 f;
+        public enum pMinMax { Max = 0, Min };
 
         /// <summary>
         /// Constructor for this class
@@ -57,58 +41,55 @@ namespace Tmc.Vision
         /// </param>
         public TrayDetectorVision(Camera camera)
         {
-            f = new Form1();
-            f.Show();
             this.camera = camera;
-            
-            HSVTabletcolorsRanges[(int)TabletColors.Green,(int)HSVRange.Low].Hue         = 76;
-            HSVTabletcolorsRanges[(int)TabletColors.Green,(int)HSVRange.Low].Satuation   = 24;
-            HSVTabletcolorsRanges[(int)TabletColors.Green,(int)HSVRange.Low].Value       = 139;
-            HSVTabletcolorsRanges[(int)TabletColors.Green,(int)HSVRange.High].Hue        = 87;
-            HSVTabletcolorsRanges[(int)TabletColors.Green,(int)HSVRange.High].Satuation  = 96;
-            HSVTabletcolorsRanges[(int)TabletColors.Green,(int)HSVRange.High].Value      = 226;
+            Debug.Listeners.Add(listener);
 
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue            = 176;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation      = 119;//93;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value          = 200;//198;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue           = 5;//171;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation     = 194;//128;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Value         = 360;//250;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 50;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 34;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 167;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 94;//87;//74;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 103;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 255;//229;//222;
 
-            HSVTabletcolorsRanges[(int)TabletColors.White,(int)HSVRange.Low].Hue         = 51;
-            HSVTabletcolorsRanges[(int)TabletColors.White,(int)HSVRange.Low].Satuation   = 6;
-            HSVTabletcolorsRanges[(int)TabletColors.White,(int)HSVRange.Low].Value       = 244;
-            HSVTabletcolorsRanges[(int)TabletColors.White,(int)HSVRange.High].Hue        = 91;
-            HSVTabletcolorsRanges[(int)TabletColors.White,(int)HSVRange.High].Satuation  = 12;
-            HSVTabletcolorsRanges[(int)TabletColors.White,(int)HSVRange.High].Value      = 250;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue = 0;//176;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 90;//93;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value = 224;//198;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue = 8;//171;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation = 155;//128;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Value = 255;//250;
 
-            HSVTabletcolorsRanges[(int)TabletColors.Blue,(int)HSVRange.Low].Hue          = 115;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue,(int)HSVRange.Low].Satuation    = 76;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue,(int)HSVRange.Low].Value        = 69;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue,(int)HSVRange.High].Hue         = 126;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue,(int)HSVRange.High].Satuation   = 125;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue,(int)HSVRange.High].Value       = 213;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Hue = 0;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Satuation = 0;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Value = 252;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 166;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 31;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Value = 255;
 
-            HSVTabletcolorsRanges[(int)TabletColors.Black,(int)HSVRange.Low].Hue         = 102;
-            HSVTabletcolorsRanges[(int)TabletColors.Black,(int)HSVRange.Low].Satuation   = 15;
-            HSVTabletcolorsRanges[(int)TabletColors.Black,(int)HSVRange.Low].Value       = 90;
-            HSVTabletcolorsRanges[(int)TabletColors.Black,(int)HSVRange.High].Hue        = 145;
-            HSVTabletcolorsRanges[(int)TabletColors.Black,(int)HSVRange.High].Satuation  = 39;
-            HSVTabletcolorsRanges[(int)TabletColors.Black,(int)HSVRange.High].Value      = 167;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 102;//112;//115;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 34;//76;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 132;//69;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 137;//126;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 140;//124;//125;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 255;// 235;//226;// 214;//213;
 
-            minRadius = 55;
-            maxRadius = 59;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Hue = 164;//102;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Satuation = 23;//15;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Value = 69;//90;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Hue = 12;//145;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Satuation = 77;//39;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Value = 201;//167;
 
-            dp = 2.6;
+            minRadius = 54;
+            maxRadius = 61;
+
+            dp = 2.0;
             minDist = 20;
             cannyThresh = 2;
-            cannyAccumThresh = 100;
+            cannyAccumThresh = 80;
 
             //this.camera.ConnectionString = new Uri(@"http://192.168.0.190:8080/photoaf.jpg");
-            this.camera.ConnectionString = new Uri(@"https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-ash3/t1.0-9/10247212_10202692742692192_8562559696417032763_n.jpg");
+            //this.camera.ConnectionString = new Uri(@"https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-ash3/t1.0-9/10247212_10202692742692192_8562559696417032763_n.jpg");
         }
-
-
 
         /// <summary>
         /// This function is resoncible for working out the state of trays
@@ -119,62 +100,32 @@ namespace Tmc.Vision
         /// <todo>use the new function in vision base to detect tablet colour</todo>
         public Tray<Tablet> GetTabletsInTray()
         {
-            //img = camera.GetImage();
-            img = new Image<Bgr, byte>("C:/Users/user/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/trayY4.jpg");
-            img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICTD internal folder/Subsystem components/Visual Recognition/camera part/cal/tray22.jpg");
-
+            img = camera.GetImage();//C:/Users/leonid/Dropbox/ICT DESIGN/Assignment 3/vision/cal
+            //img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICT DESIGN/Assignment 3/vision/cal/tray100.jpg");
             //img = camera.GetImageHttp(new Uri(@"http://www.wwrd.com.au/images/P/2260248_Fable%20s-4%2016cm%20Accent%20Plates-652383734586-co.jpg"));
-            string win1 = "Test Window"; //The name of the window
-            CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
 
-            Image<Bgr, Byte> src = CropImage(img, 0, 777, img.Cols, 902);//reduce the image so we only see the 
-            CvInvoke.cvShowImage(win1, src); //Show the image
-            CvInvoke.cvWaitKey(0);
+            Image<Bgr, Byte> src = CropImage(img, 0, 777, img.Cols, 902);//reduce the image so we only see the coveour and tray
+
+            saveImage(src, "croped Image.jpg");
+
             DetectTray(src);//make a ref angle
 
             trayList.Angle = Angle;
 
-
-            Console.WriteLine("List of cells detected" + listOfCells.Count());
-
- 
-
-
-
-           for (int i = 0; i < listOfCells.Count(); i++)
-           {
+            foreach (Point traypoint in trayPoints)
+            {//draw dots just for debuging atm
                 Rectangle rect = new Rectangle();
-                rect.X = listOfCells.ElementAt(i).X;
-                rect.Y = listOfCells.ElementAt(i).Y;
-                rect.Width = listOfCells.ElementAt(i).Width;
-                rect.Height = listOfCells.ElementAt(i).Height;
+                rect.X = traypoint.X;
+                rect.Y = traypoint.Y;
+                rect.Width = 2;
+                rect.Height = 2;
+                src.Draw(rect, new Bgr(Color.Red), 6);
+            }
+            saveImage(img, "orig image.jpg");
+            saveImage(src, "Image with points.jpg");
 
-                src.Draw(rect, new Bgr(Color.Green), 1);
-           }
-
-
-/*
-                foreach (Point traypoint in trayPoints)
-                {//draw dots just for debuging atm
-                    Rectangle rect = new Rectangle();
-                    rect.X = traypoint.X;
-                    rect.Y = traypoint.Y;
-                    rect.Width = 2;
-                    rect.Height = 2;
-
-
-
-
-                    src.Draw(rect, new Bgr(Color.Red), 6);
-                }
-*/
-            CvInvoke.cvShowImage(win1, src); //Show the image
-
-            CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
             DetectTabletsInTray();
             DetectTabletType();
-            CvInvoke.cvWaitKey(0);
-            CvInvoke.cvDestroyWindow(win1); //Destory the window
 
             return trayList;
         }
@@ -189,43 +140,47 @@ namespace Tmc.Vision
         /// <todo>
         /// do the returns
         /// </todo>
-        private bool DetectTray(Image<Bgr, Byte> src)                
+        private bool DetectTray(Image<Bgr, Byte> src)
         {
             Point[] line = new Point[2];    //holds the location of the start and end yellow line in the picture
             double angle;                   //angle of the tray on the conveyor
 
-            
             Hsv[] HSVT = new Hsv[2];         //hold the color of the yellow line
-            HSVT[(int)HSVRange.Low].Hue             = 19;
-            HSVT[(int)HSVRange.Low].Satuation       = 80;//108.24;
-            HSVT[(int)HSVRange.Low].Value           = 240;//183.68;
-            HSVT[(int)HSVRange.High].Hue            = 29;
-            HSVT[(int)HSVRange.High].Satuation      = 331.92;
-            HSVT[(int)HSVRange.High].Value          = 360;
-            
+            HSVT[(int)HSVRange.Low].Hue = 19;
+            HSVT[(int)HSVRange.Low].Satuation = 80;//108.24;
+            HSVT[(int)HSVRange.Low].Value = 240;//183.68;
+            HSVT[(int)HSVRange.High].Hue = 29;
+            HSVT[(int)HSVRange.High].Satuation = 331.92;
+            HSVT[(int)HSVRange.High].Value = 360;
+
             Image<Bgr, Byte> col = RemoveEverythingButRange(src, HSVT); //we want to remove everything that is not yellow
-            Image<Gray, Byte> Gsrc = col.Convert<Gray, Byte>();         
+
+            int rows = col.Rows;
+            int cols = col.Cols;
+
+            col = col.Resize((int)(cols / 2.5), (int)(rows / 2.5), INTER.CV_INTER_AREA);
+            col = col.Resize(cols, rows, INTER.CV_INTER_AREA);
+
+            Image<Gray, Byte> Gsrc = col.Convert<Gray, Byte>();
 
             line = scanImgForLine(Gsrc);        //get location of the yellow line
 
             angle = AngleOfTray(line);          //get the angle of the tray
             angle -= 90;                        //remove 90 so the angle is starting from zero
 
-            Angle = angle;//make ref 
-           
-             
+            Angle = angle;//make ref
+
             //double Mag = Math.Sqrt(Math.Pow((line[0].X - line[1].X),2) + Math.Pow((line[0].Y - line[1].Y),2) );
-            CvInvoke.cvShowImage("Test Window", col); //Show the image
-            CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
-            
-            
+
+            saveImage(col, "only yellow.jpg");
+
             int x = line[0].Y - line[1].Y;
             int y = line[0].X - line[1].X;
 
             //work out the points
             trayPoints[1].X = line[1].X;
             trayPoints[1].Y = line[1].Y;
-            
+
             trayPoints[3].X = line[0].X;
             trayPoints[3].Y = line[0].Y;
 
@@ -235,67 +190,26 @@ namespace Tmc.Vision
             trayPoints[2].X = (line[0].X - x);
             trayPoints[2].Y = (line[0].Y + y);
 
-
-
-                //Getting all the tray cells and store into a list of rect
-                DetectTrayCells(trayPoints);
-
-            //work out the value we need to crop the image 
-            int xOrig   = Math.Min(Math.Min(trayPoints[0].X, trayPoints[2].X), Math.Min(trayPoints[1].X, trayPoints[3].X));
-            int yOrig   = Math.Min(Math.Min(trayPoints[0].Y, trayPoints[2].Y), Math.Min(trayPoints[1].Y, trayPoints[3].Y));
-            int xWidth  = Math.Max(Math.Max(trayPoints[0].X, trayPoints[2].X), Math.Max(trayPoints[1].X, trayPoints[3].X)) - xOrig;
+            //work out the value we need to crop the image
+            int xOrig = Math.Min(Math.Min(trayPoints[0].X, trayPoints[2].X), Math.Min(trayPoints[1].X, trayPoints[3].X));
+            int yOrig = Math.Min(Math.Min(trayPoints[0].Y, trayPoints[2].Y), Math.Min(trayPoints[1].Y, trayPoints[3].Y));
+            int xWidth = Math.Max(Math.Max(trayPoints[0].X, trayPoints[2].X), Math.Max(trayPoints[1].X, trayPoints[3].X)) - xOrig;
             int yHeight = Math.Max(Math.Max(trayPoints[0].Y, trayPoints[2].Y), Math.Max(trayPoints[1].Y, trayPoints[3].Y)) - yOrig;
 
             imgTray = CropImage(src, xOrig, yOrig, xWidth, yHeight);//crop the image
-            CvInvoke.cvShowImage("Test Window", imgTray); //Show the image
-            CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
+
+            saveImage(imgTray, "only tray.jpg");
+
             return true;
         }
-
-        /// <summary>
-        /// Getting all the tray cells and store into a list of rect
-        /// </summary>
-        /// <param name="trayPoints"></param>
-        private void DetectTrayCells(Point[] trayPoints)
-        {
-            //getting the distance of trays
-
-            int width = trayPoints[1].X - trayPoints[0].X;
-            int height = trayPoints[2].Y - trayPoints[0].Y;
-            int widthOfCell = width/3;
-            int heightOfCell = height/3;
-
-            // tray 0
-            for(int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    Rectangle rect = new Rectangle();
-                    rect.X = trayPoints[0].X + (j * widthOfCell);
-                    rect.Y = trayPoints[0].Y + (i * heightOfCell);
-                    rect.Width = widthOfCell;
-                    rect.Height = heightOfCell;
-                    listOfCells.Add(rect);
-
-                    Console.WriteLine("Cell " + listOfCells.Count() + ":" + rect.X + "," + rect.Y + " w:" + rect.Width + " h:" + rect.Height);
-
-                }
-            }
-
-        }
-
-
 
         /// <summary>
         /// Ussed to detect tablets in the tray
         /// </summary>
         private void DetectTabletsInTray()
-        {         
-            //f.getValue(ref minRadius, ref maxRadius, ref dp, ref minDist, ref cannyThresh,ref cannyAccumThresh);
+        {
             tablets = DetectTablets(imgTray, minRadius, maxRadius, dp, minDist, cannyThresh, cannyAccumThresh);
         }
-
-
 
         /// <summary>
         /// Used to detect the color of the tablet, only recognises good tablets and assemble the tray list
@@ -307,7 +221,6 @@ namespace Tmc.Vision
         {
             TabletColors tabletcolor;
             int cellInTray;
-
 
             foreach (CircleF tablet in tablets)
             {
@@ -321,19 +234,106 @@ namespace Tmc.Vision
                 {
                     imgTray.Draw(tablet, new Bgr(Color.Green), 1);
                     tabletcolor = detectcolor(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletcolorsRanges);
+                    //imgTray = CoverTablet(imgTray, tablet, 3);
                 }
                 else
                 {
                     tabletcolor = TabletColors.Unknown;
                     imgTray.Draw(tablet, new Bgr(Color.Red), 1);
+                    //imgTray = CoverTablet(imgTray, tablet, 3);
                 }
                 cellInTray = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
-                cellInTray      = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
+
+                ///cellInTray      = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
                 trayList.Cells[cellInTray] = new Tablet { Color = tabletcolor };
+
+                Debug.WriteLine(DateTime.Now.ToString("h:mm:ss tt>>  ") + "cell: " + cellInTray + " has tablet:" + tabletcolor.ToString());
+                Debug.Flush();
             }
-            f.trayFill(trayList);
-            CvInvoke.cvShowImage("Test Window", imgTray); //Show the image
-            CvInvoke.cvWaitKey(0);
+            for (int i = 0; i < 9; i++)
+            {//check we only have one tablet ineach cell
+                int count;
+                count = DetectIfMoreThenOneTableInCell(imgTray, tablets, i);
+                if (count > 1)
+                {
+                    trayList.Cells[i] = new Tablet { Color = TabletColors.Unknown };//TabletColors.Unknown;
+
+                    Debug.WriteLine(DateTime.Now.ToString("h:mm:ss tt>>  ") + "cell: " + i + " has to many tablets:");
+                    Debug.Flush();
+                }
+            }
+
+            saveImage(imgTray, "tray with circles.jpg");
+        }
+
+        /// <summary>
+        /// lets us cover up a tablet with black
+        /// </summary>
+        /// <param name="src">
+        /// source image we use to cover up tablet
+        /// </param>
+        /// <param name="tablet">
+        /// lication of tablet in src
+        /// </param>
+        /// <param name="extra">
+        /// how much bigger to we want the cover up t be
+        /// </param>
+        /// <returns>
+        /// the image with covered up tablet
+        /// </returns>
+        private Image<Bgr, Byte> CoverTablet(Image<Bgr, Byte> src, CircleF tablet, int extra)
+        {
+            Image<Bgr, Byte> ret = src.Clone();
+
+            int blue = 0;
+            int green = 0;
+            int red = 0;
+
+            Bgr coverColor = new Bgr(blue, green, red);
+
+            int x = (int)(tablet.Center.X - tablet.Radius) - extra;
+            int y = (int)(tablet.Center.Y - tablet.Radius) - extra;
+
+            int wide = (int)(tablet.Radius * 2) + extra * 2;
+
+            for (int i = y; i < wide + y; i++)
+            {
+                for (int j = x; j < wide + x; j++)
+                {
+                    ret[i, j] = coverColor;
+                }
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// This function tells us how many tablets we have detected in each cell
+        /// </summary>
+        /// <param name="src">
+        /// Image of the tray
+        /// </param>
+        /// <param name="tablets">
+        /// list of tablets
+        /// </param>
+        /// <param name="cell">
+        /// The cell we are testing
+        /// </param>
+        /// <returns>
+        /// Number of tablets on the cell
+        /// </returns>
+        private int DetectIfMoreThenOneTableInCell(Image<Bgr, Byte> src, CircleF[] tablets, int cell)
+        {
+            int count = 0;
+            int cellInTray;
+            foreach (CircleF tablet in tablets)
+            {
+                cellInTray = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
+                if (cellInTray == cell)
+                {
+                    count++;
+                }
+            }
+            return count;
         }
 
         /// <summary>
@@ -353,8 +353,8 @@ namespace Tmc.Vision
         /// </todo>
         private int FindCellInTrayForTablet(int cols, int rows, CircleF circle)
         {
-            int[] lineX = { 0, (int)(cols / 3), (int)((cols / 3) * 2), cols};
-            int[] lineY = { 0, (int)(rows / 3), (int)((rows / 3) * 2), rows};
+            int[] lineX = { 0, (int)(cols / 3), (int)((cols / 3) * 2), cols };
+            int[] lineY = { 0, (int)(rows / 3), (int)((rows / 3) * 2), rows };
 
             if ((circle.Center.X < lineX[1]) && (circle.Center.Y < lineY[3]) &&
                 (circle.Center.X > lineX[0]) && (circle.Center.Y > lineY[2]))
@@ -405,9 +405,6 @@ namespace Tmc.Vision
             {
                 return 9;
             }
-            
-
-
         }
 
         /// <summary>
@@ -430,28 +427,25 @@ namespace Tmc.Vision
             line[1].X = src.Cols;
             line[1].Y = src.Rows;
 
-            for(int row = 0; row < src.Rows;row++)
+            for (int row = 0; row < src.Rows; row++)
             {
-                for(int col = 0; col < src.Cols;col++)
+                for (int col = 0; col < src.Cols; col++)
                 {
-                    gray = src[row,col];
+                    gray = src[row, col];
 
-                    if((line[0].Y < row) && (gray.Intensity == 255))
+                    if ((line[0].Y < row) && (gray.Intensity == 255))
                     {//get hghest point of the line, double check if this right way around
                         line[0].Y = row;
                         line[0].X = col;
                     }
-                    if((line[1].Y > row) && (gray.Intensity == 255))
+                    if ((line[1].Y > row) && (gray.Intensity == 255))
                     {//get lowest point of the line
                         line[1].Y = row;
                         line[1].X = col;
                     }
-
                 }
-             
             }
             return line;
-
         }
 
         /// <summary>
@@ -463,11 +457,11 @@ namespace Tmc.Vision
         /// <returns>
         /// angle is returned
         /// </returns>
-        public double AngleOfTray( Point[] line)
+        public double AngleOfTray(Point[] line)
         {
             double m = (line[0].Y - line[1].Y) / (line[0].X - line[1].X);//work out gradient
 
-            double angle = Math.Atan((m-0)/(1+(0*m))) * 180 / Math.PI;//get angle
+            double angle = Math.Atan((m - 0) / (1 + (0 * m))) * 180 / Math.PI;//get angle
 
             return angle;
         }
