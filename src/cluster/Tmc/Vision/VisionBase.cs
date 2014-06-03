@@ -704,7 +704,7 @@ namespace Tmc.Vision
         {
             //tabletList = Tabletcolor(src, tablet);
             float[][] abca = HsvValueFloatArray(tabletList[0]);
-            for (int i = 1; i < tabletList.Capacity - 1; i++)
+            for (int i = 1; i < tabletList.Count - 1; i++)
             {
                 float[][] abc = HsvValueFloatArray(tabletList[i]);
                 abca = addFloats(abca, abc);

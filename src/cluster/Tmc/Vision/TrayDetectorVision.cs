@@ -121,7 +121,7 @@ namespace Tmc.Vision
                 rect.Height = 2;
                 src.Draw(rect, new Bgr(Color.Red), 6);
             }
-
+            saveImage(img, "orig image.jpg");
             saveImage(src, "Image with points.jpg");
 
             DetectTabletsInTray();

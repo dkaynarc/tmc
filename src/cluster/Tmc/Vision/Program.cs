@@ -28,21 +28,21 @@ namespace Tmc.Vision
         
         private static void TestCamera()
         {
-            Camera tray = new Camera();
-            tray.ConnectionString = new Uri(@"http://192.168.1.195:8080/photoaf.jpg");
+            Camera trayC = new Camera();
+            trayC.ConnectionString = new Uri(@"http://192.168.1.195:8080/photoaf.jpg");
             Camera sort = new Camera();
             sort.ConnectionString = new Uri(@"http://192.168.1.195:8080/photoaf.jpg");
             //c.SetParameters(new Dictionary<string, string> { { "Name", "TestCam1" }, { "ConnectionString", "http://192.168.0.11:8080/photo.jpg" } });//"http://192.168.0.11:8080/photo.jpg"
-            tray.Initialise();
+            trayC.Initialise();
             sort.Initialise();
-            //TrayDetectorVision tray = new TrayDetectorVision(c);
-            //Tray<Tablet> Tray = tray.GetTabletsInTray();
-            SorterVision sorter = new SorterVision(sort);
-            sorter.Calibrate();
-            while (true)
-            {
-                List<Tablet> tabletList = sorter.GetVisibleTablets();
-            }
+            TrayDetectorVision tray = new TrayDetectorVision(trayC);
+            Tray<Tablet> Tray = tray.GetTabletsInTray();
+            //SorterVision sorter = new SorterVision(sort);
+            //sorter.Calibrate();
+            //while (true)
+            //{
+            //    List<Tablet> tabletList = sorter.GetVisibleTablets();
+            //}
             //CvInvoke.cvWaitKey(0);
         }
     }
