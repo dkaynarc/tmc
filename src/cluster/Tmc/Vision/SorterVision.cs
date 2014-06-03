@@ -9,6 +9,7 @@ namespace Tmc.Vision
 {
     public class SorterVision : VisionBase
     {
+
         private int minRadius;
         private int maxRadius;
         private int cannyThresh;
@@ -101,7 +102,7 @@ namespace Tmc.Vision
         /// <summary>
         /// This function curenlty on calbrate on the chessboard
         /// </summary>
-        public void Calibration()
+        public void Calibrate()
         {
             Image<Bgr, Byte> chessB = camera.GetImage(1);
             ChessboardPoints = FindPattern(chessB.Convert<Gray, Byte>(), new Size(12, 9));
@@ -119,6 +120,7 @@ namespace Tmc.Vision
         /// <returns>
         /// returns the location of al the chessboard point
         /// </returns>
+        /// 
         private PointF[] FindPattern(Emgu.CV.Image<Gray, byte> src, Size dim)
         {
             //string win1 = "Test Window"; //The name of the window

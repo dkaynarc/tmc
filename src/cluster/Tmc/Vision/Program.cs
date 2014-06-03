@@ -25,7 +25,7 @@ namespace Tmc.Vision
             //Camera TrayDetectionCamera  = new Camera();
             TestCamera();
         }
-
+        
         private static void TestCamera()
         {
             Camera tray = new Camera();
@@ -38,7 +38,7 @@ namespace Tmc.Vision
             //TrayDetectorVision tray = new TrayDetectorVision(c);
             //Tray<Tablet> Tray = tray.GetTabletsInTray();
             SorterVision sorter = new SorterVision(sort);
-            sorter.Calibration();
+            sorter.Calibrate();
             while (true)
             {
                 List<Tablet> tabletList = sorter.GetVisibleTablets();
