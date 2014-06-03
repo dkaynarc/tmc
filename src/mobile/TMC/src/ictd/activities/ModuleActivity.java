@@ -48,7 +48,7 @@ public class ModuleActivity extends FragmentActivity implements
 
 		// Creates adapter that will return a fragment for each primary
 		// section of the app.
-		mModuleAdapter = new ModuleAdapter(getSupportFragmentManager());
+		mModuleAdapter = new ModuleAdapter(getSupportFragmentManager(), this);
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);

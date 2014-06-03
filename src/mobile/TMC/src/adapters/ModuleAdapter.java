@@ -2,12 +2,15 @@
 
 package adapters;
 
+import ictd.activities.ModuleActivity;
 import model.Constants;
 import fragments.AlarmsFragment;
 import fragments.CompletedOrderFragment;
 import fragments.EnvironmentFragment;
 import fragments.MachineStatusFragment;
 import fragments.OrderQueueFragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,9 +23,16 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class ModuleAdapter extends FragmentPagerAdapter
 {
-	public ModuleAdapter(FragmentManager fm)
+	private Context context;
+    private String roleName;
+
+
+
+	public ModuleAdapter(FragmentManager fm, Context context)
 	{
 		super(fm);
+		this.context = context;
+		roleName = readUserRole();
 	}
 
 	/**
@@ -35,7 +45,7 @@ public class ModuleAdapter extends FragmentPagerAdapter
 	public Fragment getItem(int position)
 	{
 		Fragment fragment;
-		if (Constants.USER.equals(Constants.OPERATOR))
+		if (roleName.equals(Constants.OPERATOR_ROLE))
 		{
 			switch (position)
 			{
@@ -79,7 +89,7 @@ public class ModuleAdapter extends FragmentPagerAdapter
 	@Override
 	public int getCount()
 	{
-		if (Constants.USER.equals(Constants.OPERATOR))
+		if (roleName.equals(Constants.OPERATOR_ROLE))
 			return 5;
 		else
 			return 2;
@@ -92,7 +102,7 @@ public class ModuleAdapter extends FragmentPagerAdapter
 	@Override
 	public CharSequence getPageTitle(int position)
 	{
-		if (Constants.USER.equals(Constants.OPERATOR))
+		if(roleName.equals(Constants.OPERATOR_ROLE))
 		{
 			switch (position)
 			{
@@ -116,5 +126,15 @@ public class ModuleAdapter extends FragmentPagerAdapter
 			default:
 				return Constants.COMPLETED_ORDERS;
 			}
+	}
+	
+	
+	
+	
+	private String readUserRole()
+	{
+ 		SharedPreferences preferences = ((ModuleActivity)context).getSharedPreferences(Constants.APP_PERSISTANCE, 0);
+		String userName = preferences.getString(Constants.USERROLE_KEY, null);
+		return userName;
 	}
 }

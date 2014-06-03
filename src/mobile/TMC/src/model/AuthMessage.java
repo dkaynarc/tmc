@@ -5,7 +5,8 @@ public class AuthMessage
 
 	private String Result;
 	private String Name;
-
+	private String Role;
+	
 	public String getResult()
 	{
 		return Result;
@@ -24,6 +25,16 @@ public class AuthMessage
 	public void setUserName(String userName)
 	{
 		Name = userName;
+	}
+
+	public String getRoleName() {
+	
+		return Role;
+	}
+	
+	public void setRoleName(String role) {
+		
+		Role = role;
 	}
 
 }

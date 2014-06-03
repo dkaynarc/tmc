@@ -141,8 +141,9 @@ public class LoginActivity extends Activity
 		{
 			if ((msg.getResult()).equalsIgnoreCase("success"))
 			{
-				String userName = msg.getUserName();
-				saveToSharedPref(Constants.USERNAME_KEY, userName);
+				saveToSharedPref(Constants.USERNAME_KEY, msg.getUserName());
+				saveToSharedPref(Constants.USERROLE_KEY, msg.getRoleName());
+				
 				Intent intent = new Intent(LoginActivity.this, ModuleActivity.class);
 				startActivity(intent);
 			}
@@ -153,12 +154,14 @@ public class LoginActivity extends Activity
 
 	}
 
-	private void saveToSharedPref(String usernameKey, String userName)
+	
+	
+	private void saveToSharedPref(String key, String value)
 	{
 		SharedPreferences preferences = getSharedPreferences(
 				Constants.APP_PERSISTANCE, 0);
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.putString(usernameKey, userName);
+		editor.putString(key, value);
 		editor.commit();
 	}
 

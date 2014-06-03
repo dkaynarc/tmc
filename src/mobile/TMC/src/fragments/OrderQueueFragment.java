@@ -203,6 +203,9 @@ public class OrderQueueFragment extends ListFragment
 						}).show();
 	}
 
+	
+	
+	
 	private String readCurrentUserName()
 	{
 		SharedPreferences preferences = getActivity().getSharedPreferences(
