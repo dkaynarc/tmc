@@ -130,13 +130,13 @@ namespace Tmc.Scada.Core.Sequencing
 
             _fsm.In(State.LoadingTray)
                 .ExecuteOnEntry(() =>
+                {
+                    _loader.Begin(new LoaderParams
                     {
-                        _loader.Begin(new LoaderParams
-                            {
-                                Action = LoaderAction.LoadToConveyor,
-                                Sender = this
-                            });
-                    })
+                        Action = LoaderAction.LoadToConveyor,
+                        Sender = this
+                    });
+                })
                 .On(Trigger.Completed)
                     .Goto(State.AssemblyConveyorMovingForward)
                 .On(Trigger.Stop)
@@ -148,11 +148,11 @@ namespace Tmc.Scada.Core.Sequencing
                 .ExecuteOnEntry(() =>
                 {
                     _conveyorController.Begin(new ConveyorControllerParams
-                        {
-                            ConveyorType = ConveyorType.Assembly,
-                            ConveyorAction = ConveyorAction.MoveForward,
-                            Sender = this
-                        });
+                    {
+                        ConveyorType = ConveyorType.Assembly,
+                        ConveyorAction = ConveyorAction.MoveForward,
+                        Sender = this
+                    });
                 })
                 .On(Trigger.Completed)
                     .If(() => _conveyorController.CanMoveForward(ConveyorType.Assembly))
@@ -189,10 +189,12 @@ namespace Tmc.Scada.Core.Sequencing
             _fsm.In(State.Assembling)
                 .ExecuteOnEntry(() =>
                 {
-                    var order = _orderConsumer.PeekOrder();
+                    var order = _orderConsumer.GetNextOrder();
                     _assembler.Begin(new AssemblerParams
                     {
                         OrderConfiguration = order.Configuration,
+                        Magazine = _engine.TabletMagazine,
+                        Action = AssemblerAction.Assemble,
                         Sender = this
                     });
                 })
@@ -231,6 +233,19 @@ namespace Tmc.Scada.Core.Sequencing
                         Action = LoaderAction.LoadToPalletiser,
                         Sender = this
                     });
+
+                })
+                .On(Trigger.Completed)
+                    .Goto(State.OrderComplete)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.OrderComplete)
+                .ExecuteOnEntry(() =>
+                {
+                    _orderConsumer.CompleteOrder();
                 })
                 .On(Trigger.Completed)
                     .Goto(State.Idle)
@@ -332,6 +347,13 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.Shutdown);
 
             _fsm.In(State.PlacingTabletMagazineInAssemblyBuffer)
+                .ExecuteOnEntry(() =>
+                {
+                    _assembler.Begin(new AssemblerParams
+                    {
+                        Action = AssemblerAction.GetTabletMagazine
+                    });
+                })
                 .On(Trigger.Completed)
                     .Goto(State.Idle)
                 .On(Trigger.Stop)
@@ -340,6 +362,13 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.Shutdown);
 
             _fsm.In(State.PlacingTabletMagazineOnSortingConveyorFromAssembler)
+                .ExecuteOnEntry(() =>
+                {
+                    _assembler.Begin(new AssemblerParams
+                    {
+                        Action = AssemblerAction.ReturnTabletMagazine
+                    });
+                })
                 .On(Trigger.Completed)
                     .Goto(State.SortingConveyorMovingForward)
                 .On(Trigger.Stop)

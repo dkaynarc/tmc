@@ -25,8 +25,10 @@ namespace Tmc.Scada.Core
         private SorterVision _vision;
         private SorterRobot _robot;
         private CancellationTokenSource _cancelTokenSource;
+        private Dictionary<SorterAction, Action<SorterParams>> _actionMap;
 
-        public Sorter(ClusterConfig config) : base(config)
+        public Sorter(ClusterConfig config)
+            : base(config)
         {
             this.MaxShakeRetryAttempts = 1;
             this._vision = new SorterVision(config.Cameras["SorterCamera"] as Camera);
@@ -41,6 +43,13 @@ namespace Tmc.Scada.Core
             {
                 throw new ArgumentException("Could not retrieve a SorterRobot from ClusterConfig");
             }
+
+            _actionMap = new Dictionary<SorterAction, Action<SorterParams>>()
+            {
+                { SorterAction.LoadToBuffer, (x) => LoadToBufferAsync() },
+                { SorterAction.LoadToConveyor, (x) => LoadToConveyorAsync() },
+                { SorterAction.Sort, (x) => SortAsync(x.Magazine) }
+            };
         }
 
         public override void Begin(ControllerParams parameters)
@@ -51,21 +60,12 @@ namespace Tmc.Scada.Core
                 if (!IsRunning)
                 {
                     IsRunning = true;
-                    switch (p.Action)
-                    {
-                        case SorterAction.Sort: 
-                            SortAsync(p.Magazine);
-                            break;
-                        case SorterAction.LoadToBuffer:
-                            LoadToBufferAsync();
-                            break;
-                        case SorterAction.LoadToConveyor:
-                            LoadToConveyorAsync();
-                            break;
-                        default: // no action
-                            break;
-                    }
+                    _actionMap[p.Action](p);
                 }
+            }
+            else
+            {
+                throw new ArgumentException("Controller Parameters cannot be null");
             }
         }
 
@@ -75,8 +75,8 @@ namespace Tmc.Scada.Core
             {
                 _cancelTokenSource.Cancel();
                 IsRunning = false;
-                OnCompleted(new SorterCompletedEventArgs() 
-                { 
+                OnCompleted(new SorterCompletedEventArgs()
+                {
                     OperationStatus = ControllerOperationStatus.Cancelled,
                     Action = SorterAction.Undefined
                 });
@@ -86,44 +86,44 @@ namespace Tmc.Scada.Core
         private void SortAsync(TabletMagazine mag)
         {
             var ct = _cancelTokenSource.Token;
-            Task.Run(() => 
+            Task.Run(() =>
+            {
+                var status = Sort(mag, ct);
+                IsRunning = false;
+                OnCompleted(new SorterCompletedEventArgs()
                 {
-                    var status = Sort(mag, ct);
-                    IsRunning = false;
-                    OnCompleted(new SorterCompletedEventArgs() 
-                    {
-                        OperationStatus = status,
-                        Action = SorterAction.Sort
-                    });
-                }, ct);
+                    OperationStatus = status,
+                    Action = SorterAction.Sort
+                });
+            }, ct);
         }
 
         private void LoadToConveyorAsync()
         {
             Task.Run(() =>
+            {
+                var status = LoadToConveyor();
+                IsRunning = false;
+                OnCompleted(new SorterCompletedEventArgs()
                 {
-                    var status = LoadToConveyor();
-                    IsRunning = false;
-                    OnCompleted(new SorterCompletedEventArgs() 
-                    {
-                        OperationStatus = status,
-                        Action = SorterAction.LoadToConveyor
-                    });
+                    OperationStatus = status,
+                    Action = SorterAction.LoadToConveyor
                 });
+            });
         }
 
         private void LoadToBufferAsync()
         {
             Task.Run(() =>
+            {
+                var status = LoadToConveyor();
+                IsRunning = false;
+                OnCompleted(new SorterCompletedEventArgs()
                 {
-                    var status = LoadToConveyor();
-                    IsRunning = false;
-                    OnCompleted(new SorterCompletedEventArgs() 
-                    { 
-                        OperationStatus = status,
-                        Action = SorterAction.LoadToBuffer
-                    });
+                    OperationStatus = status,
+                    Action = SorterAction.LoadToBuffer
                 });
+            });
         }
 
         private ControllerOperationStatus LoadToConveyor()
@@ -210,7 +210,7 @@ namespace Tmc.Scada.Core
             const float yScale = 1.286f;
             const float xOff = -121.9f;
             const float yOff = 357.6f;
-            
+
             float camX = p.X * xScale;
             float camY = p.Y * yScale;
 

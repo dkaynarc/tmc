@@ -39,7 +39,7 @@ namespace Tmc.Scada.Core
             catch (Exception ex)
             {
                 var outer = new Exception("Unable to initialise the cluster configuration", ex);
-                
+
                 Logger.Instance.Write(new LogEntry(outer, LogType.Error));
                 return;
             }
@@ -73,6 +73,12 @@ namespace Tmc.Scada.Core
         {
             this._sequencer.FireResumeTrigger();
             Logger.Instance.Write(new LogEntry("Cluster operation resumed", LogType.Message));
+        }
+
+        public void Shutdown()
+        {
+            this._sequencer.FireShutdownTrigger();
+            Logger.Instance.Write(new LogEntry("Cluster operation shutdown", LogType.Message));
         }
 
         public void EmergencyStop()

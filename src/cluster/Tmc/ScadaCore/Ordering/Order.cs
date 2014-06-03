@@ -17,7 +17,7 @@ namespace Tmc.Scada.Core
     public class Order
     {
         public OrderConfiguration Configuration { get; set; }
-        public string Id { get; set; }
+        public int Id { get; set; }
         public OrderStatus Status { get; set; }
 
         public Order()
