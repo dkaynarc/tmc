@@ -309,15 +309,20 @@ namespace Tmc.Vision
             List<CircleF> TabletsInList = new List<CircleF>();
 
             Image<Bgr, Byte> drawTab = src.Clone();
-            foreach (CircleF tablet in tablets)
+            var tabletHSV = new List<Tuple<int[][], int [][], int[][]>>(tablets.Length);
+
+            for (int i = 0; i < tablets.Length; i++)
             {
+                var tablet = tablets[i];
                 Tablet tab = new Tablet();
 
-                float[][] abca = ImagesToHisto(GetTablet(src, tablet));
+                var histo = ImagesToHisto(GetTablet(src, tablet));
 
-                int[][] hue = getHighLowHSV(abca, 50, HSVdata.Hue);
-                int[][] sat = getHighLowHSV(abca, 50, HSVdata.Sat);
-                int[][] val = getHighLowHSV(abca, 50, HSVdata.Val);
+                int[][] hue = getHighLowHSV(histo, 50, HSVdata.Hue);
+                int[][] sat = getHighLowHSV(histo, 50, HSVdata.Sat);
+                int[][] val = getHighLowHSV(histo, 50, HSVdata.Val);
+
+                tabletHSV.Add(new Tuple<int[][], int[][], int[][]>(hue, sat, val));
 
                 if (FirstPass(hue, sat, val, tablet, tablets, HSVTabletcolorsRanges) == true)
                 {
@@ -330,12 +335,12 @@ namespace Tmc.Vision
                 }
             }
 
-            foreach (CircleF tablet in tablets)
+            for (int i = 0; i < tablets.Length; i++)
             {
-                float[][] abca = ImagesToHisto(GetTablet(src, tablet));
-                int[][] hue = getHighLowHSV(abca, 50, HSVdata.Hue);
-                int[][] sat = getHighLowHSV(abca, 50, HSVdata.Sat);
-                int[][] val = getHighLowHSV(abca, 50, HSVdata.Val);
+                var tablet = tablets[i];
+                int[][] hue = tabletHSV[i].Item1;
+                int[][] sat = tabletHSV[i].Item2;
+                int[][] val = tabletHSV[i].Item3;
 
                 int a = 0;
                 if (IsVisableTablet(src, tablet, 5) == true)
