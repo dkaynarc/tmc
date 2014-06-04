@@ -73,6 +73,11 @@ namespace Tmc.Robotics
             _status = HardwareStatus.Offline;
         }
 
+        public void EmergencyStop()
+        {
+
+        }
+
         public void MoveForward()
         {
             _serialPort.Write(Protocol.MoveForward);

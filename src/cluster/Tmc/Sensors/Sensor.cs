@@ -43,7 +43,7 @@ namespace Tmc.Sensors
         {
             try
             {
-                _tcpClient.Close();
+                //_tcpClient.Close();
                 _hardwareStatus = HardwareStatus.Offline;
             }
             catch (SocketException e)
@@ -52,6 +52,12 @@ namespace Tmc.Sensors
                 throw new Exception("Error: Unable to shutdown TCP client: " + e);
             }
         }
+
+        public void EmergencyStop()
+        {
+
+        }
+
         /// <summary>
         /// Return hardware status of the connectivity between SCADA and Raspberry Pi
         /// </summary>
@@ -175,6 +181,7 @@ namespace Tmc.Sensors
             catch (Exception e)
             {
                 Console.WriteLine("Error: Exception in getting data:" + e);
+                _hardwareStatus = HardwareStatus.Failed;
                 return data;
             }
 
