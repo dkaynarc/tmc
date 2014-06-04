@@ -38,5 +38,12 @@ namespace Tmc.Common
 
             return (this.Color == other.Color);
         }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + Color.GetHashCode();
+            return hash;
+        }
     }
 }

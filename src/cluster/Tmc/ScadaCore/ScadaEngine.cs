@@ -15,7 +15,7 @@ namespace Tmc.Scada.Core
         public string Name { get; set; }
         public ClusterConfig ClusterConfig { get; set; }
         public OrderConsumer OrderConsumer { get; set; }
-        internal TabletMagazine TabletMagazine { get; set; }
+        public TabletMagazine TabletMagazine { get; set; }
         //private HardwareMonitor _hardwareMonitor;
         //private EnvironmentMonitor _environmentMonitor;
         private ISequencer _sequencer;

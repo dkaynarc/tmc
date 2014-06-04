@@ -41,5 +41,12 @@ namespace Tmc.Common
 
             return this.Cells.SequenceEqual(other.Cells);
         }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + Cells.GetHashCode();
+            return hash;
+        }
     }
 }

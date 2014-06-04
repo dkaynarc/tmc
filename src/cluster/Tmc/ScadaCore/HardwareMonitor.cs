@@ -22,6 +22,8 @@ namespace Tmc.Scada.Core
             _hardware = config.GetAllHardware();
             int updateTime = 1000;
 
+            _previoushardwareStatus = new List<HardwareStatus>();
+
             if (!Int32.TryParse(ConfigurationManager.AppSettings["HardwareMonitorUpdateRateMsec"], out updateTime))
             {
                 Logger.Instance.Write(new LogEntry("HardwareMonitorUpdateRateMsec is invalid, defaulting to 1000 msec",
