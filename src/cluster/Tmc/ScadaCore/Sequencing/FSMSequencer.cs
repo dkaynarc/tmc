@@ -11,6 +11,7 @@ using Appccelerate.StateMachine.Machine;
 using System;
 using System.Diagnostics;
 using Tmc.Common;
+using System.Collections.Generic;
 
 namespace Tmc.Scada.Core.Sequencing
 {
@@ -52,6 +53,7 @@ namespace Tmc.Scada.Core.Sequencing
         private Sorter _sorter;
         private TrayVerifier _trayVerifier;
         public StateLoggerExtension TransitionLogger { get; private set; }
+        private List<IHardware> _hardware;
 
         public FSMSequencer(ScadaEngine engine)
         {
@@ -65,6 +67,7 @@ namespace Tmc.Scada.Core.Sequencing
             this._sorter = _engine.ClusterConfig.Controllers[typeof(Sorter)] as Sorter;
             this._trayVerifier = _engine.ClusterConfig.Controllers[typeof(TrayVerifier)] as TrayVerifier;
             this._orderConsumer = _engine.OrderConsumer;
+            this._hardware = _engine.ClusterConfig.GetAllHardware();
 
             Debug.Assert(this._conveyorController != null);
             Debug.Assert(this._assembler != null);
@@ -287,6 +290,13 @@ namespace Tmc.Scada.Core.Sequencing
                         .Goto(State.Sorting);
 
             _fsm.In(State.Shutdown)
+                .ExecuteOnEntry(() =>
+                {
+                    foreach (var hardware in _hardware)
+                    {
+                        hardware.Shutdown();
+                    }
+                })
                 .On(Trigger.Start)
                     .Goto(State.Startup);
 

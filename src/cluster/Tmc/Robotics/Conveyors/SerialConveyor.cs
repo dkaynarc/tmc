@@ -43,6 +43,11 @@ namespace Tmc.Robotics
             _status = HardwareStatus.Offline;
         }
 
+        public void EmergencyStop()
+        {
+
+        }
+
         public void SetParameters(Dictionary<string, string> parameters)
         {
             string s = "";

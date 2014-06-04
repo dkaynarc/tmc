@@ -20,5 +20,6 @@ namespace Tmc.Common
         void Initialise();
         void Shutdown();
         void SetParameters(Dictionary<string, string> parameters);
+        void EmergencyStop();
     }
 }

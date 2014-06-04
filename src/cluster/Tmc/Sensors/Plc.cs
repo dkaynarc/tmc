@@ -72,8 +72,13 @@ namespace Tmc.Sensors
 
         public void Shutdown()
         {
-            this._plc.Disconnect();
+            //this._plc.Disconnect();
             this._hwStatus = HardwareStatus.Offline;
+        }
+
+        public void EmergencyStop()
+        {
+
         }
 
         public void SetParameters(Dictionary<string, string> parameters)

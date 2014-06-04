@@ -45,7 +45,7 @@ namespace Tmc.Scada.Core
                 return;
             }
             //this._environmentMonitor = new EnvironmentMonitor(this.ClusterConfig);
-            //this._hardwareMonitor = new HardwareMonitor(this);
+            //this._hardwareMonitor = new HardwareMonitor(this.ClusterConfig);
             this.TabletMagazine = new TabletMagazine();
             this._sequencer = new FSMSequencer(this);
             this.OrderConsumer = new OrderConsumer();
@@ -96,6 +96,10 @@ namespace Tmc.Scada.Core
 
         public void EmergencyStop()
         {
+            foreach (var hardware in ClusterConfig.GetAllHardware())
+            {
+                hardware.EmergencyStop();
+            }
             Logger.Instance.Write(new LogEntry("Emergency stop command given", LogType.Warning));
             _sequencer.FireStopTrigger();
             _sequencer.StopSequencing();
