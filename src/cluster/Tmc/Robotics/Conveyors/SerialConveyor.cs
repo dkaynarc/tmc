@@ -14,10 +14,16 @@ namespace Tmc.Robotics
         public string Name { get; set; }
         public ConveyorPosition Position { get; private set; }
         private string _portName;
+        private HardwareStatus _status;
+
+        public SerialConveyor()
+        {
+            _status = HardwareStatus.Offline;
+        }
 
         public HardwareStatus GetStatus()
         {
-            throw new NotImplementedException();
+            return _status;
         }
 
         public void Initialise()
@@ -27,11 +33,14 @@ namespace Tmc.Robotics
             Conveyor.initialisePLC();
             Thread.Sleep(500);
             Conveyor.start(_portName);
+
+            _status = HardwareStatus.Operational;
         }
 
         public void Shutdown()
         {
-            throw new NotImplementedException();
+            Conveyor.shutdown();
+            _status = HardwareStatus.Offline;
         }
 
         public void SetParameters(Dictionary<string, string> parameters)
@@ -65,6 +74,7 @@ namespace Tmc.Robotics
                     Position++;
                     break;
                 case ConveyorPosition.Left:
+                    _status = HardwareStatus.Failed;
                     throw new Exception("Conveyor is at its most forward position");
             }
         }
@@ -74,6 +84,7 @@ namespace Tmc.Robotics
             switch(Position)
             {
                 case ConveyorPosition.Right:
+                    _status = HardwareStatus.Failed;
                     throw new Exception("Conveyor is at its most backward position");
                 case ConveyorPosition.Middle:
                     Conveyor.middleToRight();
