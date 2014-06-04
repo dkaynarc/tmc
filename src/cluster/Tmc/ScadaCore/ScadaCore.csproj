@@ -80,12 +80,6 @@
     <Compile Include="ConfigTemplates.cs" />
     <Compile Include="Controllers\ConveyorController.cs" />
     <Compile Include="IScada.cs" />
-    <Compile Include="Logging\DatabaseLogProvider.cs" />
-    <Compile Include="Logging\EnvironmentLogEntry.cs" />
-    <Compile Include="Logging\FileLogProvider.cs" />
-    <Compile Include="Logging\Logger.cs" />
-    <Compile Include="Logging\ILogProvider.cs" />
-    <Compile Include="Logging\LogEntry.cs" />
     <Compile Include="HardwareMonitor.cs" />
     <Compile Include="Sequencing\Trigger.cs" />
     <Compile Include="Sequencing\FSMSequencer.cs" />

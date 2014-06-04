@@ -61,6 +61,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -104,6 +105,12 @@
     <Compile Include="FiltOrdeList_Result.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Logging\DatabaseLogProvider.cs" />
+    <Compile Include="Logging\EnvironmentLogEntry.cs" />
+    <Compile Include="Logging\FileLogProvider.cs" />
+    <Compile Include="Logging\ILogProvider.cs" />
+    <Compile Include="Logging\LogEntry.cs" />
+    <Compile Include="Logging\Logger.cs" />
     <Compile Include="OrderConfigByOrder_Result.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>

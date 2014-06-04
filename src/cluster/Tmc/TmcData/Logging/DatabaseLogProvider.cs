@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TmcData;
 
-namespace Tmc.Scada.Core.Logging
+namespace TmcData
 {
     public sealed class DatabaseLogProvider : ILogProvider
     {

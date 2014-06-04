@@ -14,6 +14,7 @@ using Tmc.Sensors;
 using Tmc.Vision;
 using System.Reflection;
 using System.IO;
+using TmcData;
 #endregion
 
 namespace Tmc.Scada.Core

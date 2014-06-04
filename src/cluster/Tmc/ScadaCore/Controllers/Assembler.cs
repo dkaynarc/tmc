@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Tmc.Robotics;
 using System.Threading;
 using Tmc.Common;
+using TmcData;
 
 namespace Tmc.Scada.Core
 {

@@ -400,6 +400,7 @@
             this.calibrationControl1.Name = "calibrationControl1";
             this.calibrationControl1.Size = new System.Drawing.Size(687, 354);
             this.calibrationControl1.TabIndex = 0;
+            this.calibrationControl1.Load += new System.EventHandler(this.calibrationControl1_Load);
             // 
             // tabReports
             // 

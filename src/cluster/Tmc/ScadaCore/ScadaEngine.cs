@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Tmc.Scada.Core.Sequencing;
 using Tmc.Scada.Core.Reporting;
 using System.ServiceModel;
+using TmcData;
 
 namespace Tmc.Scada.Core
 {
