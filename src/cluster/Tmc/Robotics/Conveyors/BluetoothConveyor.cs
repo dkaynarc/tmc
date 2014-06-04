@@ -29,7 +29,7 @@ namespace Tmc.Robotics
         public BluetoothConveyor()
         {
             _serialPort = new SerialPort();
-            _status = HardwareStatus.Operational;
+            _status = HardwareStatus.Offline;
             this.Position = ConveyorPosition.Right;
         }
 
@@ -48,15 +48,18 @@ namespace Tmc.Robotics
                     try
                     {
                         _serialPort.Open();
+                        _status = HardwareStatus.Operational;
                     }
                     catch (Exception ex)
                     {
+                        _status = HardwareStatus.Failed;
                         throw ex;
                     }
                 }
             }
             else
             {
+                _status = HardwareStatus.Failed;
                 throw new InvalidOperationException("Serial port name " + PortName + "does not exist");
             }
         }

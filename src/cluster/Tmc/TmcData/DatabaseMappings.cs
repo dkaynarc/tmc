@@ -17,13 +17,17 @@ namespace TmcData
 
     public enum Source
     {
+        System = 0,
         RobotA = 1,
         RobotB =2,
         RobotC = 3,
         RobotD = 4, 
         ConveyorMagazine = 5,
         ConveyorTray = 6,
-        SensorA = 7,
-        SensorB = 8
+        Temperature = 7,
+        Humidity = 8,
+        Light = 9,
+        Sound = 10,
+        Dust = 11
     }
 }

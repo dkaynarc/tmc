@@ -36,7 +36,7 @@
             this.producingModeRadioButton = new System.Windows.Forms.RadioButton();
             this.operatingModeGroupBox = new System.Windows.Forms.GroupBox();
             this.confirmOperatingModeButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonShutdown = new System.Windows.Forms.Button();
             this.operatingModeGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -125,20 +125,21 @@
             this.confirmOperatingModeButton.UseVisualStyleBackColor = true;
             this.confirmOperatingModeButton.Click += new System.EventHandler(this.confirmOperatingModeButton_Click);
             // 
-            // button1
+            // buttonShutdown
             // 
-            this.button1.Location = new System.Drawing.Point(226, 11);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Shutdown";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonShutdown.Location = new System.Drawing.Point(226, 11);
+            this.buttonShutdown.Name = "buttonShutdown";
+            this.buttonShutdown.Size = new System.Drawing.Size(75, 23);
+            this.buttonShutdown.TabIndex = 8;
+            this.buttonShutdown.Text = "Shutdown";
+            this.buttonShutdown.UseVisualStyleBackColor = true;
+            this.buttonShutdown.Click += new System.EventHandler(this.buttonShutdown_Click);
             // 
             // controlPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonShutdown);
             this.Controls.Add(this.operatingModeGroupBox);
             this.Controls.Add(this.systemStatusLabel);
             this.Controls.Add(this.label1);
@@ -162,6 +163,6 @@
         private System.Windows.Forms.RadioButton producingModeRadioButton;
         private System.Windows.Forms.GroupBox operatingModeGroupBox;
         private System.Windows.Forms.Button confirmOperatingModeButton;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonShutdown;
     }
 }

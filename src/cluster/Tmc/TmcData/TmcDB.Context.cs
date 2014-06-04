@@ -29,8 +29,8 @@ namespace TmcData
     
         public DbSet<ComponentCycleLogView> ComponentCycleLogViews { get; set; }
         public DbSet<ComponentEventLogView> ComponentEventLogViews { get; set; }
-        public DbSet<OrderListView> OrderListViews { get; set; }
         public DbSet<EnvironmentLogView> EnvironmentLogViews { get; set; }
+        public DbSet<OrderListView> OrderListViews { get; set; }
     
         public virtual int AddNewCycleLog(Nullable<System.DateTime> timestamp, Nullable<int> cycleTime, Nullable<int> sourceID)
         {

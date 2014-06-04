@@ -19,13 +19,18 @@ namespace Tmc.Robotics
         protected Controller Controller;
         protected Mastership Mastership;
 
+        private HardwareStatus _status;
+
         private EventWaitHandle _eventWait = new AutoResetEvent(false);
 
-        internal BaseRobot() { }
+        internal BaseRobot() 
+        {
+            _status = HardwareStatus.Offline;
+        }
 
         public HardwareStatus GetStatus()
         {
-            throw new NotImplementedException();
+            return _status;
         }
 
         public void SetSpeed(int speed)
@@ -54,15 +59,18 @@ namespace Tmc.Robotics
                 {
                     this.Controller = ControllerFactory.CreateFrom(controller);
                     this.Controller.Rapid.ExecutionStatusChanged += new EventHandler<ExecutionStatusChangedEventArgs>(RapidExecutionStatusChanged);
+                    _status = HardwareStatus.Operational;
                     return;
                 }
             }
 
+            _status = HardwareStatus.Offline;
             throw new Exception(string.Format("Robot at {0} could not be found.", this.RobotIPAddress));
         }
 
         public void Shutdown()
         {
+            _status = HardwareStatus.Offline;
             this.ReturnToHomePosition();
         }
 
@@ -97,17 +105,20 @@ namespace Tmc.Robotics
         public void EmergencyStop()
         {
             this.Controller.Rapid.Stop(StopMode.Immediate);
+            _status = HardwareStatus.Failed;
         }
 
         protected void RunRapidProgram(string filename)
         {
             if (this.Controller.OperatingMode != ControllerOperatingMode.Auto)
             {
+                _status = HardwareStatus.Failed;
                 throw new Exception(string.Format("Robot {0} is not in autonomous mode. Rotate the Mode switch on the robot controller into Autonomous Mode", this.Name));
             }
 
             if (this.Controller.State != ControllerState.MotorsOn)
             {
+                _status = HardwareStatus.Failed;
                 throw new Exception(string.Format("Robot {0} motors are not on. Press the white flashing button on the robot controller to enable motors", this.Name));
             }
 
@@ -115,8 +126,11 @@ namespace Tmc.Robotics
 
             if (!File.Exists(filePath))
             {
+                _status = HardwareStatus.Failed;
                 throw new FileNotFoundException(string.Format("{0} does not exist.", filePath));
             }
+
+            _status = HardwareStatus.Operational;
 
             this.BeginControl();
 
