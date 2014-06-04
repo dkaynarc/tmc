@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tmc.Common;
 using Tmc.Vision;
+using TmcData;
 
 namespace Tmc.Scada.App
 {
@@ -54,9 +55,9 @@ namespace Tmc.Scada.App
             {
                 CalibrationManager.Instance.CalibrateSpecific<SorterVision>();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // log
+                Logger.Instance.Write(new LogEntry(ex));
             }
         }
     }
