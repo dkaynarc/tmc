@@ -13,7 +13,7 @@ namespace Tmc.Scada.App
 {
     public partial class controlPage : UserControl
     {
-        private ScadaEngine scadaEngine;
+        private ScadaEngine _scadaEngine;
 
         public controlPage()
         {
@@ -26,7 +26,7 @@ namespace Tmc.Scada.App
         /// <param name="scadaEngine"></param>
         public void initialiseScadaEngine(ScadaEngine scadaEngine)
         {
-            this.scadaEngine = scadaEngine;
+            this._scadaEngine = scadaEngine;
         }
 
         /// <summary>
@@ -36,12 +36,12 @@ namespace Tmc.Scada.App
         /// <param name="e"></param>
         private void controlPageStartup()
         {
-            if(scadaEngine.GetOperationStatus() == "Offline")
+            if(_scadaEngine.GetOperationStatus() == "Offline")
             {
                 this.startOrStopButton.Text = "Start";
                 this.systemStatusLabel.Text = "Idle";
             }
-            else if(scadaEngine.GetOperationStatus() == "Online")
+            else if(_scadaEngine.GetOperationStatus() == "Online")
             {
                 this.startOrStopButton.Text = "Stop";
                 this.systemStatusLabel.Text = "Online";
@@ -64,11 +64,18 @@ namespace Tmc.Scada.App
         {
             if(startOrStopButton.Text == "Start")
             {
-                scadaEngine.Start();
+                _scadaEngine.Start();
+                startOrStopButton.Text = "Stop";
+            }
+            else if(startOrStopButton.Text == "Stop")
+            {
+                _scadaEngine.Stop();
+                startOrStopButton.Text = "Resume";
             }
             else
             {
-                scadaEngine.Stop();
+                _scadaEngine.Resume();
+                startOrStopButton.Text = "Stop";
             }
         }
 
@@ -113,6 +120,11 @@ namespace Tmc.Scada.App
         private void clearRadioButton(RadioButton b)
         {
             b.Checked = false;
-        }    
+        }
+
+        private void buttonShutdown_Click(object sender, EventArgs e)
+        {
+            _scadaEngine.Shutdown();
+        }
     }
 }

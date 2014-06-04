@@ -15,7 +15,7 @@ namespace Tmc.Scada.App
 {
     public partial class MainForm : Form
     {
-        //private ScadaEngine scadaEngine = new ScadaEngine();
+        private ScadaEngine _scadaEngine;
 
         /// <summary>
         /// Data table used to store TMC alarms and warnings
@@ -52,6 +52,7 @@ namespace Tmc.Scada.App
         {
             InitializeComponent();
             //Initialise SCADA
+            _scadaEngine = new ScadaEngine();
             //Only proceed if SCADA is initialised
             this.InitialiseAlarmControls();
         }
@@ -370,7 +371,7 @@ namespace Tmc.Scada.App
 
         private void eStopButton_Click(object sender, EventArgs e)
         {
-            //this.scadaEngine.EmergencyStop();
+            this._scadaEngine.EmergencyStop();
         }
 
         /// <summary>

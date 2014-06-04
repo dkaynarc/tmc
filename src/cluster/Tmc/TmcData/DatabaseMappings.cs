@@ -17,6 +17,7 @@ namespace TmcData
 
     public enum Source
     {
+        System = 0,
         RobotA = 1,
         RobotB =2,
         RobotC = 3,
