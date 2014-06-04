@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Tmc.Scada.Core
+namespace TmcData
 {
     public sealed class FileLogProvider : ILogProvider, IDisposable
     {

@@ -467,5 +467,10 @@ namespace Tmc.Scada.App
         {
             
         }
+
+        private void calibrationControl1_Load(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

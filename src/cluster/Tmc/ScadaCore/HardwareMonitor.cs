@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using Tmc.Common;
+using TmcData;
 
 namespace Tmc.Scada.Core
 {

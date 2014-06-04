@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Tmc.Robotics;
 using Tmc.Sensors;
+using TmcData;
 
 namespace Tmc.Scada.Core
 {

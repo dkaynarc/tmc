@@ -68,7 +68,7 @@ namespace TmcData
 
         public static ComponentEventLogView GetLatestAlarm()
         {
-            throw new NotImplementedException();
+            return _entities.ComponentEventLogViews.Where(e => e.LogType == LogType.Warning.ToString() || e.LogType == LogType.Error.ToString()).OrderByDescending(e => e.Timestamp).First();
         }
 
         public static void CancelOrder(int orderID)

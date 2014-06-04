@@ -8,6 +8,7 @@ using Tmc.Robotics;
 using Tmc.Vision;
 using System.Drawing;
 using System.Threading;
+using TmcData;
 
 namespace Tmc.Scada.Core
 {

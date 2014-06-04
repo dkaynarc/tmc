@@ -107,6 +107,12 @@ namespace Tmc.Vision
         public void Shutdown()
         {
             //_capture.Dispose();
+            _hardwareStatus = HardwareStatus.Offline;
+        }
+
+        public void EmergencyStop()
+        {
+
         }
 
         public HardwareStatus GetStatus()
@@ -127,6 +133,7 @@ namespace Tmc.Vision
                 //CvInvoke.cvShowImage(win1, img); //Show the image
                 //CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
                 //CvInvoke.cvDestroyWindow(win1); //Destory the window
+                _hardwareStatus = HardwareStatus.Operational;
             }
             catch (Exception)
             {
