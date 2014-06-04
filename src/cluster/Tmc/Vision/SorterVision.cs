@@ -7,9 +7,16 @@ using Tmc.Common;
 
 namespace Tmc.Vision
 {
+    [Serializable]
+    public class SorterVisionCalibrationData : ICalibrationData
+    {
+        public PointF[] ChessboardPoints { get; set; }
+
+        public Type ParentType { get; set; }
+    }
+
     public class SorterVision : VisionBase, ICalibrateable
     {
-
         private int minRadius;
         private int maxRadius;
         private int cannyThresh;
@@ -80,12 +87,12 @@ namespace Tmc.Vision
             cannyThresh = 2;
             cannyAccumThresh = 83;
 
-            CalibrationManager.Instance.Register(this);
+            this.Register();
         }
 
         ~SorterVision()
         {
-            CalibrationManager.Instance.Unregister(this);
+            this.Unregister();
         }
 
         /// <summary>
@@ -99,9 +106,8 @@ namespace Tmc.Vision
             //img = new Image<Bgr, byte>("C:/Users/Denis/Dropbox/ICT DESIGN/Assignment 3/vision/cal/sort32.jpg");
 
             CircleF[] circles = DetectTablets(img, minRadius, maxRadius, dp, minDist, cannyThresh, cannyAccumThresh);
-            
-            DetectGoodPickupTablets(img, circles);
 
+            DetectGoodPickupTablets(img, circles);
 
             return TabletList;
         }
@@ -109,10 +115,27 @@ namespace Tmc.Vision
         /// <summary>
         /// This function curenlty on calbrate on the chessboard
         /// </summary>
-        public void Calibrate()
+        public ICalibrationData Calibrate()
         {
             Image<Bgr, Byte> chessB = camera.GetImage(1);
             ChessboardPoints = FindPattern(chessB.Convert<Gray, Byte>(), new Size(12, 9));
+
+            var calData = new SorterVisionCalibrationData
+            {
+                ParentType = this.GetType(),
+                ChessboardPoints = this.ChessboardPoints
+            };
+
+            return calData;
+        }
+
+        public void SetCalibrationData(ICalibrationData data)
+        {
+            var myCalData = data as SorterVisionCalibrationData;
+            if (myCalData != null)
+            {
+                ChessboardPoints = myCalData.ChessboardPoints;
+            }
         }
 
         /// <summary>
@@ -127,7 +150,7 @@ namespace Tmc.Vision
         /// <returns>
         /// returns the location of al the chessboard point
         /// </returns>
-        /// 
+        ///
         private PointF[] FindPattern(Emgu.CV.Image<Gray, byte> src, Size dim)
         {
             //string win1 = "Test Window"; //The name of the window
@@ -292,7 +315,7 @@ namespace Tmc.Vision
             List<CircleF> TabletsInList = new List<CircleF>();
 
             Image<Bgr, Byte> drawTab = src.Clone();
-            var tabletHSV = new List<Tuple<int[][], int [][], int[][]>>(tablets.Length);
+            var tabletHSV = new List<Tuple<int[][], int[][], int[][]>>(tablets.Length);
 
             for (int i = 0; i < tablets.Length; i++)
             {
@@ -535,7 +558,6 @@ namespace Tmc.Vision
             if ((countTL >= 1) && (countTR >= 1) && (countBL >= 1) && (countBR >= 1)) saveImage(tabletImage, tablet.Center.X + "good.jpg");
             return ((countTL >= 1) && (countTR >= 1) && (countBL >= 1) && (countBR >= 1));
         }
-
 
         public void Register()
         {

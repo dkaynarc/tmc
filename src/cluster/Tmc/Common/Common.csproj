@@ -60,8 +60,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CalibrationManager.cs" />
-    <Compile Include="ICalibrateable.cs" />
+    <Compile Include="Calibration\ICalibrationData.cs" />
+    <Compile Include="Calibration\CalibrationDataSerializer.cs" />
+    <Compile Include="Calibration\CalibrationManager.cs" />
+    <Compile Include="Calibration\ICalibrateable.cs" />
     <Compile Include="IHardware.cs" />
     <Compile Include="NameAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
