@@ -76,8 +76,6 @@
     <Compile Include="RobotsTest\LoaderRobotTest.cs" />
     <Compile Include="RobotsTest\RobotUnitTest.cs" />
     <Compile Include="RobotsTest\SorterRobotTest.cs" />
-    <Compile Include="ScadaCoreTest\FileLogProviderTest.cs" />
-    <Compile Include="ScadaCoreTest\ScadaEngineInteg.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
@@ -108,12 +106,6 @@
       <Project>{d1a527cb-5bdc-4483-a24f-21d6263a41ce}</Project>
       <Name>Vision</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ScadaCoreTest\Configuration\IntegTestConfig.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
