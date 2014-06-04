@@ -7,7 +7,7 @@ using Tmc.Common;
 
 namespace Tmc.Vision
 {
-    public class SorterVision : VisionBase
+    public class SorterVision : VisionBase, ICalibrateable
     {
 
         private int minRadius;
@@ -527,6 +527,17 @@ namespace Tmc.Vision
             //CvInvoke.cvWaitKey(0);
             if ((countTL >= 1) && (countTR >= 1) && (countBL >= 1) && (countBR >= 1)) saveImage(tabletImage, tablet.Center.X + "good.jpg");
             return ((countTL >= 1) && (countTR >= 1) && (countBL >= 1) && (countBR >= 1));
+        }
+
+
+        public void Register()
+        {
+            CalibrationManager.Instance.Register(this);
+        }
+
+        public void Unregister()
+        {
+            CalibrationManager.Instance.Unregister(this);
         }
     }
 }

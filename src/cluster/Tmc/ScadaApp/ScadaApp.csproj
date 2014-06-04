@@ -206,6 +206,10 @@
       <Project>{4a0d0977-fae7-47af-88a6-7779f6ead528}</Project>
       <Name>TmcData</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Vision\Vision.csproj">
+      <Project>{d1a527cb-5bdc-4483-a24f-21d6263a41ce}</Project>
+      <Name>Vision</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\robot_arm_red.png" />

@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Tmc.Common;
+using Tmc.Vision;
 
 namespace Tmc.Scada.App
 {
@@ -43,6 +45,18 @@ namespace Tmc.Scada.App
             else
             {
                 this.timer.Start();
+            }
+        }
+
+        private void btnCalibrateSensorCamera_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CalibrationManager.Instance.CalibrateSpecific<SorterVision>();
+            }
+            catch (Exception)
+            {
+                // log
             }
         }
     }
