@@ -79,6 +79,13 @@ namespace Tmc.Vision
             minDist = 20;
             cannyThresh = 2;
             cannyAccumThresh = 83;
+
+            CalibrationManager.Instance.Register(this);
+        }
+
+        ~SorterVision()
+        {
+            CalibrationManager.Instance.Unregister(this);
         }
 
         /// <summary>
