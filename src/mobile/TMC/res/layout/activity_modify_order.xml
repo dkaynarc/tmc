@@ -197,6 +197,8 @@
         android:layout_height="wrap_content"     
         android:layout_weight="0.50"
         android:onClick="onModifyOrderClicked"
+        android:background="@drawable/buttonshape"
+        android:textColor="#FFFFFF"
         android:text="@string/modifyorder_modifyorder_b"
         style="?android:attr/button" />
 
@@ -206,7 +208,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.50"
         android:onClick="onCancelOrderClicked"
-        android:text="@string/modifyorder_cancel_b" 
+        android:text="@string/modifyorder_cancel_b"
+        android:background="@drawable/buttonshape"
+        android:textColor="#FFFFFF" 
         style="?android:attr/button"/>
 </LinearLayout>
 </RelativeLayout>

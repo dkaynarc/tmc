@@ -38,6 +38,8 @@ public class LoginActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		EditText ipAddress = (EditText) findViewById(R.id.loginactivity_ipaddress_et);
+		ipAddress.setText("192.168.1.100");
 		/*
 		 * Intent intent = new Intent(LoginActivity.this, ModuleActivity.class);
 		 * if (turnedOn == false)
@@ -58,7 +60,8 @@ public class LoginActivity extends Activity
 
 	public void onLoginClicked(View v)
 	{
-				
+		EditText ipAddress = (EditText) findViewById(R.id.loginactivity_ipaddress_et);
+		Constants.SERVER_URL = "http://" + ipAddress.getText().toString() + ":8080/api/Server/";
 		String userName = ((EditText) findViewById(R.id.loginactivity_username_et))
 				.getText().toString();
 		String password = ((EditText) findViewById(R.id.loginactivity_password_et))

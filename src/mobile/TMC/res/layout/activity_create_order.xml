@@ -166,6 +166,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
             android:onClick="onCreateOrderClicked"
+            android:background="@drawable/buttonshape"
+            android:textColor="#FFFFFF"
             style="?android:attr/button"
             android:text="@string/createorder_createorder_b" />
 
@@ -176,6 +178,8 @@
             android:layout_weight="0.50"
             android:onClick="onCancelOrderClicked"
             style="?android:attr/button"
+            android:background="@drawable/buttonshape"
+            android:textColor="#FFFFFF"
             android:text="@string/createorder_cancel_b" />
     </LinearLayout>
 

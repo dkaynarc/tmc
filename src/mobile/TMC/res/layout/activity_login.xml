@@ -67,6 +67,8 @@
         android:layout_below="@+id/loginactivity_password_et"
         android:layout_marginTop="40dp"
         android:onClick="onLoginClicked"
+        android:background="@drawable/buttonshape"
+        android:textColor="#FFFFFF"
         android:text="@string/loginactivity_login_b" />
 
 
@@ -78,5 +80,23 @@
         android:layout_below="@+id/loginactivity_login_b"
         android:layout_marginTop="17dp"
         android:text="@string/loginactivity_operator_cb" /> -->
+
+    <EditText
+        android:id="@+id/loginactivity_ipaddress_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:inputType="text"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/loginactivity_ipaddress_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/loginactivity_ipaddress_et"
+        android:layout_alignParentLeft="true"
+        android:text="@string/loginactivity_ipaddress_tv"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

@@ -58,18 +58,26 @@
 	    android:id="@+id/completedorders_to_b"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
+	    android:paddingLeft="10dp"
+	    android:paddingRight="10dp"
 	    android:layout_alignLeft="@+id/completedorders_tolabel_tv"
 	    android:layout_below="@+id/completedorders_tolabel_tv"
 	    android:text="@string/default_date"
+	    android:background="@drawable/buttonshape"
+        android:textColor="#FFFFFF"
 	    android:textAppearance="?android:attr/textAppearanceMedium" />
 
 	<Button
 	    android:id="@+id/completedorders_from_b"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
+	    android:paddingLeft="10dp"
+	    android:paddingRight="10dp"
 	    android:layout_alignLeft="@+id/completedorders_fromlabel_tv"
 	    android:layout_below="@+id/completedorders_fromlabel_tv"
 	    android:text="@string/default_date"
+	    android:background="@drawable/buttonshape"
+        android:textColor="#FFFFFF"
 	    android:textAppearance="?android:attr/textAppearanceMedium" />
 
 	<TextView

@@ -31,6 +31,7 @@ public class ModuleActivity extends FragmentActivity implements
 	ModuleAdapter mModuleAdapter;
 	ViewPager mViewPager;
 	MediaPlayer mMediaPlayer = new MediaPlayer();
+	Menu mMenu;
 
 	/**
 	 * Sets the layout, action bar and pager adapter which is used to scroll
@@ -86,6 +87,7 @@ public class ModuleActivity extends FragmentActivity implements
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		super.onCreateOptionsMenu(menu);
+		mMenu = menu;
 		getMenuInflater().inflate(R.menu.module, menu);
 		return true;
 	}
@@ -167,5 +169,14 @@ public class ModuleActivity extends FragmentActivity implements
 		mMediaPlayer = MediaPlayer.create(this, soundId);
 		mMediaPlayer.setLooping(false);
 		mMediaPlayer.start();
+	}
+	
+	public void setConnection(boolean okay)
+	{
+		MenuItem mConnection = mMenu.findItem(R.id.module_connection);
+		if (okay)
+			mConnection.setTitle(Constants.CONNECTION_OK);
+		else
+			mConnection.setTitle(Constants.CONNECTION_FAILED);
 	}
 }

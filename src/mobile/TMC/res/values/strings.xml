@@ -74,5 +74,7 @@
     <string name="completedorders_fromlabel_tv">From:</string>
     <string name="default_date">dd/mm/yyyy</string>
     <string name="loginactivity_operator_cb">Operator</string>
+    <string name="loginactivity_ipaddress_tv">IP Address:</string>
+    <string name="module_connection">Connection: OK</string>
 
 </resources>
