@@ -69,6 +69,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="CommonTest\CalibrationTest.cs" />
     <Compile Include="ConveyorTest\Conveyors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RobotsTest\AssemblerRobotTest.cs" />

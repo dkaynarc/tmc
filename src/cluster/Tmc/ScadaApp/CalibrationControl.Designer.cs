@@ -44,9 +44,11 @@
             this.btnCalibrateSensorCamera.TabIndex = 0;
             this.btnCalibrateSensorCamera.Text = "Calibrate Sorter Camera";
             this.btnCalibrateSensorCamera.UseVisualStyleBackColor = true;
+            this.btnCalibrateSensorCamera.Click += new System.EventHandler(this.btnCalibrateSensorCamera_Click);
             // 
             // BtnCalibrateAssemblyCamera
             // 
+            this.BtnCalibrateAssemblyCamera.Enabled = false;
             this.BtnCalibrateAssemblyCamera.Location = new System.Drawing.Point(349, 314);
             this.BtnCalibrateAssemblyCamera.Name = "BtnCalibrateAssemblyCamera";
             this.BtnCalibrateAssemblyCamera.Size = new System.Drawing.Size(335, 37);
