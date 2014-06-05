@@ -137,15 +137,11 @@ public class MachineStatusFragment extends ListFragment
 		((Button) rootView.findViewById(R.id.machinelist_emergencystop_b))
 				.setOnClickListener(onEmergencyStopClickListener);
 
-		/*
-		 * setListAdapter(new MachineStatusAdapter(getActivity(),
-		 * R.layout.machine_row, Constants.MACHINES));
-		 */
 
-		// ///////////////////////////////////////////////////////
+
+		
 		setListAdapter(new MachineStatusAdapter(getActivity(),
 				R.layout.machine_row, new ArrayList<Machine>()/* dummy array */));
-		// //////////////////////////////////////////////////////
 		return rootView;
 	}
 

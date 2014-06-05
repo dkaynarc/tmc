@@ -11,7 +11,7 @@ import android.os.Bundle;
 
 public class EnvUpdateService extends IntentService
 {
-	private String urlString = Constants.SERVER_URL;
+	
 	private int command;
 
 	public EnvUpdateService()
@@ -30,7 +30,7 @@ public class EnvUpdateService extends IntentService
 
 	private void updateEnv()
 	{
-		urlString += "GetEnvironment";
+	    String urlString = Constants.SERVER_URL + "GetEnvironment";
 
 		String response = connect(urlString);
 
@@ -46,7 +46,7 @@ public class EnvUpdateService extends IntentService
 			URL url = new URL(urlStr);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
-			con.setConnectTimeout(100000); // times out after 10 seconds
+			con.setConnectTimeout(10000); // times out after 10 seconds
 			con.setRequestProperty("Pragma", "no-cache");
 			con.setRequestProperty("Cache-Control", "no-cache");
 			con.setRequestProperty("Content-Type", "application/json");

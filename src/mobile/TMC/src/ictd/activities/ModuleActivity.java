@@ -112,15 +112,14 @@ public class ModuleActivity extends FragmentActivity implements
 								{
 									playSound(R.raw.bye);
 
-									// Add possible logout code here?
-									// ////////////////////////////////
+
 									SharedPreferences preferences = getSharedPreferences(
 											Constants.APP_PERSISTANCE, 0);
 									SharedPreferences.Editor ed = preferences
 											.edit();
 									ed.remove(Constants.USERNAME_KEY);
+									ed.remove(Constants.USERROLE_KEY);
 									ed.commit();
-									// ////////////////////////////////
 									finish();
 								}
 							})

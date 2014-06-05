@@ -234,6 +234,7 @@ public class CompletedOrderFragment extends ListFragment
 	
 	private void makeService(int command, String from, String to)
 	{
+		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
 		Intent service = new Intent(getActivity(), services.SynchService.class);
 		Bundle parcel = new Bundle();
 		parcel.putString("from", from);
@@ -242,8 +243,7 @@ public class CompletedOrderFragment extends ListFragment
 		service.putExtra("parcel", parcel);
 
 		// stop any already running services associated with this activity
-		// getActivity().stopService(service);
-		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
+		getActivity().stopService(service);
 		getActivity().startService(service);
 	}
 
@@ -334,15 +334,14 @@ public class CompletedOrderFragment extends ListFragment
 		
 		public void onDateSet(DatePicker view, int year, int month, int day)
 		{
+			
 			mButton.setText(new StringBuilder().append(day).append("/")
 					.append(month + 1).append("/").append(year));
 			
-			if(mButton.getId() == R.id.completedorders_to_b)
-			{
 				Button to = (Button)getActivity().findViewById(R.id.completedorders_to_b);
 				Button from = (Button)getActivity().findViewById(R.id.completedorders_from_b);
 				makeService(Constants.UPDATE_COMPLETED_ORDERS_COMMAND, from.getText().toString(), to.getText().toString() );
-			}
+			
 			
 		}
 	}

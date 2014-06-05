@@ -36,29 +36,6 @@ public class EnvironmentFragment extends Fragment
 		View rootView = inflater.inflate(R.layout.fragment_environment,
 				container, false);
 
-		/*
-		 * String dust = ""; // Set dust to dust value ((TextView)
-		 * rootView.findViewById(R.id.environment_dust_tv)) .setText(dust +
-		 * (char) 0x00B0 + "C");
-		 * 
-		 * String humidity = ""; // Set humidity to humidity ((TextView)
-		 * rootView.findViewById(R.id.environment_humidity_tv))
-		 * .setText(humidity + "%");
-		 * 
-		 * String light = ""; // Set light to light value ((TextView)
-		 * rootView.findViewById(R.id.environment_light_tv)) .setText(light +
-		 * "cd");
-		 * 
-		 * String sound = ""; // Set sound to sound value ((TextView)
-		 * rootView.findViewById(R.id.environment_sound_tv)) .setText(sound +
-		 * "dB");
-		 * 
-		 * String temperature = ""; // Set temperature to temperature
-		 * ((TextView) rootView.findViewById(R.id.environment_temperature_tv))
-		 * .setText(temperature + (char) 0x00B0 + "C");
-		 */
-
-		// ///////////////////////////////////////////////////////////////
 
 		dustView = (TextView) rootView.findViewById(R.id.environment_dust_tv);
 
@@ -82,7 +59,7 @@ public class EnvironmentFragment extends Fragment
 		Bundle parcel = new Bundle();
 		parcel.putInt("command", Constants.ENV_UPDATE_COMMAND);
 		service.putExtra("parcel", parcel);
-
+        getActivity().stopService(service);
 		getActivity().startService(service);
 	}
 
@@ -91,10 +68,7 @@ public class EnvironmentFragment extends Fragment
 		super.onStart();
 
 		receiver = new ResultReceiver();
-		getActivity()
-				.registerReceiver(
-						receiver,
-						new IntentFilter(Integer
+		getActivity().registerReceiver(	receiver, new IntentFilter(Integer
 								.toString(Constants.ENV_UPDATE_COMMAND)));
 		makeService(Constants.ENV_UPDATE_COMMAND);
 		startTimer(Constants.UPDATE_INTERVAL);
@@ -122,7 +96,7 @@ public class EnvironmentFragment extends Fragment
 		try
 		{
 			JSONObject obj = new JSONObject(response);
-			String result = obj.getString("Result");
+			String result = obj.getString(Constants.RESULT);
 
 			if (result.equalsIgnoreCase("success"))
 			{
@@ -135,6 +109,8 @@ public class EnvironmentFragment extends Fragment
 				Toast.makeText(getActivity(), "Updated environment data",
 						Toast.LENGTH_SHORT).show();// to be removed
 			}
+			else
+			  Toast.makeText(getActivity(), Constants.ENV_UPDATE_FAIL, Toast.LENGTH_SHORT).show();		 
 		}
 		catch (Exception exc)
 		{
@@ -143,6 +119,9 @@ public class EnvironmentFragment extends Fragment
 		}
 	}
 
+	
+	
+	
 	private void startTimer(long i)
 	{
 		timer = new Timer();
