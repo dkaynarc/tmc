@@ -103,5 +103,11 @@ namespace TmcTest.Robots
                 Assert.Fail(ex.Message);
             }
         }
+
+        [TestMethod]
+        public void ShutDown()
+        {
+            _loader.Shutdown();
+        }
     }
 }

@@ -68,5 +68,11 @@ namespace TmcTest.Robots
         {
             _assembler.PlaceTablet(0, 100, 1);
         }
+
+        [TestMethod]
+        public void ShutDown()
+        {
+            _assembler.Shutdown();
+        }
     }
 }
