@@ -57,14 +57,17 @@
             this.btnDismissAll = new System.Windows.Forms.Button();
             this.dgvAlarmsGrid = new System.Windows.Forms.DataGridView();
             this.tabPlantMimic = new System.Windows.Forms.TabPage();
-            this.controlPage1 = new Tmc.Scada.App.controlPage();
-            this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic();
             this.tabEnvironment = new System.Windows.Forms.TabPage();
-            this.environmentControl1 = new Tmc.Scada.App.environmentControl();
             this.tabOrders = new System.Windows.Forms.TabPage();
             this.tabCalibration = new System.Windows.Forms.TabPage();
-            this.calibrationControl1 = new Tmc.Scada.App.CalibrationControl();
             this.tabReports = new System.Windows.Forms.TabPage();
+            this.controlPage1 = new Tmc.Scada.App.controlPage();
+            this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic();
+            this.environmentControl1 = new Tmc.Scada.App.environmentControl();
+            this.calibrationControl1 = new Tmc.Scada.App.CalibrationControl();
+            this.loggedOutPanel = new System.Windows.Forms.Panel();
+            this.plantMimic2 = new Tmc.Scada.App.UserControls.PlantMimic();
+            this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
@@ -74,6 +77,7 @@
             this.tabPlantMimic.SuspendLayout();
             this.tabEnvironment.SuspendLayout();
             this.tabCalibration.SuspendLayout();
+            this.loggedOutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -343,20 +347,6 @@
             this.tabPlantMimic.Text = "Plant Mimic";
             this.tabPlantMimic.UseVisualStyleBackColor = true;
             // 
-            // controlPage1
-            // 
-            this.controlPage1.Location = new System.Drawing.Point(377, 60);
-            this.controlPage1.Name = "controlPage1";
-            this.controlPage1.Size = new System.Drawing.Size(303, 175);
-            this.controlPage1.TabIndex = 1;
-            // 
-            // plantMimic1
-            // 
-            this.plantMimic1.Location = new System.Drawing.Point(-153, -3);
-            this.plantMimic1.Name = "plantMimic1";
-            this.plantMimic1.Size = new System.Drawing.Size(543, 354);
-            this.plantMimic1.TabIndex = 0;
-            // 
             // tabEnvironment
             // 
             this.tabEnvironment.Controls.Add(this.environmentControl1);
@@ -366,13 +356,6 @@
             this.tabEnvironment.TabIndex = 3;
             this.tabEnvironment.Text = "Environment";
             this.tabEnvironment.UseVisualStyleBackColor = true;
-            // 
-            // environmentControl1
-            // 
-            this.environmentControl1.Location = new System.Drawing.Point(3, 3);
-            this.environmentControl1.Name = "environmentControl1";
-            this.environmentControl1.Size = new System.Drawing.Size(257, 190);
-            this.environmentControl1.TabIndex = 0;
             // 
             // tabOrders
             // 
@@ -394,13 +377,6 @@
             this.tabCalibration.Text = "Camera Calibration";
             this.tabCalibration.UseVisualStyleBackColor = true;
             // 
-            // calibrationControl1
-            // 
-            this.calibrationControl1.Location = new System.Drawing.Point(0, 0);
-            this.calibrationControl1.Name = "calibrationControl1";
-            this.calibrationControl1.Size = new System.Drawing.Size(687, 354);
-            this.calibrationControl1.TabIndex = 0;
-            // 
             // tabReports
             // 
             this.tabReports.Location = new System.Drawing.Point(4, 29);
@@ -410,11 +386,65 @@
             this.tabReports.Text = "Reports";
             this.tabReports.UseVisualStyleBackColor = true;
             // 
+            // controlPage1
+            // 
+            this.controlPage1.Location = new System.Drawing.Point(377, 60);
+            this.controlPage1.Name = "controlPage1";
+            this.controlPage1.Size = new System.Drawing.Size(303, 175);
+            this.controlPage1.TabIndex = 1;
+            // 
+            // plantMimic1
+            // 
+            this.plantMimic1.Location = new System.Drawing.Point(-153, -3);
+            this.plantMimic1.Name = "plantMimic1";
+            this.plantMimic1.Size = new System.Drawing.Size(543, 354);
+            this.plantMimic1.TabIndex = 0;
+            // 
+            // environmentControl1
+            // 
+            this.environmentControl1.Location = new System.Drawing.Point(3, 3);
+            this.environmentControl1.Name = "environmentControl1";
+            this.environmentControl1.Size = new System.Drawing.Size(257, 190);
+            this.environmentControl1.TabIndex = 0;
+            // 
+            // calibrationControl1
+            // 
+            this.calibrationControl1.Location = new System.Drawing.Point(0, 0);
+            this.calibrationControl1.Name = "calibrationControl1";
+            this.calibrationControl1.Size = new System.Drawing.Size(687, 354);
+            this.calibrationControl1.TabIndex = 0;
+            // 
+            // loggedOutPanel
+            // 
+            this.loggedOutPanel.Controls.Add(this.label1);
+            this.loggedOutPanel.Controls.Add(this.plantMimic2);
+            this.loggedOutPanel.Location = new System.Drawing.Point(0, 62);
+            this.loggedOutPanel.Name = "loggedOutPanel";
+            this.loggedOutPanel.Size = new System.Drawing.Size(694, 388);
+            this.loggedOutPanel.TabIndex = 5;
+            // 
+            // plantMimic2
+            // 
+            this.plantMimic2.Location = new System.Drawing.Point(-17, 22);
+            this.plantMimic2.Name = "plantMimic2";
+            this.plantMimic2.Size = new System.Drawing.Size(687, 354);
+            this.plantMimic2.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(216, 11);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(236, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "System Overview: Please login to access control";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(696, 450);
+            this.Controls.Add(this.loggedOutPanel);
             this.Controls.Add(this.tbcContentsTabControl);
             this.Controls.Add(this.btnShowList);
             this.Controls.Add(this.pnlAlarms);
@@ -431,6 +461,8 @@
             this.tabPlantMimic.ResumeLayout(false);
             this.tabEnvironment.ResumeLayout(false);
             this.tabCalibration.ResumeLayout(false);
+            this.loggedOutPanel.ResumeLayout(false);
+            this.loggedOutPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -479,6 +511,9 @@
         private UserControls.PlantMimic plantMimic1;
         private environmentControl environmentControl1;
         private Order order1;
+        private System.Windows.Forms.Panel loggedOutPanel;
+        private System.Windows.Forms.Label label1;
+        private UserControls.PlantMimic plantMimic2;
     }
 }
 

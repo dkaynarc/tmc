@@ -12,21 +12,33 @@ namespace Tmc.Scada.App
 {
     public partial class LoginForm : Form
     {
-        MainForm parent;
+        MainForm mainform;
 
+        /// <summary>
+        /// Initialises form components
+        /// </summary>
         public LoginForm()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Overloaded constructor accepts parent mainform
+        /// </summary>
+        /// <param name="mainForm"></param>
         public LoginForm(MainForm mainForm) : this()
         {
-            this.parent = mainForm;
+            this.mainform = mainForm;
         }
 
+        /// <summary>
+        /// Calls parent's Authenticate method based on user input
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void submitButton_Click(object sender, EventArgs e)
         {
-            parent.Authenticate(this.userNameTextBox.ToString(), this.passwordTextBox.ToString());
+            mainform.Authenticate(this.userNameTextBox.ToString(), this.passwordTextBox.ToString());
             this.Close();
         }
 

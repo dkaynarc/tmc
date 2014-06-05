@@ -24,12 +24,16 @@ namespace Tmc.Scada.App.UserControls
 
         List<IHardware> hardwareList;
 
+        /// <summary>
+        /// Initialises components and timer
+        /// </summary>
         public PlantMimic()
         {
             InitializeComponent();
             this.timer = new Timer();
             this.timer.Interval = ONE_SEC_IN_MILLISECS;
             this.timer.Tick += timer_Tick;
+            //GetHardwareList();
         }
 
         private void PlantMimic_Load(object sender, EventArgs e)
@@ -41,6 +45,7 @@ namespace Tmc.Scada.App.UserControls
         void timer_Tick(object sender, EventArgs e)
         {
             //do whatever happens every second 
+ 
         }
 
         void PlantMimic_EnabledChanged(object sender, EventArgs e)
@@ -111,6 +116,11 @@ namespace Tmc.Scada.App.UserControls
             }
         }
 
+        /// <summary>
+        /// Changes robot image based on hardware status
+        /// </summary>
+        /// <param name="pictureBox"></param>
+        /// <param name="hardwareStatus"></param>
         private void ChangeRobotPictureBox(PictureBox pictureBox, HardwareStatus hardwareStatus)
         {
             switch (hardwareStatus)
@@ -124,6 +134,11 @@ namespace Tmc.Scada.App.UserControls
             }
         }
 
+        /// <summary>
+        /// Changes camera image based on hardware status
+        /// </summary>
+        /// <param name="pictureBox"></param>
+        /// <param name="hardwareStatus"></param>
         private void ChangeCameraPictureBox(PictureBox pictureBox, HardwareStatus hardwareStatus)
         {
             switch (hardwareStatus)
@@ -137,6 +152,11 @@ namespace Tmc.Scada.App.UserControls
             }
         }
 
+        /// <summary>
+        /// Changes assembly conveyor image based on hardware status
+        /// </summary>
+        /// <param name="pictureBox"></param>
+        /// <param name="hardwareStatus"></param>
         private void ChangeAssemblyConveyorPictureBox(PictureBox pictureBox, HardwareStatus hardwareStatus)
         {
             switch (hardwareStatus)
@@ -150,6 +170,11 @@ namespace Tmc.Scada.App.UserControls
             }
         }
 
+        /// <summary>
+        /// Changes sorter conveyor image based on hardware status
+        /// </summary>
+        /// <param name="pictureBox"></param>
+        /// <param name="hardwareStatus"></param>
         private void ChangeSorterConveyorPictureBox(PictureBox pictureBox, HardwareStatus hardwareStatus)
         {
             switch (hardwareStatus)

@@ -72,6 +72,11 @@ namespace Tmc.Scada.App
             }
         }
 
+        /// <summary>
+        /// Sets the system's operating mode
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void confirmOperatingModeButton_Click(object sender, EventArgs e)
         {
             if(normalModeRadioButton.Checked)
@@ -110,6 +115,10 @@ namespace Tmc.Scada.App
             clearRadioButton(producingModeRadioButton); 
         }
 
+        /// <summary>
+        /// Unchecks a radio button
+        /// </summary>
+        /// <param name="b"></param>
         private void clearRadioButton(RadioButton b)
         {
             b.Checked = false;

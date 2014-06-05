@@ -48,12 +48,17 @@ namespace Tmc.Scada.App
          * 
          */
 
+        /// <summary>
+        /// MainForm constructor performs system initialisation
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();
             //Initialise SCADA
             //Only proceed if SCADA is initialised
+            //this.scadaEngine.Initialise();
             this.InitialiseAlarmControls();
+            //this.controlPage1.initialiseScadaEngine(scadaEngine); // pass scadaEngine reference to control page 
         }
 
         /// <summary>
@@ -108,31 +113,6 @@ namespace Tmc.Scada.App
         {
             this.lastAlarmId = alarmId;
         }
-
-        //private void plantMimicScreenButton_Click(object sender, EventArgs e)
-        //{
-        //    this.tablessControlPanel.SelectedTab = this.plantMimicTab;
-        //}
-
-        //private void controlTabButton_Click(object sender, EventArgs e)
-        //{
-        //    this.tablessControlPanel.SelectedTab = this.controlTab;
-        //}
-
-        //private void environmentTabButton_Click(object sender, EventArgs e)
-        //{
-        //    this.tablessControlPanel.SelectedTab = this.environmentTab;
-        //}
-
-        //private void ordersTabButton_Click(object sender, EventArgs e)
-        //{
-        //    this.tablessControlPanel.SelectedTab = this.ordersTab;
-        //}
-
-        //private void reportsTabButton_Click(object sender, EventArgs e)
-        //{
-        //    this.tablessControlPanel.SelectedTab = this.reportsTab;
-        //}
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -368,6 +348,11 @@ namespace Tmc.Scada.App
             this.DismissAllAlarmNotifications();
         }
 
+        /// <summary>
+        /// Call's scada engine's emergency stop
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void eStopButton_Click(object sender, EventArgs e)
         {
             //this.scadaEngine.EmergencyStop();
@@ -410,6 +395,11 @@ namespace Tmc.Scada.App
             }
         }
 
+        /// <summary>
+        /// Allows the user to login or logout
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void loginAndLogoutButton_Click(object sender, EventArgs e)
         {
             if (loginAndLogoutButton.Text == "Login")
@@ -422,16 +412,26 @@ namespace Tmc.Scada.App
             }
         }
 
+        /// <summary>
+        /// Launches a new login form
+        /// </summary>
         private void login()
         {
             LoginForm loginForm = new LoginForm();
         }
 
+        /// <summary>
+        /// Called by a login form to check user credentials
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         public void Authenticate(string username, string password)
         {
             if (authenticate(username,password))
             {
-                this.currentUserLabel.Text = username;
+                this.currentUserLabel.Text = username;     // update the current user
+                this.loginAndLogoutButton.Text = "Logout"; // change button functionality to logout
+                this.loggedOutPanel.Hide();                // hides the panel without control functionality
             }
             else
             {
@@ -439,6 +439,12 @@ namespace Tmc.Scada.App
             }
         }
 
+        /// <summary>
+        /// Checks username and password to find matching user 
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns>true upon valid credentials</returns>
         private bool authenticate(string username, string password)
         {/*
             try
@@ -462,9 +468,13 @@ namespace Tmc.Scada.App
             return true; // obviously remove this
         }
 
+        /// <summary>
+        /// Hides control functionality from logged out user
+        /// </summary>
         private void logout()
         {
-            
+            this.currentUserLabel.Text = "";
+            this.loggedOutPanel.Show();
         }
     }
 }
