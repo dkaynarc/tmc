@@ -14,8 +14,8 @@ namespace Tmc.Scada.App.UserControls
 {
     public partial class PlantMimic : UserControl
     {
-        Timer timer;
         private const int ONE_SEC_IN_MILLISECS = 1000;
+        private HardwareMonitor _hardwareMonitor;
 
         public enum Hardware
         {
@@ -24,41 +24,19 @@ namespace Tmc.Scada.App.UserControls
 
         List<IHardware> hardwareList;
 
-        public PlantMimic()
+        public PlantMimic(ScadaEngine scadaEngine)
         {
             InitializeComponent();
-            this.timer = new Timer();
-            this.timer.Interval = ONE_SEC_IN_MILLISECS;
-            this.timer.Tick += timer_Tick;
+            _hardwareMonitor = new HardwareMonitor(scadaEngine.ClusterConfig);
+            _hardwareMonitor.StatusChanged += Update;
         }
 
-        private void PlantMimic_Load(object sender, EventArgs e)
+        private void Update(object sender, HardwareEventArgs args)
         {
-            this.timer.Start();
-            this.EnabledChanged += PlantMimic_EnabledChanged;
-        }
-
-        void timer_Tick(object sender, EventArgs e)
-        {
-            //do whatever happens every second 
-        }
-
-        void PlantMimic_EnabledChanged(object sender, EventArgs e)
-        {
-            if (!this.Enabled)
+            if (this.Enabled) 
             {
-                this.timer.Stop();
+                this.ChangeHardwareStatus((Hardware)Enum.Parse(typeof(Hardware), args.hardware.Name), args.hardware.GetStatus()); 
             }
-            else
-            {
-                this.timer.Start();
-            }
-        }
-
-        private void GetHardwareList()
-        {
-            //Check if SCADA is initialised
-            this.hardwareList = new ClusterConfig().GetAllHardware();
         }
 
         /// <summary>

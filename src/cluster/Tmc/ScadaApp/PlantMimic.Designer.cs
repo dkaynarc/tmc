@@ -261,7 +261,6 @@
             this.Controls.Add(this.pnlContainer);
             this.Name = "PlantMimic";
             this.Size = new System.Drawing.Size(687, 354);
-            this.Load += new System.EventHandler(this.PlantMimic_Load);
             this.pnlContainer.ResumeLayout(false);
             this.pnlContainer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgSorterConveyor)).EndInit();

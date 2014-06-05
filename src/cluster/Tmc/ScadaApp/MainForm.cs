@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TmcData;
 using Tmc.Scada.Core;
+using Tmc.Common;
+using Tmc.Vision;
 
 
 namespace Tmc.Scada.App
@@ -50,11 +52,12 @@ namespace Tmc.Scada.App
 
         public MainForm()
         {
-            InitializeComponent();
+            
             //Initialise SCADA
             _scadaEngine = new ScadaEngine();
             //Only proceed if SCADA is initialised
             this.InitialiseAlarmControls();
+            InitializeComponent();
         }
 
         /// <summary>
@@ -464,11 +467,6 @@ namespace Tmc.Scada.App
         }
 
         private void logout()
-        {
-            
-        }
-
-        private void calibrationControl1_Load(object sender, EventArgs e)
         {
             
         }

@@ -58,7 +58,7 @@
             this.dgvAlarmsGrid = new System.Windows.Forms.DataGridView();
             this.tabPlantMimic = new System.Windows.Forms.TabPage();
             this.controlPage1 = new Tmc.Scada.App.controlPage();
-            this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic();
+            this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic(this._scadaEngine);
             this.tabEnvironment = new System.Windows.Forms.TabPage();
             this.environmentControl1 = new Tmc.Scada.App.environmentControl();
             this.tabOrders = new System.Windows.Forms.TabPage();
@@ -400,7 +400,6 @@
             this.calibrationControl1.Name = "calibrationControl1";
             this.calibrationControl1.Size = new System.Drawing.Size(687, 354);
             this.calibrationControl1.TabIndex = 0;
-            this.calibrationControl1.Load += new System.EventHandler(this.calibrationControl1_Load);
             // 
             // tabReports
             // 
