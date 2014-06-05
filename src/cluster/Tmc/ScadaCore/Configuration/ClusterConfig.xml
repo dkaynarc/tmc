@@ -11,7 +11,7 @@
   <!--<Hardware Type="Sensor">
     <Name>TemperatureSensor</Name>
     <Channel>temperature</Channel>
-    <IPAddress>127.0.0.1</IPAddress>
+    <IPAddress>192.168.1.6</IPAddress>
     <PortName>10001</PortName>
   </Hardware>
   <Hardware Type="Sensor">
