@@ -52,7 +52,7 @@ namespace TmcTest.Robots
         {
             try
             {
-                _sorter.GetTablet(12, 12, -1);
+                _sorter.GetTablet(360, -125, 2);
             }
             catch (Exception ex)
             {

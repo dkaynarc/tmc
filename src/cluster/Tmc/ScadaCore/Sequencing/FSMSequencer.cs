@@ -283,11 +283,11 @@ namespace Tmc.Scada.Core.Sequencing
             _fsm.In(State.Startup)
                 .On(Trigger.Completed)
                     .If(() => Mode == OperationMode.Normal)
-                        .Goto(State.Sorting)
+                        .Goto(State.PlacingTabletMagazineInSortingBuffer)
                     .If(() => Mode == OperationMode.AssembleOnly)
                         .Goto(State.Idle)
                     .If(() => Mode == OperationMode.SortOnly)
-                        .Goto(State.Sorting);
+                        .Goto(State.PlacingTabletMagazineInSortingBuffer);
 
             _fsm.In(State.Shutdown)
                 .ExecuteOnEntry(() =>
