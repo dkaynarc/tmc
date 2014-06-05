@@ -24,10 +24,14 @@ namespace Tmc.Scada.App.UserControls
 
         List<IHardware> hardwareList;
 
-        public PlantMimic(ScadaEngine scadaEngine)
+        public PlantMimic()
         {
             InitializeComponent();
-            _hardwareMonitor = new HardwareMonitor(scadaEngine.ClusterConfig);
+        }
+
+        public void Initialise(ClusterConfig config)
+        {
+            _hardwareMonitor = new HardwareMonitor(config);
             _hardwareMonitor.StatusChanged += Update;
         }
 

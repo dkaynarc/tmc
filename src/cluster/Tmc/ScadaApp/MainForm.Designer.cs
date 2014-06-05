@@ -58,13 +58,15 @@
             this.dgvAlarmsGrid = new System.Windows.Forms.DataGridView();
             this.tabPlantMimic = new System.Windows.Forms.TabPage();
             this.controlPage1 = new Tmc.Scada.App.controlPage();
-            this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic(this._scadaEngine);
+            this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic();
             this.tabEnvironment = new System.Windows.Forms.TabPage();
             this.environmentControl1 = new Tmc.Scada.App.environmentControl();
             this.tabOrders = new System.Windows.Forms.TabPage();
             this.tabCalibration = new System.Windows.Forms.TabPage();
             this.calibrationControl1 = new Tmc.Scada.App.CalibrationControl();
             this.tabReports = new System.Windows.Forms.TabPage();
+            this.order2 = new Tmc.Scada.App.Order();
+            this.reportControl2 = new Tmc.Scada.App.ReportControl();
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
@@ -73,7 +75,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
             this.tabPlantMimic.SuspendLayout();
             this.tabEnvironment.SuspendLayout();
+            this.tabOrders.SuspendLayout();
             this.tabCalibration.SuspendLayout();
+            this.tabReports.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -376,6 +380,7 @@
             // 
             // tabOrders
             // 
+            this.tabOrders.Controls.Add(this.order2);
             this.tabOrders.Location = new System.Drawing.Point(4, 29);
             this.tabOrders.Name = "tabOrders";
             this.tabOrders.Size = new System.Drawing.Size(687, 354);
@@ -403,12 +408,29 @@
             // 
             // tabReports
             // 
+            this.tabReports.Controls.Add(this.reportControl2);
             this.tabReports.Location = new System.Drawing.Point(4, 29);
             this.tabReports.Name = "tabReports";
             this.tabReports.Size = new System.Drawing.Size(687, 354);
             this.tabReports.TabIndex = 5;
             this.tabReports.Text = "Reports";
             this.tabReports.UseVisualStyleBackColor = true;
+            // 
+            // order2
+            // 
+            this.order2.Location = new System.Drawing.Point(9, 4);
+            this.order2.Name = "order2";
+            this.order2.Size = new System.Drawing.Size(639, 364);
+            this.order2.TabIndex = 0;
+            // 
+            // reportControl2
+            // 
+            this.reportControl2.Location = new System.Drawing.Point(8, 35);
+            this.reportControl2.Name = "reportControl2";
+            this.reportControl2.SelectedEndDate = new System.DateTime(2014, 6, 5, 15, 0, 17, 816);
+            this.reportControl2.SelectedStartDate = new System.DateTime(2014, 6, 4, 15, 0, 17, 816);
+            this.reportControl2.Size = new System.Drawing.Size(691, 267);
+            this.reportControl2.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -430,7 +452,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).EndInit();
             this.tabPlantMimic.ResumeLayout(false);
             this.tabEnvironment.ResumeLayout(false);
+            this.tabOrders.ResumeLayout(false);
             this.tabCalibration.ResumeLayout(false);
+            this.tabReports.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -479,6 +503,8 @@
         private UserControls.PlantMimic plantMimic1;
         private environmentControl environmentControl1;
         private Order order1;
+        private Order order2;
+        private ReportControl reportControl2;
     }
 }
 

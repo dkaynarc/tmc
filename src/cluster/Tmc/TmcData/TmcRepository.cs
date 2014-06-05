@@ -26,6 +26,11 @@ namespace TmcData
             return _entities.EnvironmentLogViews.ToList();
         }
 
+        public static EnvironmentLogView GetLatestEnvironment(string source)
+        {
+            return _entities.EnvironmentLogViews.Where(e => e.Source == source).OrderByDescending(e => e.Timestamp).First();
+        }
+
         public static void AddNewOrder(Guid userID, int black, int blue, int red, int green, int white )
         {
             _entities.AddNewOrder(userID, black, blue, red, green, white);

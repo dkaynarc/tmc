@@ -11,6 +11,7 @@ using TmcData;
 using Tmc.Scada.Core;
 using Tmc.Common;
 using Tmc.Vision;
+using Tmc.Scada.App.UserControls;
 
 
 namespace Tmc.Scada.App
@@ -52,12 +53,13 @@ namespace Tmc.Scada.App
 
         public MainForm()
         {
-            
-            //Initialise SCADA
-            _scadaEngine = new ScadaEngine();
-            //Only proceed if SCADA is initialised
-            this.InitialiseAlarmControls();
             InitializeComponent();
+            //_scadaEngine = new ScadaEngine();
+            //this.plantMimic1.Initialise(_scadaEngine.ClusterConfig);
+            
+            //Only proceed if SCADA is initialised
+            //this.InitialiseAlarmControls();
+            
         }
 
         /// <summary>
@@ -306,7 +308,7 @@ namespace Tmc.Scada.App
         /// </summary>
         private void SetGridViewOptions()
         {
-            if (this.dgvAlarmsGrid.DataSource == null)
+            if (this.dgvAlarmsGrid == null || this.dgvAlarmsGrid.DataSource == null)
             {
                 return;
             }
