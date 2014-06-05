@@ -8,6 +8,19 @@ namespace TmcTest.ConveyorTest
     [TestClass]
     public class Conveyors
     {
+        private SerialConveyor _serialConveyor;
+
+        public Conveyors()
+        {
+            _serialConveyor = ConveyorFactory.CreateConveyor<SerialConveyor>();
+
+            var dict = new Dictionary<string, string>();
+            dict.Add("PortName", "COM7");
+
+            _serialConveyor.SetParameters(dict);
+            _serialConveyor.Initialise();
+        }
+
         [TestMethod]
         public void BluetoothForward()
         {
@@ -37,5 +50,32 @@ namespace TmcTest.ConveyorTest
 
             conveyor.MoveBackward();
         }
+           
+        [TestMethod]
+        public void SerialForward()
+        {
+            try
+            {
+                _serialConveyor.MoveForward();
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+        }
+
+        [TestMethod]
+        public void SerialBackward()
+        {
+            try
+            {
+                _serialConveyor.MoveBackward();
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+        }
+    
     }
 }
