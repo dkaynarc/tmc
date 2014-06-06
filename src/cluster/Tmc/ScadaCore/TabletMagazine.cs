@@ -22,7 +22,7 @@ namespace Tmc.Scada.Core
 
             foreach (var value in (TabletColors[])Enum.GetValues(typeof(TabletColors)))
             {
-                Slots.Add(value, 0);
+                //Slots.Add(value, 0);
                 Slots.Add(value, slotIndex++);
             }
         }

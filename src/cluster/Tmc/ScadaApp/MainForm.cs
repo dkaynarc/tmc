@@ -55,13 +55,13 @@ namespace Tmc.Scada.App
         public MainForm()
         {
             InitializeComponent();
-            //_scadaEngine = new ScadaEngine();
+            _scadaEngine = new ScadaEngine();
             //this.plantMimic1.Initialise(_scadaEngine.ClusterConfig);
             
             //Only proceed if SCADA is initialised
             //this.InitialiseAlarmControls();
             _webApiClient = new WebApiClient("198.162.1.1");
-            disableUserControl(); // Default on startup - user must login first
+            //disableUserControl(); // Default on startup - user must login first
         }
 
         /// <summary>
