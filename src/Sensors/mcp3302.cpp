@@ -92,7 +92,7 @@ return retVal;
 mcp3302::mcp3302(){
     this->mode = SPI_MODE_0 ;
     this->bitsPerWord = 8;
-    this->speed = 1000000;
+    this->speed = 1250000;
     this->spifd = -1;
  
     this->spiOpen(std::string("/dev/spidev0.0"));
@@ -108,8 +108,8 @@ mcp3302::mcp3302(std::string devspi, unsigned char spiMode, unsigned int spiSpee
     this->spiOpen(devspi);
  
 }
-
+/*
 mcp3302::~mcp3302(){
     this->spiClose();
-}
+}*/
 

@@ -18,10 +18,10 @@ class mcp3302{
 public:
     mcp3302();
     mcp3302(std::string devspi, unsigned char spiMode, unsigned int spiSpeed, unsigned char spibitsPerWord);
-    ~mcp3302();
+    //~mcp3302();
     int spiWriteRead( unsigned char *data, int length);
      
-private:
+//private:
     unsigned char mode;
     unsigned char bitsPerWord;
     unsigned int speed;

@@ -1,20 +1,22 @@
 #include "TMCSensor.h"
-#include "mcp3302.h"
 
-HumiditySensor::HumiditySensor() {};
-DustSensor::DustSensor() {};
+
+HumiditySensor::HumiditySensor() {humidity = 0;}
+DustSensor::DustSensor() {concentration = 0;}
 AmbienceSensor::AmbienceSensor() {};
 SoundSensor::SoundSensor() {};
 TemperatureSensor::TemperatureSensor() {};
 
 std::string HumiditySensor::getData()
 {
-	float humidity;
+	//float humidity = 50;
 	//int temperature;
-	while (!obtainData());
-	humidity = (float)(DHT22_value[0] * 256 + DHT22_value[1]) / 10.0;
+	//while (!obtainData());
+	//humidity = (float)(DHT22_value[0] * 256 + DHT22_value[1]) / 10.0;
 	//printf("Humidity: %.2f%\n", humidity);
 	//temperature = (DHT22_value[2] & 0x7F) * 256 + DHT22_value[3];
+	//wiringPiSetup();
+	obtainData();
 	std::string dataString;
 	std::stringstream ss;
 	
@@ -23,9 +25,10 @@ std::string HumiditySensor::getData()
 	
 	return dataString;
 }
+
 std::string DustSensor::getData()
 {
-	wiringPiSetup();
+	//wiringPiSetup();
 	int pin = 0; // GPIO pin 17 (Wiring Pi #0)
 	unsigned long duration;
 	unsigned long starttime;
@@ -50,7 +53,7 @@ std::string DustSensor::getData()
 			
 			//cout <<  lowpulseoccupancy << endl;
 			//cout <<  ratio << endl;
-			std::cout <<  concentration << std::endl;
+			//std::cout <<  concentration << std::endl;
 			std::string dataString;
 			std::stringstream ss;
 			
@@ -66,9 +69,9 @@ std::string DustSensor::getData()
 	//return 0;
 }
 
-std::string AmbienceSensor::getData() 
+std::string AmbienceSensor::getData(mcp3302 a2d) 
 {
-    mcp3302 a2d("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
+    //mcp3302 a2d("/dev/spidev0.0", SPI_MODE_0, 1250000, 8);
 	int a2dVal = 0;
     int a2dChannel = 0;
 	double lux;
@@ -102,11 +105,11 @@ std::string AmbienceSensor::getData()
     
 }
 
-std::string SoundSensor::getData()
+std::string SoundSensor::getData(mcp3302 a2d)
 {
-	int value = obtainData();
+	int value = obtainData(a2d);
 	while (value == 0)
-		value = obtainData();
+		value = obtainData(a2d);
 	double vOut = value * 4.9 / 4096.0;
 	double sound_dB = 20 * log10(vOut * 191) + 26;
 	std::string dataString;
@@ -119,12 +122,17 @@ std::string SoundSensor::getData()
 	return dataString;
 }
 
-std::string TemperatureSensor::getData()
+std::string TemperatureSensor::getData(int i2c_fd)
 {
-	double a = get_i2c_temperature(0x48);
-	std::string s = getTemperature(a);
-	return s;
+	//int i2c_fd = wiringPiI2CSetup(I2C_TEMP_ADDRESS);
+	int celcius = wiringPiI2CReadReg16(i2c_fd, I2C_TEMP_REGISTER_ADDRESS);
 	
+	std::stringstream ss;
+	std::string dataString;
+	ss << celcius;
+	ss >> dataString;
+	
+	return dataString;
 }
 
 int DustSensor::pulseIn(int pin, int level, int timeout)
@@ -175,18 +183,21 @@ int DustSensor::pulseIn(int pin, int level, int timeout)
    return micros;
 }
 
-int HumiditySensor::obtainData()
+void HumiditySensor::obtainData()
 {
 	// Some variables to be used to take measurement
+	//wiringPiSetup();
 	uint8_t last_state = HIGH;  
 	uint8_t counter = 0;  
 	uint8_t j = 0;
 	uint8_t i;   
-	
-	
+	//static float humidity_prev = 0;
+	//delay(MAX_TIME);
 	// Initialise DHT22 Rx array
-	for (i = 0; i < MAX_TIME; i++)
-		DHT22_value[i] = 0;
+	//for (i = 0; i <= sizeof(DHT22_value)/DHT22_value[0]; i++)
+	//	DHT22_value[i] = 0;
+	for (i = 0; i < 5; i++)
+		 DHT22_value[i] = 0;
 	
 	// Generate the START condition signal
 	pinMode(DHT11PIN, OUTPUT);  
@@ -221,17 +232,22 @@ int HumiditySensor::obtainData()
 		}  
 	}
 	// Verify checksum and print the verified data  
-	if ((j >= 40) && (DHT22_value[4] == ((DHT22_value[0] + DHT22_value[1] + DHT22_value[2] + DHT22_value[3])& 0xFF)))  
-		return 1;
+	if ((j >= 40) && (DHT22_value[4] == ((DHT22_value[0] + DHT22_value[1] + DHT22_value[2] + DHT22_value[3])& 0xFF)))
+	{
+		humidity_prev = (float)(DHT22_value[0] * 256 + DHT22_value[1]) / 10.0;
+		if (humidity_prev >= 1)
+			humidity = humidity_prev;
+	}
 		
 	else
-		return 0;
+		return;
+	
 	//	printf("Invalid Data!!\n");
 }
 
-int SoundSensor::obtainData() 
+int SoundSensor::obtainData(mcp3302 a2d) 
 {
-    mcp3302 a2d("/dev/spidev0.0", SPI_MODE_0, 1250000, 8);
+    //mcp3302 a2d("/dev/spidev0.0", SPI_MODE_0, 1250000, 8);
 	int a2dVal = 0;
     //int a2dChannel = 0;
     unsigned char data[3];
@@ -258,39 +274,4 @@ int SoundSensor::obtainData()
 	*/
 	return a2dVal;
     
-}
-
-std::string TemperatureSensor::getTemperature(double temperature)
-{
-	temperature *= 0.0625;
-	float float_temperature = (float)temperature;
-	std::ostringstream strs;
-	strs << float_temperature;
-	std::string str = strs.str();
-	return str;
-}
-
-uint16_t TemperatureSensor::get_i2c_temperature(int address)
-{
-	// Setup the command to access i2c port
-	std::stringstream ss;
-	ss << address <<' ';
-	std::string addr;
-	ss >> addr;
-	std::string command = "i2cget -y 1 " + addr + " 0x00 w";
-	
-	//Issue the command to obtain the temperature data
-	FILE *sys = popen(command.c_str(),"r");
-	char buff[10];
-	char *sensor = fgets(buff, sizeof(buff), sys);
-	ss << std::hex << buff;
-	uint16_t abc;
-	ss >> abc;
-	
-	// Swap the MSB and LSB
-	uint16_t cba = ((abc >> 8) & 0x00ff) | ((abc << 8) & 0xff00) >> 4;
-
-	// Close the device pointer
-	pclose(sys);
-	return cba;
 }

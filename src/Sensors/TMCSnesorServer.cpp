@@ -8,6 +8,13 @@
 
 //using namespace std;
 
+std::string _dustData = "N/A";
+AmbienceSensor ambience;
+TemperatureSensor temperature;
+HumiditySensor humidity;
+SoundSensor	sound;
+mcp3302	a2d;
+int i2c_fd = wiringPiI2CSetup(I2C_TEMP_ADDRESS);
 std::vector<boost::shared_ptr<boost::asio::ip::tcp::socket> > established_connections;
 
 /// <summary>
@@ -53,37 +60,42 @@ void worker(boost::shared_ptr<boost::asio::ip::tcp::socket> socket)
 			
 			if (sdata_in == "temperature")
 			{
-				TemperatureSensor temperature;
-				std::string data = temperature.getData() + "\n";
+				// TemperatureSensor temperature;
+				std::string data = temperature.getData(i2c_fd) + "\n";
 				message = data;
 			}
 			
 			if(sdata_in == "ambience")
 			{
-				AmbienceSensor ambience;
-				std::string data = ambience.getData() + "\n";
+				// AmbienceSensor ambience;
+				std::string data = ambience.getData(a2d) + "\n";
 				message = data;
 			}
 			
 			if(sdata_in == "sound")
 			{
-				SoundSensor	sound;
-				std::string data = sound.getData() + "\n";
+				// SoundSensor	sound;
+				std::string data = sound.getData(a2d) + "\n";
 				message = data;
 			}
 			
 			if(sdata_in == "humidity")
 			{
-				HumiditySensor humidity;
+				// HumiditySensor humidity;
 				std::string data = humidity.getData() + "\n";
 				message = data;
+				//message = _humidityData;
+				//HumiditySensor humidity;
+				//_humidityData = humidity.getData() + "\n";
+				
 			}
 			
 			if(sdata_in == "dust")
 			{
-				DustSensor dust;
-				std::string data = dust.getData() + "\n";
-				message = data;
+				message = _dustData;
+				//DustSensor dust;
+				//_dustData = dust.getData() + "\n";
+				
 			}
 	
             boost::asio::write(*socket, boost::asio::buffer(message));
@@ -99,6 +111,29 @@ void worker(boost::shared_ptr<boost::asio::ip::tcp::socket> socket)
 	}
 }
 
+
+void updateMeasurement()
+{
+	//HumiditySensor humidity;
+	DustSensor dust;
+	SoundSensor	sound;
+	HumiditySensor humidity;
+	
+	
+	for (;;)
+	{
+		//std::cout << "I am measuring!!" << std::endl; 
+		//std::string hData = humidity.getData() + "\n";
+		//std::string dData = dust.getData() + "\n";
+		//_dustData = dust.getData() + "\n";
+		
+		//std::string data = sound.getData() + "\n";
+		std::cout << humidity.getData() << std::endl; 
+		//std::cout <<  hData << std::endl;
+		//delay(1000);
+	}
+}
+
 /// <summary>
 /// Creates a TCP listener based on the input port number value from main(). 
 /// Manages multiple socket connections via a vector<shared_ptr<sockets> > 
@@ -108,6 +143,8 @@ void worker(boost::shared_ptr<boost::asio::ip::tcp::socket> socket)
 
 void listener_loop(int port_number)
 {
+	//boost::thread workerThread3(updateMeasurement);
+	
 
 	boost::asio::io_service io_service;
 	boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::tcp::v4(), port_number);
@@ -136,6 +173,9 @@ void listener_loop(int port_number)
 	}
 }
 
+
+
+
 /// <summary>
 /// Runs the TCP listener loop to handle connections
 /// Input argument: Port number
@@ -148,7 +188,8 @@ int main(int argc, char* argv[])
 		std::cerr << "Usage: TCP_echo_server <port>\n";
 		return -1;
 	}
-
+	wiringPiSetup();
+	wiringPiI2CSetup(I2C_TEMP_ADDRESS);
 	boost::thread workerThread(listener_loop, std::atoi(argv[1])); // Creates a thread that loops to accept sockets
 
 	workerThread.join();
