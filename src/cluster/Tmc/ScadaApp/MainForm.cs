@@ -24,7 +24,7 @@ namespace Tmc.Scada.App
         /// <summary>
         /// Data table used to store TMC alarms and warnings
         /// </summary>
-        private DataTable AlarmsDataTable = new DataTable();
+        private DataTable AlarmsDataTable;
 
         // Constants for column names in the alarms data table so we don't need to check for spelling every time
         private const string ALARM_LIST_TAB_PAGE_NAME = "tabAlarmList";
@@ -69,6 +69,7 @@ namespace Tmc.Scada.App
         /// </summary>
         private void InitialiseAlarmControls()
         {
+            AlarmsDataTable = new DataTable();
             this.InitialiseAlarmDataTable();
             this.SetGridViewOptions();
         }
@@ -407,7 +408,7 @@ namespace Tmc.Scada.App
 
         private void login()
         {
-            LoginForm loginForm = new LoginForm(this);
+            new LoginForm(this).Show();
         }
 
         public void Authenticate(string username, string password)
@@ -415,6 +416,8 @@ namespace Tmc.Scada.App
             if (_webApiClient.Authenticate(username,password))
             {
                 this.currentUserLabel.Text = username;
+                this.loginAndLogoutButton.Text = "Logout";
+                this.tbcContentsTabControl.Enabled = true;
             }
             else
             {
