@@ -100,6 +100,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.submitButton);
             this.Name = "LoginForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "LoginForm";
             this.ResumeLayout(false);
             this.PerformLayout();

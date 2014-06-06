@@ -424,6 +424,7 @@ namespace Tmc.Scada.App
             else
             {
                 MessageBox.Show("Invalid credentials");
+                new LoginForm(this).Show();
             }
         }
 
