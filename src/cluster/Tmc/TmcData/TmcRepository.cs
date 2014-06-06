@@ -27,7 +27,7 @@ namespace TmcData
         }
 
         public static EnvironmentLogView GetLatestEnvironment(string source)
-        {
+        {   
             return _entities.EnvironmentLogViews.Where(e => e.Source.Contains(source)).OrderByDescending(e => e.Timestamp).First();
         }
 
