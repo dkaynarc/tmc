@@ -413,7 +413,9 @@ namespace Tmc.Scada.App
 
         public void Authenticate(string username, string password)
         {
-            if (_webApiClient.Authenticate(username,password))
+            var userInfo = _webApiClient.Authenticate(username, password);
+
+            if (userInfo.Result == "success")
             {
                 this.currentUserLabel.Text = username;
                 this.loginAndLogoutButton.Text = "Logout";
