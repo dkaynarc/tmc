@@ -33,7 +33,16 @@ namespace Tmc.Scada.App
             request.AddUrlSegment("username", username);
             request.AddUrlSegment("password", password);
 
-            return _client.Execute(request).Content == "success";
+            var reponse = _client.Execute<ApiResponse>(request);
+            return reponse.Data.Result == "success";
+        }
+
+
+        private class ApiResponse
+        {
+            public string Result { get; set; }
+            public string Name { get; set; }
+            public string Role { get; set; }
         }
     }
 }

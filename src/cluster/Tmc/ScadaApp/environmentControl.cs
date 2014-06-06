@@ -22,7 +22,7 @@ namespace Tmc.Scada.App
             _timer = new Timer();
             _timer.Interval = 5000;
             _timer.Tick += Update;
-            _timer.Start();
+            //_timer.Start();
 
             Teperature = listView1.Items[0].SubItems[1];
             Humidity = listView1.Items[1].SubItems[1];
