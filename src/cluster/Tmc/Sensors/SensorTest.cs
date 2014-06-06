@@ -42,22 +42,22 @@ namespace Tmc.Sensors
                 Sensor light = new Sensor();
                 light.Name = "LightSensor";
                 light.Channel = "ambience";
-                light.IPAddress = "172.19.200.66";
+                light.IPAddress = "192.168.1.6";
                 light.PortName = "9000";
                 Sensor temperature = new Sensor();
                 temperature.Name = "TemperatureSensor";
                 temperature.Channel = "temperature";
-                temperature.IPAddress = "172.19.200.66";
+                temperature.IPAddress = "192.168.1.6";
                 temperature.PortName = "9000";
                 Sensor sound = new Sensor();
                 sound.Name = "SoundSensor";
                 sound.Channel = "sound";
-                sound.IPAddress = "172.19.200.66";
+                sound.IPAddress = "192.168.1.6";
                 sound.PortName = "9000";
                 Sensor humidity = new Sensor();
                 humidity.Name = "HumiditySensor";
                 humidity.Channel = "humidity";
-                humidity.IPAddress = "172.19.200.66";
+                humidity.IPAddress = "192.168.1.6";
                 humidity.PortName = "9000";
 
                 light.Initialise(); //connection 2
