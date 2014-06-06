@@ -15,7 +15,7 @@ namespace Tmc.Scada.Core
 {
     public sealed class TrayVerifier : ControllerBase
     {
-        private const string CameraName = "TrayDetectorCamera";
+        private const string CameraName = "TrayVerifierCamera";
 
         private TrayDetectorVision _trayDetector;
         public TrayVerifier(ClusterConfig config) : base(config)

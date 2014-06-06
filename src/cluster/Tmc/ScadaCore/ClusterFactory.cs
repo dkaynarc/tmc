@@ -156,7 +156,6 @@ namespace Tmc.Scada.Core
             controllers.Add(typeof(Assembler), new Assembler(config));
             controllers.Add(typeof(ConveyorController), new ConveyorController(config));
             controllers.Add(typeof(Loader), new Loader(config));
-            controllers.Add(typeof(Palletiser), new Palletiser(config));
             controllers.Add(typeof(Sorter), new Sorter(config));
             controllers.Add(typeof(TrayVerifier), new TrayVerifier(config));
 
