@@ -424,6 +424,7 @@ namespace Tmc.Scada.App
             else
             {
                 MessageBox.Show("Invalid credentials");
+                new LoginForm(this).Show();
             }
         }
 
@@ -438,6 +439,12 @@ namespace Tmc.Scada.App
             this.tbcContentsTabControl.SelectTab(1); // Set plant mimic tab
             this.tbcContentsTabControl.Enabled = false;
             this.controlPage1.Enabled = false;
+            this.btnShowList.Enabled = false;
+        }
+
+        private void createUserButton_Click(object sender, EventArgs e)
+        {
+            new CreateUserForm().Show();
         }
     }
 }
