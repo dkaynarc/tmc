@@ -60,7 +60,7 @@ namespace Tmc.Scada.App
             
             //Only proceed if SCADA is initialised
             //this.InitialiseAlarmControls();
-            _webApiClient = new WebApiClient("198.162.1.1");
+            _webApiClient = new WebApiClient("http://192.168.1.102:8080/");
             //disableUserControl(); // Default on startup - user must login first
         }
 
@@ -427,7 +427,7 @@ namespace Tmc.Scada.App
 
         private void logout()
         {
-            this.currentUserLabel.Text = "";
+            this.currentUserLabel.Text = "No current user";
             disableUserControl();
         }
 
