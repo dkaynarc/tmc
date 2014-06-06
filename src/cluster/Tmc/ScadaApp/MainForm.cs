@@ -19,6 +19,7 @@ namespace Tmc.Scada.App
     public partial class MainForm : Form
     {
         private ScadaEngine _scadaEngine;
+        private WebApiClient _webApiClient;
 
         /// <summary>
         /// Data table used to store TMC alarms and warnings
@@ -59,7 +60,8 @@ namespace Tmc.Scada.App
             
             //Only proceed if SCADA is initialised
             //this.InitialiseAlarmControls();
-            
+            _webApiClient = new WebApiClient("198.162.1.1");
+            disableUserControl(); // Default on startup - user must login first
         }
 
         /// <summary>
@@ -114,31 +116,6 @@ namespace Tmc.Scada.App
         {
             this.lastAlarmId = alarmId;
         }
-
-        //private void plantMimicScreenButton_Click(object sender, EventArgs e)
-        //{
-        //    this.tablessControlPanel.SelectedTab = this.plantMimicTab;
-        //}
-
-        //private void controlTabButton_Click(object sender, EventArgs e)
-        //{
-        //    this.tablessControlPanel.SelectedTab = this.controlTab;
-        //}
-
-        //private void environmentTabButton_Click(object sender, EventArgs e)
-        //{
-        //    this.tablessControlPanel.SelectedTab = this.environmentTab;
-        //}
-
-        //private void ordersTabButton_Click(object sender, EventArgs e)
-        //{
-        //    this.tablessControlPanel.SelectedTab = this.ordersTab;
-        //}
-
-        //private void reportsTabButton_Click(object sender, EventArgs e)
-        //{
-        //    this.tablessControlPanel.SelectedTab = this.reportsTab;
-        //}
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -430,12 +407,12 @@ namespace Tmc.Scada.App
 
         private void login()
         {
-            LoginForm loginForm = new LoginForm();
+            LoginForm loginForm = new LoginForm(this);
         }
 
         public void Authenticate(string username, string password)
         {
-            if (authenticate(username,password))
+            if (_webApiClient.Authenticate(username,password))
             {
                 this.currentUserLabel.Text = username;
             }
@@ -445,32 +422,17 @@ namespace Tmc.Scada.App
             }
         }
 
-        private bool authenticate(string username, string password)
-        {/*
-            try
-            {
-                var user = UserManager.Find(username, password);
-
-                if (user != null)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception exc)
-            {
-                return false;
-            }  */
-
-            return true; // obviously remove this
-        }
-
         private void logout()
         {
-            
+            this.currentUserLabel.Text = "";
+            disableUserControl();
+        }
+
+        private void disableUserControl()
+        {
+            this.tbcContentsTabControl.SelectTab(1); // Set plant mimic tab
+            this.tbcContentsTabControl.Enabled = false;
+            this.controlPage1.Enabled = false;
         }
     }
 }
