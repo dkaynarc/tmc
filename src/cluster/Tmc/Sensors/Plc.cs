@@ -129,7 +129,7 @@ namespace Tmc.Sensors
         private AxAsadtcp CreatePlcControl()
         {
             var control = new AxAsadtcp();
-            var windowDestroyer = new WindowDestroyer(DemoWindowName, 100, 5);
+            var windowDestroyer = new WindowDestroyer(DemoWindowName, 100, 20);
 
             ((System.ComponentModel.ISupportInitialize)(control)).BeginInit();
             

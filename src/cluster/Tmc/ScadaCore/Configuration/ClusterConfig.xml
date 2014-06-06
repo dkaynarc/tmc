@@ -2,11 +2,15 @@
 <Cluster Name="TMC-Cluster-01">
   <Hardware Type="Camera">
     <Name>SorterCamera</Name>
-    <ConnectionString>http://192.168.1.8:8080/photoaf.jpg</ConnectionString> <!-- Leo cam -->
+    <!-- Leo cam -->
+    <ConnectionString>http://192.168.1.8:8080/photoaf.jpg</ConnectionString>
   </Hardware>
   <Hardware Type="Camera">
     <Name>TrayVerifierCamera</Name>
-    <ConnectionString>http://192.168.1.3:8080/photoaf.jpg</ConnectionString> <!-- DK cam -->
+    <!-- DK-->
+    <ConnectionString>http://192.168.1.3:8080/photoaf.jpg</ConnectionString> 
+    <!-- Donald -->
+    <!--<ConnectionString>http://192.168.1.20:8080/photoaf.jpg</ConnectionString>-->
   </Hardware>
   <!--<Hardware Type="Sensor">
     <Name>TemperatureSensor</Name>
