@@ -72,9 +72,9 @@ namespace Tmc.Scada.App
 
         private void updateOrder()
         {
-            //var orderList = TmcRepository.OrderInfo();
+            var orderList = TmcRepository.OrderInfo();
 
-            //orderListViewBindingSource.DataSource = checkBox_showCancelled.Checked ? orderList : orderList.Where(order => order.Status != "Cancelled");
+            orderListViewBindingSource.DataSource = checkBox_showCancelled.Checked ? orderList : orderList.Where(order => order.Status != "Cancelled");
         }
 
         private void button_Cancel_Click(object sender, EventArgs e)

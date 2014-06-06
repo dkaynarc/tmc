@@ -117,7 +117,7 @@ namespace Tmc.Scada.Core
         {
             Task.Run(() =>
             {
-                var status = LoadToConveyor();
+                var status = LoadToBuffer();
                 IsRunning = false;
                 OnCompleted(new SorterCompletedEventArgs()
                 {
@@ -212,8 +212,8 @@ namespace Tmc.Scada.Core
             const float xOff = -121.9f;
             const float yOff = 357.6f;
 
-            float camX = p.X * xScale;
-            float camY = p.Y * yScale;
+            float camX = p.X * xScale / 10;
+            float camY = p.Y * yScale / 10;
 
             int robotX = (int)(camY + yOff);
             int robotY = (int)(camX + xOff);

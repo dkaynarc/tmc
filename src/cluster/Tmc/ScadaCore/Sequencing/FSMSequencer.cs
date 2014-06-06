@@ -24,15 +24,28 @@ namespace Tmc.Scada.Core.Sequencing
 
     public class StateLoggerExtension : ExtensionBase<State, Trigger>
     {
-        public IState<State, Trigger> CurrentState { get; private set; }
-        public IState<State, Trigger> PreviousState { get; private set; }
+        public State CurrentState { get; private set; }
+        public State PreviousState { get; private set; }
+
+        public StateLoggerExtension() : base()
+        {
+            CurrentState = State.None;
+            CurrentState = State.None;
+        }
 
         public override void SwitchedState(IStateMachineInformation<State, Trigger> stateMachine, 
             Appccelerate.StateMachine.Machine.IState<State, Trigger> oldState, 
             Appccelerate.StateMachine.Machine.IState<State, Trigger> newState)
         {
-            this.CurrentState = newState;
-            this.PreviousState = oldState;
+            if (newState != null)
+            {
+                this.CurrentState = newState.Id;
+            }
+
+            if (oldState != null)
+            {
+                this.PreviousState = oldState.Id;
+            }
             base.SwitchedState(stateMachine, oldState, newState);
         }
     }
@@ -75,10 +88,13 @@ namespace Tmc.Scada.Core.Sequencing
             Debug.Assert(this._sorter != null);
             Debug.Assert(this._trayVerifier != null);
 
+            this.Mode = OperationMode.Normal;
+
             _fsm = new PassiveStateMachine<State, Trigger>();
             TransitionLogger = new StateLoggerExtension();
             _fsm.AddExtension(TransitionLogger);
             this.Create();
+            this.BindEvents();
         }
 
         #region Public Methods
@@ -136,7 +152,7 @@ namespace Tmc.Scada.Core.Sequencing
             CreateAssemblingStates();
             CreateGlobalStates();
 
-            _fsm.Initialize(State.Shutdown);
+            _fsm.Initialize(State.Startup);
         }
 
         private void CreateAssemblingStates()
@@ -281,7 +297,7 @@ namespace Tmc.Scada.Core.Sequencing
         private void CreateGlobalStates()
         {
             _fsm.In(State.Startup)
-                .On(Trigger.Completed)
+                .On(Trigger.Start)
                     .If(() => Mode == OperationMode.Normal)
                         .Goto(State.PlacingTabletMagazineInSortingBuffer)
                     .If(() => Mode == OperationMode.AssembleOnly)
@@ -305,6 +321,10 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.Shutdown)
                 .On(Trigger.Resume)
                     .Goto(State.Running);
+
+            _fsm.In(State.None)
+                .On(Trigger.Start)
+                    .Goto(State.Startup);
 
             _fsm.DefineHierarchyOn(State.Running)
                 .WithHistoryType(HistoryType.Deep)

@@ -22,8 +22,8 @@ namespace Tmc.Scada.Core
 
             foreach (var value in (TabletColors[])Enum.GetValues(typeof(TabletColors)))
             {
-                //Slots.Add(value, 0);
-                Slots.Add(value, slotIndex++);
+                Slots.Add(value, 0);
+                _slotIndexMap.Add(value, slotIndex++);
             }
         }
 

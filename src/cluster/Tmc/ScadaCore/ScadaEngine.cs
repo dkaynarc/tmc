@@ -49,10 +49,12 @@ namespace Tmc.Scada.Core
             this.TabletMagazine = new TabletMagazine();
             this._sequencer = new FSMSequencer(this);
             this.OrderConsumer = new OrderConsumer();
+            this.Initialise();
         }
 
         public void Initialise()
         {
+            Logger.Instance.Strategy = LogStrategy.File;
             this._sequencer.StartSequencing();
             Logger.Instance.Write(new LogEntry("TMC control system initialised", LogType.Message));
         }
@@ -60,7 +62,8 @@ namespace Tmc.Scada.Core
         public void Start()
         {
             //_environmentMonitor.Log(); // Should be run on a separate thread
-            if (_sequencer.TransitionLogger.CurrentState.Id == State.Shutdown)
+            if (_sequencer.TransitionLogger.CurrentState == State.Shutdown || 
+                _sequencer.TransitionLogger.CurrentState == State.Startup)
             {
                 this._sequencer.FireStartTrigger();
                 Logger.Instance.Write(new LogEntry("Cluster operation started", LogType.Message));
@@ -69,7 +72,7 @@ namespace Tmc.Scada.Core
 
         public void Stop()
         {
-            if ((_sequencer.TransitionLogger.CurrentState.Id != State.Stopped) || (_sequencer.TransitionLogger.CurrentState.Id != State.Shutdown))
+            if ((_sequencer.TransitionLogger.CurrentState != State.Stopped) || (_sequencer.TransitionLogger.CurrentState != State.Shutdown))
             {
                 this._sequencer.FireStopTrigger();
                 Logger.Instance.Write(new LogEntry("Cluster operation stopped", LogType.Message));
@@ -78,7 +81,7 @@ namespace Tmc.Scada.Core
 
         public void Resume()
         {
-            if (_sequencer.TransitionLogger.CurrentState.Id == State.Stopped)
+            if (_sequencer.TransitionLogger.CurrentState == State.Stopped)
             {
                 this._sequencer.FireResumeTrigger();
                 Logger.Instance.Write(new LogEntry("Cluster operation resumed", LogType.Message));
@@ -87,7 +90,7 @@ namespace Tmc.Scada.Core
 
         public void Shutdown()
         {
-            if (_sequencer.TransitionLogger.CurrentState.Id != State.Shutdown)
+            if (_sequencer.TransitionLogger.CurrentState!= State.Shutdown)
             {
                 this._sequencer.FireShutdownTrigger();
                 Logger.Instance.Write(new LogEntry("Cluster operation shutdown", LogType.Message));

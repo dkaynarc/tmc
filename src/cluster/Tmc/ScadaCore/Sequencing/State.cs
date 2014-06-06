@@ -25,6 +25,7 @@ namespace Tmc.Scada.Core.Sequencing
         PlacingTabletMagazineOnSortingConveyorFromSorter,
         PlacingTabletMagazineOnSortingConveyorFromAssembler,
         SortingConveyorMovingForward,
-        SortingConveyorMovingBackward
+        SortingConveyorMovingBackward,
+        None
     }
 }

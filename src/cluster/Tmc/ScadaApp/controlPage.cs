@@ -24,7 +24,7 @@ namespace Tmc.Scada.App
         /// Called by main form to pass in access to the scada engine
         /// </summary>
         /// <param name="scadaEngine"></param>
-        public void initialiseScadaEngine(ScadaEngine scadaEngine)
+        public void InitialiseScadaEngine(ScadaEngine scadaEngine)
         {
             this._scadaEngine = scadaEngine;
         }

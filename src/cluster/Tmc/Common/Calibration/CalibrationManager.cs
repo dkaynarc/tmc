@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.AccessControl;
 
 namespace Tmc.Common
 {
@@ -112,11 +113,14 @@ namespace Tmc.Common
         {
             if (!String.IsNullOrEmpty(this.DataFilesDirectory))
             {
-                var dataFiles = Directory.GetFiles(this.DataFilesDirectory, "*" + this.DataFileExtension);
-                foreach (var file in dataFiles)
+                if (Directory.Exists(this.DataFilesDirectory))
                 {
-                    var calData = LoadDataFile(file);
-                    this.SetCalibrationData(calData);
+                    var dataFiles = Directory.GetFiles(this.DataFilesDirectory, "*" + this.DataFileExtension);
+                    foreach (var file in dataFiles)
+                    {
+                        var calData = LoadDataFile(file);
+                        this.SetCalibrationData(calData);
+                    }
                 }
             }
         }
@@ -159,6 +163,11 @@ namespace Tmc.Common
             if (!String.IsNullOrEmpty(this.DataFilesDirectory))
             {
                 var fullPath = Path.Combine(this.DataFilesDirectory, calData.ParentType.Name + this.DataFileExtension);
+                var dir = Path.GetDirectoryName(fullPath);
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
                 CalibrationDataSerializer.Serialize(calData, fullPath);
             }
         }

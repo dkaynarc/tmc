@@ -267,6 +267,10 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Q /Y "C:\Emgu\emgucv-windows-universal-cuda 2.9.0.1922\bin\*.dll" "$(TargetDir)"
+xcopy /I /E /Q /Y "C:\Emgu\emgucv-windows-universal-cuda 2.9.0.1922\bin\x86" "$(TargetDir)\x86"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

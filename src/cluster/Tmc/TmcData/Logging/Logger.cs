@@ -12,7 +12,8 @@ namespace TmcData
     {
         File,
         Database,
-        All
+        All,
+        None
     }
 
     public sealed class Logger
@@ -80,7 +81,7 @@ namespace TmcData
 
         private bool MatchesStrategy(ILogProvider p)
         {
-            return (Strategy == LogStrategy.All || Strategy == p.ProvidedStrategy);
+            return ((Strategy == LogStrategy.All || Strategy == p.ProvidedStrategy) && Strategy != LogStrategy.None);
         }
     }
 }

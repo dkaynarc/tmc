@@ -33,9 +33,9 @@ namespace Tmc.Scada.Core
             this._updateTimer = new Timer(updateTime);
             this._updateTimer.Elapsed += new ElapsedEventHandler((s, e) => this.Update());
 
-            for (int i = 0; i < _hardware.Count; i++)
+            foreach (var hw in _hardware)
             {
-                _previoushardwareStatus[i] = _hardware[i].GetStatus();
+                _previoushardwareStatus.Add(hw.GetStatus());
             }
         }
 
