@@ -27,18 +27,18 @@ namespace Tmc.Scada.App
             return _client.Execute(request).Content == "success";   
         }
 
-        public bool Authenticate(string username, string password)
+        public UserInfo Authenticate(string username, string password)
         {
             var request = new RestRequest("api/server/authenticate/{username}/{password}");
             request.AddUrlSegment("username", username);
             request.AddUrlSegment("password", password);
 
-            var reponse = _client.Execute<ApiResponse>(request);
-            return reponse.Data.Result == "success";
+            var reponse = _client.Execute<UserInfo>(request);
+            return reponse.Data;
         }
 
 
-        private class ApiResponse
+        public class UserInfo
         {
             public string Result { get; set; }
             public string Name { get; set; }
