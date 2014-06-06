@@ -76,6 +76,11 @@ namespace TmcData
             return _entities.ComponentEventLogViews.Where(e => e.LogType == LogType.Warning.ToString() || e.LogType == LogType.Error.ToString()).OrderByDescending(e => e.Timestamp).First();
         }
 
+        public static IList<ComponentEventLogView> GetAllAlarms()
+        {
+            return _entities.ComponentEventLogViews.Where(e => e.LogType == LogType.Warning.ToString() || e.LogType == LogType.Error.ToString()).OrderByDescending(e => e.Timestamp).ToList();
+        }
+
         public static void CancelOrder(int orderID)
         {
             throw new NotImplementedException();

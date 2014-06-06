@@ -22,11 +22,12 @@ namespace Tmc.Scada.App
         public LoginForm(MainForm mainForm) : this()
         {
             this.parent = mainForm;
+            this.ActiveControl = userNameTextBox;
         }
 
         private void submitButton_Click(object sender, EventArgs e)
         {
-            parent.Authenticate(this.userNameTextBox.ToString(), this.passwordTextBox.ToString());
+            parent.Authenticate(this.userNameTextBox.Text.ToString(), this.passwordTextBox.Text.ToString());
             this.Close();
         }
 

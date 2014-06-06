@@ -24,7 +24,7 @@ namespace Tmc.Scada.App
         /// <summary>
         /// Data table used to store TMC alarms and warnings
         /// </summary>
-        private DataTable AlarmsDataTable = new DataTable();
+        private DataTable AlarmsDataTable;
 
         // Constants for column names in the alarms data table so we don't need to check for spelling every time
         private const string ALARM_LIST_TAB_PAGE_NAME = "tabAlarmList";
@@ -59,7 +59,7 @@ namespace Tmc.Scada.App
             this.InitializeAll(_scadaEngine);
             //Only proceed if SCADA is initialised
             //this.InitialiseAlarmControls();
-            _webApiClient = new WebApiClient("198.162.1.1");
+            _webApiClient = new WebApiClient("http://192.168.1.102:8080/");
             //disableUserControl(); // Default on startup - user must login first
         }
 
@@ -68,6 +68,7 @@ namespace Tmc.Scada.App
         /// </summary>
         private void InitialiseAlarmControls()
         {
+            AlarmsDataTable = new DataTable();
             this.InitialiseAlarmDataTable();
             this.SetGridViewOptions();
         }
@@ -414,24 +415,29 @@ namespace Tmc.Scada.App
 
         private void login()
         {
-            LoginForm loginForm = new LoginForm(this);
+            new LoginForm(this).Show();
         }
 
         public void Authenticate(string username, string password)
         {
-            if (_webApiClient.Authenticate(username,password))
+            var userInfo = _webApiClient.Authenticate(username, password);
+
+            if (userInfo.Result == "success")
             {
                 this.currentUserLabel.Text = username;
+                this.loginAndLogoutButton.Text = "Logout";
+                this.tbcContentsTabControl.Enabled = true;
             }
             else
             {
                 MessageBox.Show("Invalid credentials");
+                new LoginForm(this).Show();
             }
         }
 
         private void logout()
         {
-            this.currentUserLabel.Text = "";
+            this.currentUserLabel.Text = "No current user";
             disableUserControl();
         }
 
@@ -440,6 +446,12 @@ namespace Tmc.Scada.App
             this.tbcContentsTabControl.SelectTab(1); // Set plant mimic tab
             this.tbcContentsTabControl.Enabled = false;
             this.controlPage1.Enabled = false;
+            this.btnShowList.Enabled = false;
+        }
+
+        private void createUserButton_Click(object sender, EventArgs e)
+        {
+            new CreateUserForm().Show();
         }
     }
 }

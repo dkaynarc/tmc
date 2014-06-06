@@ -65,8 +65,8 @@
             this.tabCalibration = new System.Windows.Forms.TabPage();
             this.calibrationControl1 = new Tmc.Scada.App.CalibrationControl();
             this.tabReports = new System.Windows.Forms.TabPage();
-            this.order2 = new Tmc.Scada.App.Order();
             this.reportControl2 = new Tmc.Scada.App.ReportControl();
+            this.createUserButton = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
@@ -75,7 +75,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
             this.tabPlantMimic.SuspendLayout();
             this.tabEnvironment.SuspendLayout();
-            this.tabOrders.SuspendLayout();
             this.tabCalibration.SuspendLayout();
             this.tabReports.SuspendLayout();
             this.SuspendLayout();
@@ -106,8 +105,8 @@
             // currentUserLabel
             // 
             this.currentUserLabel.Name = "currentUserLabel";
-            this.currentUserLabel.Size = new System.Drawing.Size(73, 22);
-            this.currentUserLabel.Text = "Current User";
+            this.currentUserLabel.Size = new System.Drawing.Size(92, 22);
+            this.currentUserLabel.Text = "No Current User";
             // 
             // eStopButton
             // 
@@ -380,7 +379,6 @@
             // 
             // tabOrders
             // 
-            this.tabOrders.Controls.Add(this.order2);
             this.tabOrders.Location = new System.Drawing.Point(4, 29);
             this.tabOrders.Name = "tabOrders";
             this.tabOrders.Size = new System.Drawing.Size(687, 354);
@@ -416,27 +414,31 @@
             this.tabReports.Text = "Reports";
             this.tabReports.UseVisualStyleBackColor = true;
             // 
-            // order2
-            // 
-            this.order2.Location = new System.Drawing.Point(9, 4);
-            this.order2.Name = "order2";
-            this.order2.Size = new System.Drawing.Size(639, 364);
-            this.order2.TabIndex = 0;
-            // 
             // reportControl2
             // 
             this.reportControl2.Location = new System.Drawing.Point(8, 35);
             this.reportControl2.Name = "reportControl2";
-            this.reportControl2.SelectedEndDate = new System.DateTime(2014, 6, 5, 15, 0, 17, 816);
-            this.reportControl2.SelectedStartDate = new System.DateTime(2014, 6, 4, 15, 0, 17, 816);
+            this.reportControl2.SelectedEndDate = new System.DateTime(2014, 6, 6, 17, 23, 34, 402);
+            this.reportControl2.SelectedStartDate = new System.DateTime(2014, 6, 5, 17, 23, 34, 402);
             this.reportControl2.Size = new System.Drawing.Size(691, 267);
             this.reportControl2.TabIndex = 0;
+            // 
+            // createUserButton
+            // 
+            this.createUserButton.Location = new System.Drawing.Point(0, 2);
+            this.createUserButton.Name = "createUserButton";
+            this.createUserButton.Size = new System.Drawing.Size(75, 23);
+            this.createUserButton.TabIndex = 5;
+            this.createUserButton.Text = "Create User";
+            this.createUserButton.UseVisualStyleBackColor = true;
+            this.createUserButton.Click += new System.EventHandler(this.createUserButton_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(696, 450);
+            this.Controls.Add(this.createUserButton);
             this.Controls.Add(this.tbcContentsTabControl);
             this.Controls.Add(this.btnShowList);
             this.Controls.Add(this.pnlAlarms);
@@ -452,7 +454,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).EndInit();
             this.tabPlantMimic.ResumeLayout(false);
             this.tabEnvironment.ResumeLayout(false);
-            this.tabOrders.ResumeLayout(false);
             this.tabCalibration.ResumeLayout(false);
             this.tabReports.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -505,6 +506,7 @@
         private Order order1;
         private Order order2;
         private ReportControl reportControl2;
+        private System.Windows.Forms.Button createUserButton;
     }
 }
 
