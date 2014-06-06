@@ -17,7 +17,6 @@ namespace TmcData
 
     public enum Source
     {
-        System = 0,
         RobotA = 1,
         RobotB =2,
         RobotC = 3,
@@ -28,6 +27,7 @@ namespace TmcData
         Humidity = 8,
         Light = 9,
         Sound = 10,
-        Dust = 11
+        Dust = 11,
+        System = 12
     }
 }
