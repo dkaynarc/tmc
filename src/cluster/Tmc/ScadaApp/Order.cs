@@ -16,6 +16,10 @@ namespace Tmc.Scada.App
         public Order()
         {
             InitializeComponent();
+        }
+
+        public void Initialise()
+        {
             updateOrder();
         }
 

@@ -46,7 +46,7 @@ namespace TmcData
         {
             try
             {
-                _streamWriter = new StreamWriter(fileName, true);
+                _streamWriter = new StreamWriter(fileName, false);
                 _streamWriter.AutoFlush = true;
             }
             catch (IOException)

@@ -62,6 +62,7 @@
             this.tabEnvironment = new System.Windows.Forms.TabPage();
             this.environmentControl1 = new Tmc.Scada.App.environmentControl();
             this.tabOrders = new System.Windows.Forms.TabPage();
+            this.orderControl = new Tmc.Scada.App.Order();
             this.tabCalibration = new System.Windows.Forms.TabPage();
             this.calibrationControl1 = new Tmc.Scada.App.CalibrationControl();
             this.tabReports = new System.Windows.Forms.TabPage();
@@ -75,6 +76,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).BeginInit();
             this.tabPlantMimic.SuspendLayout();
             this.tabEnvironment.SuspendLayout();
+            this.tabOrders.SuspendLayout();
             this.tabCalibration.SuspendLayout();
             this.tabReports.SuspendLayout();
             this.SuspendLayout();
@@ -379,12 +381,20 @@
             // 
             // tabOrders
             // 
+            this.tabOrders.Controls.Add(this.orderControl);
             this.tabOrders.Location = new System.Drawing.Point(4, 29);
             this.tabOrders.Name = "tabOrders";
             this.tabOrders.Size = new System.Drawing.Size(687, 354);
             this.tabOrders.TabIndex = 4;
             this.tabOrders.Text = "Orders";
             this.tabOrders.UseVisualStyleBackColor = true;
+            // 
+            // orderControl
+            // 
+            this.orderControl.Location = new System.Drawing.Point(21, 3);
+            this.orderControl.Name = "orderControl";
+            this.orderControl.Size = new System.Drawing.Size(639, 343);
+            this.orderControl.TabIndex = 0;
             // 
             // tabCalibration
             // 
@@ -418,8 +428,8 @@
             // 
             this.reportControl2.Location = new System.Drawing.Point(8, 35);
             this.reportControl2.Name = "reportControl2";
-            this.reportControl2.SelectedEndDate = new System.DateTime(2014, 6, 6, 17, 23, 34, 402);
-            this.reportControl2.SelectedStartDate = new System.DateTime(2014, 6, 5, 17, 23, 34, 402);
+            this.reportControl2.SelectedEndDate = new System.DateTime(2014, 6, 7, 16, 12, 51, 588);
+            this.reportControl2.SelectedStartDate = new System.DateTime(2014, 6, 6, 16, 12, 51, 588);
             this.reportControl2.Size = new System.Drawing.Size(691, 267);
             this.reportControl2.TabIndex = 0;
             // 
@@ -454,6 +464,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlarmsGrid)).EndInit();
             this.tabPlantMimic.ResumeLayout(false);
             this.tabEnvironment.ResumeLayout(false);
+            this.tabOrders.ResumeLayout(false);
             this.tabCalibration.ResumeLayout(false);
             this.tabReports.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -494,19 +505,15 @@
         private System.Windows.Forms.TabPage tabEnvironment;
         private System.Windows.Forms.TabPage tabOrders;
         private System.Windows.Forms.TabPage tabReports;
-        private System.Windows.Forms.BindingSource orderListViewBindingSource1;
-        private Order orderUserControl;
         private System.Windows.Forms.TabPage tabCalibration;
-        private ReportControl reportControl1;
         private CalibrationControl calibrationControl1;
         private System.Windows.Forms.TabPage tabPlantMimic;
         private controlPage controlPage1;
         private UserControls.PlantMimic plantMimic1;
         private environmentControl environmentControl1;
-        private Order order1;
-        private Order order2;
         private ReportControl reportControl2;
         private System.Windows.Forms.Button createUserButton;
+        private Order orderControl;
     }
 }
 

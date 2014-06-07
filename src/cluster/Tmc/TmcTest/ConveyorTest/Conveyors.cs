@@ -15,7 +15,7 @@ namespace TmcTest.ConveyorTest
             _serialConveyor = ConveyorFactory.CreateConveyor<SerialConveyor>();
 
             var dict = new Dictionary<string, string>();
-            dict.Add("PortName", "COM7");
+            dict.Add("PortName", "COM3");
 
             _serialConveyor.SetParameters(dict);
             _serialConveyor.Initialise();
@@ -54,6 +54,7 @@ namespace TmcTest.ConveyorTest
         [TestMethod]
         public void SerialForward()
         {
+            //_serialConveyor.Position = ConveyorPosition.Middle;
             try
             {
                 _serialConveyor.MoveForward();
@@ -67,6 +68,7 @@ namespace TmcTest.ConveyorTest
         [TestMethod]
         public void SerialBackward()
         {
+            _serialConveyor.Position = ConveyorPosition.Middle;
             try
             {
                 _serialConveyor.MoveBackward();

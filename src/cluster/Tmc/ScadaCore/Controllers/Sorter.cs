@@ -162,9 +162,10 @@ namespace Tmc.Scada.Core
             var status = ControllerOperationStatus.Succeeded;
             try
             {
-                var visibleTablets = this.GetVisibleTablets();
-                foreach (var tablet in visibleTablets)
+                List<Tablet> visibleTablets = null;
+                while ((visibleTablets = GetVisibleTablets()).Count > 0)
                 {
+                    var tablet = visibleTablets[0];
                     if (mag.IsFull() || ct.IsCancellationRequested)
                     {
                         status = ControllerOperationStatus.Cancelled;
@@ -173,7 +174,6 @@ namespace Tmc.Scada.Core
                     if (!mag.IsSlotFull(tablet.Color))
                     {
                         PlaceTablet(tablet, mag);
-                        visibleTablets = this.GetVisibleTablets();
                     }
                 }
             }
@@ -188,14 +188,14 @@ namespace Tmc.Scada.Core
         private List<Tablet> GetVisibleTablets()
         {
             int shakeRetryAttempts = 0;
-            var visibleTablets = _vision.GetVisibleTablets();
-            while ((visibleTablets.Count() < 0) && (shakeRetryAttempts < MaxShakeRetryAttempts))
+            var visibleTablets = _vision.GetVisibleTablets().Where(x => x.Color != TabletColors.Unknown);
+            while ((visibleTablets.Count() == 0) && (shakeRetryAttempts < MaxShakeRetryAttempts))
             {
                 _robot.Shake();
                 visibleTablets = _vision.GetVisibleTablets();
                 shakeRetryAttempts++;
             }
-            return visibleTablets;
+            return visibleTablets.ToList();
         }
 
         private void PlaceTablet(Tablet tablet, TabletMagazine mag)
@@ -207,13 +207,14 @@ namespace Tmc.Scada.Core
 
         private Point TransformToRobotSpace(PointF p)
         {
-            const float xScale = 1.25f;
+            //const float xScale = 1.25f;
+            const float xScale = 1.286f;
             const float yScale = 1.286f;
             const float xOff = -121.9f;
             const float yOff = 357.6f;
 
-            float camX = p.X * xScale / 10;
-            float camY = p.Y * yScale / 10;
+            float camX = p.X * xScale;
+            float camY = p.Y * yScale;
 
             int robotX = (int)(camY + yOff);
             int robotY = (int)(camX + xOff);

@@ -237,7 +237,7 @@ namespace Tmc.Vision
             locationXYmm.X = (float)(pixcelTommX * ((targetPoint.X - chessboard[loc].X)) + ClosestPoint.X * 20);      //work out location from origon
             locationXYmm.Y = (float)(pixcelTommY * ((targetPoint.Y - chessboard[loc].Y)) + (ClosestPoint.Y / 12) * 20);
 
-            return targetPoint;
+            return locationXYmm;
         }
 
         /// <summary>

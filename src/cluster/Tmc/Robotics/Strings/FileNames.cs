@@ -38,7 +38,7 @@ namespace Tmc.Robotics
         internal static class Loader
         {
             internal static string GrabTray  = "LoaderGrabTray{0}.mod";
-            internal static string Palletise = "";
+            internal static string Palletise = "LoaderTransferTray.mod";
         }
 
         internal static class Palletiser

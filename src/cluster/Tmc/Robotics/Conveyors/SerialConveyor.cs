@@ -12,7 +12,7 @@ namespace Tmc.Robotics
     public class SerialConveyor : IConveyor
     {
         public string Name { get; set; }
-        public ConveyorPosition Position { get; private set; }
+        public ConveyorPosition Position { get; set; }
         private string _portName;
         private HardwareStatus _status;
 

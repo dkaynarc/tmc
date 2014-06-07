@@ -97,6 +97,9 @@
     <Content Include="mod\AssemblerReturnMagazine.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="mod\LoaderTransferTray.mod">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="mod\SorterGetMagazine.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

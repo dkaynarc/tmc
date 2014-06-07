@@ -59,7 +59,7 @@ namespace Tmc.Scada.App
             _scadaEngine = new ScadaEngine();
             this.InitializeAll(_scadaEngine);
             //Only proceed if SCADA is initialised
-            //this.InitialiseAlarmControls();
+            this.InitialiseAlarmControls();
             _webApiClient = new WebApiClient("http://192.168.1.102:8080/");
             //disableUserControl(); // Default on startup - user must login first
         }
@@ -78,6 +78,7 @@ namespace Tmc.Scada.App
         {
             this.controlPage1.InitialiseScadaEngine(engine);
             this.plantMimic1.Initialise(_scadaEngine.ClusterConfig);
+            this.orderControl.Initialise();
             CalibrationManager.Instance.DataFilesDirectory = @".\calibration";
             CalibrationManager.Instance.LoadAllDataFiles();
         }
