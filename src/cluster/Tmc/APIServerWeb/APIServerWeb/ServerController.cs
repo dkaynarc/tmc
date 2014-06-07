@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -58,19 +57,19 @@ namespace APIServerWeb
         [HttpGet]
         public HttpResponseMessage AddUser(string userName, string password, string roleName)
         {
-              SCADAUser user = new SCADAUser();
-              user.UserName = userName;
-              try 
-              {
-                  var result = UserManager.Create(user, password);
-                  UserManager.AddToRole(user.Id, roleName);
-                  return Request.CreateResponse(HttpStatusCode.OK, "success");
-              }
-              catch(Exception )
-              {
-                  return Request.CreateResponse(HttpStatusCode.InternalServerError, "fail");
-              };
-              
+            SCADAUser user = new SCADAUser();
+            user.UserName = userName;
+            try
+            {
+                var result = UserManager.Create(user, password);
+                UserManager.AddToRole(user.Id, roleName);
+                return Request.CreateResponse(HttpStatusCode.OK, "success");
+            }
+            catch (Exception)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "fail");
+            };
+
         }
 
 
@@ -81,7 +80,7 @@ namespace APIServerWeb
         {
             if (String.IsNullOrWhiteSpace(var))
             {
-                return "fail: no username provided"; 
+                return "fail: no username provided";
             }
             var user = UserManager.FindByName(var);
 
@@ -112,7 +111,7 @@ namespace APIServerWeb
         public HttpResponseMessage DeleteUser(string var)
         {
             SCADAUser user = new SCADAUser();
-          
+
             try
             {
                 var result = UserManager.Delete(user);
@@ -122,7 +121,7 @@ namespace APIServerWeb
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, "fail");
             };
-            
+
         }
 
 
@@ -140,7 +139,7 @@ namespace APIServerWeb
                         RoleManager.Create(new SCADARole(role));
                 }
             }
-            catch (Exception )
+            catch (Exception)
             {
 
             }
@@ -164,7 +163,7 @@ namespace APIServerWeb
                 AuthParcel parcel = new AuthParcel
                 {
                     Name = user.UserName,
-               };
+                };
 
                 if (user != null)
                 {
@@ -176,7 +175,7 @@ namespace APIServerWeb
                 else parcel.Result = "fail";
 
                 return parcel;
- 
+
             }
             catch (Exception exc)
             {
@@ -244,15 +243,15 @@ namespace APIServerWeb
         [HttpGet]
         public string StartScada()
         {
-           try
-           {
-               ScadaConnectionManager.ScadaClient.Start();
-               return "success";
-           }
-           catch (EndpointNotFoundException exc)
-           {
-               return SCADA_UNAVAILABLE_MESSAGE + exc.ToString();
-           }
+            try
+            {
+                ScadaConnectionManager.ScadaClient.Start();
+                return "success";
+            }
+            catch (EndpointNotFoundException exc)
+            {
+                return SCADA_UNAVAILABLE_MESSAGE + exc.ToString();
+            }
         }
 
 
@@ -293,14 +292,14 @@ namespace APIServerWeb
         public string EmergencyStopScada()
         {
             try
-             {
-                 ScadaConnectionManager.ScadaClient.EmergencyStop();
-                 return "success";
-             }
-             catch (EndpointNotFoundException exc)
-             {
-                 return SCADA_UNAVAILABLE_MESSAGE + exc.ToString();
-             }
+            {
+                ScadaConnectionManager.ScadaClient.EmergencyStop();
+                return "success";
+            }
+            catch (EndpointNotFoundException exc)
+            {
+                return SCADA_UNAVAILABLE_MESSAGE + exc.ToString();
+            }
         }
 
 
@@ -316,7 +315,7 @@ namespace APIServerWeb
                 return new DeleteOrderParcel { orderId = Convert.ToString(var), result = "success" };
 
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return new DeleteOrderParcel { orderId = Convert.ToString(var), result = "fail" };
             }
@@ -432,56 +431,56 @@ namespace APIServerWeb
 
         private LinkedList<OrderParcel> CopyOrders(IEnumerable<Order> orders)
         {
-                LinkedList<OrderParcel> parcels = new LinkedList<OrderParcel>();
-                List<Order> list = orders.ToList();
+            LinkedList<OrderParcel> parcels = new LinkedList<OrderParcel>();
+            List<Order> list = orders.ToList();
 
-                foreach (var order in list)
+            foreach (var order in list)
+            {
+                string startDate;
+                string endDate;
+                OrderConfig config = repository.OrderConfigs.Where(p => p.OrderID == order.OrderID).First();
+                try
                 {
-                    string startDate;
-                    string endDate;
-                    OrderConfig config = repository.OrderConfigs.Where(p => p.OrderID == order.OrderID).First();
-                    try
-                    {
-                        startDate = order.StartTime.Value.ToShortDateString() + " "
-                                                       + order.StartTime.Value.Hour + ":" +
-                                                       order.StartTime.Value.Minute + ":" +
-                                                       order.StartTime.Value.Second;
-                    }
-                    catch (Exception)
-                    {
-                        startDate = "";
-                    }
-                    try
-                    {
-                        endDate = order.EndTime.Value.ToShortDateString() + " "
-                                                       + order.EndTime.Value.Hour + ":" +
-                                                       order.EndTime.Value.Minute + ":" +
-                                                       order.EndTime.Value.Second;
-                    }
-                    catch (Exception)
-                    {
-                        endDate = "";
-                    }
-
-
-                    SCADAUser user = order.UserID == null ? null : UserManager.FindById(Convert.ToString(order.UserID));
-                                  
-                    parcels.AddLast(new OrderParcel
-                    {
-                        startTime = startDate,
-                        endTime = endDate,
-                        mOrderId = order.OrderID,
-                        mOrderOwner = (user == null ? "not_provided" : user.UserName),
-                        mOrderStatus = order.Status.Name,
-                        black = config.Black,
-                        blue = config.Blue,
-                        green = config.Green,
-                        red = config.Red,
-                        white = config.White
-                    });
+                    startDate = order.StartTime.Value.ToShortDateString() + " "
+                                                   + order.StartTime.Value.Hour + ":" +
+                                                   order.StartTime.Value.Minute + ":" +
+                                                   order.StartTime.Value.Second;
                 }
-                return parcels;
-            
+                catch (Exception)
+                {
+                    startDate = "";
+                }
+                try
+                {
+                    endDate = order.EndTime.Value.ToShortDateString() + " "
+                                                   + order.EndTime.Value.Hour + ":" +
+                                                   order.EndTime.Value.Minute + ":" +
+                                                   order.EndTime.Value.Second;
+                }
+                catch (Exception)
+                {
+                    endDate = "";
+                }
+
+
+                SCADAUser user = order.UserID == null ? null : UserManager.FindById(Convert.ToString(order.UserID));
+
+                parcels.AddLast(new OrderParcel
+                {
+                    startTime = startDate,
+                    endTime = endDate,
+                    mOrderId = order.OrderID,
+                    mOrderOwner = (user == null ? "not_provided" : user.UserName),
+                    mOrderStatus = order.Status.Name,
+                    black = config.Black,
+                    blue = config.Blue,
+                    green = config.Green,
+                    red = config.Red,
+                    white = config.White
+                });
+            }
+            return parcels;
+
         }
 
 
