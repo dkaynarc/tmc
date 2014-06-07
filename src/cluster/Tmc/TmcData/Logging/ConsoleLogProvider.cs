@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace TmcData
 {
-    public class ConsoleLogger : ILogProvider
+    public class ConsoleLogProvider : ILogProvider
     {
         public LogType DefaultLogLevel { get; set; }
 
         public LogStrategy ProvidedStrategy { get; set; }
 
-        public ConsoleLogger(LogType defaultLogLevel = LogType.Message)
+        public ConsoleLogProvider(LogType defaultLogLevel = LogType.Message)
         {
             this.ProvidedStrategy = LogStrategy.Console;
             this.DefaultLogLevel = defaultLogLevel;

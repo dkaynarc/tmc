@@ -54,7 +54,6 @@ namespace Tmc.Scada.Core
 
         public void Initialise()
         {
-            Logger.Instance.Strategy = LogStrategy.File;
             this._sequencer.StartSequencing();
             Logger.Instance.Write(new LogEntry("TMC control system initialised", LogType.Message));
         }

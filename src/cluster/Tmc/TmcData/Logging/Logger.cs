@@ -43,6 +43,7 @@ namespace TmcData
             _logProviders = new List<ILogProvider>();
             _logProviders.Add(new FileLogProvider(fileName));
             _logProviders.Add(new DatabaseLogProvider());
+            _logProviders.Add(new ConsoleLogProvider());
             DefaultStrategy = LogStrategy.All;
             Strategy = DefaultStrategy;
         }

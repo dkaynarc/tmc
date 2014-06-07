@@ -110,6 +110,7 @@ namespace Tmc.Scada.Core
                 try
                 {
                     hw.SetParameters(hwTemplate.Parameters);
+                    Logger.Instance.Write(String.Format("[ClusterFactory] Initializing {0}", hw.Name), LogType.Message);
                     hw.Initialise();
                 }
                 catch(Exception ex)
