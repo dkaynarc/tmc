@@ -12,6 +12,7 @@ using System;
 using System.Diagnostics;
 using Tmc.Common;
 using System.Collections.Generic;
+using TmcData;
 
 namespace Tmc.Scada.Core.Sequencing
 {
@@ -46,6 +47,9 @@ namespace Tmc.Scada.Core.Sequencing
             {
                 this.PreviousState = oldState.Id;
             }
+
+            Logger.Instance.Write(String.Format("[Sequencer] Transitioned: {0}, {1}", this.PreviousState, this.CurrentState), LogType.Message);
+
             base.SwitchedState(stateMachine, oldState, newState);
         }
     }
@@ -153,6 +157,8 @@ namespace Tmc.Scada.Core.Sequencing
             CreateGlobalStates();
 
             _fsm.Initialize(State.Startup);
+
+            Logger.Instance.Write("[Sequencer] Initialization Completed", LogType.Message);
         }
 
         private void CreateAssemblingStates()
@@ -170,6 +176,7 @@ namespace Tmc.Scada.Core.Sequencing
             _fsm.In(State.LoadingTray)
                 .ExecuteOnEntry(() =>
                 {
+                    Logger.Instance.Write("[Sequencer] Loading tray to conveyor");
                     _loader.Begin(new LoaderParams
                     {
                         Action = LoaderAction.LoadToConveyor,
@@ -207,6 +214,7 @@ namespace Tmc.Scada.Core.Sequencing
                 .ExecuteOnEntry(() =>
                 {
                     Tray<Tablet> trayToVerify = _assembler.LastOrderTray;
+                    Logger.Instance.Write("[Sequencer] Verifying tray");
                     _trayVerifier.Begin(new TrayVerifierParams()
                     {
                         TraySpecification = trayToVerify,
@@ -229,6 +237,7 @@ namespace Tmc.Scada.Core.Sequencing
                 .ExecuteOnEntry(() =>
                 {
                     var order = _orderConsumer.GetNextOrder();
+                    Logger.Instance.Write("[Sequencer] Assembling tray", LogType.Message);
                     _assembler.Begin(new AssemblerParams
                     {
                         OrderConfiguration = order.Configuration,
@@ -310,6 +319,7 @@ namespace Tmc.Scada.Core.Sequencing
                 {
                     foreach (var hardware in _hardware)
                     {
+                        Logger.Instance.Write(String.Format("[Sequencer] Shutting down {0}", hardware.Name), LogType.Message);
                         hardware.Shutdown();
                     }
                 })

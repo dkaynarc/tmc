@@ -105,6 +105,7 @@
     <Compile Include="FiltOrdeList_Result.cs">
       <DependentUpon>TmcDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Logging\ConsoleLogProvider.cs" />
     <Compile Include="Logging\DatabaseLogProvider.cs" />
     <Compile Include="Logging\EnvironmentLogEntry.cs" />
     <Compile Include="Logging\FileLogProvider.cs" />

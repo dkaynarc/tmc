@@ -13,7 +13,7 @@ namespace TmcData
         public LogType DefaultLogLevel { get; set; }
         public LogStrategy ProvidedStrategy { get; set; }
 
-        public DatabaseLogProvider(LogType defaultLogLevel = LogType.Warning)
+        public DatabaseLogProvider(LogType defaultLogLevel = LogType.Message)
         {
             this.ProvidedStrategy = LogStrategy.Database;
             this.DefaultLogLevel = defaultLogLevel;

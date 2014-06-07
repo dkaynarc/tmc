@@ -14,7 +14,7 @@ namespace TmcData
         public LogType DefaultLogLevel { get; set; }
         public LogStrategy ProvidedStrategy { get; set; }
 
-        public FileLogProvider(string fileName, LogType defaultLogLevel = LogType.Warning)
+        public FileLogProvider(string fileName, LogType defaultLogLevel = LogType.Message)
         {
             this.ProvidedStrategy = LogStrategy.File;
             this.DefaultLogLevel = defaultLogLevel;

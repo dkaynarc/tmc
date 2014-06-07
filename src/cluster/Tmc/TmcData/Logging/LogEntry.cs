@@ -12,7 +12,7 @@ namespace TmcData
         public DateTime TimeStamp { get; set; }
         public LogType Level { get; set; }
 
-        public LogEntry(string message = "", LogType level = LogType.Warning)
+        public LogEntry(string message = "", LogType level = LogType.Message)
         {
             this.Message = message;
             this.Level = level;

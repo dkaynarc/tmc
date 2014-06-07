@@ -142,6 +142,8 @@ namespace Tmc.Scada.Core
                 {
                     config.Plcs.Add(hw.Name, hw as IPlc);
                 }
+
+                Logger.Instance.Write(String.Format("[ClusterFactory] {0} initialization completed", hw.Name), LogType.Message);
             }
              
             config.Controllers = CreateControllers(config);

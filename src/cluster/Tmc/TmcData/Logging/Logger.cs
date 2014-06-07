@@ -13,7 +13,8 @@ namespace TmcData
         File,
         Database,
         All,
-        None
+        None,
+        Console
     }
 
     public sealed class Logger
