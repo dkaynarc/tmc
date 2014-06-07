@@ -55,6 +55,7 @@ namespace Tmc.Scada.App
         public MainForm()
         {
             InitializeComponent();
+            this.createUserButton.Hide();
             _scadaEngine = new ScadaEngine();
             this.InitializeAll(_scadaEngine);
             //Only proceed if SCADA is initialised
@@ -427,6 +428,10 @@ namespace Tmc.Scada.App
                 this.currentUserLabel.Text = username;
                 this.loginAndLogoutButton.Text = "Logout";
                 this.tbcContentsTabControl.Enabled = true;
+                if (userInfo.Role == "operator")
+                {
+                    this.createUserButton.Show(); 
+                }
             }
             else
             {
@@ -451,7 +456,7 @@ namespace Tmc.Scada.App
 
         private void createUserButton_Click(object sender, EventArgs e)
         {
-            new CreateUserForm().Show();
+            new CreateUserForm(_webApiClient).Show();
         }
     }
 }

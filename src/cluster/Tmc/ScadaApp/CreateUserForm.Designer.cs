@@ -34,7 +34,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.userTypeTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.createNewUserButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -85,21 +85,23 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "User Type:";
             // 
-            // button1
+            // createNewUserButton
             // 
-            this.button1.Location = new System.Drawing.Point(100, 88);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Create";
-            this.button1.UseVisualStyleBackColor = true;
+            this.createNewUserButton.Location = new System.Drawing.Point(100, 88);
+            this.createNewUserButton.Name = "createNewUserButton";
+            this.createNewUserButton.Size = new System.Drawing.Size(75, 23);
+            this.createNewUserButton.TabIndex = 6;
+            this.createNewUserButton.Text = "Create";
+            this.createNewUserButton.UseVisualStyleBackColor = true;
+            this.createNewUserButton.Click += new System.EventHandler(this.createNewUserButton_Click);
             // 
             // CreateUserForm
             // 
+            this.AcceptButton = this.createNewUserButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(188, 119);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.createNewUserButton);
             this.Controls.Add(this.userTypeTextBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.passwordTextBox);
@@ -121,6 +123,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox userTypeTextBox;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button createNewUserButton;
     }
 }
