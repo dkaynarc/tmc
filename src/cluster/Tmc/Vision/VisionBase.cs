@@ -329,7 +329,8 @@ namespace Tmc.Vision
                 for (int j = 0; j < src.Rows; j++)
                 {
                     currentPixcelHSV = temp[j, i];
-                    if (InHSVRange(currentPixcelHSV, targetHsv, 10, 20) == true)
+                    
+                    if (InHSVRange(currentPixcelHSV, targetHsv, 0, 0) == true)
                     {//make white if we are in range
                         temp[j, i] = colorGood;
                     }

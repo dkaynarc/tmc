@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Tmc.Common;
+using System.Diagnostics;
 
 namespace Tmc.Vision
 {
@@ -33,6 +34,9 @@ namespace Tmc.Vision
 
         private List<Tablet> TabletList = new List<Tablet>();
 
+        //private Tray<Tablet> trayList = new Tray<Tablet>();
+        private TraceListener listener = new DelimitedListTraceListener(@"debugfileSort.txt");
+
         /// <summary>
         /// constructor for sorter vision, do all initilasation here
         /// </summary>
@@ -42,14 +46,15 @@ namespace Tmc.Vision
         public SorterVision(Camera camera)
         {
             this.camera = camera;
+            Debug.Listeners.Add(listener);
             //do calibration
 
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 46;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 55;//75;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 50;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 68;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 170;//140;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 125;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 46;//46;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 55;//55;//75;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 49;//50;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 78;// 68;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 180;//170;//140;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 125;//125;
 
             HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue = 1;
             HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 100;//153;//93;
@@ -65,12 +70,12 @@ namespace Tmc.Vision
             HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 110;
             HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Value = 239;
 
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 114;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 36;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 49;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 147;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 127;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 109;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 107;//114;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 32;//36;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 39;//49;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 137;//147;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 176;//127;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 103;//109;
 
             HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Hue = 177;
             HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Satuation = 51;
@@ -82,7 +87,7 @@ namespace Tmc.Vision
             minRadius = 60;
             maxRadius = 63;
 
-            dp = 2.6;
+            dp = 2.3;
             minDist = 20;
             cannyThresh = 2;
             cannyAccumThresh = 83;
@@ -96,13 +101,16 @@ namespace Tmc.Vision
         }
 
         /// <summary>
-        /// Get visable tablets in sorter tray both possition and state
+        /// Get visable tablets in sorter tray both possition and stateaa
         /// </summary>
         /// <returns>return position of viable tablets and state</returns>
         public List<Tablet> GetVisibleTablets()
         {
+            
+            Debug.WriteLine("\n\n");
             TabletList.Clear();//clear tablets from last use
             img = camera.GetImage(1);
+            saveImage(img, "sorter pic.jpg");
             //img = new Image<Bgr, byte>("C:/Users/Denis/Dropbox/ICT DESIGN/Assignment 3/vision/cal/sort32.jpg");
 
             CircleF[] circles = DetectTablets(img, minRadius, maxRadius, dp, minDist, cannyThresh, cannyAccumThresh);
@@ -214,28 +222,30 @@ namespace Tmc.Vision
 
             double MagY;
             double MagX;
-            if (ClosestPoint.Y > 0)
+            
+            if (loc < 96)
             {
-                MagY = Math.Sqrt(Math.Pow((chessboard[loc - 1].X - chessboard[loc].X), 2) + Math.Pow((chessboard[loc - 1].Y - chessboard[loc].Y), 2));
+                MagY = Math.Sqrt(Math.Pow((chessboard[loc + 12].X - chessboard[loc].X), 2) + Math.Pow((chessboard[loc + 12].Y - chessboard[loc].Y), 2));
             }
             else
             {
-                MagY = Math.Sqrt(Math.Pow((chessboard[0].X - chessboard[12].X), 2) + Math.Pow((chessboard[0].Y - chessboard[12].Y), 2));
+                MagY = Math.Sqrt(Math.Pow((chessboard[loc - 12].X - chessboard[loc].X), 2) + Math.Pow((chessboard[loc - 12].Y - chessboard[loc].Y), 2));
             }
-            if (ClosestPoint.X > 11)
-            {//out side bounds
-                MagX = Math.Sqrt(Math.Pow((chessboard[loc - 12].X - chessboard[loc].X), 2) + Math.Pow((chessboard[loc - 12].Y - chessboard[loc].Y), 2));
+            if (((loc + 1) % 12) == 0)
+            {
+                MagX = Math.Sqrt(Math.Pow((chessboard[loc - 1].X - chessboard[loc].X), 2) + Math.Pow((chessboard[loc-1].Y - chessboard[loc].Y), 2));
             }
             else
             {
-                MagX = Math.Sqrt(Math.Pow((chessboard[0].X - chessboard[1].X), 2) + Math.Pow((chessboard[0].Y - chessboard[1].Y), 2));
+                MagX = Math.Sqrt(Math.Pow((chessboard[loc].X - chessboard[loc + 1].X), 2) + Math.Pow((chessboard[loc].Y - chessboard[loc + 1].Y), 2));
             }
 
             pixcelTommY = 20 / MagY;//work out how much a pixcel is in mm
             pixcelTommX = 20 / MagX;
 
+
             locationXYmm.X = (float)(pixcelTommX * ((targetPoint.X - chessboard[loc].X)) + ClosestPoint.X * 20);      //work out location from origon
-            locationXYmm.Y = (float)(pixcelTommY * ((targetPoint.Y - chessboard[loc].Y)) + (ClosestPoint.Y / 12) * 20);
+            locationXYmm.Y = (float)(pixcelTommY * ((targetPoint.Y - chessboard[loc].Y)) + ((ClosestPoint.Y / 12) * 20));
 
             return locationXYmm;
         }
@@ -324,9 +334,20 @@ namespace Tmc.Vision
 
                 var histo = ImagesToHisto(GetTablet(src, tablet));
 
-                int[][] hue = getHighLowHSV(histo, 50, HSVdata.Hue);
-                int[][] sat = getHighLowHSV(histo, 50, HSVdata.Sat);
-                int[][] val = getHighLowHSV(histo, 50, HSVdata.Val);
+                int[][] hue = getHighLowHSV(histo, 30, HSVdata.Hue);
+                int[][] sat = getHighLowHSV(histo, 30, HSVdata.Sat);
+                int[][] val = getHighLowHSV(histo, 30, HSVdata.Val);
+
+#if DEBUG
+                //Debug.WriteLine("Hue: " + hue[0][0] + " - " + hue[0][1] + ", Sat: " + sat[0][0] + " - " + sat[0][1] + ", Val: " + val[0][0] + " - " + val[0][1]);
+                Debug.WriteLine("" + hue[0][0] + "\t" + hue[0][1] + "\t" + sat[0][0] + "\t" + sat[0][1] + "\t" + val[0][0] + "\t" + val[0][1]);
+                int hueM = hue.GetLength(0) - 1;
+                int satM = sat.GetLength(0) - 1;
+                int valM = val.GetLength(0) - 1;
+                //Debug.WriteLine("Hue: " + hue[hueM][0] + " - " + hue[hueM][1] + ", Sat: " + sat[satM][0] + " - " + sat[satM][1] + ", Val: " + val[valM][0] + " - " + val[valM][1]);
+                Debug.WriteLine("" + hue[hueM][0] + "\t" + hue[hueM][1] + "\t" + sat[satM][0] + "\t" + sat[satM][1] + "\t" + val[valM][0] + "\t" + val[valM][1]);
+                Debug.Flush();
+#endif
 
                 tabletHSV.Add(new Tuple<int[][], int[][], int[][]>(hue, sat, val));
 
