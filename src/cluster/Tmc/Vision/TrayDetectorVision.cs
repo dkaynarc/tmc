@@ -44,48 +44,48 @@ namespace Tmc.Vision
             this.camera = camera;
             Debug.Listeners.Add(listener);
 
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 50;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 34;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 167;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 94;//87;//74;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 103;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 255;//229;//222;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 55;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 50;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 79;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 70;//87;//74;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 118;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 216;//229;//222;
 
             HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue = 0;//176;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 90;//93;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value = 224;//198;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue = 8;//171;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation = 155;//128;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 113;//93;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value = 142;//198;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue = 7;//171;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation = 185;//128;
             HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Value = 255;//250;
 
             HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Hue = 0;
             HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Satuation = 0;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Value = 252;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 166;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 31;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Value = 230;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 97;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 47;
             HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Value = 255;
 
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 102;//112;//115;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 34;//76;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 132;//69;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 137;//126;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 140;//124;//125;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 255;// 235;//226;// 214;//213;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 115;//112;//115;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 40;//76;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 117;//69;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 131;//126;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 119;//124;//125;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 197;// 235;//226;// 214;//213;
 
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Hue = 164;//102;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Satuation = 23;//15;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Value = 69;//90;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Hue = 12;//145;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Satuation = 77;//39;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Value = 201;//167;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Hue = 177;//102;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Satuation = 14;//15;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Value = 61;//90;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Hue = 14;//145;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Satuation = 84;//39;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Value = 161;//167;
 
             minRadius = 54;
-            maxRadius = 61;
+            maxRadius = 62;
 
-            dp = 2.0;
+            dp = 1.8;
             minDist = 20;
             cannyThresh = 2;
-            cannyAccumThresh = 80;
+            cannyAccumThresh = 70;
 
             //this.camera.ConnectionString = new Uri(@"http://192.168.0.190:8080/photoaf.jpg");
             //this.camera.ConnectionString = new Uri(@"https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-ash3/t1.0-9/10247212_10202692742692192_8562559696417032763_n.jpg");
@@ -101,10 +101,10 @@ namespace Tmc.Vision
         public Tray<Tablet> GetTabletsInTray()
         {
             img = camera.GetImage(1);//C:/Users/leonid/Dropbox/ICT DESIGN/Assignment 3/vision/cal
-            //img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICT DESIGN/Assignment 3/vision/cal/tray100.jpg");
+            //img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICT DESIGN/Assignment 3/vision/cal/trayGRE.jpg");
             //img = camera.GetImageHttp(new Uri(@"http://www.wwrd.com.au/images/P/2260248_Fable%20s-4%2016cm%20Accent%20Plates-652383734586-co.jpg"));
 
-            Image<Bgr, Byte> src = CropImage(img, 0, 777, img.Cols, 902);//reduce the image so we only see the coveour and tray
+            Image<Bgr, Byte> src = CropImage(img, 0, 877, img.Cols, 902);//reduce the image so we only see the coveour and tray
 
             saveImage(src, "croped Image.jpg");
 
@@ -149,9 +149,9 @@ namespace Tmc.Vision
             HSVT[(int)HSVRange.Low].Hue = 19;
             HSVT[(int)HSVRange.Low].Satuation = 80;//108.24;
             HSVT[(int)HSVRange.Low].Value = 240;//183.68;
-            HSVT[(int)HSVRange.High].Hue = 29;
-            HSVT[(int)HSVRange.High].Satuation = 331.92;
-            HSVT[(int)HSVRange.High].Value = 360;
+            HSVT[(int)HSVRange.High].Hue = 39;
+            HSVT[(int)HSVRange.High].Satuation = 255;//331.92;
+            HSVT[(int)HSVRange.High].Value = 255;//360;
 
             Image<Bgr, Byte> col = RemoveEverythingButRange(src, HSVT); //we want to remove everything that is not yellow
 
@@ -169,7 +169,8 @@ namespace Tmc.Vision
             angle -= 90;                        //remove 90 so the angle is starting from zero
 
             Angle = angle;//make ref
-
+            Debug.WriteLine(DateTime.Now.ToString("h:mm:ss tt>>  ") + "Angle: " + Angle);
+            Debug.Flush();
             //double Mag = Math.Sqrt(Math.Pow((line[0].X - line[1].X),2) + Math.Pow((line[0].Y - line[1].Y),2) );
 
             saveImage(col, "only yellow.jpg");
@@ -229,7 +230,7 @@ namespace Tmc.Vision
                 int[][] hue = getHighLowHSV(abca, 50, HSVdata.Hue);
                 int[][] sat = getHighLowHSV(abca, 50, HSVdata.Sat);
                 int[][] val = getHighLowHSV(abca, 50, HSVdata.Val);
-
+                
                 if (FirstPass(hue, sat, val, tablet, tablets, HSVTabletcolorsRanges) == true)
                 {
                     imgTray.Draw(tablet, new Bgr(Color.Green), 1);
@@ -243,6 +244,15 @@ namespace Tmc.Vision
                     //imgTray = CoverTablet(imgTray, tablet, 3);
                 }
                 cellInTray = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
+
+                #if DEBUG
+                Debug.WriteLine("cell min: " + cellInTray + "Hue: " + hue[0][0] + " - " + hue[0][1] + ", Sat: " + sat[0][0] + " - " + sat[0][1] + ", Val: " + val[0][0] + " - " + val[0][1]);
+                int hueM = hue.GetLength(0) - 1;
+                int satM = sat.GetLength(0) - 1;
+                int valM = val.GetLength(0) - 1;
+                Debug.WriteLine("cell max: " + cellInTray + "Hue: " + hue[hueM][0] + " - " + hue[hueM][1] + ", Sat: " + sat[satM][0] + " - " + sat[satM][1] + ", Val: " + val[valM][0] + " - " + val[valM][1]);
+                Debug.Flush();
+                #endif
 
                 ///cellInTray      = FindCellInTrayForTablet(imgTray.Cols, imgTray.Rows, tablet);
                 trayList.Cells[cellInTray] = new Tablet { Color = tabletcolor };
@@ -459,9 +469,21 @@ namespace Tmc.Vision
         /// </returns>
         public double AngleOfTray(Point[] line)
         {
-            double m = (line[0].Y - line[1].Y) / (line[0].X - line[1].X);//work out gradient
+            double den = (line[0].X - line[1].X);
+            double m;
+            double angle;
 
-            double angle = Math.Atan((m - 0) / (1 + (0 * m))) * 180 / Math.PI;//get angle
+            if (den != 0)
+            {
+                m = (line[0].Y - line[1].Y) / den;//work out gradient
+                angle = Math.Atan((m - 0) / (1 + (0 * m))) * 180 / Math.PI;//get angle
+            }
+            else
+            {
+                angle = 0;
+            }
+
+            //double angle = Math.Atan((m - 0) / (1 + (0 * m))) * 180 / Math.PI;//get angle
 
             return angle;
         }
