@@ -123,5 +123,10 @@ namespace Tmc.Scada.Core
             var statuses = this.HardwareMonitor.PreviousHardwareStatuses;
             return statuses;
         }
+
+        public IList<string> GetAllHardwareNames()
+        {
+            return this.ClusterConfig.GetAllHardware().Select(x => x.Name).ToList();
+        }
     }
 }
