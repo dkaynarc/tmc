@@ -97,45 +97,16 @@ public class ModuleActivity extends FragmentActivity implements
 	{
 		if (item.getItemId() == R.id.module_logout)
 		{
-			playSound(R.raw.ohno);
-			Drawable myIcon = getResources().getDrawable(
-					android.R.drawable.ic_dialog_alert);
-			ColorFilter filter = new LightingColorFilter(Color.RED, Color.RED);
-			myIcon.setColorFilter(filter);
-
-			new AlertDialog.Builder(this)
-					.setIcon(myIcon)
-					.setTitle(Constants.LOGOUT)
-					.setMessage(Constants.LOGOUT_CONFIRM)
-					.setPositiveButton(Constants.OK,
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int id)
-								{
-									playSound(R.raw.bye);
-
-
-									SharedPreferences preferences = getSharedPreferences(
-											Constants.APP_PERSISTANCE, 0);
-									SharedPreferences.Editor ed = preferences
-											.edit();
-									ed.remove(Constants.USERNAME_KEY);
-									ed.remove(Constants.USERROLE_KEY);
-									ed.commit();
-									finish();
-								}
-							})
-					.setNegativeButton(Constants.CANCEL,
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int id)
-								{
-									dialog.cancel();
-								}
-							}).show();
+			logout();
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void onBackPressed()
+	{
+		logout();
 	}
 
 	/**
@@ -170,7 +141,7 @@ public class ModuleActivity extends FragmentActivity implements
 		mMediaPlayer.setLooping(false);
 		mMediaPlayer.start();
 	}
-	
+
 	public void setConnection(boolean okay)
 	{
 		if (mMenu != null)
@@ -181,5 +152,42 @@ public class ModuleActivity extends FragmentActivity implements
 			else
 				mConnection.setTitle(Constants.CONNECTION_FAILED);
 		}
+	}
+
+	public void logout()
+	{
+		playSound(R.raw.ohno);
+		Drawable myIcon = getResources().getDrawable(
+				android.R.drawable.ic_dialog_alert);
+		ColorFilter filter = new LightingColorFilter(Color.RED, Color.RED);
+		myIcon.setColorFilter(filter);
+
+		new AlertDialog.Builder(this)
+				.setIcon(myIcon)
+				.setTitle(Constants.LOGOUT)
+				.setMessage(Constants.LOGOUT_CONFIRM)
+				.setPositiveButton(Constants.OK,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id)
+							{
+								playSound(R.raw.bye);
+
+								SharedPreferences preferences = getSharedPreferences(
+										Constants.APP_PERSISTANCE, 0);
+								SharedPreferences.Editor ed = preferences
+										.edit();
+								ed.remove(Constants.USERNAME_KEY);
+								ed.remove(Constants.USERROLE_KEY);
+								ed.commit();
+								finish();
+							}
+						})
+				.setNegativeButton(Constants.CANCEL,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id)
+							{
+								dialog.cancel();
+							}
+						}).show();
 	}
 }
