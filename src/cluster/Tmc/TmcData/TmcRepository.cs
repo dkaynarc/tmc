@@ -90,5 +90,10 @@ namespace TmcData
         {
             _entities.AddNewEventLog(date, message, (int)Source.System, logType);
         }
+        public static void AcknowledgeEvent(int eventId)
+        {
+            _entities.AcknowledgeEvent(eventId);
+        }
+
     }
 }

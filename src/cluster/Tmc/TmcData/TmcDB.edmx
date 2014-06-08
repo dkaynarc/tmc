@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ICTDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ICTDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ICTD.dbo.ComponentCycleLogView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ComponentCycleLogView">
@@ -21,12 +21,14 @@ warning 6002: The table/view 'ICTD.dbo.ComponentEventLogView' does not have a pr
         <EntityType Name="ComponentEventLogView">
           <Key>
             <PropertyRef Name="ID" />
+            <PropertyRef Name="Acknowledged" />
           </Key>
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="Timestamp" Type="datetime" />
           <Property Name="Description" Type="nvarchar" MaxLength="255" />
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="LogType" Type="nvarchar" MaxLength="50" />
+          <Property Name="Acknowledged" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ICTD.dbo.EnvironmentLogView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -69,6 +71,9 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
           <Property Name="UserID" Type="nvarchar" MaxLength="128" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" />
         </EntityType>
+        <Function Name="AcknowledgeEvent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EventID" Type="int" Mode="In" />
+        </Function>
         <Function Name="AddNewCycleLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Timestamp" Type="datetime" Mode="In" />
           <Parameter Name="CycleTime" Type="int" Mode="In" />
@@ -109,43 +114,12 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
         <Function Name="EventLogBySource" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SourceID" Type="int" Mode="In" />
         </Function>
-        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="OrderConfigByOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="OrderID" Type="int" Mode="In" />
         </Function>
         <Function Name="OrderListByStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="StatusID" Type="int" Mode="In" />
         </Function>
-        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="UpdateOrderStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="OrderID" Type="int" Mode="In" />
           <Parameter Name="OrderStatus" Type="nvarchar" Mode="In" />
@@ -173,7 +147,8 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
     [ComponentEventLogView].[Timestamp] AS [Timestamp], 
     [ComponentEventLogView].[Description] AS [Description], 
     [ComponentEventLogView].[ID] AS [ID], 
-    [ComponentEventLogView].[LogType] AS [LogType]
+    [ComponentEventLogView].[LogType] AS [LogType], 
+    [ComponentEventLogView].[Acknowledged] AS [Acknowledged]
     FROM [dbo].[ComponentEventLogView] AS [ComponentEventLogView]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="EnvironmentLogView" EntityType="Self.EnvironmentLogView" store:Type="Views" store:Schema="dbo">
@@ -304,6 +279,9 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <FunctionImport Name="AcknowledgeEvent">
+          <Parameter Name="EventID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="FiltCompCyclLogBySour_Result">
           <Property Type="String" Name="Name" Nullable="true" MaxLength="50" />
@@ -356,12 +334,14 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
         <EntityType Name="ComponentEventLogView">
           <Key>
             <PropertyRef Name="ID" />
+            <PropertyRef Name="Acknowledged" />
           </Key>
           <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="Timestamp" Precision="3" />
           <Property Type="String" Name="Description" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="ID" Nullable="false" />
           <Property Type="String" Name="LogType" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Acknowledged" Type="Boolean" Nullable="false" />
         </EntityType>
         <ComplexType Name="CycleLogBySource_Result">
           <Property Type="Int32" Name="ID" Nullable="false" />
@@ -458,6 +438,7 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
           <EntitySetMapping Name="ComponentEventLogViews">
             <EntityTypeMapping TypeName="ICTDModel.ComponentEventLogView">
               <MappingFragment StoreEntitySet="ComponentEventLogView">
+                <ScalarProperty Name="Acknowledged" ColumnName="Acknowledged" />
                 <ScalarProperty Name="LogType" ColumnName="LogType" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -511,31 +492,8 @@ warning 6002: The table/view 'ICTD.dbo.OrderListView' does not have a primary ke
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="ICTDModel.Store.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="ICTDModel.Store.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="ICTDModel.Store.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="ICTDModel.Store.sp_helpdiagramdefinition">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ICTDModel.sp_helpdiagramdefinition_Result">
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="ICTDModel.Store.sp_helpdiagrams">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ICTDModel.sp_helpdiagrams_Result">
-                <ScalarProperty Name="Database" ColumnName="Database" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="ICTDModel.Store.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="ICTDModel.Store.sp_upgraddiagrams" />
-        </EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="AcknowledgeEvent" FunctionName="ICTDModel.Store.AcknowledgeEvent" />
+          </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->

@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Denis\Documents\tmc\src\cluster\Tmc\TmcData\TmcDB.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\denis\Documents\GitHub\tmc\src\cluster\Tmc\TmcData\TmcDB.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

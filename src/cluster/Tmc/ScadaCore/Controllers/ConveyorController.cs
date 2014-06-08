@@ -60,7 +60,8 @@ namespace Tmc.Scada.Core
                 if (!IsRunning)
                 {
                     IsRunning = true;
-                    _fsmMap[p.ConveyorType].Fire(p.ConveyorAction, p.ConveyorType);
+                    //_fsmMap[p.ConveyorType].Fire(p.ConveyorAction, p.ConveyorType);
+                    MoveConveyorAsync(p.ConveyorType, p.ConveyorAction);
                 }
             }
         }
