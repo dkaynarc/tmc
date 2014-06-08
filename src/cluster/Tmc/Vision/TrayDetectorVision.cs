@@ -98,8 +98,9 @@ namespace Tmc.Vision
         /// it returns the state of the tray
         /// </returns>
         /// <todo>use the new function in vision base to detect tablet colour</todo>
-        public Tray<Tablet> GetTabletsInTray()
+        public bool GetTabletsInTray(out Tray<Tablet> tray)
         {
+
             img = camera.GetImage(1);//C:/Users/leonid/Dropbox/ICT DESIGN/Assignment 3/vision/cal
             //img = new Image<Bgr, byte>("C:/Users/leonid/Dropbox/ICT DESIGN/Assignment 3/vision/cal/trayGRE.jpg");
             //img = camera.GetImageHttp(new Uri(@"http://www.wwrd.com.au/images/P/2260248_Fable%20s-4%2016cm%20Accent%20Plates-652383734586-co.jpg"));
@@ -108,7 +109,11 @@ namespace Tmc.Vision
 
             saveImage(src, "croped Image.jpg");
 
-            DetectTray(src);//make a ref angle
+            if (DetectTray(src) == false)//make a ref angle
+            {
+                tray = trayList;
+                return false;    
+            }
 
             trayList.Angle = Angle;
 
@@ -127,7 +132,30 @@ namespace Tmc.Vision
             DetectTabletsInTray();
             DetectTabletType();
 
-            return trayList;
+            //saveImage(apply_Hough(img), "lines in tray.jpg");
+            tray = trayList;
+            return true;
+        }
+
+        private Image<Bgr, Byte> apply_Hough(Image<Bgr, Byte> Input_Image, out int countLines)
+        {
+
+            LineSegment2D[] lines = Input_Image.HoughLinesBinary(
+              1, //Distance resolution in pixel-related units
+              Math.PI / 90.0, //Angle resolution measured in radians.
+              50, //threshold
+              100, //min Line width
+              1 //gap between lines
+              )[0]; //Get the lines from the first channel
+            Image<Bgr, Byte> lineImage = img.Copy();
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                Input_Image.Draw(lines[i], new Bgr(Color.Yellow), 2);
+            }
+
+            countLines = lines.Length;
+            return Input_Image;
         }
 
         /// <summary>
@@ -163,6 +191,13 @@ namespace Tmc.Vision
 
             Image<Gray, Byte> Gsrc = col.Convert<Gray, Byte>();
 
+            int countLines;
+
+            col = RemoveEverythingButRange(apply_Hough(col.Clone(),out countLines), HSVT); //we want to remove everything that is not yellow
+
+            if (countLines < 3) return false;
+
+            Gsrc = col.Convert<Gray, Byte>();
             line = scanImgForLine(Gsrc);        //get location of the yellow line
 
             angle = AngleOfTray(line);          //get the angle of the tray
@@ -174,6 +209,8 @@ namespace Tmc.Vision
             //double Mag = Math.Sqrt(Math.Pow((line[0].X - line[1].X),2) + Math.Pow((line[0].Y - line[1].Y),2) );
 
             saveImage(col, "only yellow.jpg");
+
+            //saveImage(apply_Hough(col.Clone()), "lines in tray.jpg");
 
             int x = line[0].Y - line[1].Y;
             int y = line[0].X - line[1].X;

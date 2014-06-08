@@ -75,7 +75,7 @@ namespace Tmc.Vision
             HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 39;//49;
             HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 137;//147;
             HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 176;//127;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 103;//109;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 133;//109;
 
             HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Hue = 177;
             HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Satuation = 51;
