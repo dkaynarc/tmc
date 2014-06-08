@@ -42,6 +42,7 @@ namespace Tmc.Scada.Core
         public OrderConsumer()
         {
             this._pendingQueue = new Queue<Order>();
+            Orders = new List<Order>();
 
             int updateTime = 1000;
             if (!Int32.TryParse(ConfigurationManager.AppSettings["OrderConsumerUpdateRateMsec"], out updateTime))
@@ -61,6 +62,11 @@ namespace Tmc.Scada.Core
         public void Stop()
         {
             this._updateTimer.Stop();
+        }
+
+        public bool IsNewOrderAvailable()
+        {
+            return _pendingQueue.Count > 0;
         }
 
         public Order GetNextOrder()
