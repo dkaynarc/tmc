@@ -31,7 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.loginAndLogoutButton = new System.Windows.Forms.ToolStripButton();
             this.currentUserLabel = new System.Windows.Forms.ToolStripLabel();
+            this.eStopButton = new System.Windows.Forms.ToolStripButton();
             this.plantMimicTab = new System.Windows.Forms.TabPage();
             this.controlTab = new System.Windows.Forms.TabPage();
             this.environmentTab = new System.Windows.Forms.TabPage();
@@ -54,26 +56,22 @@
             this.tbcContentsTabControl = new System.Windows.Forms.TabControl();
             this.tabAlarmList = new System.Windows.Forms.TabPage();
             this.tabPlantMimic = new System.Windows.Forms.TabPage();
-            this.tabEnvironment = new System.Windows.Forms.TabPage();
-            this.tabOrders = new System.Windows.Forms.TabPage();
-            this.tabCalibration = new System.Windows.Forms.TabPage();
-            this.tabReports = new System.Windows.Forms.TabPage();
-            this.createUserButton = new System.Windows.Forms.Button();
-            this.loginAndLogoutButton = new System.Windows.Forms.ToolStripButton();
-            this.eStopButton = new System.Windows.Forms.ToolStripButton();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.controlPage1 = new Tmc.Scada.App.controlPage();
             this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic();
+            this.tabEnvironment = new System.Windows.Forms.TabPage();
             this.environmentControl1 = new Tmc.Scada.App.environmentControl();
+            this.tabOrders = new System.Windows.Forms.TabPage();
             this.orderControl = new Tmc.Scada.App.Order();
+            this.tabCalibration = new System.Windows.Forms.TabPage();
             this.calibrationControl1 = new Tmc.Scada.App.CalibrationControl();
+            this.tabReports = new System.Windows.Forms.TabPage();
             this.reportControl2 = new Tmc.Scada.App.ReportControl();
-            this.alarms1 = new Tmc.Scada.App.Alarms();
+            this.createUserButton = new System.Windows.Forms.Button();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
             this.tbcContentsTabControl.SuspendLayout();
-            this.tabAlarmList.SuspendLayout();
             this.tabPlantMimic.SuspendLayout();
             this.tabEnvironment.SuspendLayout();
             this.tabOrders.SuspendLayout();
@@ -95,11 +93,33 @@
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // loginAndLogoutButton
+            // 
+            this.loginAndLogoutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.loginAndLogoutButton.Image = ((System.Drawing.Image)(resources.GetObject("loginAndLogoutButton.Image")));
+            this.loginAndLogoutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.loginAndLogoutButton.Name = "loginAndLogoutButton";
+            this.loginAndLogoutButton.Size = new System.Drawing.Size(41, 22);
+            this.loginAndLogoutButton.Text = "Login";
+            this.loginAndLogoutButton.Click += new System.EventHandler(this.loginAndLogoutButton_Click);
+            // 
             // currentUserLabel
             // 
             this.currentUserLabel.Name = "currentUserLabel";
             this.currentUserLabel.Size = new System.Drawing.Size(92, 22);
             this.currentUserLabel.Text = "No Current User";
+            // 
+            // eStopButton
+            // 
+            this.eStopButton.BackColor = System.Drawing.Color.Red;
+            this.eStopButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.eStopButton.ForeColor = System.Drawing.Color.White;
+            this.eStopButton.Image = ((System.Drawing.Image)(resources.GetObject("eStopButton.Image")));
+            this.eStopButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.eStopButton.Name = "eStopButton";
+            this.eStopButton.Size = new System.Drawing.Size(97, 22);
+            this.eStopButton.Text = "Emergency Stop";
+            this.eStopButton.Click += new System.EventHandler(this.eStopButton_Click);
             // 
             // plantMimicTab
             // 
@@ -286,7 +306,6 @@
             // 
             // tabAlarmList
             // 
-            this.tabAlarmList.Controls.Add(this.alarms1);
             this.tabAlarmList.Location = new System.Drawing.Point(4, 29);
             this.tabAlarmList.Name = "tabAlarmList";
             this.tabAlarmList.Size = new System.Drawing.Size(687, 354);
@@ -306,6 +325,20 @@
             this.tabPlantMimic.Text = "Plant Mimic";
             this.tabPlantMimic.UseVisualStyleBackColor = true;
             // 
+            // controlPage1
+            // 
+            this.controlPage1.Location = new System.Drawing.Point(377, 60);
+            this.controlPage1.Name = "controlPage1";
+            this.controlPage1.Size = new System.Drawing.Size(303, 230);
+            this.controlPage1.TabIndex = 1;
+            // 
+            // plantMimic1
+            // 
+            this.plantMimic1.Location = new System.Drawing.Point(-153, -3);
+            this.plantMimic1.Name = "plantMimic1";
+            this.plantMimic1.Size = new System.Drawing.Size(543, 354);
+            this.plantMimic1.TabIndex = 0;
+            // 
             // tabEnvironment
             // 
             this.tabEnvironment.Controls.Add(this.environmentControl1);
@@ -316,6 +349,13 @@
             this.tabEnvironment.Text = "Environment";
             this.tabEnvironment.UseVisualStyleBackColor = true;
             // 
+            // environmentControl1
+            // 
+            this.environmentControl1.Location = new System.Drawing.Point(3, 3);
+            this.environmentControl1.Name = "environmentControl1";
+            this.environmentControl1.Size = new System.Drawing.Size(257, 190);
+            this.environmentControl1.TabIndex = 0;
+            // 
             // tabOrders
             // 
             this.tabOrders.Controls.Add(this.orderControl);
@@ -325,6 +365,13 @@
             this.tabOrders.TabIndex = 4;
             this.tabOrders.Text = "Orders";
             this.tabOrders.UseVisualStyleBackColor = true;
+            // 
+            // orderControl
+            // 
+            this.orderControl.Location = new System.Drawing.Point(21, 3);
+            this.orderControl.Name = "orderControl";
+            this.orderControl.Size = new System.Drawing.Size(639, 343);
+            this.orderControl.TabIndex = 0;
             // 
             // tabCalibration
             // 
@@ -337,6 +384,13 @@
             this.tabCalibration.Text = "Camera Calibration";
             this.tabCalibration.UseVisualStyleBackColor = true;
             // 
+            // calibrationControl1
+            // 
+            this.calibrationControl1.Location = new System.Drawing.Point(0, 0);
+            this.calibrationControl1.Name = "calibrationControl1";
+            this.calibrationControl1.Size = new System.Drawing.Size(687, 354);
+            this.calibrationControl1.TabIndex = 0;
+            // 
             // tabReports
             // 
             this.tabReports.Controls.Add(this.reportControl2);
@@ -347,6 +401,15 @@
             this.tabReports.Text = "Reports";
             this.tabReports.UseVisualStyleBackColor = true;
             // 
+            // reportControl2
+            // 
+            this.reportControl2.Location = new System.Drawing.Point(8, 35);
+            this.reportControl2.Name = "reportControl2";
+            this.reportControl2.SelectedEndDate = new System.DateTime(2014, 6, 8, 21, 40, 21, 986);
+            this.reportControl2.SelectedStartDate = new System.DateTime(2014, 6, 7, 21, 40, 21, 986);
+            this.reportControl2.Size = new System.Drawing.Size(691, 267);
+            this.reportControl2.TabIndex = 0;
+            // 
             // createUserButton
             // 
             this.createUserButton.Location = new System.Drawing.Point(0, 2);
@@ -356,79 +419,6 @@
             this.createUserButton.Text = "Create User";
             this.createUserButton.UseVisualStyleBackColor = true;
             this.createUserButton.Click += new System.EventHandler(this.createUserButton_Click);
-            // 
-            // loginAndLogoutButton
-            // 
-            this.loginAndLogoutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.loginAndLogoutButton.Image = ((System.Drawing.Image)(resources.GetObject("loginAndLogoutButton.Image")));
-            this.loginAndLogoutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.loginAndLogoutButton.Name = "loginAndLogoutButton";
-            this.loginAndLogoutButton.Size = new System.Drawing.Size(41, 22);
-            this.loginAndLogoutButton.Text = "Login";
-            this.loginAndLogoutButton.Click += new System.EventHandler(this.loginAndLogoutButton_Click);
-            // 
-            // eStopButton
-            // 
-            this.eStopButton.BackColor = System.Drawing.Color.Red;
-            this.eStopButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.eStopButton.ForeColor = System.Drawing.Color.White;
-            this.eStopButton.Image = ((System.Drawing.Image)(resources.GetObject("eStopButton.Image")));
-            this.eStopButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.eStopButton.Name = "eStopButton";
-            this.eStopButton.Size = new System.Drawing.Size(97, 22);
-            this.eStopButton.Text = "Emergency Stop";
-            this.eStopButton.Click += new System.EventHandler(this.eStopButton_Click);
-            // 
-            // controlPage1
-            // 
-            this.controlPage1.Location = new System.Drawing.Point(377, 60);
-            this.controlPage1.Name = "controlPage1";
-            this.controlPage1.Size = new System.Drawing.Size(303, 175);
-            this.controlPage1.TabIndex = 1;
-            // 
-            // plantMimic1
-            // 
-            this.plantMimic1.Location = new System.Drawing.Point(-153, -3);
-            this.plantMimic1.Name = "plantMimic1";
-            this.plantMimic1.Size = new System.Drawing.Size(543, 354);
-            this.plantMimic1.TabIndex = 0;
-            // 
-            // environmentControl1
-            // 
-            this.environmentControl1.Location = new System.Drawing.Point(3, 3);
-            this.environmentControl1.Name = "environmentControl1";
-            this.environmentControl1.Size = new System.Drawing.Size(257, 190);
-            this.environmentControl1.TabIndex = 0;
-            // 
-            // orderControl
-            // 
-            this.orderControl.Location = new System.Drawing.Point(21, 3);
-            this.orderControl.Name = "orderControl";
-            this.orderControl.Size = new System.Drawing.Size(639, 343);
-            this.orderControl.TabIndex = 0;
-            // 
-            // calibrationControl1
-            // 
-            this.calibrationControl1.Location = new System.Drawing.Point(0, 0);
-            this.calibrationControl1.Name = "calibrationControl1";
-            this.calibrationControl1.Size = new System.Drawing.Size(687, 354);
-            this.calibrationControl1.TabIndex = 0;
-            // 
-            // reportControl2
-            // 
-            this.reportControl2.Location = new System.Drawing.Point(8, 35);
-            this.reportControl2.Name = "reportControl2";
-            this.reportControl2.SelectedEndDate = new System.DateTime(2014, 6, 8, 12, 55, 24, 995);
-            this.reportControl2.SelectedStartDate = new System.DateTime(2014, 6, 7, 12, 55, 24, 995);
-            this.reportControl2.Size = new System.Drawing.Size(691, 267);
-            this.reportControl2.TabIndex = 0;
-            // 
-            // alarms1
-            // 
-            this.alarms1.Location = new System.Drawing.Point(8, 23);
-            this.alarms1.Name = "alarms1";
-            this.alarms1.Size = new System.Drawing.Size(684, 302);
-            this.alarms1.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -447,7 +437,6 @@
             this.ordersTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).EndInit();
             this.tbcContentsTabControl.ResumeLayout(false);
-            this.tabAlarmList.ResumeLayout(false);
             this.tabPlantMimic.ResumeLayout(false);
             this.tabEnvironment.ResumeLayout(false);
             this.tabOrders.ResumeLayout(false);

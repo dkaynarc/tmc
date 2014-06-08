@@ -127,5 +127,10 @@ namespace Tmc.Scada.App
         {
             _scadaEngine.Shutdown();
         }
+
+        private void btnSpeed_Click(object sender, EventArgs e)
+        {
+            _scadaEngine.SetSpeed(Convert.ToInt32(lstSpeed.GetItemText(lstSpeed.SelectedItem)));
+        }
     }
 }
