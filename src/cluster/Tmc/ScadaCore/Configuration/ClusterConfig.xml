@@ -3,14 +3,18 @@
   <Hardware Type="Camera">
     <Name>SorterCamera</Name>
     <!-- Leo cam -->
-    <ConnectionString>http://192.168.1.8:8080/photoaf.jpg</ConnectionString>
+    <!--<ConnectionString>http://192.168.1.8:8080/photo.jpg</ConnectionString>-->
+    <!--Kogulan Cam-->
+    <!--<ConnectionString>http://192.168.1.16:8080/photo.jpg</ConnectionString>-->
+    <!--Smit Cam-->
+    <ConnectionString>http://192.168.1.195:8080/photo.jpg</ConnectionString>
   </Hardware>
   <Hardware Type="Camera">
     <Name>TrayVerifierCamera</Name>
     <!-- DK-->
-    <ConnectionString>http://192.168.1.3:8080/photoaf.jpg</ConnectionString> 
+    <ConnectionString>http://192.168.1.3:8080/photo.jpg</ConnectionString> 
     <!-- Donald -->
-    <!--<ConnectionString>http://192.168.1.20:8080/photoaf.jpg</ConnectionString>-->
+    <!--<ConnectionString>http://192.168.1.20:8080/photo.jpg</ConnectionString>-->
   </Hardware>
   <!--<Hardware Type="Sensor">
     <Name>TemperatureSensor</Name>
@@ -27,7 +31,7 @@
   <Hardware Type="LoaderRobot" Name="LoaderRobot" IPAddress="192.168.1.202"/>
   <Hardware Type="SorterRobot" Name="SorterRobot" IPAddress="192.168.1.201"/>
   <Hardware Type="AssemblerRobot" Name="AssemblerRobot" IPAddress="192.168.1.200"/>
-  <Hardware Type="BluetoothConveyor" Name="SorterConveyor" PortName="COM5" WaitTime="7000"/>
+  <Hardware Type="BluetoothConveyor" Name="SorterConveyor" PortName="COM4" WaitTime="7000"/>
   <Hardware Type="SerialConveyor" Name="AssemblyConveyor" PortName="COM3"/>
   <Hardware Type="Plc" Name="MainPlc" IPAddress="192.168.1.5"/>
 </Cluster>

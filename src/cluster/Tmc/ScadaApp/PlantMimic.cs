@@ -29,10 +29,10 @@ namespace Tmc.Scada.App.UserControls
             InitializeComponent();
         }
 
-        public void Initialise(ClusterConfig config)
+        public void Initialise(HardwareMonitor hardwareMonitor)
         {
-            _hardwareMonitor = new HardwareMonitor(config);
-            _hardwareMonitor.StatusChanged += Update;
+            _hardwareMonitor = hardwareMonitor;
+            //_hardwareMonitor.StatusChanged += Update;
         }
 
         private void Update(object sender, HardwareEventArgs args)

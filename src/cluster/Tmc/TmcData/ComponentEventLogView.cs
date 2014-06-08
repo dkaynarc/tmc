@@ -19,5 +19,6 @@ namespace TmcData
         public string Description { get; set; }
         public int ID { get; set; }
         public string LogType { get; set; }
+        public bool Acknowledged { get; set; }
     }
 }

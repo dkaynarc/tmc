@@ -54,6 +54,7 @@ namespace Tmc.Scada.App
             try
             {
                 CalibrationManager.Instance.CalibrateSpecific<SorterVision>();
+                MessageBox.Show("Calibration completed");
             }
             catch (Exception ex)
             {

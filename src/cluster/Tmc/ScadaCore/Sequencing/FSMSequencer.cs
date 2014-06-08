@@ -48,7 +48,7 @@ namespace Tmc.Scada.Core.Sequencing
                 this.PreviousState = oldState.Id;
             }
 
-            Logger.Instance.Write(String.Format("[Sequencer] Transitioned: {0}, {1}", this.PreviousState, this.CurrentState), LogType.Message);
+            Logger.Instance.Write(String.Format("[Sequencer] Transitioned: {0} -> {1}", this.PreviousState, this.CurrentState), LogType.Message);
 
             base.SwitchedState(stateMachine, oldState, newState);
         }

@@ -102,6 +102,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alarms.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Alarms.Designer.cs">
+      <DependentUpon>Alarms.cs</DependentUpon>
+    </Compile>
     <Compile Include="CalibrationControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -166,6 +172,9 @@
     </Compile>
     <Compile Include="WcfHost.cs" />
     <Compile Include="WebApiClient\WebApiClient.cs" />
+    <EmbeddedResource Include="Alarms.resx">
+      <DependentUpon>Alarms.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CalibrationControl.resx">
       <DependentUpon>CalibrationControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -204,6 +213,7 @@
       <DependentUpon>ReportControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
+    <None Include="Properties\DataSources\TmcData.ComponentEventLogView.datasource" />
     <None Include="Properties\DataSources\TmcData.Datasets.ReportDataSet.datasource" />
     <None Include="Reporting\AlarmReport.rdlc" />
     <EmbeddedResource Include="Reporting\CycleReport.rdlc" />

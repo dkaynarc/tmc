@@ -54,7 +54,7 @@ namespace Tmc.Vision
             HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 49;//50;
             HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 78;// 68;
             HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 180;//170;//140;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 125;//125;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 146;//125;
 
             HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue = 1;
             HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 100;//153;//93;
@@ -63,12 +63,12 @@ namespace Tmc.Vision
             HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation = 219;//128;
             HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Value = 196;//250;
 
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Hue = 12;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Satuation = 52;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Hue = 10;//12
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Satuation = 34;//52;
             HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Value = 183;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 18;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 23;//18
             HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 110;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Value = 239;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Value = 255;//239;
 
             HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 107;//114;
             HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 32;//36;
@@ -106,7 +106,7 @@ namespace Tmc.Vision
         /// <returns>return position of viable tablets and state</returns>
         public List<Tablet> GetVisibleTablets()
         {
-            
+            AdjustMinMaxRadius(ChessboardPoints);
             Debug.WriteLine("\n\n");
             TabletList.Clear();//clear tablets from last use
             img = camera.GetImage(1);
@@ -194,6 +194,35 @@ namespace Tmc.Vision
         }
 
         /// <summary>
+        /// THis alows us to base the min and max radius of tablet depending on the chess board
+        /// </summary>
+        /// <param name="chessboard">chse board points</param>
+        private void AdjustMinMaxRadius(PointF[] chessboard)
+        {
+            double pixcelTommY;
+            double pixcelTommX;
+
+            double size;
+
+            double MagY;
+            double MagX;
+
+            MagY = Math.Sqrt(Math.Pow((chessboard[12].X - chessboard[0].X), 2) + Math.Pow((chessboard[12].Y - chessboard[0].Y), 2));
+            
+            MagX = Math.Sqrt(Math.Pow((chessboard[1].X - chessboard[0].X), 2) + Math.Pow((chessboard[1].Y - chessboard[0].Y), 2));
+
+            pixcelTommY = 25 / MagY;//work out how much a pixcel is in mm
+            pixcelTommX = 25 / MagX;
+
+            size = ((MagY / 5) * 8)/2;
+
+            minRadius = (int)(size - 2);
+            maxRadius = (int)(size + 2);
+
+
+        }
+
+        /// <summary>
         /// gets coordinates in mm of where the target is on the chess board
         /// </summary>
         /// <param name="chessboard">
@@ -240,12 +269,12 @@ namespace Tmc.Vision
                 MagX = Math.Sqrt(Math.Pow((chessboard[loc].X - chessboard[loc + 1].X), 2) + Math.Pow((chessboard[loc].Y - chessboard[loc + 1].Y), 2));
             }
 
-            pixcelTommY = 20 / MagY;//work out how much a pixcel is in mm
-            pixcelTommX = 20 / MagX;
+            pixcelTommY = 25 / MagY;//work out how much a pixcel is in mm
+            pixcelTommX = 25 / MagX;
 
 
-            locationXYmm.X = (float)(pixcelTommX * ((targetPoint.X - chessboard[loc].X)) + ClosestPoint.X * 20);      //work out location from origon
-            locationXYmm.Y = (float)(pixcelTommY * ((targetPoint.Y - chessboard[loc].Y)) + ((ClosestPoint.Y / 12) * 20));
+            locationXYmm.X = (float)(pixcelTommX * ((targetPoint.X - chessboard[loc].X)) + ClosestPoint.X * 25);      //work out location from origon
+            locationXYmm.Y = (float)(pixcelTommY * ((targetPoint.Y - chessboard[loc].Y)) + ((ClosestPoint.Y / 12) * 25));
 
             return locationXYmm;
         }
@@ -296,17 +325,6 @@ namespace Tmc.Vision
             return closestPoint;
         }
 
-        /*private List<Tablet> FillListOfGoodTablets(PointF[] chessboard, CircleF[] tablets)
-        {
-            return TabletList;
-        }*/
-
-        /*/// <summary>
-        /// Determins if tablet is damaged
-        /// </summary>
-        private void DetectDamagedTablet()
-        {
-        }*/
 
         /// <summary>
         ///
@@ -334,20 +352,11 @@ namespace Tmc.Vision
 
                 var histo = ImagesToHisto(GetTablet(src, tablet));
 
-                int[][] hue = getHighLowHSV(histo, 30, HSVdata.Hue);
-                int[][] sat = getHighLowHSV(histo, 30, HSVdata.Sat);
-                int[][] val = getHighLowHSV(histo, 30, HSVdata.Val);
+                int[][] hue = getHighLowHSV(histo, 50, HSVdata.Hue);
+                int[][] sat = getHighLowHSV(histo, 50, HSVdata.Sat);
+                int[][] val = getHighLowHSV(histo, 50, HSVdata.Val);
 
-#if DEBUG
-                //Debug.WriteLine("Hue: " + hue[0][0] + " - " + hue[0][1] + ", Sat: " + sat[0][0] + " - " + sat[0][1] + ", Val: " + val[0][0] + " - " + val[0][1]);
-                Debug.WriteLine("" + hue[0][0] + "\t" + hue[0][1] + "\t" + sat[0][0] + "\t" + sat[0][1] + "\t" + val[0][0] + "\t" + val[0][1]);
-                int hueM = hue.GetLength(0) - 1;
-                int satM = sat.GetLength(0) - 1;
-                int valM = val.GetLength(0) - 1;
-                //Debug.WriteLine("Hue: " + hue[hueM][0] + " - " + hue[hueM][1] + ", Sat: " + sat[satM][0] + " - " + sat[satM][1] + ", Val: " + val[valM][0] + " - " + val[valM][1]);
-                Debug.WriteLine("" + hue[hueM][0] + "\t" + hue[hueM][1] + "\t" + sat[satM][0] + "\t" + sat[satM][1] + "\t" + val[valM][0] + "\t" + val[valM][1]);
-                Debug.Flush();
-#endif
+
 
                 tabletHSV.Add(new Tuple<int[][], int[][], int[][]>(hue, sat, val));
 
@@ -359,6 +368,16 @@ namespace Tmc.Vision
                 else
                 {
                     drawTab.Draw(tablet, new Bgr(Color.White), 2);
+#if DEBUG
+                    //Debug.WriteLine("Hue: " + hue[0][0] + " - " + hue[0][1] + ", Sat: " + sat[0][0] + " - " + sat[0][1] + ", Val: " + val[0][0] + " - " + val[0][1]);
+                    Debug.WriteLine("Na: " + hue[0][0] + "\t" + hue[0][1] + "\t" + sat[0][0] + "\t" + sat[0][1] + "\t" + val[0][0] + "\t" + val[0][1]);
+                    int hueM = hue.GetLength(0) - 1;
+                    int satM = sat.GetLength(0) - 1;
+                    int valM = val.GetLength(0) - 1;
+                    //Debug.WriteLine("Hue: " + hue[hueM][0] + " - " + hue[hueM][1] + ", Sat: " + sat[satM][0] + " - " + sat[satM][1] + ", Val: " + val[valM][0] + " - " + val[valM][1]);
+                    Debug.WriteLine("Na: " + hue[hueM][0] + "\t" + hue[hueM][1] + "\t" + sat[satM][0] + "\t" + sat[satM][1] + "\t" + val[valM][0] + "\t" + val[valM][1]);
+                    Debug.Flush();
+#endif
                 }
             }
 
@@ -421,6 +440,16 @@ namespace Tmc.Vision
                             TabletList.Add(tab);
                         }
                         drawTab.Draw(tablet, new Bgr(Color.Red), 2);
+#if DEBUG
+                        //Debug.WriteLine("Hue: " + hue[0][0] + " - " + hue[0][1] + ", Sat: " + sat[0][0] + " - " + sat[0][1] + ", Val: " + val[0][0] + " - " + val[0][1]);
+                        Debug.WriteLine("Good: " + hue[0][0] + "\t" + hue[0][1] + "\t" + sat[0][0] + "\t" + sat[0][1] + "\t" + val[0][0] + "\t" + val[0][1]);
+                        int hueM = hue.GetLength(0) - 1;
+                        int satM = sat.GetLength(0) - 1;
+                        int valM = val.GetLength(0) - 1;
+                        //Debug.WriteLine("Hue: " + hue[hueM][0] + " - " + hue[hueM][1] + ", Sat: " + sat[satM][0] + " - " + sat[satM][1] + ", Val: " + val[valM][0] + " - " + val[valM][1]);
+                        Debug.WriteLine("Good: " + hue[hueM][0] + "\t" + hue[hueM][1] + "\t" + sat[satM][0] + "\t" + sat[satM][1] + "\t" + val[valM][0] + "\t" + val[valM][1]);
+                        Debug.Flush();
+#endif
                     }
                     else
                     {//unknown tablet
@@ -429,6 +458,16 @@ namespace Tmc.Vision
                         TabletList.Add(tab);
                         drawTab.Draw(tablet, new Bgr(Color.Red), 5);
                         drawTab.Draw(tablet, new Bgr(Color.Blue), 2);
+#if DEBUG
+                        //Debug.WriteLine("Hue: " + hue[0][0] + " - " + hue[0][1] + ", Sat: " + sat[0][0] + " - " + sat[0][1] + ", Val: " + val[0][0] + " - " + val[0][1]);
+                        Debug.WriteLine("Bad: " + hue[0][0] + "\t" + hue[0][1] + "\t" + sat[0][0] + "\t" + sat[0][1] + "\t" + val[0][0] + "\t" + val[0][1]);
+                        int hueM = hue.GetLength(0) - 1;
+                        int satM = sat.GetLength(0) - 1;
+                        int valM = val.GetLength(0) - 1;
+                        //Debug.WriteLine("Hue: " + hue[hueM][0] + " - " + hue[hueM][1] + ", Sat: " + sat[satM][0] + " - " + sat[satM][1] + ", Val: " + val[valM][0] + " - " + val[valM][1]);
+                        Debug.WriteLine("Bad: " + hue[hueM][0] + "\t" + hue[hueM][1] + "\t" + sat[satM][0] + "\t" + sat[satM][1] + "\t" + val[valM][0] + "\t" + val[valM][1]);
+                        Debug.Flush();
+#endif
                     }
                 }
             }
@@ -576,7 +615,7 @@ namespace Tmc.Vision
             }
             //CvInvoke.cvShowImage("TLL", tabletImage);
             //CvInvoke.cvWaitKey(0);
-            if ((countTL >= 1) && (countTR >= 1) && (countBL >= 1) && (countBR >= 1)) saveImage(tabletImage, tablet.Center.X + "good.jpg");
+            //if ((countTL >= 1) && (countTR >= 1) && (countBL >= 1) && (countBR >= 1)) saveImage(tabletImage, tablet.Center.X + "good.jpg");
             return ((countTL >= 1) && (countTR >= 1) && (countBL >= 1) && (countBR >= 1));
         }
 
