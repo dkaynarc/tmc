@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tmc.Robotics;
 using Appccelerate.StateMachine;
+using System.Threading;
 
 namespace Tmc.Scada.Core
 {
@@ -28,8 +29,6 @@ namespace Tmc.Scada.Core
         private Dictionary<ConveyorAction, Action<IConveyor>> _actionMap;
         private Dictionary<ConveyorType, IConveyor> _conveyorTypeMap;
 
-        private Dictionary<ConveyorType, PassiveStateMachine<ConveyorPosition, ConveyorAction>> _fsmMap;
-
         public ConveyorController(ClusterConfig config) : base(config)
         {
             _serialConveyor = config.Conveyors[typeof(SerialConveyor)] as SerialConveyor;
@@ -46,10 +45,6 @@ namespace Tmc.Scada.Core
                 {ConveyorAction.MoveForward, x => x.MoveForward() },
                 {ConveyorAction.MoveBackward, x => x.MoveBackward() }
             };
-
-            _fsmMap = new Dictionary<ConveyorType, PassiveStateMachine<ConveyorPosition, ConveyorAction>>();
-            _fsmMap.Add(ConveyorType.Assembly, CreateStateMachine(ConveyorType.Assembly));
-            _fsmMap.Add(ConveyorType.Sorting, CreateStateMachine(ConveyorType.Sorting));
         }
 
         public override void Begin(ControllerParams parameters)
@@ -60,7 +55,6 @@ namespace Tmc.Scada.Core
                 if (!IsRunning)
                 {
                     IsRunning = true;
-                    //_fsmMap[p.ConveyorType].Fire(p.ConveyorAction, p.ConveyorType);
                     MoveConveyorAsync(p.ConveyorType, p.ConveyorAction);
                 }
             }
@@ -101,46 +95,15 @@ namespace Tmc.Scada.Core
             }
         }
 
-        private PassiveStateMachine<ConveyorPosition, ConveyorAction> CreateStateMachine(ConveyorType conveyorType)
-        {
-            var fsm = new PassiveStateMachine<ConveyorPosition, ConveyorAction>();
-
-            fsm.In(ConveyorPosition.Right)
-                .On(ConveyorAction.MoveForward)
-                    .If<ConveyorType>(type => type == ConveyorType.Assembly)
-                        .Goto(ConveyorPosition.Middle)
-                        .Execute(() => MoveConveyorAsync(conveyorType, ConveyorAction.MoveForward))
-                    .Otherwise()
-                        .Goto(ConveyorPosition.Left)
-                        .Execute(() => MoveConveyorAsync(conveyorType, ConveyorAction.MoveForward));
-
-            fsm.In(ConveyorPosition.Middle)
-                .On(ConveyorAction.MoveForward)
-                    .Goto(ConveyorPosition.Left)
-                    .Execute(() => MoveConveyorAsync(conveyorType, ConveyorAction.MoveForward))
-                .On(ConveyorAction.MoveBackward)
-                    .Goto(ConveyorPosition.Right)
-                    .Execute(() => MoveConveyorAsync(conveyorType, ConveyorAction.MoveBackward));
-
-            fsm.In(ConveyorPosition.Left)
-                .On(ConveyorAction.MoveBackward)
-                    .If<ConveyorType>(type => type == ConveyorType.Assembly)
-                        .Goto(ConveyorPosition.Middle)
-                        .Execute(() => MoveConveyorAsync(conveyorType, ConveyorAction.MoveBackward))
-                    .Otherwise()
-                        .Goto(ConveyorPosition.Right)
-                        .Execute(() => MoveConveyorAsync(conveyorType, ConveyorAction.MoveBackward));
-
-            fsm.Initialize(ConveyorPosition.Right);
-
-            return fsm;
-        }
-
         private void MoveConveyorAsync(ConveyorType type, ConveyorAction action)
         {
             Task.Run(() =>
                 {
                     _actionMap[action](_conveyorTypeMap[type] as IConveyor);
+                    if (type == ConveyorType.Assembly)
+                    {
+                        Thread.Sleep(4000);
+                    }
                     IsRunning = false;
                     OnCompleted(new ControllerEventArgs() { OperationStatus = ControllerOperationStatus.Succeeded });
                 });

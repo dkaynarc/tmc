@@ -106,7 +106,9 @@
     <Content Include="mod\LoaderGrabTray1.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mod\LoaderGrabTray2.mod" />
+    <Content Include="mod\LoaderGrabTray2.mod">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="mod\LoaderGrabTray3.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

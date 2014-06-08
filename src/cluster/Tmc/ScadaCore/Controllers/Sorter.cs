@@ -132,6 +132,7 @@ namespace Tmc.Scada.Core
             var status = ControllerOperationStatus.Succeeded;
             try
             {
+                Logger.Instance.Write("[Sorter] Loading to conveyor");
                 _robot.ReturnMagazine();
             }
             catch (Exception ex)
@@ -147,6 +148,7 @@ namespace Tmc.Scada.Core
             var status = ControllerOperationStatus.Succeeded;
             try
             {
+                Logger.Instance.Write("[Sorter] Loading to buffer");
                 _robot.GetMagazine();
             }
             catch (Exception ex)
@@ -166,6 +168,8 @@ namespace Tmc.Scada.Core
                 while ((visibleTablets = GetVisibleTablets()).Count > 0)
                 {
                     var tablet = visibleTablets[0];
+                    Logger.Instance.Write(String.Format("[Sorter] Seen ({0}) tablet seen at ({1},{2}) in camera space",
+                        tablet.Color, tablet.LocationPoint.X, tablet.LocationPoint.Y));
                     if (mag.IsFull() || ct.IsCancellationRequested)
                     {
                         status = ControllerOperationStatus.Cancelled;
@@ -191,6 +195,8 @@ namespace Tmc.Scada.Core
             var visibleTablets = _vision.GetVisibleTablets().Where(x => x.Color != TabletColors.Unknown);
             while ((visibleTablets.Count() == 0) && (shakeRetryAttempts < MaxShakeRetryAttempts))
             {
+                Logger.Instance.Write(String.Format("[Sorter] No tablets found. Shaking (attempt {0} of {1}", 
+                    shakeRetryAttempts, MaxShakeRetryAttempts));
                 _robot.Shake();
                 visibleTablets = _vision.GetVisibleTablets();
                 shakeRetryAttempts++;
@@ -201,6 +207,8 @@ namespace Tmc.Scada.Core
         private void PlaceTablet(Tablet tablet, TabletMagazine mag)
         {
             var p = TransformToRobotSpace(tablet.LocationPoint);
+            Logger.Instance.Write(String.Format("[Sorter] Picking ({0}) tablet from ({1},{2}) in robot space",
+                        tablet.Color, p.X, p.Y));
             _robot.GetTablet(p.X, p.Y, mag.GetSlotIndex(tablet.Color));
             mag.AddTablet(tablet.Color);
         }

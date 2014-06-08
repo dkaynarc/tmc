@@ -31,9 +31,9 @@ namespace Tmc.Scada.Core
             }
         }
 
+        private Queue<Order> _toUpdate;
         private Queue<Order> _pendingQueue;
         private Order _assemblingOrder;
-
         private Timer _updateTimer;
         public List<Order> Orders { get; set; }
 
@@ -42,7 +42,8 @@ namespace Tmc.Scada.Core
         public OrderConsumer()
         {
             this._pendingQueue = new Queue<Order>();
-            Orders = new List<Order>();
+            this.Orders = new List<Order>();
+            this._toUpdate = new Queue<Order>();
 
             int updateTime = 1000;
             if (!Int32.TryParse(ConfigurationManager.AppSettings["OrderConsumerUpdateRateMsec"], out updateTime))
@@ -74,13 +75,16 @@ namespace Tmc.Scada.Core
             _assemblingOrder = _pendingQueue.Dequeue();
             _assemblingOrder.Status = OrderStatus.Assembling;
             //TmcRepository.UpdateOrderStatus(_assemblingOrder.Id, (int)OrderStatus.Assembling);
+            _toUpdate.Enqueue(_assemblingOrder);
+
             return _assemblingOrder;
         }
 
         public void CompleteOrder()
         {
             _assemblingOrder.Status = OrderStatus.Completed;
-            TmcRepository.UpdateOrderStatus(_assemblingOrder.Id, (int)OrderStatus.Completed);
+            //TmcRepository.UpdateOrderStatus(_assemblingOrder.Id, (int)OrderStatus.Completed);
+            _toUpdate.Enqueue(_assemblingOrder);
         }
 
         public IEnumerable<Order> OrdersByStatus(OrderStatus status)
@@ -90,7 +94,7 @@ namespace Tmc.Scada.Core
 
         private void Update()
         {
-            foreach (var orderInfo in TmcRepository.GetOrdersByStatus((int)OrderStatus.Open))
+            foreach (var orderInfo in TmcRepository.GetOrdersByStatus((int)OrderStatus.Open).ToList())
             {
                 var order = new Order();
                 order.Configuration.AddTablet(TabletColors.Black, orderInfo.Black);
@@ -107,13 +111,25 @@ namespace Tmc.Scada.Core
                 if (!this._pendingQueue.Contains(order))
                 {
                     order.Status = OrderStatus.Pending;
-                    TmcRepository.UpdateOrderStatus(order.Id, (int)order.Status);
+                    //TmcRepository.UpdateOrderStatus(order.Id, (int)order.Status);
+                    this._toUpdate.Enqueue(order);
                     this._pendingQueue.Enqueue(order);
                 }
             }
             if (_pendingQueue.Count > 0)
             {
                 OnOrdersAvailable(new EventArgs());
+            }
+
+            UpdateAll();
+        }
+
+        private void UpdateAll()
+        {
+            while (_toUpdate.Count > 0)
+            {
+                var order = _toUpdate.Dequeue();
+                TmcRepository.UpdateOrderStatus(order.Id, (int)order.Status);
             }
         }
 

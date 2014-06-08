@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tmc.Vision;
 using Tmc.Common;
+using TmcData;
 
 namespace Tmc.Scada.Core
 {
@@ -47,20 +48,29 @@ namespace Tmc.Scada.Core
 
         private VerificationResult DetermineValidity(Tray<Tablet> t1, Tray<Tablet> t2)
         {
-            return (t1.Equals(t2)) ? VerificationResult.Valid : VerificationResult.Invalid;
+            var validity = (t1.Equals(t2)) ? VerificationResult.Valid : VerificationResult.Invalid;
+
+            return validity;
         }
 
         private void VerifyTrayAsync(Tray<Tablet> tray, VerificationMode mode)
         {
-            var task = new Task(() =>
+            Task.Run(() =>
                 {
+                    Logger.Instance.Write(String.Format("[TrayVerifier] Detecting tray. Verification mode: {0}", mode));
                     Tray<Tablet> detectedTray;
                     bool isTrayVisible = _trayDetector.GetTabletsInTray(out detectedTray);
                     VerificationResult verResult = VerificationResult.Invalid;
                     if (isTrayVisible)
                     {
+                        if (mode == VerificationMode.Tray)
+                        {
+                            tray = new Tray<Tablet>();
+                        }
                         verResult = DetermineValidity(tray, detectedTray);
                     }
+                    Logger.Instance.Write(String.Format("[TrayVerifier] Is tray visible? {0}, tray validity: {1}",
+                                            isTrayVisible, verResult));
                     IsRunning = false;
                     OnCompleted(new OnVerificationCompleteEventArgs
                         {
@@ -70,7 +80,6 @@ namespace Tmc.Scada.Core
                             OperationStatus = ControllerOperationStatus.Succeeded
                         });
                 });
-            task.Start();
         }
     }
 

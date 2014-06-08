@@ -24,7 +24,7 @@ namespace Tmc.Scada.App
         public MainForm()
         {
             InitializeComponent();
-            Logger.Instance.Strategy = LogStrategy.File;
+            Logger.Instance.Strategy = LogStrategy.All;
             this.createUserButton.Hide();
             _scadaEngine = new ScadaEngine();
             this.InitializeAll(_scadaEngine);

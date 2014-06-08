@@ -102,6 +102,7 @@ namespace Tmc.Scada.Core
             {
                 try
                 {
+                    Logger.Instance.Write(String.Format("[Loader] Getting tray {0}", shelf));
                     _loaderRobot.GetTray(shelf);
                 }
                 catch (Exception ex)
@@ -123,6 +124,7 @@ namespace Tmc.Scada.Core
             var status = ControllerOperationStatus.Succeeded;
             try
             {
+                Logger.Instance.Write("[Loader] Palletising");
                 _loaderRobot.Palletise();
             }
             catch (Exception ex)

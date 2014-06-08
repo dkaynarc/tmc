@@ -121,7 +121,11 @@ namespace Tmc.Scada.Core
                     }
                     else
                     {
-                        _assemblerRobot.PlaceTablet(mag.GetSlotIndex(tablet.Color), mag.GetSlotDepth(tablet.Color), i); //TODO check chip depth = 10 or 0 when full?
+                        var slotDepth = mag.GetSlotDepth(tablet.Color);
+                        var slotIndex = mag.GetSlotIndexReversed(tablet.Color);
+                        Logger.Instance.Write(String.Format("[Assembler] Placing ({0}) tablet from slot {1} into slot {2}",
+                            tablet.Color, slotIndex, i));
+                        _assemblerRobot.PlaceTablet(slotIndex, slotDepth, i);
                     }
                 }
                 status = ControllerOperationStatus.Succeeded;
@@ -140,6 +144,7 @@ namespace Tmc.Scada.Core
             var status = ControllerOperationStatus.Succeeded;
             try
             {
+                Logger.Instance.Write("[Assembler] Getting tablet magazine");
                 _assemblerRobot.GetMagazine();
             }
             catch (Exception ex)
@@ -165,6 +170,7 @@ namespace Tmc.Scada.Core
             var status = ControllerOperationStatus.Succeeded;
             try
             {
+                Logger.Instance.Write("[Assembler] Returning tablet magazine");
                 _assemblerRobot.ReturnMagazine();
             }
             catch (Exception ex)

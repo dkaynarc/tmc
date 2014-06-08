@@ -8,7 +8,7 @@ namespace TmcData
 {
     public enum LogType
     { 
-        Message,
+        Message = 1,
         Warning,
         Error
     }

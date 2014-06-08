@@ -5,11 +5,11 @@ namespace Tmc.Common
 {
     public enum TabletColors
     {
-        Black,
-        White,
-        Red,
-        Green,
+        Black = 0,
         Blue,
+        Green,
+        Red,
+        White,
         Unknown
     }
     public class Tablet

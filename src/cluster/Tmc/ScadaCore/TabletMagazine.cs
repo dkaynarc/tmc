@@ -67,18 +67,22 @@ namespace Tmc.Scada.Core
         public int SlotCapacity { get; set; }
         public ObservableCollection<Slot> Slots { get; set; }
         private Dictionary<TabletColors, int> _slotIndexMap;
+        private Dictionary<TabletColors, int> _slotReverseIndexMap;
         public TabletMagazine()
         {
             this.Slots = new ObservableCollection<Slot>();
-            this._slotIndexMap = new Dictionary<TabletColors,int>();
+            this._slotIndexMap = new Dictionary<TabletColors, int>();
+            this._slotReverseIndexMap = new Dictionary<TabletColors, int>();
             this.SlotCapacity = 5;
 
             int slotIndex = 0;
-
-            foreach (var value in (TabletColors[])Enum.GetValues(typeof(TabletColors)))
+            int slotIndexReversed = SlotCapacity - 1;
+            var values = ((TabletColors[])(Enum.GetValues(typeof(TabletColors)))).AsEnumerable().Where(x => x != TabletColors.Unknown);
+            foreach (var value in values)
             {
                 Slots.Add(new Slot(value));
                 _slotIndexMap.Add(value, slotIndex++);
+                _slotReverseIndexMap.Add(value, slotIndexReversed--);
             }
         }
 
@@ -102,6 +106,11 @@ namespace Tmc.Scada.Core
         public int GetSlotIndex(TabletColors slotColor)
         {
             return _slotIndexMap[slotColor];
+        }
+
+        public int GetSlotIndexReversed(TabletColors slotColor)
+        {
+            return _slotReverseIndexMap[slotColor];
         }
 
         public int GetSlotDepth(TabletColors slotColor)
