@@ -54,7 +54,7 @@ namespace TmcTest.ConveyorTest
         [TestMethod]
         public void SerialForward()
         {
-            //_serialConveyor.Position = ConveyorPosition.Middle;
+            _serialConveyor.Position = ConveyorPosition.Middle;
             try
             {
                 _serialConveyor.MoveForward();

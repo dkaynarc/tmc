@@ -8,10 +8,11 @@ namespace Tmc.Scada.Core
 {
     public enum OrderStatus
     {
-        Completed,
-        Pending,
-        Assembling,
-        Open
+        Pending = 1,
+        Assembling = 2,
+        Completed = 3,
+        Cancelled = 4,
+        Open = 5
     }
 
     public class Order

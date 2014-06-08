@@ -134,7 +134,7 @@ namespace Tmc.Sensors
             ((System.ComponentModel.ISupportInitialize)(control)).BeginInit();
             
             // Close the demo notification window
-            windowDestroyer.DestroyWindow();
+            //windowDestroyer.DestroyWindow();
 
             control.CreateControl();
 
