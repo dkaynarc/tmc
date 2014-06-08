@@ -32,7 +32,7 @@ namespace Tmc.Scada.App.UserControls
         public void Initialise(HardwareMonitor hardwareMonitor)
         {
             _hardwareMonitor = hardwareMonitor;
-            _hardwareMonitor.StatusChanged += Update;
+            //_hardwareMonitor.StatusChanged += Update;
         }
 
         private void Update(object sender, HardwareEventArgs args)

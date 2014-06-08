@@ -24,10 +24,10 @@ namespace Tmc.Scada.App
         public MainForm()
         {
             InitializeComponent();
-            //Logger.Instance.Strategy = LogStrategy.File;
+            Logger.Instance.Strategy = LogStrategy.File;
             this.createUserButton.Hide();
-            //_scadaEngine = new ScadaEngine();
-            //this.InitializeAll(_scadaEngine);
+            _scadaEngine = new ScadaEngine();
+            this.InitializeAll(_scadaEngine);
             //Only proceed if SCADA is initialised
             _webApiClient = new WebApiClient("http://192.168.1.102:8080/");
             //disableUserControl(); // Default on startup - user must login first
