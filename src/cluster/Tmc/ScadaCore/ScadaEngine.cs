@@ -117,5 +117,11 @@ namespace Tmc.Scada.Core
         {
             this._sequencer.Mode = mode;
         }
+
+        public IDictionary<string, HardwareStatus> GetLastHardwareStatuses()
+        {
+            var statuses = this.HardwareMonitor.PreviousHardwareStatuses;
+            return statuses;
+        }
     }
 }

@@ -19,5 +19,7 @@ namespace Tmc.Common
         void Resume();
         [OperationContract]
         void EmergencyStop();
+        [OperationContract]
+        IDictionary<string, HardwareStatus> GetLastHardwareStatuses();
     }
 }
