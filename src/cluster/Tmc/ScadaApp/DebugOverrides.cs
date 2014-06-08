@@ -20,6 +20,8 @@ namespace Tmc.Scada.App
 
         public void Initialize(ScadaEngine engine)
         {
+            lvBinding.DataSource = engine.TabletMagazine.Slots;
+            dgvTabMag.DataSource = lvBinding;
         }
     }
 }

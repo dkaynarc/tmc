@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,21 +9,45 @@ using Tmc.Common;
 
 namespace Tmc.Scada.Core
 {
-    public class Slot
+    public class Slot : INotifyPropertyChanged
     {
-        public TabletColors Color { get; set; }
-        public int TabletCount { get; set; }
+        private TabletColors _color;
+        private int _tabletCount;
+
+        public TabletColors Color
+        {
+            get
+            {
+                return this._color;
+            }
+            set
+            {
+                this._color = value;
+            }
+        }
+        public int TabletCount
+        {
+            get
+            {
+                return this._tabletCount;
+            }
+            set
+            {
+                this._tabletCount = value;
+            }
+        }
 
         public Slot(TabletColors color = TabletColors.Unknown, int count = 0)
         {
             this.Color = color;
             this.TabletCount = count;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
     public class TabletMagazine
     {
         public int SlotCapacity { get; set; }
-        //public Dictionary<TabletColors, int> Slots { get; private set; }
         public ObservableCollection<Slot> Slots { get; set; }
         private Dictionary<TabletColors, int> _slotIndexMap;
         public TabletMagazine()
@@ -35,7 +60,7 @@ namespace Tmc.Scada.Core
 
             foreach (var value in (TabletColors[])Enum.GetValues(typeof(TabletColors)))
             {
-                Slots.Add(new Slot());
+                Slots.Add(new Slot(value));
                 _slotIndexMap.Add(value, slotIndex++);
             }
         }
@@ -69,24 +94,27 @@ namespace Tmc.Scada.Core
         public bool IsFull()
         {
             bool isFull = true;
-            Slots.ToList().ForEach(x => isFull &= (x == SlotCapacity));
+            foreach (var s in Slots)
+            {
+                isFull &= (s.TabletCount == SlotCapacity);
+            }
             return isFull;
         }
 
         public bool IsSlotFull(TabletColors slotColor)
         {
-            return (Slots[slotColor] == SlotCapacity);
+            return (GetSlotByColor(slotColor).TabletCount == SlotCapacity);
         }
 
         //TODO Check whether this method is required anywhere
         public bool IsSlotEmpty(TabletColors slotColor)
         {
-            return (Slots[slotColor] == 0);
+            return (GetSlotByColor(slotColor).TabletCount == 0);
         }
 
         public List<TabletColors> GetFullSlots()
         {
-            return Slots.Where(x => x.Value == SlotCapacity).Select(y => y.Key).ToList();
+            return Slots.Where(x => x.TabletCount == SlotCapacity).Select(y => y.Color).ToList();
         }
 
         private Slot GetSlotByColor(TabletColors slotColor)

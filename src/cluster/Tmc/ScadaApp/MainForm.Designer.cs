@@ -66,10 +66,10 @@
             this.calibrationControl1 = new Tmc.Scada.App.CalibrationControl();
             this.tabReports = new System.Windows.Forms.TabPage();
             this.reportControl2 = new Tmc.Scada.App.ReportControl();
+            this.tabDebug = new System.Windows.Forms.TabPage();
+            this.debugOverrides = new Tmc.Scada.App.DebugOverrides();
             this.createUserButton = new System.Windows.Forms.Button();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.tabDebug = new System.Windows.Forms.TabPage();
-            this.debugOverrides1 = new Tmc.Scada.App.DebugOverrides();
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
@@ -79,8 +79,8 @@
             this.tabOrders.SuspendLayout();
             this.tabCalibration.SuspendLayout();
             this.tabReports.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.tabDebug.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -409,10 +409,27 @@
             // 
             this.reportControl2.Location = new System.Drawing.Point(8, 35);
             this.reportControl2.Name = "reportControl2";
-            this.reportControl2.SelectedEndDate = new System.DateTime(2014, 6, 8, 18, 1, 45, 164);
-            this.reportControl2.SelectedStartDate = new System.DateTime(2014, 6, 7, 18, 1, 45, 164);
+            this.reportControl2.SelectedEndDate = new System.DateTime(2014, 6, 8, 19, 27, 23, 236);
+            this.reportControl2.SelectedStartDate = new System.DateTime(2014, 6, 7, 19, 27, 23, 236);
             this.reportControl2.Size = new System.Drawing.Size(691, 267);
             this.reportControl2.TabIndex = 0;
+            // 
+            // tabDebug
+            // 
+            this.tabDebug.Controls.Add(this.debugOverrides);
+            this.tabDebug.Location = new System.Drawing.Point(4, 29);
+            this.tabDebug.Name = "tabDebug";
+            this.tabDebug.Size = new System.Drawing.Size(687, 354);
+            this.tabDebug.TabIndex = 7;
+            this.tabDebug.Text = "Debug Overrides";
+            this.tabDebug.UseVisualStyleBackColor = true;
+            // 
+            // debugOverrides
+            // 
+            this.debugOverrides.Location = new System.Drawing.Point(8, 13);
+            this.debugOverrides.Name = "debugOverrides";
+            this.debugOverrides.Size = new System.Drawing.Size(318, 222);
+            this.debugOverrides.TabIndex = 0;
             // 
             // createUserButton
             // 
@@ -423,23 +440,6 @@
             this.createUserButton.Text = "Create User";
             this.createUserButton.UseVisualStyleBackColor = true;
             this.createUserButton.Click += new System.EventHandler(this.createUserButton_Click);
-            // 
-            // tabDebug
-            // 
-            this.tabDebug.Controls.Add(this.debugOverrides1);
-            this.tabDebug.Location = new System.Drawing.Point(4, 29);
-            this.tabDebug.Name = "tabDebug";
-            this.tabDebug.Size = new System.Drawing.Size(687, 354);
-            this.tabDebug.TabIndex = 7;
-            this.tabDebug.Text = "Debug Overrides";
-            this.tabDebug.UseVisualStyleBackColor = true;
-            // 
-            // debugOverrides1
-            // 
-            this.debugOverrides1.Location = new System.Drawing.Point(8, 13);
-            this.debugOverrides1.Name = "debugOverrides1";
-            this.debugOverrides1.Size = new System.Drawing.Size(186, 222);
-            this.debugOverrides1.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -463,8 +463,8 @@
             this.tabOrders.ResumeLayout(false);
             this.tabCalibration.ResumeLayout(false);
             this.tabReports.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.tabDebug.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -513,7 +513,7 @@
         private System.Windows.Forms.BindingSource bindingSource1;
         private Alarms alarms1;
         private System.Windows.Forms.TabPage tabDebug;
-        private DebugOverrides debugOverrides1;
+        private DebugOverrides debugOverrides;
     }
 }
 

@@ -222,6 +222,7 @@
       <DependentUpon>ReportControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
+    <None Include="Properties\DataSources\Tmc.Scada.Core.TabletMagazine1.datasource" />
     <None Include="Properties\DataSources\TmcData.ComponentEventLogView.datasource" />
     <None Include="Properties\DataSources\TmcData.Datasets.ReportDataSet.datasource" />
     <None Include="Reporting\AlarmReport.rdlc" />
