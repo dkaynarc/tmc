@@ -206,10 +206,6 @@
       <Project>{8d9820ac-1f68-49ff-93ad-24591c94a178}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ScadaCore\ScadaCore.csproj">
-      <Project>{5b8926dd-dd25-4531-ac23-2b31cb9774d4}</Project>
-      <Name>ScadaCore</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
