@@ -47,8 +47,8 @@ namespace Tmc.Scada.Core
             //this._environmentMonitor = new EnvironmentMonitor(this.ClusterConfig);
             this.HardwareMonitor = new HardwareMonitor(this.ClusterConfig);
             this.TabletMagazine = new TabletMagazine();
-            this._sequencer = new FSMSequencer(this);
             this.OrderConsumer = new OrderConsumer();
+            this._sequencer = new FSMSequencer(this);
             this.Initialise();
         }
 
