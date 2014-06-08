@@ -132,6 +132,12 @@
             // clbEnvironmentSourceFilter
             // 
             this.clbEnvironmentSourceFilter.FormattingEnabled = true;
+            this.clbEnvironmentSourceFilter.Items.AddRange(new object[] {
+            "Temperature Sensor",
+            "Humidity Sensor",
+            "Light Sensor",
+            "Sound Sensor",
+            "Dust Sensor"});
             this.clbEnvironmentSourceFilter.Location = new System.Drawing.Point(13, 27);
             this.clbEnvironmentSourceFilter.Name = "clbEnvironmentSourceFilter";
             this.clbEnvironmentSourceFilter.Size = new System.Drawing.Size(131, 169);
@@ -159,6 +165,10 @@
             // clbAlarmsTypeFilter
             // 
             this.clbAlarmsTypeFilter.FormattingEnabled = true;
+            this.clbAlarmsTypeFilter.Items.AddRange(new object[] {
+            "Message",
+            "Warning",
+            "Error"});
             this.clbAlarmsTypeFilter.Location = new System.Drawing.Point(13, 27);
             this.clbAlarmsTypeFilter.Name = "clbAlarmsTypeFilter";
             this.clbAlarmsTypeFilter.Size = new System.Drawing.Size(131, 169);

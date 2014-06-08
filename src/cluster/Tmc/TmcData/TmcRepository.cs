@@ -31,6 +31,11 @@ namespace TmcData
             return _entities.EnvironmentLogViews.Where(e => e.Source.Contains(source)).OrderByDescending(e => e.Timestamp).First();
         }
 
+        public static IList<ComponentEventLogView> EventLog()
+        {
+            return _entities.ComponentEventLogViews.ToList();
+        }
+
         public static void AddNewOrder(Guid userID, int black, int blue, int red, int green, int white )
         {
             _entities.AddNewOrder(userID, black, blue, red, green, white);

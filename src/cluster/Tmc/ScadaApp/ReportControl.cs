@@ -294,11 +294,13 @@ namespace Tmc.Scada.App
         {
             this.ClearAllFilteringOptions();
             this.pnlEnvironmentReportFilters.Visible = true;
-            this.clbEnvironmentSourceFilter.Items.Clear();
+            //this.clbEnvironmentSourceFilter.Items.Clear();
             //foreach (string source in TmcData.TmcRepository.GetEnvironmentSourceTypes())
             //{
             //    this.clbEnvironmentSourceFilter.Items.Add(source);
             //}
+
+
             this.CheckAllListboxItems(this.clbEnvironmentSourceFilter);
         }
 
@@ -309,7 +311,7 @@ namespace Tmc.Scada.App
         {
             this.ClearAllFilteringOptions();
             this.pnlAlarmReportFilters.Visible = true;
-            this.clbAlarmsTypeFilter.Items.Clear();
+            //this.clbAlarmsTypeFilter.Items.Clear();
             //foreach (string type in TmcData.TmcRepository.GetAlarmTypes())
             //{
             //    this.clbEnvironmentSourceFilter.Items.Add(type);
