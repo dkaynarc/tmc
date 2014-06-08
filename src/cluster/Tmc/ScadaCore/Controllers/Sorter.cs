@@ -208,8 +208,8 @@ namespace Tmc.Scada.Core
         private Point TransformToRobotSpace(PointF p)
         {
             //const float xScale = 1.25f;
-            const float xScale = 1.286f;
-            const float yScale = 1.286f;
+            const float xScale = 1f;
+            const float yScale = 1f;
             const float xOff = -121.9f;
             const float yOff = 357.6f;
 
