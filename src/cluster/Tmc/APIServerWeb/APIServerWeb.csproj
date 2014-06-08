@@ -108,7 +108,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="packages.config" />
     <EntityDeploy Include="EF\ICTDEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ICTDEntities.Designer.cs</LastGenOutput>
