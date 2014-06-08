@@ -23,5 +23,8 @@ namespace Tmc.Common
         IDictionary<string, HardwareStatus> GetLastHardwareStatuses();
         [OperationContract]
         IList<string> GetAllHardwareNames();
+
+        [OperationContract]
+        void SetSpeed(int speed);
     }
 }

@@ -37,6 +37,8 @@
             this.operatingModeGroupBox = new System.Windows.Forms.GroupBox();
             this.confirmOperatingModeButton = new System.Windows.Forms.Button();
             this.buttonShutdown = new System.Windows.Forms.Button();
+            this.lstSpeed = new System.Windows.Forms.ListBox();
+            this.btnSpeed = new System.Windows.Forms.Button();
             this.operatingModeGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -135,17 +137,42 @@
             this.buttonShutdown.UseVisualStyleBackColor = true;
             this.buttonShutdown.Click += new System.EventHandler(this.buttonShutdown_Click);
             // 
+            // lstSpeed
+            // 
+            this.lstSpeed.FormattingEnabled = true;
+            this.lstSpeed.Items.AddRange(new object[] {
+            "25",
+            "50",
+            "75",
+            "100"});
+            this.lstSpeed.Location = new System.Drawing.Point(24, 192);
+            this.lstSpeed.Name = "lstSpeed";
+            this.lstSpeed.Size = new System.Drawing.Size(43, 17);
+            this.lstSpeed.TabIndex = 9;
+            // 
+            // btnSpeed
+            // 
+            this.btnSpeed.Location = new System.Drawing.Point(87, 186);
+            this.btnSpeed.Name = "btnSpeed";
+            this.btnSpeed.Size = new System.Drawing.Size(75, 23);
+            this.btnSpeed.TabIndex = 10;
+            this.btnSpeed.Text = "Set Speed";
+            this.btnSpeed.UseVisualStyleBackColor = true;
+            this.btnSpeed.Click += new System.EventHandler(this.btnSpeed_Click);
+            // 
             // controlPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnSpeed);
+            this.Controls.Add(this.lstSpeed);
             this.Controls.Add(this.buttonShutdown);
             this.Controls.Add(this.operatingModeGroupBox);
             this.Controls.Add(this.systemStatusLabel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.startOrStopButton);
             this.Name = "controlPage";
-            this.Size = new System.Drawing.Size(316, 186);
+            this.Size = new System.Drawing.Size(316, 232);
             this.operatingModeGroupBox.ResumeLayout(false);
             this.operatingModeGroupBox.PerformLayout();
             this.ResumeLayout(false);
@@ -164,5 +191,7 @@
         private System.Windows.Forms.GroupBox operatingModeGroupBox;
         private System.Windows.Forms.Button confirmOperatingModeButton;
         private System.Windows.Forms.Button buttonShutdown;
+        private System.Windows.Forms.ListBox lstSpeed;
+        private System.Windows.Forms.Button btnSpeed;
     }
 }

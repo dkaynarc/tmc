@@ -72,11 +72,11 @@ namespace Tmc.Robotics
             {
                 case ConveyorPosition.Right:
                     Conveyor.rightToMiddle();
-                    Position++;
+                    Position--;
                     break;
                 case ConveyorPosition.Middle:
                     Conveyor.middleToLeft();
-                    Position++;
+                    Position--;
                     break;
                 case ConveyorPosition.Left:
                     _status = HardwareStatus.Failed;

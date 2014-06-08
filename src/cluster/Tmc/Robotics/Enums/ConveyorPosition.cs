@@ -8,8 +8,8 @@ namespace Tmc.Robotics
 {
     public enum ConveyorPosition
     {
-        Left,
-        Middle,
-        Right
+        Left = 1,
+        Middle = 2,
+        Right = 3
     }
 }
