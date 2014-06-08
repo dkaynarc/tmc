@@ -78,7 +78,7 @@ namespace Tmc.Scada.App
         private void InitializeAll(ScadaEngine engine)
         {
             this.controlPage1.InitialiseScadaEngine(engine);
-            this.plantMimic1.Initialise(_scadaEngine.ClusterConfig);
+            this.plantMimic1.Initialise(_scadaEngine.HardwareMonitor);
             this.orderControl.Initialise();
             CalibrationManager.Instance.DataFilesDirectory = @".\calibration";
             CalibrationManager.Instance.LoadAllDataFiles();

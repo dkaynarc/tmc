@@ -17,7 +17,7 @@ namespace Tmc.Scada.Core
         public ClusterConfig ClusterConfig { get; set; }
         public OrderConsumer OrderConsumer { get; set; }
         public TabletMagazine TabletMagazine { get; set; }
-        //private HardwareMonitor _hardwareMonitor;
+        public HardwareMonitor HardwareMonitor { get; set; }
         //private EnvironmentMonitor _environmentMonitor;
         private ISequencer _sequencer;
 
@@ -45,7 +45,7 @@ namespace Tmc.Scada.Core
                 return;
             }
             //this._environmentMonitor = new EnvironmentMonitor(this.ClusterConfig);
-            //this._hardwareMonitor = new HardwareMonitor(this.ClusterConfig);
+            this.HardwareMonitor = new HardwareMonitor(this.ClusterConfig);
             this.TabletMagazine = new TabletMagazine();
             this._sequencer = new FSMSequencer(this);
             this.OrderConsumer = new OrderConsumer();
