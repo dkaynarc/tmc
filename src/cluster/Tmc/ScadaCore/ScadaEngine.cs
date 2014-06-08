@@ -8,6 +8,7 @@ using Tmc.Scada.Core.Reporting;
 using System.ServiceModel;
 using TmcData;
 using Tmc.Common;
+using Tmc.Robotics;
 
 namespace Tmc.Scada.Core
 {
@@ -134,6 +135,14 @@ namespace Tmc.Scada.Core
         public IList<string> GetAllHardwareNames()
         {
             return this.ClusterConfig.GetAllHardware().Select(x => x.Name).ToList();
+        }
+
+        public void SetSpeed(int speed)
+        {
+            foreach (IRobot robot in ClusterConfig.Robots.Values.ToList())
+            {
+                robot.SetSpeed(speed);
+            }
         }
     }
 }
