@@ -120,6 +120,12 @@
     <Compile Include="controlPage.Designer.cs">
       <DependentUpon>controlPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="DebugOverrides.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DebugOverrides.Designer.cs">
+      <DependentUpon>DebugOverrides.cs</DependentUpon>
+    </Compile>
     <Compile Include="environmentControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -181,6 +187,9 @@
     <EmbeddedResource Include="controlPage.resx">
       <DependentUpon>controlPage.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DebugOverrides.resx">
+      <DependentUpon>DebugOverrides.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="environmentControl.resx">
       <DependentUpon>environmentControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -213,6 +222,7 @@
       <DependentUpon>ReportControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
+    <None Include="Properties\DataSources\Tmc.Scada.Core.TabletMagazine1.datasource" />
     <None Include="Properties\DataSources\TmcData.ComponentEventLogView.datasource" />
     <None Include="Properties\DataSources\TmcData.Datasets.ReportDataSet.datasource" />
     <None Include="Reporting\AlarmReport.rdlc" />

@@ -66,6 +66,8 @@
             this.calibrationControl1 = new Tmc.Scada.App.CalibrationControl();
             this.tabReports = new System.Windows.Forms.TabPage();
             this.reportControl2 = new Tmc.Scada.App.ReportControl();
+            this.tabDebug = new System.Windows.Forms.TabPage();
+            this.debugOverrides = new Tmc.Scada.App.DebugOverrides();
             this.createUserButton = new System.Windows.Forms.Button();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.toolStrip1.SuspendLayout();
@@ -77,6 +79,7 @@
             this.tabOrders.SuspendLayout();
             this.tabCalibration.SuspendLayout();
             this.tabReports.SuspendLayout();
+            this.tabDebug.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -295,6 +298,7 @@
             this.tbcContentsTabControl.Controls.Add(this.tabOrders);
             this.tbcContentsTabControl.Controls.Add(this.tabCalibration);
             this.tbcContentsTabControl.Controls.Add(this.tabReports);
+            this.tbcContentsTabControl.Controls.Add(this.tabDebug);
             this.tbcContentsTabControl.ItemSize = new System.Drawing.Size(98, 25);
             this.tbcContentsTabControl.Location = new System.Drawing.Point(0, 63);
             this.tbcContentsTabControl.Name = "tbcContentsTabControl";
@@ -329,7 +333,7 @@
             // 
             this.controlPage1.Location = new System.Drawing.Point(377, 60);
             this.controlPage1.Name = "controlPage1";
-            this.controlPage1.Size = new System.Drawing.Size(303, 230);
+            this.controlPage1.Size = new System.Drawing.Size(303, 175);
             this.controlPage1.TabIndex = 1;
             // 
             // plantMimic1
@@ -405,10 +409,27 @@
             // 
             this.reportControl2.Location = new System.Drawing.Point(8, 35);
             this.reportControl2.Name = "reportControl2";
-            this.reportControl2.SelectedEndDate = new System.DateTime(2014, 6, 8, 21, 40, 21, 986);
-            this.reportControl2.SelectedStartDate = new System.DateTime(2014, 6, 7, 21, 40, 21, 986);
+            this.reportControl2.SelectedEndDate = new System.DateTime(2014, 6, 8, 19, 27, 23, 236);
+            this.reportControl2.SelectedStartDate = new System.DateTime(2014, 6, 7, 19, 27, 23, 236);
             this.reportControl2.Size = new System.Drawing.Size(691, 267);
             this.reportControl2.TabIndex = 0;
+            // 
+            // tabDebug
+            // 
+            this.tabDebug.Controls.Add(this.debugOverrides);
+            this.tabDebug.Location = new System.Drawing.Point(4, 29);
+            this.tabDebug.Name = "tabDebug";
+            this.tabDebug.Size = new System.Drawing.Size(687, 354);
+            this.tabDebug.TabIndex = 7;
+            this.tabDebug.Text = "Debug Overrides";
+            this.tabDebug.UseVisualStyleBackColor = true;
+            // 
+            // debugOverrides
+            // 
+            this.debugOverrides.Location = new System.Drawing.Point(8, 13);
+            this.debugOverrides.Name = "debugOverrides";
+            this.debugOverrides.Size = new System.Drawing.Size(318, 222);
+            this.debugOverrides.TabIndex = 0;
             // 
             // createUserButton
             // 
@@ -442,6 +463,7 @@
             this.tabOrders.ResumeLayout(false);
             this.tabCalibration.ResumeLayout(false);
             this.tabReports.ResumeLayout(false);
+            this.tabDebug.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -490,6 +512,8 @@
         private Order orderControl;
         private System.Windows.Forms.BindingSource bindingSource1;
         private Alarms alarms1;
+        private System.Windows.Forms.TabPage tabDebug;
+        private DebugOverrides debugOverrides;
     }
 }
 

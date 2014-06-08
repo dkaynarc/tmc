@@ -16,6 +16,10 @@ namespace Tmc.Scada.App
         public Alarms()
         {
             InitializeComponent();
+        }
+
+        public void Initialize()
+        {
             this.UpdateAlarms();
         }
 

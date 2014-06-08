@@ -21,8 +21,7 @@ namespace Tmc.Common
         void EmergencyStop();
         [OperationContract]
         IDictionary<string, HardwareStatus> GetLastHardwareStatuses();
-
         [OperationContract]
-        void SetSpeed(int speed);
+        IList<string> GetAllHardwareNames();
     }
 }
