@@ -7,6 +7,7 @@ using Tmc.Scada.Core.Sequencing;
 using Tmc.Scada.Core.Reporting;
 using System.ServiceModel;
 using TmcData;
+using Tmc.Common;
 
 namespace Tmc.Scada.Core
 {
@@ -122,6 +123,12 @@ namespace Tmc.Scada.Core
         public void SetOperatingMode(OperationMode mode)
         {
             this._sequencer.Mode = mode;
+        }
+
+        public IDictionary<string, HardwareStatus> GetLastHardwareStatuses()
+        {
+            var statuses = this.HardwareMonitor.PreviousHardwareStatuses;
+            return statuses;
         }
     }
 }

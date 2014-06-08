@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ServiceModel;
 
-namespace Tmc.Scada.Core
+namespace Tmc.Common
 {
-    [ServiceContract(Namespace = "http://Microsoft.ServiceModel.Samples")] // test without the namespace, seems unneccesary.
     public interface IScada
     {
         [OperationContract]
@@ -20,5 +19,7 @@ namespace Tmc.Scada.Core
         void Resume();
         [OperationContract]
         void EmergencyStop();
+        [OperationContract]
+        IDictionary<string, HardwareStatus> GetLastHardwareStatuses();
     }
 }

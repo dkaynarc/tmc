@@ -14,7 +14,7 @@ namespace Tmc.Scada.Core
     {
         public bool LoggingEnabled { get; set; }
         private List<IHardware> _hardware;
-        private List<HardwareStatus> _previoushardwareStatus;
+        public Dictionary<string, HardwareStatus> PreviousHardwareStatuses { get; set; }
         public event EventHandler<HardwareEventArgs> StatusChanged;
         private Timer _updateTimer;
 
@@ -23,7 +23,7 @@ namespace Tmc.Scada.Core
             _hardware = config.GetAllHardware();
             int updateTime = 1000;
 
-            _previoushardwareStatus = new List<HardwareStatus>();
+            PreviousHardwareStatuses = new Dictionary<string, HardwareStatus>();
 
             if (!Int32.TryParse(ConfigurationManager.AppSettings["HardwareMonitorUpdateRateMsec"], out updateTime))
             {
@@ -35,7 +35,7 @@ namespace Tmc.Scada.Core
 
             foreach (var hw in _hardware)
             {
-                _previoushardwareStatus.Add(hw.GetStatus());
+                PreviousHardwareStatuses.Add(hw.Name, hw.GetStatus());
             }
         }
 
@@ -51,19 +51,20 @@ namespace Tmc.Scada.Core
 
         private void Update()
         {
-            for (int i = 0; i < _hardware.Count; i++)
+            foreach (var hw in _hardware)
             {
-                if ((_hardware[i].GetStatus() == HardwareStatus.Failed))
+                var status = hw.GetStatus();
+                if ((status == HardwareStatus.Failed))
                 {
-                    Logger.Instance.Write(new LogEntry(_hardware[i].Name + " has failed",
-               LogType.Error));
+                    Logger.Instance.Write(new LogEntry(hw.Name + " has failed",
+                                            LogType.Error));
                 }
 
-                if (_hardware[i].GetStatus() != _previoushardwareStatus[i])
+                if (status != PreviousHardwareStatuses[hw.Name])
                 {
-                    OnStatusChanged(new HardwareEventArgs(_hardware[i]));
+                    OnStatusChanged(new HardwareEventArgs(hw));
                 }
-                _previoushardwareStatus[i] = _hardware[i].GetStatus();
+                PreviousHardwareStatuses[hw.Name] = status;
             }
         }
 
