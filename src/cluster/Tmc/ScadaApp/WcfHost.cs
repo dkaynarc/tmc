@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ServiceModel.Description;
 using System.ServiceModel;
-using Tmc.Scada.Core;
 using System.Configuration;
+using Tmc.Common;
 
 namespace Tmc.Scada.App
 {
