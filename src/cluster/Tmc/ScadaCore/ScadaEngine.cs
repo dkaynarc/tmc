@@ -112,8 +112,9 @@ namespace Tmc.Scada.Core
             return "";
         }
 
-        public void SetOperatingMode(string mode)
+        public void SetOperatingMode(OperationMode mode)
         {
+            this._sequencer.Mode = mode;
         }
     }
 }
