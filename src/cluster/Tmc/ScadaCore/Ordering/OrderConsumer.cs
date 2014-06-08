@@ -73,7 +73,7 @@ namespace Tmc.Scada.Core
         {
             _assemblingOrder = _pendingQueue.Dequeue();
             _assemblingOrder.Status = OrderStatus.Assembling;
-            TmcRepository.UpdateOrderStatus(_assemblingOrder.Id, (int)OrderStatus.Assembling);
+            //TmcRepository.UpdateOrderStatus(_assemblingOrder.Id, (int)OrderStatus.Assembling);
             return _assemblingOrder;
         }
 
@@ -107,7 +107,7 @@ namespace Tmc.Scada.Core
                 if (!this._pendingQueue.Contains(order))
                 {
                     order.Status = OrderStatus.Pending;
-                    TmcRepository.UpdateOrderStatus(order.Id, (int)OrderStatus.Pending);
+                    TmcRepository.UpdateOrderStatus(order.Id, (int)order.Status);
                     this._pendingQueue.Enqueue(order);
                 }
             }
