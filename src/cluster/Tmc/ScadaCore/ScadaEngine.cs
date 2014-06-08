@@ -19,7 +19,7 @@ namespace Tmc.Scada.Core
         public OrderConsumer OrderConsumer { get; set; }
         public TabletMagazine TabletMagazine { get; set; }
         public HardwareMonitor HardwareMonitor { get; set; }
-        //private EnvironmentMonitor _environmentMonitor;
+        //private EnvironmentMonitor EnvironmentMonitor{ get; set; }
         private ISequencer _sequencer;
 
         public ScadaEngine()
@@ -45,12 +45,20 @@ namespace Tmc.Scada.Core
                 Logger.Instance.Write(new LogEntry(outer, LogType.Error));
                 return;
             }
-            //this._environmentMonitor = new EnvironmentMonitor(this.ClusterConfig);
+            //this.EnvironementMonitor = new EnvironementMonitor(this.ClusterConfig);
             this.HardwareMonitor = new HardwareMonitor(this.ClusterConfig);
             this.TabletMagazine = new TabletMagazine();
             this.OrderConsumer = new OrderConsumer();
             this._sequencer = new FSMSequencer(this);
+            this.StartAllTimers();
             this.Initialise();
+        }
+
+        private void StartAllTimers()
+        {
+            this.OrderConsumer.Start();
+            this.HardwareMonitor.Start();
+            //this.EnviromentMonitor.Start();
         }
 
         public void Initialise()
@@ -61,7 +69,6 @@ namespace Tmc.Scada.Core
 
         public void Start()
         {
-            //_environmentMonitor.Log(); // Should be run on a separate thread
             if (_sequencer.TransitionLogger.CurrentState == State.Shutdown || 
                 _sequencer.TransitionLogger.CurrentState == State.Startup)
             {
@@ -122,6 +129,11 @@ namespace Tmc.Scada.Core
         {
             var statuses = this.HardwareMonitor.PreviousHardwareStatuses;
             return statuses;
+        }
+
+        public IList<string> GetAllHardwareNames()
+        {
+            return this.ClusterConfig.GetAllHardware().Select(x => x.Name).ToList();
         }
     }
 }
