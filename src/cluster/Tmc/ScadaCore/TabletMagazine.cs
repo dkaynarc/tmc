@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Tmc.Common;
@@ -22,7 +23,11 @@ namespace Tmc.Scada.Core
             }
             set
             {
-                this._color = value;
+                if (value != this._color)
+                {
+                    this._color = value;
+                    NotifyPropertyChanged();
+                }
             }
         }
         public int TabletCount
@@ -33,9 +38,15 @@ namespace Tmc.Scada.Core
             }
             set
             {
-                this._tabletCount = value;
+                if (value != this._tabletCount)
+                {
+                    this._tabletCount = value;
+                    NotifyPropertyChanged();
+                }
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public Slot(TabletColors color = TabletColors.Unknown, int count = 0)
         {
@@ -43,7 +54,13 @@ namespace Tmc.Scada.Core
             this.TabletCount = count;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
     public class TabletMagazine
     {

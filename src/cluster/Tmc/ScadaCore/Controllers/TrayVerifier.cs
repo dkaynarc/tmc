@@ -54,18 +54,18 @@ namespace Tmc.Scada.Core
         {
             var task = new Task(() =>
                 {
-                    var detected = _trayDetector.GetTabletsInTray();
-                    if (mode == VerificationMode.Tray)
+                    Tray<Tablet> detectedTray;
+                    bool isTrayVisible = _trayDetector.GetTabletsInTray(out detectedTray);
+                    VerificationResult verResult = VerificationResult.Invalid;
+                    if (isTrayVisible)
                     {
-                        // If we're detecting the tray (don't care about tablets) we check against an empty tray
-                        tray = new Tray<Tablet>();
+                        verResult = DetermineValidity(tray, detectedTray);
                     }
-                    var isValid = DetermineValidity(tray, detected);
                     IsRunning = false;
                     OnCompleted(new OnVerificationCompleteEventArgs
                         {
-                            DetectedTray = detected,
-                            VerificationResult = isValid,
+                            DetectedTray = detectedTray,
+                            VerificationResult = verResult,
                             VerificationMode = mode,
                             OperationStatus = ControllerOperationStatus.Succeeded
                         });
