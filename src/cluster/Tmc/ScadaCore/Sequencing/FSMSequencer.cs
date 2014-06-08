@@ -435,6 +435,7 @@ namespace Tmc.Scada.Core.Sequencing
                 })
                 .On(Trigger.Completed)
                     .Goto(State.Idle)
+                    //.Goto(State.LoadingTray) //- for testing only
                 .On(Trigger.Stop)
                     .Goto(State.Stopped)
                 .On(Trigger.Shutdown)
