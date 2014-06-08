@@ -19,6 +19,7 @@ using APIServerWeb.Authentication;
 using System.Web.Security;
 using Tmc.Common;
 
+
 namespace APIServerWeb
 {
     public class ServerController : ApiController
@@ -365,17 +366,18 @@ namespace APIServerWeb
         public HttpResponseMessage GetMachineryStatus()
         {
            IDictionary<string, HardwareStatus> statuses = ScadaConnectionManager.ScadaClient.GetLastHardwareStatuses();
-           String key1 = "conveyor";
+           
+            
+            String key1 = "conveyor";
 
            List<MachineParcel> test = new List<MachineParcel> 
            {
-               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[""]) },
-               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[""]) },
-               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[""]) },
-               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[""]) },
-               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[""]) },
-               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[""]) }
-           
+               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[key1]) },
+               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[key1]) },
+               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[key1]) },
+               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[key1]) },
+               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[key1]) },
+               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[key1]) }      
            };
 
 
