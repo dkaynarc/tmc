@@ -8,6 +8,7 @@ namespace Tmc.Scada.Core.Sequencing
 {
     public interface ISequencer
     {
+        OperationMode Mode { get; set; }
         string Name { get; set; }
         void StartSequencing();
         void StopSequencing();

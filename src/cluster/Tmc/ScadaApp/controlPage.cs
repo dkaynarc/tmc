@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tmc.Scada.Core;
+using Tmc.Scada.Core.Sequencing;
 
 namespace Tmc.Scada.App
 {
@@ -18,6 +19,7 @@ namespace Tmc.Scada.App
         public controlPage()
         {
             InitializeComponent();
+            this.normalModeRadioButton.BackColor = Color.Green;
         }
 
         /// <summary>
@@ -83,16 +85,15 @@ namespace Tmc.Scada.App
         {
             if(normalModeRadioButton.Checked)
             {
-                //this.scadaEngine.SetOperatingMode("normal");
+                _scadaEngine.SetOperatingMode(OperationMode.Normal);
                 
                 normalModeRadioButton.BackColor = Color.Green;
                 sortingModeRadioButton.BackColor = Color.White;
                 producingModeRadioButton.BackColor = Color.White;
-
             }
             else if(sortingModeRadioButton.Checked)
             {
-                //this.scadaEngine.SetOperatingMode("sorting");
+                _scadaEngine.SetOperatingMode(OperationMode.SortOnly);
 
                 sortingModeRadioButton.BackColor = Color.Green;
                 normalModeRadioButton.BackColor = Color.White;
@@ -100,7 +101,7 @@ namespace Tmc.Scada.App
             }
             else if(producingModeRadioButton.Checked)
             {
-                //this.scadaEngine.SetOperatingMode("producing");
+                _scadaEngine.SetOperatingMode(OperationMode.AssembleOnly);
 
                 producingModeRadioButton.BackColor = Color.Green;
                 sortingModeRadioButton.BackColor = Color.White;
