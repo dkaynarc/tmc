@@ -69,12 +69,6 @@
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaApp">
-      <HintPath>..\..\..\..\..\Source\Repos\tmc\src\cluster\Tmc\APIServerWeb\APIServerWeb\bin\ScadaApp.exe</HintPath>
-    </Reference>
-    <Reference Include="ScadaCore">
-      <HintPath>..\..\..\..\..\Source\Repos\tmc\src\cluster\Tmc\APIServerWeb\APIServerWeb\bin\ScadaCore.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -215,6 +209,16 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScadaApp\ScadaApp.csproj">
+      <Project>{2c16f6e8-d131-4cf1-80db-d460e1d605c2}</Project>
+      <Name>ScadaApp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScadaCore\ScadaCore.csproj">
+      <Project>{5b8926dd-dd25-4531-ac23-2b31cb9774d4}</Project>
+      <Name>ScadaCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
