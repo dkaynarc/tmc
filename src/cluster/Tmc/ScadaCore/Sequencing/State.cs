@@ -13,6 +13,7 @@ namespace Tmc.Scada.Core.Sequencing
         LoadingTray,
         AssemblyConveyorMovingForward,
         VerifyingTray,
+        VerifyingProduct,
         Assembling,
         AssemblyConveyorMovingBackward,
         PlacingTrayInBuffer,

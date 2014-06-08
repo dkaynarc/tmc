@@ -218,14 +218,12 @@ namespace Tmc.Scada.Core.Sequencing
                     _trayVerifier.Begin(new TrayVerifierParams()
                     {
                         TraySpecification = trayToVerify,
-                        VerificationMode = VerificationMode.Product,
+                        VerificationMode = VerificationMode.Tray,
                         Sender = this
                     });
                 })
-                .On(Trigger.Valid).If<VerificationMode>((mode) => mode == VerificationMode.Tray)
+                .On(Trigger.Valid)
                     .Goto(State.AssemblyConveyorMovingForward)
-                .On(Trigger.Valid).If<VerificationMode>((mode) => mode == VerificationMode.Product)
-                    .Goto(State.AssemblyConveyorMovingBackward)
                 .On(Trigger.Invalid)
                     .Goto(State.AssemblyConveyorMovingBackward)
                 .On(Trigger.Stop)
@@ -265,9 +263,30 @@ namespace Tmc.Scada.Core.Sequencing
                 })
                 .On(Trigger.Completed)
                     .If(() => _conveyorController.CanMoveBackward(ConveyorType.Assembly))
-                        .Goto(State.VerifyingTray)
+                        .Goto(State.VerifyingProduct)
                     .Otherwise()
                         .Goto(State.PlacingTrayInBuffer)
+                .On(Trigger.Stop)
+                    .Goto(State.Stopped)
+                .On(Trigger.Shutdown)
+                    .Goto(State.Shutdown);
+
+            _fsm.In(State.VerifyingProduct)
+                .ExecuteOnEntry(() =>
+                {
+                    Tray<Tablet> trayToVerify = _assembler.LastOrderTray;
+                    Logger.Instance.Write("[Sequencer] Verifying product");
+                    _trayVerifier.Begin(new TrayVerifierParams()
+                    {
+                        TraySpecification = trayToVerify,
+                        VerificationMode = VerificationMode.Product,
+                        Sender = this
+                    });
+                })
+                .On(Trigger.Valid)
+                    .Goto(State.AssemblyConveyorMovingBackward)
+                .On(Trigger.Invalid)
+                    .Goto(State.AssemblyConveyorMovingBackward)
                 .On(Trigger.Stop)
                     .Goto(State.Stopped)
                 .On(Trigger.Shutdown)
