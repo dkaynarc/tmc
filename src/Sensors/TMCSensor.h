@@ -37,6 +37,7 @@ class DustSensor
 		int isComplete;
 		DustSensor();
 		std::string getData();
+		void obtainData();
 		//std::string getConcentration();
 	private:
 		int pulseIn(int pin, int level, int timeout);

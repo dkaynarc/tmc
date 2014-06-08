@@ -50,6 +50,7 @@ namespace Tmc.Sensors
             {
                 _hardwareStatus = HardwareStatus.Failed;
                 throw new Exception("Error: Unable to shutdown TCP client: " + e);
+
             }
         }
         /// <summary>
@@ -75,7 +76,9 @@ namespace Tmc.Sensors
                 }
                 else
                 {
+                    _hardwareStatus = HardwareStatus.Failed;
                     throw new Exception("Error: Portname is not an integer on initialise");
+                    
                 }
                 _networkStream = _tcpClient.GetStream();
                 _streamWriter = new StreamWriter(_networkStream);
@@ -86,6 +89,7 @@ namespace Tmc.Sensors
             {
                 _hardwareStatus = HardwareStatus.Failed;
                 throw new Exception("Error: Unable to initialise TCP client: " + ex);
+
             }
         }
 
@@ -109,7 +113,9 @@ namespace Tmc.Sensors
             }
             else
             {
+                _hardwareStatus = HardwareStatus.Failed;
                 throw new InvalidOperationException("Error: No sensor channel passed to sensors");
+                
             }
 
             if (parameters.TryGetValue("IPAddress", out s))
@@ -118,7 +124,9 @@ namespace Tmc.Sensors
             }
             else
             {
+                _hardwareStatus = HardwareStatus.Failed;
                 throw new InvalidOperationException("Error: No connection IP address passed to sensors");
+                
             }
 
             if (parameters.TryGetValue("ConnectionPort", out s))
@@ -127,7 +135,9 @@ namespace Tmc.Sensors
             }
             else
             {
+                _hardwareStatus = HardwareStatus.Failed;
                 throw new InvalidOperationException("Error: No connection Port number passed to sensors");
+                
             }
             
         }
@@ -152,16 +162,28 @@ namespace Tmc.Sensors
                 if (result != null)                                 
                 {
                     float number;
-                    if (Single.TryParse(result, out number))
+                    if (Single.TryParse(result, out number) )
                     {
-                        data = number; 
+
+                        data = number;
+                        _hardwareStatus = HardwareStatus.Operational;
+
+                        
                     }
                     else
                     {
+                        _hardwareStatus = HardwareStatus.Failed;
                         throw new Exception("Error: The result is not a float");
+                        
                     }
-
+                    
                     _hardwareStatus = HardwareStatus.Operational;
+
+                    if (data <= 0.63)
+                    {
+                        _hardwareStatus = HardwareStatus.Offline;
+                        
+                    }
                     return data;
                 }
                 else
@@ -175,6 +197,7 @@ namespace Tmc.Sensors
             catch (Exception e)
             {
                 Console.WriteLine("Error: Exception in getting data:" + e);
+                _hardwareStatus = HardwareStatus.Failed;
                 return data;
             }
 

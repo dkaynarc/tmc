@@ -2,11 +2,20 @@
 
 
 HumiditySensor::HumiditySensor() {humidity = 0;}
-DustSensor::DustSensor() {concentration = 0;}
+DustSensor::DustSensor() {concentration = 1;}
 AmbienceSensor::AmbienceSensor() {};
 SoundSensor::SoundSensor() {};
 TemperatureSensor::TemperatureSensor() {};
 
+
+/**
+ *  \brief Take measurement of the humidity of environment
+ *  
+ *  \return String of the measured relative humidity
+ *  
+ *  \details 	This function will attempt to measure the humidity and return in string format.
+ *  			The measurement unit is in percentage, from 0 up to 100 percentage.
+ */
 std::string HumiditySensor::getData()
 {
 	//float humidity = 50;
@@ -26,7 +35,39 @@ std::string HumiditySensor::getData()
 	return dataString;
 }
 
+/**
+ *  \brief Attempt to return the latest result of the dust concentration of environment.
+ *  
+ *  \return String of the measured dust concentration.
+ *  
+ *  \details This function will attempt to retrieve the latest measured result and return it in string format.
+ */
+
 std::string DustSensor::getData()
+{
+	std::string dataString;
+	std::stringstream ss;
+	
+	if (concentration <= 0.62)
+		concentration = -1;
+		
+	ss << concentration;
+	ss >> dataString;
+
+	return dataString;
+}
+
+/**
+ *  \brief Take the measurement of the dust concentration of the environment.
+ *  
+ *  \return No return value.
+ *  
+ *  \details	This function will constantly measure the dust concentration of the environment
+ *  			and store it to the "concentration" buffer. The measurement unit is in number of
+ *  			particles in cubic meter.
+ */
+
+void DustSensor::obtainData()
 {
 	//wiringPiSetup();
 	int pin = 0; // GPIO pin 17 (Wiring Pi #0)
@@ -35,7 +76,7 @@ std::string DustSensor::getData()
 	unsigned long sampletime_ms = 15000;
 	unsigned long lowpulseoccupancy = 0;
 	float ratio = 0;
-	float concentration = 0;
+	//float concentration = 0;
 	starttime = millis();
 	//std::cout<<"Start time: "<<starttime << std::endl;
 	pinMode(0,INPUT);
@@ -54,21 +95,29 @@ std::string DustSensor::getData()
 			//cout <<  lowpulseoccupancy << endl;
 			//cout <<  ratio << endl;
 			//std::cout <<  concentration << std::endl;
-			std::string dataString;
-			std::stringstream ss;
+			// std::string dataString;
+			// std::stringstream ss;
 			
-			ss << concentration;
-			ss >> dataString;
+			// ss << concentration;
+			// ss >> dataString;
 	
-			return dataString;
+			// return dataString;
 			//break;
-			//lowpulseoccupancy = 0;
-			//starttime = millis();
+			lowpulseoccupancy = 0;
+			starttime = millis();
 		}	
 	}
 	//return 0;
 }
-
+/**
+ *  \brief Take the measurement of the light intensity of the environment.
+ *  
+ *  \param [in] a2d Object of ADC configuration setting.
+ *  \return String of the light intensity of the environment.
+ *  
+ *  \details 	This function will take the measurement of the light intensity of environment. The measurement unit
+ *  			is in luminosity.
+ */
 std::string AmbienceSensor::getData(mcp3302 a2d) 
 {
     //mcp3302 a2d("/dev/spidev0.0", SPI_MODE_0, 1250000, 8);
@@ -105,6 +154,15 @@ std::string AmbienceSensor::getData(mcp3302 a2d)
     
 }
 
+/**
+ *  \brief Take the measurement of the sound intensity of environment.
+ *  
+ *  \param [in] a2d Object of ADC configuration setting.
+ *  \return The sound intensity in string format. The measurement unit is in decibel.
+ *  
+ *  \details This function will attempt to take the measurement of the sound intensity of environment.
+ */
+
 std::string SoundSensor::getData(mcp3302 a2d)
 {
 	int value = obtainData(a2d);
@@ -122,6 +180,15 @@ std::string SoundSensor::getData(mcp3302 a2d)
 	return dataString;
 }
 
+/**
+ *  \brief Take the measurement of the temperature of environment.
+ *  
+ *  \param [in] i2c_fd I2C file descriptor to the TMP102.
+ *  \return String of temperature of environment. The measurement is in Celsius (*C)
+ *  
+ *  \details The function will take the measurement of the temperature of environment.
+ */
+
 std::string TemperatureSensor::getData(int i2c_fd)
 {
 	//int i2c_fd = wiringPiI2CSetup(I2C_TEMP_ADDRESS);
@@ -134,6 +201,20 @@ std::string TemperatureSensor::getData(int i2c_fd)
 	
 	return dataString;
 }
+
+/**
+ *  \brief Reads a pulse (either HIGH or LOW) on a pin
+ *  
+ *  \param [in] pin Pin number on which you want to read the pulse.
+ *  \param [in] level Type of pulse to read: either HIGH or LOW.
+ *  \param [in] timeout Number of microseconds to wait for the pulse to start.
+ *  \return the length of the pulse (in microseconds) or 0 if no pulse started before the time-out.
+ *  
+ *  \details 	Reads a pulse (either HIGH or LOW) on a pin. For example, if value is HIGH, pulseIn() 
+ *  			waits for the pin to go HIGH, starts timing, then waits for the pin to go LOW and stops timing. 
+ *  			Returns the length of the pulse in microseconds. Gives up and returns 0 if no pulse starts within 
+ *  			a specified time out.
+ */
 
 int DustSensor::pulseIn(int pin, int level, int timeout)
 {
@@ -182,6 +263,14 @@ int DustSensor::pulseIn(int pin, int level, int timeout)
 
    return micros;
 }
+
+/**
+ *  \brief Take the measurement of humidity in environment.
+ *  
+ *  \return No return value.
+ *  
+ *  \details This function will take the measurement of humidity.
+ */
 
 void HumiditySensor::obtainData()
 {
@@ -239,12 +328,21 @@ void HumiditySensor::obtainData()
 			humidity = humidity_prev;
 	}
 		
-	else
-		return;
+	// else
+		// return;
 	
 	//	printf("Invalid Data!!\n");
 }
 
+
+/**
+ *  \brief Take the measurement of sound intensity.
+ *  
+ *  \param [in] a2d Object of ADC configuration setting.
+ *  \return Raw measured result of sound intensity of environment.
+ *  
+ *  \details This function will take attempt to take the measurement of the sound intensity of environment.
+ */
 int SoundSensor::obtainData(mcp3302 a2d) 
 {
     //mcp3302 a2d("/dev/spidev0.0", SPI_MODE_0, 1250000, 8);

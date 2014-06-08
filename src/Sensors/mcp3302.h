@@ -13,7 +13,8 @@
 #include <iostream>
  
  
-class mcp3302{
+class mcp3302
+{
  
 public:
     mcp3302();
@@ -22,10 +23,10 @@ public:
     int spiWriteRead( unsigned char *data, int length);
      
 //private:
-    unsigned char mode;
-    unsigned char bitsPerWord;
-    unsigned int speed;
-    int spifd;
+    unsigned char mode;				// SPI operational mode (CPOL=0, CPHA=0).
+    unsigned char bitsPerWord;		// Define the command word size.
+    unsigned int speed;				// The transmission speed.
+    int spifd;						// File descriptor.
      
     int spiOpen(std::string devspi);
     int spiClose();

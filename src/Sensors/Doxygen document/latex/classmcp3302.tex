@@ -1,0 +1,94 @@
+\hypertarget{classmcp3302}{\section{mcp3302 Class Reference}
+\label{classmcp3302}\index{mcp3302@{mcp3302}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classmcp3302_a52dca1d23544e7d70a796ecefbf5aaf2}{{\bfseries mcp3302} (std\+::string devspi, unsigned char spi\+Mode, unsigned int spi\+Speed, unsigned char spibits\+Per\+Word)}\label{classmcp3302_a52dca1d23544e7d70a796ecefbf5aaf2}
+
+\item 
+int \hyperlink{classmcp3302_a86fc18dbe01edaccd613eb707d66b7bc}{spi\+Write\+Read} (unsigned char $\ast$data, int length)
+\begin{DoxyCompactList}\small\item\em Send command to M\+C\+P3302 over S\+P\+I channel. \end{DoxyCompactList}\item 
+int \hyperlink{classmcp3302_a70cbe817505add73c96fc7e8d54e263d}{spi\+Open} (std\+::string devspi)
+\begin{DoxyCompactList}\small\item\em Initiate the the M\+C\+P3302 on S\+P\+I. \end{DoxyCompactList}\item 
+int \hyperlink{classmcp3302_ae543c5d2a6da21893efb140f30bd1c2d}{spi\+Close} ()
+\begin{DoxyCompactList}\small\item\em Close the M\+C\+P3302 from S\+P\+I. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classmcp3302_a00ca968368680d58adb31188c3016228}{unsigned char {\bfseries mode}}\label{classmcp3302_a00ca968368680d58adb31188c3016228}
+
+\item 
+\hypertarget{classmcp3302_adc497ea64ef1ebde0e5204e893fcd205}{unsigned char {\bfseries bits\+Per\+Word}}\label{classmcp3302_adc497ea64ef1ebde0e5204e893fcd205}
+
+\item 
+\hypertarget{classmcp3302_a3a4f3ccbd360eadb941fb3a479beab39}{unsigned int {\bfseries speed}}\label{classmcp3302_a3a4f3ccbd360eadb941fb3a479beab39}
+
+\item 
+\hypertarget{classmcp3302_a2ac2fc78502a1530053b29c82bbd92a5}{int {\bfseries spifd}}\label{classmcp3302_a2ac2fc78502a1530053b29c82bbd92a5}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classmcp3302_ae543c5d2a6da21893efb140f30bd1c2d}{\index{mcp3302@{mcp3302}!spi\+Close@{spi\+Close}}
+\index{spi\+Close@{spi\+Close}!mcp3302@{mcp3302}}
+\subsubsection[{spi\+Close}]{\setlength{\rightskip}{0pt plus 5cm}int mcp3302\+::spi\+Close (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classmcp3302_ae543c5d2a6da21893efb140f30bd1c2d}
+
+
+Close the M\+C\+P3302 from S\+P\+I. 
+
+\begin{DoxyReturn}{Returns}
+0 if the S\+P\+I is closed successfully.
+\end{DoxyReturn}
+This function will close the M\+C\+P3302 device from S\+P\+I channel. \hypertarget{classmcp3302_a70cbe817505add73c96fc7e8d54e263d}{\index{mcp3302@{mcp3302}!spi\+Open@{spi\+Open}}
+\index{spi\+Open@{spi\+Open}!mcp3302@{mcp3302}}
+\subsubsection[{spi\+Open}]{\setlength{\rightskip}{0pt plus 5cm}int mcp3302\+::spi\+Open (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{devspi}
+\end{DoxyParamCaption}
+)}}\label{classmcp3302_a70cbe817505add73c96fc7e8d54e263d}
+
+
+Initiate the the M\+C\+P3302 on S\+P\+I. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em devspi} & \+: A string of the directory to S\+P\+I device \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+File descriptor that indicate the S\+P\+I device.
+\end{DoxyReturn}
+This function does the initial configuration of the M\+C\+P3302 by setting up the S\+P\+I mode, W/\+R mode and speed and size. \hypertarget{classmcp3302_a86fc18dbe01edaccd613eb707d66b7bc}{\index{mcp3302@{mcp3302}!spi\+Write\+Read@{spi\+Write\+Read}}
+\index{spi\+Write\+Read@{spi\+Write\+Read}!mcp3302@{mcp3302}}
+\subsubsection[{spi\+Write\+Read}]{\setlength{\rightskip}{0pt plus 5cm}int mcp3302\+::spi\+Write\+Read (
+\begin{DoxyParamCaption}
+\item[{unsigned char $\ast$}]{data, }
+\item[{int}]{length}
+\end{DoxyParamCaption}
+)}}\label{classmcp3302_a86fc18dbe01edaccd613eb707d66b7bc}
+
+
+Send command to M\+C\+P3302 over S\+P\+I channel. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em data} & data to be transfer to M\+C\+P3302 for A\+D\+C conversion. \\
+\hline
+\mbox{\tt in}  & {\em length} & number of byte in transmitted data size. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if M\+C\+P3302 successfully received the command, otherwise 1.
+\end{DoxyReturn}
+This function will take the command and sample data and transmit it to M\+C\+P3302 over S\+P\+I channel to perform A\+D\+C conversion. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Jack/\+Desktop/\+T\+M\+C Sensors/mcp3302.\+h\item 
+C\+:/\+Users/\+Jack/\+Desktop/\+T\+M\+C Sensors/\hyperlink{mcp3302_8cpp}{mcp3302.\+cpp}\end{DoxyCompactItemize}

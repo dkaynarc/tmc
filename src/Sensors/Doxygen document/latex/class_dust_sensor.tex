@@ -1,0 +1,56 @@
+\hypertarget{class_dust_sensor}{\section{Dust\+Sensor Class Reference}
+\label{class_dust_sensor}\index{Dust\+Sensor@{Dust\+Sensor}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \hyperlink{class_dust_sensor_a58f2a6d24f912375333ee3274662ff66}{get\+Data} ()
+\begin{DoxyCompactList}\small\item\em Attempt to return the latest result of the dust concentration of environment. \end{DoxyCompactList}\item 
+void \hyperlink{class_dust_sensor_aaf7148c165310d26b6208f6ebeb9daab}{obtain\+Data} ()
+\begin{DoxyCompactList}\small\item\em Take the measurement of the dust concentration of the environment. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_dust_sensor_abf07bc498d021d1f65d213988a4cab94}{float {\bfseries concentration}}\label{class_dust_sensor_abf07bc498d021d1f65d213988a4cab94}
+
+\item 
+\hypertarget{class_dust_sensor_a26b108d3a1260bfef0dad5dbd5d31fd0}{int {\bfseries is\+Complete}}\label{class_dust_sensor_a26b108d3a1260bfef0dad5dbd5d31fd0}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_dust_sensor_a58f2a6d24f912375333ee3274662ff66}{\index{Dust\+Sensor@{Dust\+Sensor}!get\+Data@{get\+Data}}
+\index{get\+Data@{get\+Data}!Dust\+Sensor@{Dust\+Sensor}}
+\subsubsection[{get\+Data}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string Dust\+Sensor\+::get\+Data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_dust_sensor_a58f2a6d24f912375333ee3274662ff66}
+
+
+Attempt to return the latest result of the dust concentration of environment. 
+
+\begin{DoxyReturn}{Returns}
+String of the measured dust concentration.
+\end{DoxyReturn}
+This function will attempt to retrieve the latest measured result and return it in string format. \hypertarget{class_dust_sensor_aaf7148c165310d26b6208f6ebeb9daab}{\index{Dust\+Sensor@{Dust\+Sensor}!obtain\+Data@{obtain\+Data}}
+\index{obtain\+Data@{obtain\+Data}!Dust\+Sensor@{Dust\+Sensor}}
+\subsubsection[{obtain\+Data}]{\setlength{\rightskip}{0pt plus 5cm}void Dust\+Sensor\+::obtain\+Data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_dust_sensor_aaf7148c165310d26b6208f6ebeb9daab}
+
+
+Take the measurement of the dust concentration of the environment. 
+
+\begin{DoxyReturn}{Returns}
+No return value.
+\end{DoxyReturn}
+This function will constantly measure the dust concentration of the environment and store it to the \char`\"{}concentration\char`\"{} buffer. The measurement unit is in number of particles in cubic meter. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Jack/\+Desktop/\+T\+M\+C Sensors/T\+M\+C\+Sensor.\+h\item 
+C\+:/\+Users/\+Jack/\+Desktop/\+T\+M\+C Sensors/T\+M\+C\+Sensor.\+cpp\end{DoxyCompactItemize}
