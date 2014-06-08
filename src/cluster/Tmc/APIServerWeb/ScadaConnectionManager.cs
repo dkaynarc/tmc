@@ -5,7 +5,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-using Tmc.Scada.Core;
+using Tmc.Common;
 
 namespace APIServerWeb
 {

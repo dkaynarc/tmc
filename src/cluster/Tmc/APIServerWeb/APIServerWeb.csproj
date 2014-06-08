@@ -202,13 +202,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScadaApp\ScadaApp.csproj">
-      <Project>{2c16f6e8-d131-4cf1-80db-d460e1d605c2}</Project>
-      <Name>ScadaApp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ScadaCore\ScadaCore.csproj">
-      <Project>{5b8926dd-dd25-4531-ac23-2b31cb9774d4}</Project>
-      <Name>ScadaCore</Name>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{8d9820ac-1f68-49ff-93ad-24591c94a178}</Project>
+      <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -229,7 +225,7 @@
           <IISUrl>http://localhost:17451/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>True</UseCustomServer>
-          <CustomServerUrl>http://192.168.1.100</CustomServerUrl>
+          <CustomServerUrl>http://localhost</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
