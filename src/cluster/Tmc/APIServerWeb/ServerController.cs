@@ -365,32 +365,41 @@ namespace APIServerWeb
         [HttpGet]
         public HttpResponseMessage GetMachineryStatus()
         {
-           IDictionary<string, HardwareStatus> statuses = ScadaConnectionManager.ScadaClient.GetLastHardwareStatuses();
-           
+            List<MachineParcel> machinery = new List<MachineParcel>();
+            try
+            {
+                IDictionary<string, HardwareStatus> statuses = ScadaConnectionManager.ScadaClient.GetLastHardwareStatuses();
+                List<string> machNames = (List<string>)ScadaConnectionManager.ScadaClient.GetAllHardwareNames();
+                
+
+                foreach (string name in machNames)
+                {
+                    machinery.Add(new MachineParcel { Name = name, Status = Convert.ToString(statuses[name]) });
+                }
+            }
+            catch (EndpointNotFoundException exc) 
+            {
+                machinery = new List<MachineParcel>
+                { 
+                  new MachineParcel{ Name = "SORTER", Status = OFF },
+                  new MachineParcel { Name = "ASSEMBLER", Status = OFF },
+                  new MachineParcel { Name = "LOADER", Status = OFF },
+                  new MachineParcel { Name = "PALLETISER", Status = OFF },
+                  new MachineParcel { Name = "CONVEYOR #1", Status = OFF },
+                  new MachineParcel { Name = "CONVEYOR #2", Status = OFF }
+                };
+            }
             
-            String key1 = "conveyor";
+           //List<MachineParcel> machinery = new List<MachineParcel>
+           //{ 
+           //  new MachineParcel{ Name = "SORTER", Status = ON },
+           //  new MachineParcel { Name = "ASSEMBLER", Status = ON },
+           //  new MachineParcel { Name = "LOADER", Status = ON },
+           //  new MachineParcel { Name = "PALLETISER", Status = OFF },
+           //  new MachineParcel { Name = "CONVEYOR #1", Status = OFF },
+           //  new MachineParcel { Name = "CONVEYOR #2", Status = OFF }
 
-           List<MachineParcel> test = new List<MachineParcel> 
-           {
-               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[key1]) },
-               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[key1]) },
-               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[key1]) },
-               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[key1]) },
-               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[key1]) },
-               new MachineParcel{ Name = key1, Status = Convert.ToString(statuses[key1]) }      
-           };
-
-
-            List<MachineParcel> machinery = new List<MachineParcel>
-           { 
-             new MachineParcel{ Name = "SORTER", Status = ON },
-             new MachineParcel { Name = "ASSEMBLER", Status = ON },
-             new MachineParcel { Name = "LOADER", Status = ON },
-             new MachineParcel { Name = "PALLETISER", Status = OFF },
-             new MachineParcel { Name = "CONVEYOR #1", Status = OFF },
-             new MachineParcel { Name = "CONVEYOR #2", Status = OFF }
-
-           };
+           //};
             return Request.CreateResponse(HttpStatusCode.OK, machinery);
         }
 
