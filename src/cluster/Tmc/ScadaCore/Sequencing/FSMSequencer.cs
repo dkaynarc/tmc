@@ -324,6 +324,7 @@ namespace Tmc.Scada.Core.Sequencing
                 .ExecuteOnEntry(() =>
                 {
                     _orderConsumer.CompleteOrder();
+                    _fsm.Fire(Trigger.Completed);
                 })
                 .On(Trigger.Completed)
                     .Goto(State.Idle)

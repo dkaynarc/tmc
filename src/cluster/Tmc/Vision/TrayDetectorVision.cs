@@ -47,8 +47,8 @@ namespace Tmc.Vision
             HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 55;
             HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 50;
             HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 79;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 70;//87;//74;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 118;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 75;//87;//74;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 152;
             HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 216;//229;//222;
 
             HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue = 0;//176;
@@ -61,7 +61,7 @@ namespace Tmc.Vision
             HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Hue = 0;
             HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Satuation = 0;
             HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Value = 230;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 97;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 166;
             HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 47;
             HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Value = 255;
 
@@ -70,7 +70,7 @@ namespace Tmc.Vision
             HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 95;//117;//69;
             HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 131;//126;
             HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 120;//124;//125;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 197;// 235;//226;// 214;//213;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 200;// 235;//226;// 214;//213;
 
             HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Hue = 177;//102;
             HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Satuation = 14;//15;
@@ -420,27 +420,27 @@ namespace Tmc.Vision
             if ((circle.Center.X < lineX[1]) && (circle.Center.Y < lineY[3]) &&
                 (circle.Center.X > lineX[0]) && (circle.Center.Y > lineY[2]))
             {//cell 0
-                return 8;
+                return 2;
             }
             else if ((circle.Center.X < lineX[1]) && (circle.Center.Y < lineY[2]) &&
                 (circle.Center.X > lineX[0]) && (circle.Center.Y > lineY[1]))
             {//cell 1
-                return 7;
+                return 3;
             }
             else if ((circle.Center.X < lineX[1]) && (circle.Center.Y < lineY[1]) &&
                 (circle.Center.X > lineX[0]) && (circle.Center.Y > lineY[0]))
             {//cell 2
-                return 6;
+                return 4;
             }
             else if ((circle.Center.X < lineX[2]) && (circle.Center.Y < lineY[3]) &&
                 (circle.Center.X > lineX[1]) && (circle.Center.Y > lineY[2]))
             {//cell 3
-                return 3;
+                return 1;
             }
             else if ((circle.Center.X < lineX[2]) && (circle.Center.Y < lineY[2]) &&
                 (circle.Center.X > lineX[1]) && (circle.Center.Y > lineY[1]))
             {//cell 4
-                return 4;
+                return 8;
             }
             else if ((circle.Center.X < lineX[2]) && (circle.Center.Y < lineY[1]) &&
                 (circle.Center.X > lineX[1]) && (circle.Center.Y > lineY[0]))
@@ -450,17 +450,17 @@ namespace Tmc.Vision
             else if ((circle.Center.X < lineX[3]) && (circle.Center.Y < lineY[3]) &&
                 (circle.Center.X > lineX[2]) && (circle.Center.Y > lineY[2]))
             {//cell 6
-                return 2;
+                return 0;
             }
             else if ((circle.Center.X < lineX[3]) && (circle.Center.Y < lineY[2]) &&
                 (circle.Center.X > lineX[2]) && (circle.Center.Y > lineY[1]))
             {//cell 7
-                return 1;
+                return 7;
             }
             else if ((circle.Center.X < lineX[3]) && (circle.Center.Y < lineY[1]) &&
                 (circle.Center.X > lineX[2]) && (circle.Center.Y > lineY[0]))
             {//cell 8
-                return 0;
+                return 6;
             }
             else
             {

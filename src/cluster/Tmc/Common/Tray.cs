@@ -12,7 +12,7 @@ namespace Tmc.Common
         // The middle cell is used to pick up the tray and therefore cannot be used
         // to hold tablets
         public const int MaxUsableCells = MaxCells - 1;
-        public const int MiddleCellIndex = 4;
+        public const int MiddleCellIndex = 8;
 
         public List<T> Cells { get; set; }
         public double Angle { get; set; }

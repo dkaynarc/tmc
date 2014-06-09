@@ -128,6 +128,7 @@ namespace Tmc.Scada.Core
                     else
                     {
                         var slotDepth = mag.GetSlotDepth(tablet.Color);
+                        mag.RemoveTablet(tablet.Color);
                         var slotIndex = mag.GetSlotIndex(tablet.Color);
                         Logger.Instance.Write(String.Format("[Assembler] Placing ({0}) tablet from slot {1} into slot {2}",
                             tablet.Color, slotIndex, i));
@@ -206,7 +207,7 @@ namespace Tmc.Scada.Core
             int totalTablets = 0;
             tabletCollection.ToList().ForEach(x => totalTablets += x.Value);
 
-            if (totalTablets > Tray<Tablet>.MaxUsableCells - 1)
+            if (totalTablets > Tray<Tablet>.MaxUsableCells)
             {
                 throw new Exception(String.Format("The number of tablets in the order exceeds number of usable tray cells ({0} > {1})",
                                         totalTablets, Tray<Tablet>.MaxUsableCells));
