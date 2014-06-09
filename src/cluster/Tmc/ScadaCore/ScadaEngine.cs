@@ -16,6 +16,7 @@ namespace Tmc.Scada.Core
     public class ScadaEngine : IScada
     {
         public string Name { get; set; }
+        public bool IsInitialized { get; private set; }
         public ClusterConfig ClusterConfig { get; set; }
         public OrderConsumer OrderConsumer { get; set; }
         public TabletMagazine TabletMagazine { get; set; }
@@ -25,35 +26,8 @@ namespace Tmc.Scada.Core
 
         public ScadaEngine()
         {
-            this.Create(@"./Configuration/ClusterConfig.xml");
         }
 
-        public ScadaEngine(string configFile)
-        {
-            this.Create(configFile);
-        }
-
-        private void Create(string configFile)
-        {
-            try
-            {
-                this.ClusterConfig = ClusterFactory.Instance.CreateCluster(configFile);
-            }
-            catch (Exception ex)
-            {
-                var outer = new Exception("Unable to initialise the cluster configuration", ex);
-
-                Logger.Instance.Write(new LogEntry(outer, LogType.Error));
-                return;
-            }
-            //this.EnvironementMonitor = new EnvironementMonitor(this.ClusterConfig);
-            this.HardwareMonitor = new HardwareMonitor(this.ClusterConfig);
-            this.TabletMagazine = new TabletMagazine();
-            this.OrderConsumer = new OrderConsumer();
-            this._sequencer = new FSMSequencer(this);
-            this.StartAllTimers();
-            this.Initialise();
-        }
 
         private void StartAllTimers()
         {
@@ -62,10 +36,20 @@ namespace Tmc.Scada.Core
             //this.EnviromentMonitor.Start();
         }
 
-        public void Initialise()
+        public bool Initialize()
         {
-            this._sequencer.StartSequencing();
-            Logger.Instance.Write(new LogEntry("TMC control system initialised", LogType.Message));
+            return this.Initialize(@"./Configuration/ClusterConfig.xml");
+        }
+
+        public bool Initialize(string configFile)
+        {
+            var success = this.Create(configFile);
+            if (success)
+            {
+                this.StartSequencing();
+            }
+            this.IsInitialized = success;
+            return success;
         }
 
         public void Start()
@@ -80,40 +64,52 @@ namespace Tmc.Scada.Core
 
         public void Stop()
         {
-            if ((_sequencer.TransitionLogger.CurrentState != State.Stopped) || (_sequencer.TransitionLogger.CurrentState != State.Shutdown))
+            if (this.IsInitialized)
             {
-                this._sequencer.FireStopTrigger();
-                Logger.Instance.Write(new LogEntry("Cluster operation stopped", LogType.Message));
+                if ((_sequencer.TransitionLogger.CurrentState != State.Stopped) || (_sequencer.TransitionLogger.CurrentState != State.Shutdown))
+                {
+                    this._sequencer.FireStopTrigger();
+                    Logger.Instance.Write(new LogEntry("Cluster operation stopped", LogType.Message));
+                }
             }
         }
 
         public void Resume()
         {
-            if (_sequencer.TransitionLogger.CurrentState == State.Stopped)
+            if (this.IsInitialized)
             {
-                this._sequencer.FireResumeTrigger();
-                Logger.Instance.Write(new LogEntry("Cluster operation resumed", LogType.Message));
+                if (_sequencer.TransitionLogger.CurrentState == State.Stopped)
+                {
+                    this._sequencer.FireResumeTrigger();
+                    Logger.Instance.Write(new LogEntry("Cluster operation resumed", LogType.Message));
+                }
             }
         }
 
         public void Shutdown()
         {
-            if (_sequencer.TransitionLogger.CurrentState!= State.Shutdown)
+            if (this.IsInitialized)
             {
-                this._sequencer.FireShutdownTrigger();
-                Logger.Instance.Write(new LogEntry("Cluster operation shutdown", LogType.Message));
+                if (_sequencer.TransitionLogger.CurrentState != State.Shutdown)
+                {
+                    this._sequencer.FireShutdownTrigger();
+                    Logger.Instance.Write(new LogEntry("Cluster operation shutdown", LogType.Message));
+                }
             }
         }
 
         public void EmergencyStop()
         {
-            foreach (var hardware in ClusterConfig.GetAllHardware())
+            if (this.IsInitialized)
             {
-                hardware.EmergencyStop();
+                foreach (var hardware in ClusterConfig.GetAllHardware())
+                {
+                    hardware.EmergencyStop();
+                }
+                Logger.Instance.Write(new LogEntry("Emergency stop command given", LogType.Warning));
+                _sequencer.FireStopTrigger();
+                _sequencer.StopSequencing();
             }
-            Logger.Instance.Write(new LogEntry("Emergency stop command given", LogType.Warning));
-            _sequencer.FireStopTrigger();
-            _sequencer.StopSequencing();
         }
 
         public string GetOperationStatus()
@@ -128,21 +124,61 @@ namespace Tmc.Scada.Core
 
         public IDictionary<string, HardwareStatus> GetLastHardwareStatuses()
         {
-            var statuses = this.HardwareMonitor.PreviousHardwareStatuses;
+            IDictionary<string, HardwareStatus> statuses = new Dictionary<string, HardwareStatus>();
+            if (this.IsInitialized)
+            {
+                statuses = this.HardwareMonitor.PreviousHardwareStatuses;
+            }
             return statuses;
         }
 
         public IList<string> GetAllHardwareNames()
         {
-            return this.ClusterConfig.GetAllHardware().Select(x => x.Name).ToList();
+            IList<string> hardware = new List<string>();
+            if (this.IsInitialized)
+            {
+                this.ClusterConfig.GetAllHardware().Select(x => x.Name).ToList();
+            }
+            return hardware;
         }
 
         public void SetSpeed(int speed)
         {
-            foreach (IRobot robot in ClusterConfig.Robots.Values.ToList())
+            if (this.IsInitialized)
             {
-                robot.SetSpeed(speed);
+                foreach (IRobot robot in ClusterConfig.Robots.Values.ToList())
+                {
+                    robot.SetSpeed(speed);
+                }
             }
+        }
+
+        private void StartSequencing()
+        {
+            this._sequencer.StartSequencing();
+            Logger.Instance.Write(new LogEntry("TMC control system initialised", LogType.Message));
+        }
+        private bool Create(string configFile)
+        {
+            try
+            {
+                this.ClusterConfig = ClusterFactory.Instance.CreateCluster(configFile);
+
+                //this.EnvironementMonitor = new EnvironementMonitor(this.ClusterConfig);
+                this.HardwareMonitor = new HardwareMonitor(this.ClusterConfig);
+                this.TabletMagazine = new TabletMagazine();
+                this.OrderConsumer = new OrderConsumer();
+                this._sequencer = new FSMSequencer(this);
+            }
+            catch (Exception ex)
+            {
+                var outer = new Exception("Unable to initialise the SCADA system", ex);
+
+                Logger.Instance.Write(new LogEntry(outer, LogType.Error));
+                return false;
+            }
+            this.StartAllTimers();
+            return true;
         }
     }
 }
