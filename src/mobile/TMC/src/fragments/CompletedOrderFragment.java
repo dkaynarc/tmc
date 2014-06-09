@@ -335,8 +335,7 @@ public class CompletedOrderFragment extends ListFragment
 		public void onDateSet(DatePicker view, int year, int month, int day)
 		{
 			
-			mButton.setText(new StringBuilder().append(day).append("/")
-					.append(month + 1).append("/").append(year));
+			mButton.setText(String.format("%02d/%02d/%04d", day, (month + 1), year));
 			
 				Button to = (Button)getActivity().findViewById(R.id.completedorders_to_b);
 				Button from = (Button)getActivity().findViewById(R.id.completedorders_from_b);
