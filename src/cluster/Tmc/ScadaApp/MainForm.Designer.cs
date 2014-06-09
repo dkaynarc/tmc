@@ -56,24 +56,26 @@
             this.tbcContentsTabControl = new System.Windows.Forms.TabControl();
             this.tabAlarmList = new System.Windows.Forms.TabPage();
             this.tabPlantMimic = new System.Windows.Forms.TabPage();
-            this.controlPage1 = new Tmc.Scada.App.controlPage();
-            this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic();
             this.tabEnvironment = new System.Windows.Forms.TabPage();
-            this.environmentControl1 = new Tmc.Scada.App.environmentControl();
             this.tabOrders = new System.Windows.Forms.TabPage();
-            this.orderControl = new Tmc.Scada.App.Order();
             this.tabCalibration = new System.Windows.Forms.TabPage();
-            this.calibrationControl1 = new Tmc.Scada.App.CalibrationControl();
             this.tabReports = new System.Windows.Forms.TabPage();
-            this.reportControl2 = new Tmc.Scada.App.ReportControl();
             this.tabDebug = new System.Windows.Forms.TabPage();
-            this.debugOverrides = new Tmc.Scada.App.DebugOverrides();
             this.createUserButton = new System.Windows.Forms.Button();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.alarmsControl = new Tmc.Scada.App.Alarms();
+            this.controlPage1 = new Tmc.Scada.App.controlPage();
+            this.plantMimic1 = new Tmc.Scada.App.UserControls.PlantMimic();
+            this.environmentControl1 = new Tmc.Scada.App.environmentControl();
+            this.orderControl = new Tmc.Scada.App.Order();
+            this.calibrationControl1 = new Tmc.Scada.App.CalibrationControl();
+            this.reportControl2 = new Tmc.Scada.App.ReportControl();
+            this.debugOverrides = new Tmc.Scada.App.DebugOverrides();
             this.toolStrip1.SuspendLayout();
             this.ordersTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).BeginInit();
             this.tbcContentsTabControl.SuspendLayout();
+            this.tabAlarmList.SuspendLayout();
             this.tabPlantMimic.SuspendLayout();
             this.tabEnvironment.SuspendLayout();
             this.tabOrders.SuspendLayout();
@@ -310,6 +312,7 @@
             // 
             // tabAlarmList
             // 
+            this.tabAlarmList.Controls.Add(this.alarmsControl);
             this.tabAlarmList.Location = new System.Drawing.Point(4, 29);
             this.tabAlarmList.Name = "tabAlarmList";
             this.tabAlarmList.Size = new System.Drawing.Size(687, 354);
@@ -329,6 +332,74 @@
             this.tabPlantMimic.Text = "Plant Mimic";
             this.tabPlantMimic.UseVisualStyleBackColor = true;
             // 
+            // tabEnvironment
+            // 
+            this.tabEnvironment.Controls.Add(this.environmentControl1);
+            this.tabEnvironment.Location = new System.Drawing.Point(4, 29);
+            this.tabEnvironment.Name = "tabEnvironment";
+            this.tabEnvironment.Size = new System.Drawing.Size(687, 354);
+            this.tabEnvironment.TabIndex = 3;
+            this.tabEnvironment.Text = "Environment";
+            this.tabEnvironment.UseVisualStyleBackColor = true;
+            // 
+            // tabOrders
+            // 
+            this.tabOrders.Controls.Add(this.orderControl);
+            this.tabOrders.Location = new System.Drawing.Point(4, 29);
+            this.tabOrders.Name = "tabOrders";
+            this.tabOrders.Size = new System.Drawing.Size(687, 354);
+            this.tabOrders.TabIndex = 4;
+            this.tabOrders.Text = "Orders";
+            this.tabOrders.UseVisualStyleBackColor = true;
+            // 
+            // tabCalibration
+            // 
+            this.tabCalibration.Controls.Add(this.calibrationControl1);
+            this.tabCalibration.Location = new System.Drawing.Point(4, 29);
+            this.tabCalibration.Name = "tabCalibration";
+            this.tabCalibration.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCalibration.Size = new System.Drawing.Size(687, 354);
+            this.tabCalibration.TabIndex = 6;
+            this.tabCalibration.Text = "Camera Calibration";
+            this.tabCalibration.UseVisualStyleBackColor = true;
+            // 
+            // tabReports
+            // 
+            this.tabReports.Controls.Add(this.reportControl2);
+            this.tabReports.Location = new System.Drawing.Point(4, 29);
+            this.tabReports.Name = "tabReports";
+            this.tabReports.Size = new System.Drawing.Size(687, 354);
+            this.tabReports.TabIndex = 5;
+            this.tabReports.Text = "Reports";
+            this.tabReports.UseVisualStyleBackColor = true;
+            // 
+            // tabDebug
+            // 
+            this.tabDebug.Controls.Add(this.debugOverrides);
+            this.tabDebug.Location = new System.Drawing.Point(4, 29);
+            this.tabDebug.Name = "tabDebug";
+            this.tabDebug.Size = new System.Drawing.Size(687, 354);
+            this.tabDebug.TabIndex = 7;
+            this.tabDebug.Text = "Debug Overrides";
+            this.tabDebug.UseVisualStyleBackColor = true;
+            // 
+            // createUserButton
+            // 
+            this.createUserButton.Location = new System.Drawing.Point(0, 2);
+            this.createUserButton.Name = "createUserButton";
+            this.createUserButton.Size = new System.Drawing.Size(75, 23);
+            this.createUserButton.TabIndex = 5;
+            this.createUserButton.Text = "Create User";
+            this.createUserButton.UseVisualStyleBackColor = true;
+            this.createUserButton.Click += new System.EventHandler(this.createUserButton_Click);
+            // 
+            // alarmsControl
+            // 
+            this.alarmsControl.Location = new System.Drawing.Point(9, 4);
+            this.alarmsControl.Name = "alarmsControl";
+            this.alarmsControl.Size = new System.Drawing.Size(684, 352);
+            this.alarmsControl.TabIndex = 0;
+            // 
             // controlPage1
             // 
             this.controlPage1.Location = new System.Drawing.Point(377, 60);
@@ -343,32 +414,12 @@
             this.plantMimic1.Size = new System.Drawing.Size(543, 354);
             this.plantMimic1.TabIndex = 0;
             // 
-            // tabEnvironment
-            // 
-            this.tabEnvironment.Controls.Add(this.environmentControl1);
-            this.tabEnvironment.Location = new System.Drawing.Point(4, 29);
-            this.tabEnvironment.Name = "tabEnvironment";
-            this.tabEnvironment.Size = new System.Drawing.Size(687, 354);
-            this.tabEnvironment.TabIndex = 3;
-            this.tabEnvironment.Text = "Environment";
-            this.tabEnvironment.UseVisualStyleBackColor = true;
-            // 
             // environmentControl1
             // 
             this.environmentControl1.Location = new System.Drawing.Point(3, 3);
             this.environmentControl1.Name = "environmentControl1";
             this.environmentControl1.Size = new System.Drawing.Size(257, 190);
             this.environmentControl1.TabIndex = 0;
-            // 
-            // tabOrders
-            // 
-            this.tabOrders.Controls.Add(this.orderControl);
-            this.tabOrders.Location = new System.Drawing.Point(4, 29);
-            this.tabOrders.Name = "tabOrders";
-            this.tabOrders.Size = new System.Drawing.Size(687, 354);
-            this.tabOrders.TabIndex = 4;
-            this.tabOrders.Text = "Orders";
-            this.tabOrders.UseVisualStyleBackColor = true;
             // 
             // orderControl
             // 
@@ -377,17 +428,6 @@
             this.orderControl.Size = new System.Drawing.Size(639, 343);
             this.orderControl.TabIndex = 0;
             // 
-            // tabCalibration
-            // 
-            this.tabCalibration.Controls.Add(this.calibrationControl1);
-            this.tabCalibration.Location = new System.Drawing.Point(4, 29);
-            this.tabCalibration.Name = "tabCalibration";
-            this.tabCalibration.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCalibration.Size = new System.Drawing.Size(687, 354);
-            this.tabCalibration.TabIndex = 6;
-            this.tabCalibration.Text = "Camera Calibration";
-            this.tabCalibration.UseVisualStyleBackColor = true;
-            // 
             // calibrationControl1
             // 
             this.calibrationControl1.Location = new System.Drawing.Point(0, 0);
@@ -395,34 +435,14 @@
             this.calibrationControl1.Size = new System.Drawing.Size(687, 354);
             this.calibrationControl1.TabIndex = 0;
             // 
-            // tabReports
-            // 
-            this.tabReports.Controls.Add(this.reportControl2);
-            this.tabReports.Location = new System.Drawing.Point(4, 29);
-            this.tabReports.Name = "tabReports";
-            this.tabReports.Size = new System.Drawing.Size(687, 354);
-            this.tabReports.TabIndex = 5;
-            this.tabReports.Text = "Reports";
-            this.tabReports.UseVisualStyleBackColor = true;
-            // 
             // reportControl2
             // 
             this.reportControl2.Location = new System.Drawing.Point(8, 35);
             this.reportControl2.Name = "reportControl2";
-            this.reportControl2.SelectedEndDate = new System.DateTime(2014, 6, 8, 19, 27, 23, 236);
-            this.reportControl2.SelectedStartDate = new System.DateTime(2014, 6, 7, 19, 27, 23, 236);
+            this.reportControl2.SelectedEndDate = new System.DateTime(2014, 6, 9, 11, 18, 28, 936);
+            this.reportControl2.SelectedStartDate = new System.DateTime(2014, 6, 8, 11, 18, 28, 936);
             this.reportControl2.Size = new System.Drawing.Size(691, 267);
             this.reportControl2.TabIndex = 0;
-            // 
-            // tabDebug
-            // 
-            this.tabDebug.Controls.Add(this.debugOverrides);
-            this.tabDebug.Location = new System.Drawing.Point(4, 29);
-            this.tabDebug.Name = "tabDebug";
-            this.tabDebug.Size = new System.Drawing.Size(687, 354);
-            this.tabDebug.TabIndex = 7;
-            this.tabDebug.Text = "Debug Overrides";
-            this.tabDebug.UseVisualStyleBackColor = true;
             // 
             // debugOverrides
             // 
@@ -430,16 +450,6 @@
             this.debugOverrides.Name = "debugOverrides";
             this.debugOverrides.Size = new System.Drawing.Size(318, 222);
             this.debugOverrides.TabIndex = 0;
-            // 
-            // createUserButton
-            // 
-            this.createUserButton.Location = new System.Drawing.Point(0, 2);
-            this.createUserButton.Name = "createUserButton";
-            this.createUserButton.Size = new System.Drawing.Size(75, 23);
-            this.createUserButton.TabIndex = 5;
-            this.createUserButton.Text = "Create User";
-            this.createUserButton.UseVisualStyleBackColor = true;
-            this.createUserButton.Click += new System.EventHandler(this.createUserButton_Click);
             // 
             // MainForm
             // 
@@ -458,6 +468,7 @@
             this.ordersTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.OrderListView)).EndInit();
             this.tbcContentsTabControl.ResumeLayout(false);
+            this.tabAlarmList.ResumeLayout(false);
             this.tabPlantMimic.ResumeLayout(false);
             this.tabEnvironment.ResumeLayout(false);
             this.tabOrders.ResumeLayout(false);
@@ -514,6 +525,7 @@
         private Alarms alarms1;
         private System.Windows.Forms.TabPage tabDebug;
         private DebugOverrides debugOverrides;
+        private Alarms alarmsControl;
     }
 }
 
