@@ -189,11 +189,6 @@ public class CreateOrderActivity extends Activity
 		if ((response).equalsIgnoreCase("\"success\""))
 		{
 			Intent intent = getIntent();
-			/*
-			 * intent.putExtra(Constants.NAME, readCurrentUserName());
-			 * intent.putExtra(Constants.NUMBER, "6767");// update order number
-			 * to real one
-			 */
 			setResult(Constants.CREATE_ORDER, intent);
 			finish();
 		}

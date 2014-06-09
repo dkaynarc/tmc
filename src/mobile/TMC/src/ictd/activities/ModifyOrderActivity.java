@@ -142,7 +142,7 @@ public class ModifyOrderActivity extends Activity
 
 		// stop any already running services associated with this activity
 		stopService(service);
-		pd = ProgressDialog.show(this, null, "Contacting server");
+		pd = ProgressDialog.show(this, null, "Modifying order");
 		startService(service);
 	}
 

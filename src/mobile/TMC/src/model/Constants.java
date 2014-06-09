@@ -97,8 +97,8 @@ public class Constants
 	public static final int START_COMMAND = 9;
 	public static final int STOP_COMMAND = 10;
 	//public static final String SERVER_URL = "http://stesha.com.au/api/Server/";
-	public static String SERVER_URL = "http://192.168.1.102:8080/api/Server/";
-	//public static final String SERVER_URL = "http://192.168.1.199:8080/api/Server/";
+	public static String SERVER_URL = "http://192.168.1.100:9000/api/Server/";
+	//public static final String SERVER_URL = "http://192.168.1.100:8080/api/Server/";
 	public static final String ENVIRONMENT = "ENVIRONMENT";
 	public static final String BLACK = "Black";
 	public static final String BLUE = "Blue";

@@ -374,14 +374,8 @@ public class OrderQueueFragment extends ListFragment
 	public void onStart()
 	{
 		receiver = new ResultReceiver();
-		getActivity().registerReceiver(
-				receiver,
-				new IntentFilter(Integer
-						.toString(Constants.UPDATE_ORDERS_COMMAND)));
-		getActivity().registerReceiver(
-				receiver,
-				new IntentFilter(Integer
-						.toString(Constants.DELETE_ORDER_COMMAND)));
+		getActivity().registerReceiver( receiver, new IntentFilter(Integer.toString(Constants.UPDATE_ORDERS_COMMAND)));
+		getActivity().registerReceiver(	receiver, new IntentFilter(Integer.toString(Constants.DELETE_ORDER_COMMAND)));
 		// update orders here
 		makeService(Constants.UPDATE_ORDERS_COMMAND, 0);
 		super.onStart();
