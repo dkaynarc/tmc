@@ -33,6 +33,12 @@ namespace Tmc.Scada.App
             //disableUserControl(); // Default on startup - user must login first
         }
 
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            _scadaEngine.Shutdown();
+            base.OnFormClosing(e);
+        }
+
         private void InitializeAll(ScadaEngine engine)
         {
             this.controlPage1.InitialiseScadaEngine(engine);

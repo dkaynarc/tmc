@@ -93,7 +93,6 @@
     <Compile Include="Sequencing\ISequencer.cs" />
     <Compile Include="Controllers\Sorter.cs" />
     <Compile Include="Sequencing\State.cs" />
-    <Compile Include="TablessControl.cs" />
     <Compile Include="TabletMagazine.cs" />
     <Compile Include="Controllers\TrayVerifier.cs" />
   </ItemGroup>
