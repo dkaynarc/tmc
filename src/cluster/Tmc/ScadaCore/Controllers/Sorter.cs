@@ -14,7 +14,7 @@ namespace Tmc.Scada.Core
 {
     public enum SorterAction
     {
-        Sort,
+        Sort = 0,
         LoadToConveyor,
         LoadToBuffer,
         Undefined
@@ -27,6 +27,11 @@ namespace Tmc.Scada.Core
         private SorterRobot _robot;
         private CancellationTokenSource _cancelTokenSource;
         private Dictionary<SorterAction, Action<SorterParams>> _actionMap;
+
+        private const float XMax = 275;
+        private const float YMax = 200;
+        private const float YMin = 0;
+        private const float XMin = 20;
 
         public Sorter(ClusterConfig config)
             : base(config)
@@ -192,10 +197,15 @@ namespace Tmc.Scada.Core
         private List<Tablet> GetVisibleTablets()
         {
             int shakeRetryAttempts = 0;
-            var visibleTablets = _vision.GetVisibleTablets().Where(x => x.Color != TabletColors.Unknown);
-            while ((visibleTablets.Count() == 0) && (shakeRetryAttempts < MaxShakeRetryAttempts))
+            var visibleTablets = _vision.GetVisibleTablets().Where(t => t.Color != TabletColors.Unknown);
+            var fencedTablets = visibleTablets.Where(t => t.LocationPoint.X > XMin 
+                                                        && t.LocationPoint.Y > YMin
+                                                        && t.LocationPoint.X < XMax
+                                                        && t.LocationPoint.Y < YMax);
+
+            while ((fencedTablets.Count() == 0) && (shakeRetryAttempts < MaxShakeRetryAttempts))
             {
-                Logger.Instance.Write(String.Format("[Sorter] No tablets found. Shaking (attempt {0} of {1}", 
+                Logger.Instance.Write(String.Format("[Sorter] No tablets found. Shaking (attempt {0} of {1})", 
                     shakeRetryAttempts, MaxShakeRetryAttempts));
                 _robot.Shake();
                 visibleTablets = _vision.GetVisibleTablets();
@@ -215,11 +225,10 @@ namespace Tmc.Scada.Core
 
         private Point TransformToRobotSpace(PointF p)
         {
-            //const float xScale = 1.25f;
             const float xScale = 1f;
             const float yScale = 1f;
-            const float xOff = -121.9f;
-            const float yOff = 357.6f;
+            const float xOff = -116.9f;
+            const float yOff = 352.6f;
 
             float camX = p.X * xScale;
             float camY = p.Y * yScale;
