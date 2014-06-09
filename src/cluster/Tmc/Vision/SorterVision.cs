@@ -327,9 +327,9 @@ namespace Tmc.Vision
 
                 var histo = ImagesToHisto(GetTablet(src, tablet));
 
-                int[][] hue = getHighLowHSV(histo, 50, HSVdata.Hue);
-                int[][] sat = getHighLowHSV(histo, 50, HSVdata.Sat);
-                int[][] val = getHighLowHSV(histo, 50, HSVdata.Val);
+                int[][] hue = getHighLowHSV(histo, 100, HSVdata.Hue);
+                int[][] sat = getHighLowHSV(histo, 100, HSVdata.Sat);
+                int[][] val = getHighLowHSV(histo, 100, HSVdata.Val);
 
 
 

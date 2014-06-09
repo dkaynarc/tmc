@@ -65,11 +65,11 @@ namespace Tmc.Vision
             HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 47;
             HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Value = 255;
 
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 115;//112;//115;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 112;//112;//115;
             HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 40;//76;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 117;//69;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 95;//117;//69;
             HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 131;//126;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 119;//124;//125;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 120;//124;//125;
             HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 197;// 235;//226;// 214;//213;
 
             HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Hue = 177;//102;
@@ -77,7 +77,7 @@ namespace Tmc.Vision
             HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Value = 61;//90;
             HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Hue = 14;//145;
             HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Satuation = 84;//39;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Value = 161;//167;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Value = 192;//161;//167;
 
             minRadius = 54;
             maxRadius = 62;
@@ -137,6 +137,18 @@ namespace Tmc.Vision
             return true;
         }
 
+        /// <summary>
+        /// draws lines on our image where it sees lines
+        /// </summary>
+        /// <param name="Input_Image">
+        /// image which has lines on it
+        /// </param>
+        /// <param name="countLines">
+        /// how many lines detected
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         private Image<Bgr, Byte> apply_Hough(Image<Bgr, Byte> Input_Image, out int countLines)
         {
 
@@ -191,6 +203,8 @@ namespace Tmc.Vision
 
             Image<Gray, Byte> Gsrc = col.Convert<Gray, Byte>();
 
+            saveImage(col, "only true yellow.jpg");
+
             int countLines;
 
             col = RemoveEverythingButRange(apply_Hough(col.Clone(),out countLines), HSVT); //we want to remove everything that is not yellow
@@ -208,7 +222,7 @@ namespace Tmc.Vision
             Debug.Flush();
             //double Mag = Math.Sqrt(Math.Pow((line[0].X - line[1].X),2) + Math.Pow((line[0].Y - line[1].Y),2) );
 
-            saveImage(col, "only yellow.jpg");
+            saveImage(col, "only yellow lines.jpg");
 
             //saveImage(apply_Hough(col.Clone()), "lines in tray.jpg");
 
@@ -406,17 +420,17 @@ namespace Tmc.Vision
             if ((circle.Center.X < lineX[1]) && (circle.Center.Y < lineY[3]) &&
                 (circle.Center.X > lineX[0]) && (circle.Center.Y > lineY[2]))
             {//cell 0
-                return 0;
+                return 8;
             }
             else if ((circle.Center.X < lineX[1]) && (circle.Center.Y < lineY[2]) &&
                 (circle.Center.X > lineX[0]) && (circle.Center.Y > lineY[1]))
             {//cell 1
-                return 1;
+                return 7;
             }
             else if ((circle.Center.X < lineX[1]) && (circle.Center.Y < lineY[1]) &&
                 (circle.Center.X > lineX[0]) && (circle.Center.Y > lineY[0]))
             {//cell 2
-                return 2;
+                return 6;
             }
             else if ((circle.Center.X < lineX[2]) && (circle.Center.Y < lineY[3]) &&
                 (circle.Center.X > lineX[1]) && (circle.Center.Y > lineY[2]))
@@ -436,17 +450,17 @@ namespace Tmc.Vision
             else if ((circle.Center.X < lineX[3]) && (circle.Center.Y < lineY[3]) &&
                 (circle.Center.X > lineX[2]) && (circle.Center.Y > lineY[2]))
             {//cell 6
-                return 6;
+                return 2;
             }
             else if ((circle.Center.X < lineX[3]) && (circle.Center.Y < lineY[2]) &&
                 (circle.Center.X > lineX[2]) && (circle.Center.Y > lineY[1]))
             {//cell 7
-                return 7;
+                return 1;
             }
             else if ((circle.Center.X < lineX[3]) && (circle.Center.Y < lineY[1]) &&
                 (circle.Center.X > lineX[2]) && (circle.Center.Y > lineY[0]))
             {//cell 8
-                return 8;
+                return 0;
             }
             else
             {
