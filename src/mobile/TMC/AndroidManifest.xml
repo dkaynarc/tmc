@@ -18,7 +18,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".LoginActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,14 +50,17 @@
         
         <activity
             android:name=".ModuleActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_module" >
         </activity>
         <activity
             android:name=".CreateOrderActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_create_order" >
         </activity>
         <activity
             android:name=".ModifyOrderActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_modify_order" >
         </activity>
         
