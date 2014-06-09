@@ -24,8 +24,10 @@ using System.Web.Http;
 
 
             config.Routes.MapHttpRoute(name: "route4",
-            routeTemplate: "api/{controller}/{action}/{orderParam}",
+            routeTemplate: "api/{controller}/{action}/{var}",
             defaults: null);
+
+
 
 
             config.Routes.MapHttpRoute(name: "route5",
@@ -60,14 +62,15 @@ using System.Web.Http;
                                             new { controller = "Server" });
 
 
-            config.MapHttpAttributeRoutes();
+          
 
 
 
             config.Routes.MapHttpRoute(name: "newUserRoute",
             routeTemplate: "api/{controller}/{action}/{userName}/{password}/{roleName}",
             defaults: null); 
-
+     
+            config.MapHttpAttributeRoutes();
 
 
         }

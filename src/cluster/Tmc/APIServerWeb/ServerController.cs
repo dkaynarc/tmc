@@ -52,7 +52,7 @@ namespace APIServerWeb
         public ServerController()
         {
             repository = new ICTDEntities();
-            SetupRoles(Roles);
+            //SetupRoles(Roles);
         }
 
 
@@ -96,7 +96,7 @@ namespace APIServerWeb
                 UserManager.RemovePassword(user.Id);
                 UserManager.AddPassword(user.Id, newPassword);
 
-                return "success: password reset";
+                return "success: password reset: " + newPassword;
             }
         }
 
@@ -116,12 +116,13 @@ namespace APIServerWeb
 
             try
             {
+                user = UserManager.FindByName(var);
                 var result = UserManager.Delete(user);
                 return Request.CreateResponse(HttpStatusCode.OK, "success");
             }
-            catch (Exception)
+            catch (Exception exc)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, "fail");
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "fail: " + exc.ToString());
             };
 
         }
@@ -229,14 +230,14 @@ namespace APIServerWeb
 
             catch (DbEntityValidationException exc)
             {
-                foreach (var err in exc.EntityValidationErrors)
-                {
-                    foreach (var errrr in err.ValidationErrors)
-                    {
-                        string st = errrr.ErrorMessage;
-                    }
-                }
-                return "fail";
+                //foreach (var err in exc.EntityValidationErrors)
+                //{
+                //    foreach (var errrr in err.ValidationErrors)
+                //    {
+                //        string st = errrr.ErrorMessage;
+                //    }
+                //}
+                return "fail: " + exc.ToString();
             }
         }
 
@@ -317,9 +318,9 @@ namespace APIServerWeb
                 return new DeleteOrderParcel { orderId = Convert.ToString(var), result = "success" };
 
             }
-            catch (Exception)
+            catch (Exception exc)
             {
-                return new DeleteOrderParcel { orderId = Convert.ToString(var), result = "fail" };
+                return new DeleteOrderParcel { orderId = Convert.ToString(var), result = "fail: " + exc.ToString() };
             }
         }
 
@@ -370,37 +371,36 @@ namespace APIServerWeb
             {
                 IDictionary<string, HardwareStatus> statuses = ScadaConnectionManager.ScadaClient.GetLastHardwareStatuses();
                 List<string> machNames = (List<string>)ScadaConnectionManager.ScadaClient.GetAllHardwareNames();
-                
+
 
                 foreach (string name in machNames)
                 {
                     machinery.Add(new MachineParcel { Name = name, Status = Convert.ToString(statuses[name]) });
                 }
+                return Request.CreateResponse(HttpStatusCode.OK, machinery);
             }
-            catch (EndpointNotFoundException exc) 
+            catch (Exception exc)
             {
-                machinery = new List<MachineParcel>
-                { 
-                  new MachineParcel{ Name = "SORTER", Status = OFF },
-                  new MachineParcel { Name = "ASSEMBLER", Status = OFF },
-                  new MachineParcel { Name = "LOADER", Status = OFF },
-                  new MachineParcel { Name = "PALLETISER", Status = OFF },
-                  new MachineParcel { Name = "CONVEYOR #1", Status = OFF },
-                  new MachineParcel { Name = "CONVEYOR #2", Status = OFF }
-                };
+                if (exc.GetType() == typeof(EndpointNotFoundException))
+                {
+                    machinery = new List<MachineParcel>
+                   { 
+                    new MachineParcel{ Name = "SORTER", Status = OFF },
+                    new MachineParcel { Name = "ASSEMBLER", Status = OFF },
+                    new MachineParcel { Name = "LOADER", Status = OFF },
+                    new MachineParcel { Name = "PALLETISER", Status = OFF },
+                    new MachineParcel { Name = "CONVEYOR #1", Status = OFF },
+                    new MachineParcel { Name = "CONVEYOR #2", Status = OFF }
+                  };
+
+                    return Request.CreateResponse(HttpStatusCode.OK, machinery);
+                }
+                else 
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, exc.ToString());
+                }
             }
             
-           //List<MachineParcel> machinery = new List<MachineParcel>
-           //{ 
-           //  new MachineParcel{ Name = "SORTER", Status = ON },
-           //  new MachineParcel { Name = "ASSEMBLER", Status = ON },
-           //  new MachineParcel { Name = "LOADER", Status = ON },
-           //  new MachineParcel { Name = "PALLETISER", Status = OFF },
-           //  new MachineParcel { Name = "CONVEYOR #1", Status = OFF },
-           //  new MachineParcel { Name = "CONVEYOR #2", Status = OFF }
-
-           //};
-            return Request.CreateResponse(HttpStatusCode.OK, machinery);
         }
 
 
@@ -421,7 +421,7 @@ namespace APIServerWeb
             try
             {
                 orders = repository.Orders.Where(p => p != null).Where(p => p.StatusID == 3);
-                sortedOrders = orders.Where(p => p.EndTime.Value.Date >= start.Date && p.EndTime.Value.Date <= end.Date);
+                sortedOrders = orders.Where(p => p.EndTime >= start.Date && p.EndTime <= end.Date);
                 parcels = CopyOrders(sortedOrders);
                 return Request.CreateResponse(HttpStatusCode.OK, parcels);
             }
@@ -521,20 +521,27 @@ namespace APIServerWeb
             try
             {
                 OrderConfig conf = repository.OrderConfigs.Where(p => p.OrderID == orderId).First();
+                
                 conf.Green = green;
                 conf.Black = black;
                 conf.Blue = blue;
                 conf.Red = red;
                 conf.White = white;
-
+                  
+                Order order = repository.Orders.Where(p => p.OrderID == orderId).First();
+                order.NumberOfProducts = Convert.ToInt16(black) +
+                                              Convert.ToInt16(blue) +
+                                              Convert.ToInt16(green) +
+                                              Convert.ToInt16(red) +
+                                              Convert.ToInt16(white);
                 repository.SaveChanges();
 
                 return "success";
             }
 
-            catch (DbEntityValidationException)
+            catch (DbEntityValidationException exc)
             {
-                return "fail";
+                return "fail " + exc.ToString();
             }
         }
 
