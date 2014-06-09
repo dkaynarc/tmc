@@ -107,7 +107,8 @@ namespace Tmc.Scada.Core
                 }
                 catch (Exception ex)
                 {
-                    Logger.Instance.Write(new LogEntry(ex));
+                    var outer = new Exception("[Loader] Get tray failed", ex);
+                    Logger.Instance.Write(new LogEntry(outer));
                     status = ControllerOperationStatus.Failed;
                 }
             }
@@ -129,7 +130,8 @@ namespace Tmc.Scada.Core
             }
             catch (Exception ex)
             {
-                Logger.Instance.Write(new LogEntry(ex));
+                var outer = new Exception("[Loader] Palletising failed", ex);
+                Logger.Instance.Write(new LogEntry(outer));
                 status = ControllerOperationStatus.Failed;
             }
             return status;
