@@ -4,7 +4,7 @@ namespace Tmc.Robotics
 {
     public interface IConveyor : IHardware
     {
-        ConveyorPosition Position { get; }
+        ConveyorPosition Position { get; set; }
         void MoveForward();
         void MoveBackward();
     }

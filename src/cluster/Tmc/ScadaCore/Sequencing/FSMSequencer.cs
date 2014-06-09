@@ -226,6 +226,13 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.AssemblyConveyorMovingForward)
                 .On(Trigger.Invalid)
                     .Goto(State.AssemblyConveyorMovingBackward)
+                .On(Trigger.NoTray)
+                    .Goto(State.LoadingTray)
+                    .Execute(() => 
+                        {
+                            Logger.Instance.Write("[Sequencer] No tray found detected. Trying to get another tray");
+                            _conveyorController.SetPosition(ConveyorType.Assembly, Robotics.ConveyorPosition.Right);
+                        })
                 .On(Trigger.Stop)
                     .Goto(State.Stopped)
                 .On(Trigger.Shutdown)
@@ -538,6 +545,10 @@ namespace Tmc.Scada.Core.Sequencing
             else if (args.VerificationResult == VerificationResult.Invalid)
             {
                 _fsm.Fire(Trigger.Invalid, args.VerificationMode);
+            }
+            else if (args.VerificationResult == VerificationResult.NoTray)
+            {
+                _fsm.Fire(Trigger.NoTray, args.VerificationMode);
             }
         }
         #endregion Event handlers
