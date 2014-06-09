@@ -74,7 +74,6 @@ namespace Tmc.Scada.Core
         {
             _assemblingOrder = _pendingQueue.Dequeue();
             _assemblingOrder.Status = OrderStatus.Assembling;
-            //TmcRepository.UpdateOrderStatus(_assemblingOrder.Id, (int)OrderStatus.Assembling);
             _toUpdate.Enqueue(_assemblingOrder);
 
             return _assemblingOrder;
@@ -83,7 +82,6 @@ namespace Tmc.Scada.Core
         public void CompleteOrder()
         {
             _assemblingOrder.Status = OrderStatus.Completed;
-            //TmcRepository.UpdateOrderStatus(_assemblingOrder.Id, (int)OrderStatus.Completed);
             _toUpdate.Enqueue(_assemblingOrder);
         }
 
@@ -94,7 +92,10 @@ namespace Tmc.Scada.Core
 
         private void Update()
         {
-            foreach (var orderInfo in TmcRepository.GetOrdersByStatus((int)OrderStatus.Open).ToList())
+            var pendingAndOpenOrders = TmcRepository.GetOrdersByStatus((int)OrderStatus.Pending).ToList();
+            pendingAndOpenOrders.AddRange(TmcRepository.GetOrdersByStatus((int)OrderStatus.Open).ToList());
+            
+            foreach (var orderInfo in pendingAndOpenOrders)
             {
                 var order = new Order();
                 order.Configuration.AddTablet(TabletColors.Black, orderInfo.Black);
@@ -111,7 +112,6 @@ namespace Tmc.Scada.Core
                 if (!this._pendingQueue.Contains(order))
                 {
                     order.Status = OrderStatus.Pending;
-                    //TmcRepository.UpdateOrderStatus(order.Id, (int)order.Status);
                     this._toUpdate.Enqueue(order);
                     this._pendingQueue.Enqueue(order);
                 }
