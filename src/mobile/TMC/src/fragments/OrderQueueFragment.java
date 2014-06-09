@@ -255,6 +255,7 @@ public class OrderQueueFragment extends ListFragment
 	// ///////////////////////////////////////////////////////////////////////////
 	private void makeService(int command, int orderId)
 	{
+		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
 		Intent service = new Intent(getActivity(), services.SynchService.class);
 		Bundle parcel = new Bundle();
 		parcel.putInt("command", command);
@@ -267,7 +268,7 @@ public class OrderQueueFragment extends ListFragment
 
 		// stop any already running services associated with this activity
 		// getActivity().stopService(service);
-		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
+		
 		getActivity().startService(service);
 	}
 
