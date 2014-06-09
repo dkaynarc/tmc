@@ -91,9 +91,9 @@ namespace TmcData
                 return false;
             }
 
-            matches &= Strategy == LogStrategy.All;
-            matches &= Strategy == p.ProvidedStrategy;
-            matches &= (Strategy == LogStrategy.FileAndConsole 
+            matches |= Strategy == LogStrategy.All;
+            matches |= Strategy == p.ProvidedStrategy;
+            matches |= (Strategy == LogStrategy.FileAndConsole 
                 && (p.ProvidedStrategy == LogStrategy.File ||
                     p.ProvidedStrategy == LogStrategy.Console));
 

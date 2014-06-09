@@ -19,7 +19,7 @@ namespace Tmc.Scada.App.UserControls
 
         public enum Hardware
         {
-            SorterRobot, AssemblerRobot, LoaderRobot, PalletiserRobot, SorterCamera, AssemblerCamera, SorterConveyor, AssemblerConveyor
+            SorterRobot, AssemblerRobot, LoaderRobot, PalletiserRobot, SorterCamera, TrayVerifierCamera, SorterConveyor, AssemblyConveyor, MainPlc
         }
 
         List<IHardware> hardwareList;
@@ -37,9 +37,9 @@ namespace Tmc.Scada.App.UserControls
 
         private void Update(object sender, HardwareEventArgs args)
         {
-            if (this.Enabled) 
+            if (this.Enabled)
             {
-                this.ChangeHardwareStatus((Hardware)Enum.Parse(typeof(Hardware), args.hardware.Name), args.hardware.GetStatus()); 
+                this.ChangeHardwareStatus((Hardware)Enum.Parse(typeof(Hardware), args.hardware.Name), args.hardware.GetStatus());
             }
         }
 
@@ -50,19 +50,27 @@ namespace Tmc.Scada.App.UserControls
         /// <param name="hardwareStatus">The status to change to.</param>
         public void ChangeHardwareStatus(Hardware hardware, HardwareStatus hardwareStatus)
         {
+            PictureBox pictureBox;
             string pictureBoxName = this.GetHardwarePictureBoxName(hardware);
-            PictureBox pictureBox = (PictureBox)this.pnlContainer.Controls.Find(pictureBoxName, false).FirstOrDefault(x => x.Name == pictureBoxName);
+            var pictureBoxCollection = !string.IsNullOrWhiteSpace(pictureBoxName) ? this.pnlContainer.Controls.Find(pictureBoxName, false) : null;
 
-            if (hardware == Hardware.SorterRobot || hardware == Hardware.LoaderRobot 
+            if (pictureBoxCollection == null)
+            {
+                return;
+            }
+
+            pictureBox = pictureBoxCollection.FirstOrDefault(x => x.Name == pictureBoxName) as PictureBox;
+
+            if (hardware == Hardware.SorterRobot || hardware == Hardware.LoaderRobot
                 || hardware == Hardware.AssemblerRobot || hardware == Hardware.PalletiserRobot)
             {
                 this.ChangeRobotPictureBox(pictureBox, hardwareStatus);
             }
-            else if (hardware == Hardware.SorterCamera || hardware == Hardware.AssemblerCamera)
+            else if (hardware == Hardware.SorterCamera || hardware == Hardware.TrayVerifierCamera)
             {
                 this.ChangeCameraPictureBox(pictureBox, hardwareStatus);
             }
-            else if (hardware == Hardware.AssemblerConveyor)
+            else if (hardware == Hardware.AssemblyConveyor)
             {
                 this.ChangeAssemblyConveyorPictureBox(pictureBox, hardwareStatus);
             }
@@ -86,9 +94,9 @@ namespace Tmc.Scada.App.UserControls
                 case Hardware.LoaderRobot: return this.imgLoaderRobot.Name;
                 case Hardware.PalletiserRobot: return this.imgPalletiserRobot.Name;
                 case Hardware.SorterCamera: return this.imgSorterCamera.Name;
-                case Hardware.AssemblerCamera: return this.imgAssemblerCamera.Name;
+                case Hardware.TrayVerifierCamera: return this.imgAssemblerCamera.Name;
                 case Hardware.SorterConveyor: return this.imgSorterConveyor.Name;
-                case Hardware.AssemblerConveyor: return this.imgAssemblyConveyor.Name;
+                case Hardware.AssemblyConveyor: return this.imgAssemblyConveyor.Name;
                 default: return "";
             }
         }

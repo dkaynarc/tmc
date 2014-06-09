@@ -27,13 +27,15 @@ namespace TmcTest.ConveyorTest
             var conveyor = ConveyorFactory.CreateConveyor<BluetoothConveyor>();
 
             var dict = new Dictionary<string, string>();
-            dict.Add("PortName", "COM7");
+            dict.Add("PortName", "COM4");
             dict.Add("WaitTime", "1000");
 
             conveyor.SetParameters(dict);
             conveyor.Initialise();
 
             conveyor.MoveForward();
+
+            conveyor.Shutdown();
         }
 
         [TestMethod]
@@ -42,13 +44,15 @@ namespace TmcTest.ConveyorTest
             var conveyor = ConveyorFactory.CreateConveyor<BluetoothConveyor>();
 
             var dict = new Dictionary<string, string>();
-            dict.Add("PortName", "COM7");
+            dict.Add("PortName", "COM4");
             dict.Add("WaitTime", "1000");
 
             conveyor.SetParameters(dict);
             conveyor.Initialise();
 
             conveyor.MoveBackward();
+
+            conveyor.Shutdown();
         }
            
         [TestMethod]
@@ -58,6 +62,7 @@ namespace TmcTest.ConveyorTest
             try
             {
                 _serialConveyor.MoveForward();
+                _serialConveyor.Shutdown();
             }
             catch (Exception ex)
             {
@@ -72,6 +77,7 @@ namespace TmcTest.ConveyorTest
             try
             {
                 _serialConveyor.MoveBackward();
+                _serialConveyor.Shutdown();
             }
             catch (Exception ex)
             {
