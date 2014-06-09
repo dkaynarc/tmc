@@ -45,7 +45,7 @@ namespace Tmc.Scada.Core
             this.Orders = new List<Order>();
             this._toUpdate = new Queue<Order>();
 
-            int updateTime = 1000;
+            int updateTime = 5000;
             if (!Int32.TryParse(ConfigurationManager.AppSettings["OrderConsumerUpdateRateMsec"], out updateTime))
             {
                 Logger.Instance.Write(new LogEntry("OrderConsumerUpdateRateMsec is invalid, defaulting to 1000 msec",
@@ -92,10 +92,13 @@ namespace Tmc.Scada.Core
 
         private void Update()
         {
-            var pendingAndOpenOrders = TmcRepository.GetOrdersByStatus((int)OrderStatus.Pending).ToList();
-            pendingAndOpenOrders.AddRange(TmcRepository.GetOrdersByStatus((int)OrderStatus.Open).ToList());
-            
-            foreach (var orderInfo in pendingAndOpenOrders)
+            _updateTimer.Stop();
+
+            var list = new List<OrderListView>();
+            list.AddRange(TmcRepository.GetOrdersByStatus((int)OrderStatus.Pending));
+            list.AddRange(TmcRepository.GetOrdersByStatus((int)OrderStatus.Open));
+
+            foreach (var orderInfo in list)
             {
                 var order = new Order();
                 order.Configuration.AddTablet(TabletColors.Black, orderInfo.Black);
@@ -107,7 +110,7 @@ namespace Tmc.Scada.Core
                 Orders.Add(order);
             }
 
-            foreach (var order in this.Orders)
+            foreach (var order in this.Orders.Where(e => e.Status == OrderStatus.Open))
             {
                 if (!this._pendingQueue.Contains(order))
                 {
@@ -122,6 +125,7 @@ namespace Tmc.Scada.Core
             }
 
             UpdateAll();
+            _updateTimer.Start();
         }
 
         private void UpdateAll()
