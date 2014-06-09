@@ -35,7 +35,11 @@ namespace Tmc.Scada.App
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            _scadaEngine.Shutdown();
+            var mbResult = MessageBox.Show("Do you want to shut down the cluster?", "Shutdown Confirmation", MessageBoxButtons.OKCancel);
+            if (mbResult == DialogResult.OK)
+            {
+                _scadaEngine.Shutdown();
+            }
             base.OnFormClosing(e);
         }
 
