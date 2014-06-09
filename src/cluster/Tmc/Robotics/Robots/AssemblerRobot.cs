@@ -82,5 +82,10 @@ namespace Tmc.Robotics
 
             this.RunRapidProgram(FileNames.Assembler.PlaceTablet, dict);
         }
+
+        public override void Shutdown()
+        {
+            this.RunRapidProgram(FileNames.Assembler.HomePosition);
+        }
     }
 }

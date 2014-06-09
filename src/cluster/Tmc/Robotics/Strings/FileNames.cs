@@ -29,6 +29,7 @@ namespace Tmc.Robotics
         {
             internal static string GetMagazine     = "AssemblerGetMagazine.mod";
             internal static string PlaceTablet     = "AssemblerPlaceTablet.mod";
+            internal static string HomePosition    = "AssemblerHomePosition.mod";
             internal static string TrayPositions   = "AssemblerTrayPositions.mod";
             internal static string MagazinePoints  = "AssemblerMagazinePoints.mod";
             internal static string ReturnMagazine  = "AssemblerReturnMagazine.mod";

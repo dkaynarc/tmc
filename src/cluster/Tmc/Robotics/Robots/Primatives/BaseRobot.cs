@@ -70,7 +70,7 @@ namespace Tmc.Robotics
             throw new Exception(string.Format("Robot at {0} could not be found.", this.RobotIPAddress));
         }
 
-        public void Shutdown()
+        public virtual void Shutdown()
         {
             _status = HardwareStatus.Offline;
             this.ReturnToHomePosition();
