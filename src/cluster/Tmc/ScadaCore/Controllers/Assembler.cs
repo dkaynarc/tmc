@@ -65,7 +65,7 @@ namespace Tmc.Scada.Core
             {
                 _cancelTokenSource.Cancel();
                 IsRunning = false;
-                OnCompleted(new ControllerEventArgs() { OperationStatus = ControllerOperationStatus.Cancelled });
+                OnCompleted(new AssemblerEventArgs() { OperationStatus = ControllerOperationStatus.Cancelled });
             }
         }
 
@@ -114,6 +114,12 @@ namespace Tmc.Scada.Core
                 for (int i = 0; i < tray.Cells.Count; i++)
                 {
                     var tablet = tray.Cells[i];
+
+                    if(tablet == null)
+                    {
+                        continue;
+                    }
+
                     if (ct.IsCancellationRequested)
                     {
                         status = ControllerOperationStatus.Cancelled;
@@ -133,7 +139,8 @@ namespace Tmc.Scada.Core
             }
             catch (Exception ex)
             {
-                Logger.Instance.Write(new LogEntry(ex));
+                var outer = new Exception("[Assembler] Assembler failed to assemble.", ex);
+                Logger.Instance.Write(new LogEntry(outer));
                 status = ControllerOperationStatus.Failed;
             }
             return status;
@@ -161,7 +168,7 @@ namespace Tmc.Scada.Core
             {
                 var status = GetTabletMagazine();
                 IsRunning = false;
-                OnCompleted(new ControllerEventArgs() { OperationStatus = status });
+                OnCompleted(new AssemblerEventArgs() { OperationStatus = status });
             });
         }
 
@@ -187,7 +194,7 @@ namespace Tmc.Scada.Core
             {
                 var status = ReturnTabletMagazine();
                 IsRunning = false;
-                OnCompleted(new ControllerEventArgs() { OperationStatus = status });
+                OnCompleted(new AssemblerEventArgs() { OperationStatus = status });
             });
         }
 
@@ -214,7 +221,7 @@ namespace Tmc.Scada.Core
                     {
                         trayIndex++;
                     }
-                    tray.Cells[i] = new Tablet() { Color = pair.Key };
+                    tray.Cells[trayIndex] = new Tablet() { Color = pair.Key };
                     trayIndex++;
                 }
             }
@@ -238,6 +245,11 @@ namespace Tmc.Scada.Core
 
     public class AssemblerEventArgs : ControllerEventArgs
     {
+        public AssemblerEventArgs()
+        {
+            AssemblerOperationStatus = AssemblerOperationStatus.Normal;
+        }
+
         public AssemblerOperationStatus AssemblerOperationStatus;
         public Tray<Tablet> MappedTray;
     }

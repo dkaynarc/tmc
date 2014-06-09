@@ -72,11 +72,11 @@ namespace Tmc.Robotics
             {
                 case ConveyorPosition.Right:
                     Conveyor.rightToMiddle();
-                    Position--;
+                    Position = ConveyorPosition.Middle;
                     break;
                 case ConveyorPosition.Middle:
                     Conveyor.middleToLeft();
-                    Position--;
+                    Position = ConveyorPosition.Left;
                     break;
                 case ConveyorPosition.Left:
                     _status = HardwareStatus.Failed;
@@ -93,11 +93,11 @@ namespace Tmc.Robotics
                     throw new Exception("Conveyor is at its most backward position");
                 case ConveyorPosition.Middle:
                     Conveyor.middleToRight();
-                    Position--;
+                    Position = ConveyorPosition.Right;
                     break;
                 case ConveyorPosition.Left:
                     Conveyor.leftToMiddle();
-                    Position--;
+                    Position = ConveyorPosition.Middle;
                     break;
             }
         }

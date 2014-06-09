@@ -15,6 +15,9 @@ namespace Tmc.Scada.Core.Sequencing
         // Verification
         Valid,
         Invalid,
-        NoTray
+        NoTray,
+
+        // Assembler specific commands
+        TabletRefill
     }
 }
