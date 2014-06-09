@@ -8,12 +8,23 @@
 
 //using namespace std;
 
+AmbienceSensor ambience;
+TemperatureSensor temperature;
+HumiditySensor humidity;
+SoundSensor	sound;
+DustSensor dust;
+mcp3302	a2d;
+int i2c_fd = wiringPiI2CSetup(I2C_TEMP_ADDRESS);
 std::vector<boost::shared_ptr<boost::asio::ip::tcp::socket> > established_connections;
 
-/// <summary>
-/// Removes socket from <vector> established_connections before close()
-/// </summary>
-
+/**
+ *  \brief Removes socket from <vector> established_connections before close()
+ *  
+ *  \param [in] socket file descriptor of the socket connection.
+ *  \return No return value.
+ *  
+ *  \details This function will remove the socket from established_connections vector.
+ */
 
 void removeSocket(boost::shared_ptr<boost::asio::ip::tcp::socket> socket)
 {
@@ -21,12 +32,14 @@ void removeSocket(boost::shared_ptr<boost::asio::ip::tcp::socket> socket)
 	(*socket).close();
 }
 
-/// <summary>
-/// Worker method to handle each independent socket from listener_loop. 
-/// This method handles all communication data between the hardware sensors within the Raspberry Pi
-///
-/// TO-DO: implement and include all hardware sensors into this method + header file to include all the sensor classes
-/// </summary>
+/**
+ *  \brief Worker method to handle each independent socket from listener_loop. 
+ *  
+ *  \param [in] socket socket file descriptor of the socket connection.
+ *  \return No return value.
+ *  
+ *  \details This method handles all communication data between the hardware sensors within the Raspberry Pi
+ */
 
 void worker(boost::shared_ptr<boost::asio::ip::tcp::socket> socket)
 {	try
@@ -53,37 +66,43 @@ void worker(boost::shared_ptr<boost::asio::ip::tcp::socket> socket)
 			
 			if (sdata_in == "temperature")
 			{
-				TemperatureSensor temperature;
-				std::string data = temperature.getData() + "\n";
+				// TemperatureSensor temperature;
+				std::string data = temperature.getData(i2c_fd) + "\n";
 				message = data;
 			}
 			
 			if(sdata_in == "ambience")
 			{
-				AmbienceSensor ambience;
-				std::string data = ambience.getData() + "\n";
+				// AmbienceSensor ambience;
+				std::string data = ambience.getData(a2d) + "\n";
 				message = data;
 			}
 			
 			if(sdata_in == "sound")
 			{
-				SoundSensor	sound;
-				std::string data = sound.getData() + "\n";
+				// SoundSensor	sound;
+				std::string data = sound.getData(a2d) + "\n";
 				message = data;
 			}
 			
 			if(sdata_in == "humidity")
 			{
-				HumiditySensor humidity;
+				// HumiditySensor humidity;
 				std::string data = humidity.getData() + "\n";
 				message = data;
+				//message = _humidityData;
+				//HumiditySensor humidity;
+				//_humidityData = humidity.getData() + "\n";
+				
 			}
 			
 			if(sdata_in == "dust")
 			{
-				DustSensor dust;
+				
+				//DustSensor dust;
 				std::string data = dust.getData() + "\n";
 				message = data;
+				
 			}
 	
             boost::asio::write(*socket, boost::asio::buffer(message));
@@ -99,15 +118,34 @@ void worker(boost::shared_ptr<boost::asio::ip::tcp::socket> socket)
 	}
 }
 
-/// <summary>
-/// Creates a TCP listener based on the input port number value from main(). 
-/// Manages multiple socket connections via a vector<shared_ptr<sockets> > 
-///
-/// TO-DO: clean up vector on closing workerThread2
-/// </summary>
+/**
+ *  \brief Worker thread to handle the dust sensor measurement.
+ *  
+ *  \return No return value.
+ *  
+ *  \details This function will handle the measurement of dust concentration.
+ */
+
+void updateMeasurement()
+{
+	//HumiditySensor humidity;
+	dust.obtainData();
+	
+}
+
+/**
+ *  \brief Creates a TCP listener based on the input port number value from main(). 
+ *  
+ *  \param [in] port_number Port number
+ *  \return Return_Description
+ *  
+ *  \details Manages multiple socket connections via a vector<shared_ptr<sockets> > 
+ */
 
 void listener_loop(int port_number)
 {
+	boost::thread workerThread3(updateMeasurement);
+	
 
 	boost::asio::io_service io_service;
 	boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::tcp::v4(), port_number);
@@ -136,10 +174,15 @@ void listener_loop(int port_number)
 	}
 }
 
-/// <summary>
-/// Runs the TCP listener loop to handle connections
-/// Input argument: Port number
-/// </summary>
+
+/**
+ *  \brief The main() function
+ *  
+ *  \param [in] argc Port number
+ *  \return Return_Description
+ *  
+ *  \details Runs the TCP listener loop to handle connections
+ */
 
 int main(int argc, char* argv[])
 {
@@ -148,7 +191,8 @@ int main(int argc, char* argv[])
 		std::cerr << "Usage: TCP_echo_server <port>\n";
 		return -1;
 	}
-
+	wiringPiSetup();
+	wiringPiI2CSetup(I2C_TEMP_ADDRESS);
 	boost::thread workerThread(listener_loop, std::atoi(argv[1])); // Creates a thread that loops to accept sockets
 
 	workerThread.join();
