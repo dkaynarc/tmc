@@ -19,7 +19,7 @@ namespace Tmc.Scada.App.UserControls
 
         public enum Hardware
         {
-            SorterRobot, AssemblerRobot, LoaderRobot, PalletiserRobot, SorterCamera, TrayVerifierCamera, SorterConveyor, AssemblyConveyor, MainPlc
+            SorterRobot, AssemblerRobot, LoaderRobot, PalletiserRobot, SorterCamera, TrayVerifierCamera, SorterConveyor, AssemblyConveyor, MainPlc, TemperatureSensor, SoundSensor, DustSensor, LightSensor, HumiditySensor
         }
 
         List<IHardware> hardwareList;
