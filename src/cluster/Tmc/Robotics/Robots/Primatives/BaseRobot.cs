@@ -39,8 +39,9 @@ namespace Tmc.Robotics
             {
                 throw new ArgumentException("Speed must be between 0 to 100.");
             }
-
+            this.BeginControl();
             this.Controller.MotionSystem.SpeedRatio = speed;
+            this.EndControl();
         }
 
         public void Initialise()
@@ -59,6 +60,7 @@ namespace Tmc.Robotics
                     {
                         this.Controller = ControllerFactory.CreateFrom(controller);
                         this.Controller.Rapid.ExecutionStatusChanged += new EventHandler<ExecutionStatusChangedEventArgs>(RapidExecutionStatusChanged);
+                        this.SetSpeed(100);
                         _status = HardwareStatus.Operational;
                         return;
                     }
