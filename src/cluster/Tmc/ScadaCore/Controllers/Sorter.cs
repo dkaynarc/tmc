@@ -227,8 +227,8 @@ namespace Tmc.Scada.Core
         {
             const float xScale = 1f;
             const float yScale = 1f;
-            const float xOff = -116.9f;
-            const float yOff = 352.6f;
+            const float xOff = -117.8f;
+            const float yOff = 365f;
 
             float camX = p.X * xScale;
             float camY = p.Y * yScale;
