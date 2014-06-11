@@ -20,7 +20,8 @@ namespace Tmc.Scada.Core
         public OrderConsumer OrderConsumer { get; set; }
         public TabletMagazine TabletMagazine { get; set; }
         public HardwareMonitor HardwareMonitor { get; set; }
-        //private EnvironmentMonitor EnvironmentMonitor{ get; set; }
+        public EnvironmentMonitor EnvironmentMonitor{ get; set; }
+        
         private ISequencer _sequencer;
 
         public ScadaEngine()
@@ -46,7 +47,7 @@ namespace Tmc.Scada.Core
                 Logger.Instance.Write(new LogEntry(outer, LogType.Error));
                 return;
             }
-            //this.EnvironementMonitor = new EnvironementMonitor(this.ClusterConfig);
+            this.EnvironmentMonitor = new EnvironmentMonitor(this.ClusterConfig);
             this.HardwareMonitor = new HardwareMonitor(this.ClusterConfig);
             this.TabletMagazine = new TabletMagazine();
             this.OrderConsumer = new OrderConsumer();
@@ -59,7 +60,7 @@ namespace Tmc.Scada.Core
         {
             this.OrderConsumer.Start();
             this.HardwareMonitor.Start();
-            //this.EnviromentMonitor.Start();
+            this.EnviromentMonitor.Start();
         }
 
         public void Initialise()
