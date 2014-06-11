@@ -20,18 +20,36 @@
     <!-- Shale -->
     <ConnectionString>http://192.168.1.24:8080/photo.jpg</ConnectionString>
   </Hardware>
-  <!--<Hardware Type="Sensor">
+  <Hardware Type="Sensor">
     <Name>TemperatureSensor</Name>
     <Channel>temperature</Channel>
     <IPAddress>192.168.1.6</IPAddress>
-    <PortName>10001</PortName>
+    <PortName>9001</PortName>
+  </Hardware>
+  <Hardware Type="Sensor">
+    <Name>SoundSensor</Name>
+    <Channel>sound</Channel>
+    <IPAddress>192.168.1.6</IPAddress>
+    <PortName>9001</PortName>
+  </Hardware>
+  <Hardware Type="Sensor">
+    <Name>DustSensor</Name>
+    <Channel>dust</Channel>
+    <IPAddress>192.168.1.6</IPAddress>
+    <PortName>9001</PortName>
   </Hardware>
   <Hardware Type="Sensor">
     <Name>LightSensor</Name>
-    <Channel>light</Channel>
-    <IPAddress>127.0.0.1</IPAddress>
-    <PortName>10001</PortName>
-  </Hardware>-->
+    <Channel>ambience</Channel>
+    <IPAddress>192.168.1.6</IPAddress>
+    <PortName>9001</PortName>
+  </Hardware>
+  <Hardware Type="Sensor">
+    <Name>HumiditySensor</Name>
+    <Channel>humidity</Channel>
+    <IPAddress>192.168.1.6</IPAddress>
+    <PortName>9001</PortName>
+  </Hardware>
   <Hardware Type="LoaderRobot" Name="LoaderRobot" IPAddress="192.168.1.202"/>
   <Hardware Type="SorterRobot" Name="SorterRobot" IPAddress="192.168.1.201"/>
   <Hardware Type="AssemblerRobot" Name="AssemblerRobot" IPAddress="192.168.1.200"/>

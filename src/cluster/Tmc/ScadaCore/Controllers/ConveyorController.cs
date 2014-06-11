@@ -69,6 +69,11 @@ namespace Tmc.Scada.Core
             return _conveyorTypeMap[type].Position;
         }
 
+        public void SetPosition(ConveyorType type, ConveyorPosition position)
+        {
+            _conveyorTypeMap[type].Position = position;
+        }
+
         public bool CanMoveForward(ConveyorType type)
         {
             if (type == ConveyorType.Assembly)

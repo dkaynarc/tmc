@@ -20,7 +20,7 @@ namespace Tmc.Robotics
         public string Name { get; set; }
         public string PortName { get; set; }
         public int WaitTime { get; set; }
-        public ConveyorPosition Position { get; private set; }
+        public ConveyorPosition Position { get; set; }
 
         private HardwareStatus _status;
 

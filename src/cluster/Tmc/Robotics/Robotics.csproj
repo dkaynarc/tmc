@@ -91,6 +91,9 @@
     <Content Include="mod\AssemblerGetMagazine.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="mod\AssemblerHomePosition.mod">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="mod\AssemblerMagazinePoints.mod">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

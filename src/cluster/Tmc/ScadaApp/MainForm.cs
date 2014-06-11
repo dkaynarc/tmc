@@ -24,23 +24,60 @@ namespace Tmc.Scada.App
         public MainForm()
         {
             InitializeComponent();
-            Logger.Instance.Strategy = LogStrategy.All;
+            Logger.Instance.Strategy = LogStrategy.File;
             this.createUserButton.Hide();
             _scadaEngine = new ScadaEngine();
-            this.InitializeAll(_scadaEngine);
+            this.InitializeAll();
             //Only proceed if SCADA is initialised
             _webApiClient = new WebApiClient("http://192.168.1.102:8080/");
             //disableUserControl(); // Default on startup - user must login first
         }
 
-        private void InitializeAll(ScadaEngine engine)
+        protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            this.controlPage1.InitialiseScadaEngine(engine);
-            this.plantMimic1.Initialise(_scadaEngine.HardwareMonitor);
-            this.orderControl.Initialise();
-            this.debugOverrides.Initialize(engine);
-            CalibrationManager.Instance.DataFilesDirectory = @".\calibration";
-            CalibrationManager.Instance.LoadAllDataFiles();
+            var mbResult = MessageBox.Show("Do you want to shut down the cluster?", "Shutdown Confirmation", MessageBoxButtons.OKCancel);
+            if (mbResult == DialogResult.OK)
+            {
+                _scadaEngine.Shutdown();
+            }
+            base.OnFormClosing(e);
+        }
+
+        private bool InitializeScada()
+        {
+            DialogResult mbResult = DialogResult.Retry;
+            bool isInitialized = false;
+            while (!isInitialized && mbResult == DialogResult.Retry)
+            {
+                isInitialized = _scadaEngine.Initialize();
+                if (!isInitialized)
+                {
+                    mbResult = MessageBox.Show("SCADA Engine failed to initialize. {0}", "SCADA Engine Failure", MessageBoxButtons.RetryCancel);
+                }
+                if (mbResult == DialogResult.Cancel)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void InitializeAll()
+        {
+            if (this.InitializeScada())
+            {
+                this.controlPage1.InitialiseScadaEngine(_scadaEngine);
+                this.plantMimic1.Initialise(_scadaEngine.HardwareMonitor);
+                this.orderControl.Initialise();
+                this.debugOverrides.Initialize(_scadaEngine);
+                this.alarmsControl.Initialize();
+                CalibrationManager.Instance.DataFilesDirectory = @".\calibration";
+                CalibrationManager.Instance.LoadAllDataFiles();
+            }
+            else
+            {
+                this.Load += new EventHandler((s,e) => this.Close());
+            }
         }
 
         private void eStopButton_Click(object sender, EventArgs e)

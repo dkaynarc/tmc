@@ -47,28 +47,30 @@ namespace Tmc.Robotics
         {
             var networkScanner = new NetworkScanner();
 
-            for(int i = 0; i < 10; i++)
+            for(int i = 0; i < 20; i++)
             {
                 Thread.Sleep(100);
                 networkScanner.Scan();
-            }
 
-            foreach(ControllerInfo controller in networkScanner.Controllers)
-            {
-                if(controller.IPAddress.Equals(this.RobotIPAddress))
+
+                foreach (ControllerInfo controller in networkScanner.Controllers)
                 {
-                    this.Controller = ControllerFactory.CreateFrom(controller);
-                    this.Controller.Rapid.ExecutionStatusChanged += new EventHandler<ExecutionStatusChangedEventArgs>(RapidExecutionStatusChanged);
-                    _status = HardwareStatus.Operational;
-                    return;
+                    if (controller.IPAddress.Equals(this.RobotIPAddress))
+                    {
+                        this.Controller = ControllerFactory.CreateFrom(controller);
+                        this.Controller.Rapid.ExecutionStatusChanged += new EventHandler<ExecutionStatusChangedEventArgs>(RapidExecutionStatusChanged);
+                        _status = HardwareStatus.Operational;
+                        return;
+                    }
                 }
             }
+
 
             _status = HardwareStatus.Offline;
             throw new Exception(string.Format("Robot at {0} could not be found.", this.RobotIPAddress));
         }
 
-        public void Shutdown()
+        public virtual void Shutdown()
         {
             _status = HardwareStatus.Offline;
             this.ReturnToHomePosition();

@@ -1,7 +1,7 @@
 MODULE Module1
 	CONST jointtarget JointTarget_1:=[[90.9,23.1,58.4,-1.0,-86.7,42.2],[9E9,9E9,9E9,9E9,9E9,9E9]];
 	CONST jointtarget JointTarget_2:=[[89.6,24.7,49.6,-1.1,-79.5,42.4],[9E9,9E9,9E9,9E9,9E9,9E9]];
-	CONST jointtarget JointTarget_3:=[[92.4,35.0,31.2,3.1,-71.3,40.8],[9E9,9E9,9E9,9E9,9E9,9E9]];
+	CONST jointtarget JointTarget_3:=[[91.7,34.1,29.7,5.7,-66.5,39.4],[9E9,9E9,9E9,9E9,9E9,9E9]];
 
 	CONST jointtarget JointTarget_4:=[[41.8,26.6,41.6,-47.8,-80.3,58.0],[9E9,9E9,9E9,9E9,9E9,9E9]];
 	CONST jointtarget JointTarget_5:=[[92.4,31.6,32.2,3.2,-68.8,40.6],[9E9,9E9,9E9,9E9,9E9,9E9]];

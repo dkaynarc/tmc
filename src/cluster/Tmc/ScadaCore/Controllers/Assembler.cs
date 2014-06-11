@@ -65,7 +65,7 @@ namespace Tmc.Scada.Core
             {
                 _cancelTokenSource.Cancel();
                 IsRunning = false;
-                OnCompleted(new ControllerEventArgs() { OperationStatus = ControllerOperationStatus.Cancelled });
+                OnCompleted(new AssemblerEventArgs() { OperationStatus = ControllerOperationStatus.Cancelled });
             }
         }
 
@@ -114,6 +114,12 @@ namespace Tmc.Scada.Core
                 for (int i = 0; i < tray.Cells.Count; i++)
                 {
                     var tablet = tray.Cells[i];
+
+                    if(tablet == null)
+                    {
+                        continue;
+                    }
+
                     if (ct.IsCancellationRequested)
                     {
                         status = ControllerOperationStatus.Cancelled;
@@ -122,7 +128,8 @@ namespace Tmc.Scada.Core
                     else
                     {
                         var slotDepth = mag.GetSlotDepth(tablet.Color);
-                        var slotIndex = mag.GetSlotIndexReversed(tablet.Color);
+                        mag.RemoveTablet(tablet.Color);
+                        var slotIndex = mag.GetSlotIndex(tablet.Color);
                         Logger.Instance.Write(String.Format("[Assembler] Placing ({0}) tablet from slot {1} into slot {2}",
                             tablet.Color, slotIndex, i));
                         _assemblerRobot.PlaceTablet(slotIndex, slotDepth, i);
@@ -133,7 +140,8 @@ namespace Tmc.Scada.Core
             }
             catch (Exception ex)
             {
-                Logger.Instance.Write(new LogEntry(ex));
+                var outer = new Exception("[Assembler] Assembler failed to assemble.", ex);
+                Logger.Instance.Write(new LogEntry(outer));
                 status = ControllerOperationStatus.Failed;
             }
             return status;
@@ -161,7 +169,7 @@ namespace Tmc.Scada.Core
             {
                 var status = GetTabletMagazine();
                 IsRunning = false;
-                OnCompleted(new ControllerEventArgs() { OperationStatus = status });
+                OnCompleted(new AssemblerEventArgs() { OperationStatus = status });
             });
         }
 
@@ -187,7 +195,7 @@ namespace Tmc.Scada.Core
             {
                 var status = ReturnTabletMagazine();
                 IsRunning = false;
-                OnCompleted(new ControllerEventArgs() { OperationStatus = status });
+                OnCompleted(new AssemblerEventArgs() { OperationStatus = status });
             });
         }
 
@@ -199,7 +207,7 @@ namespace Tmc.Scada.Core
             int totalTablets = 0;
             tabletCollection.ToList().ForEach(x => totalTablets += x.Value);
 
-            if (totalTablets > Tray<Tablet>.MaxUsableCells - 1)
+            if (totalTablets > Tray<Tablet>.MaxUsableCells)
             {
                 throw new Exception(String.Format("The number of tablets in the order exceeds number of usable tray cells ({0} > {1})",
                                         totalTablets, Tray<Tablet>.MaxUsableCells));
@@ -214,7 +222,7 @@ namespace Tmc.Scada.Core
                     {
                         trayIndex++;
                     }
-                    tray.Cells[i] = new Tablet() { Color = pair.Key };
+                    tray.Cells[trayIndex] = new Tablet() { Color = pair.Key };
                     trayIndex++;
                 }
             }
@@ -238,6 +246,11 @@ namespace Tmc.Scada.Core
 
     public class AssemblerEventArgs : ControllerEventArgs
     {
+        public AssemblerEventArgs()
+        {
+            AssemblerOperationStatus = AssemblerOperationStatus.Normal;
+        }
+
         public AssemblerOperationStatus AssemblerOperationStatus;
         public Tray<Tablet> MappedTray;
     }

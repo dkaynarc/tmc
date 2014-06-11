@@ -10,11 +10,12 @@ namespace TmcData
 {
     public enum LogStrategy
     {
-        File,
+        File = 0,
         Database,
         All,
-        None,
-        Console
+        Console,
+        FileAndConsole,
+        None
     }
 
     public sealed class Logger
@@ -83,7 +84,20 @@ namespace TmcData
 
         private bool MatchesStrategy(ILogProvider p)
         {
-            return ((Strategy == LogStrategy.All || Strategy == p.ProvidedStrategy) && Strategy != LogStrategy.None);
+            var matches = false;
+
+            if (Strategy == LogStrategy.None)
+            {
+                return false;
+            }
+
+            matches |= Strategy == LogStrategy.All;
+            matches |= Strategy == p.ProvidedStrategy;
+            matches |= (Strategy == LogStrategy.FileAndConsole 
+                && (p.ProvidedStrategy == LogStrategy.File ||
+                    p.ProvidedStrategy == LogStrategy.Console));
+
+            return matches;
         }
     }
 }

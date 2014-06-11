@@ -45,7 +45,7 @@ namespace Tmc.Scada.Core
             this.Orders = new List<Order>();
             this._toUpdate = new Queue<Order>();
 
-            int updateTime = 1000;
+            int updateTime = 5000;
             if (!Int32.TryParse(ConfigurationManager.AppSettings["OrderConsumerUpdateRateMsec"], out updateTime))
             {
                 Logger.Instance.Write(new LogEntry("OrderConsumerUpdateRateMsec is invalid, defaulting to 1000 msec",
@@ -74,7 +74,6 @@ namespace Tmc.Scada.Core
         {
             _assemblingOrder = _pendingQueue.Dequeue();
             _assemblingOrder.Status = OrderStatus.Assembling;
-            //TmcRepository.UpdateOrderStatus(_assemblingOrder.Id, (int)OrderStatus.Assembling);
             _toUpdate.Enqueue(_assemblingOrder);
 
             return _assemblingOrder;
@@ -83,7 +82,6 @@ namespace Tmc.Scada.Core
         public void CompleteOrder()
         {
             _assemblingOrder.Status = OrderStatus.Completed;
-            //TmcRepository.UpdateOrderStatus(_assemblingOrder.Id, (int)OrderStatus.Completed);
             _toUpdate.Enqueue(_assemblingOrder);
         }
 
@@ -94,7 +92,13 @@ namespace Tmc.Scada.Core
 
         private void Update()
         {
-            foreach (var orderInfo in TmcRepository.GetOrdersByStatus((int)OrderStatus.Open).ToList())
+            _updateTimer.Stop();
+
+            var list = new List<OrderListView>();
+            list.AddRange(TmcRepository.GetOrdersByStatus((int)OrderStatus.Pending));
+            list.AddRange(TmcRepository.GetOrdersByStatus((int)OrderStatus.Open));
+
+            foreach (var orderInfo in list)
             {
                 var order = new Order();
                 order.Configuration.AddTablet(TabletColors.Black, orderInfo.Black);
@@ -106,12 +110,11 @@ namespace Tmc.Scada.Core
                 Orders.Add(order);
             }
 
-            foreach (var order in this.Orders)
+            foreach (var order in this.Orders.Where(e => e.Status == OrderStatus.Open))
             {
                 if (!this._pendingQueue.Contains(order))
                 {
                     order.Status = OrderStatus.Pending;
-                    //TmcRepository.UpdateOrderStatus(order.Id, (int)order.Status);
                     this._toUpdate.Enqueue(order);
                     this._pendingQueue.Enqueue(order);
                 }
@@ -122,6 +125,7 @@ namespace Tmc.Scada.Core
             }
 
             UpdateAll();
+            _updateTimer.Start();
         }
 
         private void UpdateAll()

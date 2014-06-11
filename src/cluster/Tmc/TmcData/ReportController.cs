@@ -31,15 +31,20 @@ namespace TmcData
 
             //REAL THING
 
-            // LINQ query to get data from model
-            var query = from q in new ICTDEntities().EnvironmentLogViews
-                        where q.Timestamp >= startTime && q.Timestamp <= endTime && q.Source.Any(s => sourcesToShow.Contains(q.Source))
-                        select new
-                        {
-                            Source = q.Source,
-                            Reading = q.Reading,
-                            Timestamp = q.Timestamp
-                        };
+            //// LINQ query to get data from mode
+            var query =
+                TmcRepository.EnvironmentLog().
+                Where(q => q.Timestamp >= startTime && q.Timestamp <= endTime && q.Source.Any(s => sourcesToShow.Contains(q.Source))).
+                Select(q => new { Source = q.Source, Reading = q.Reading, Timestamp = q.Timestamp });
+
+            //var query = from q in new ICTDEntities().EnvironmentLogViews
+            //            where q.Timestamp >= startTime && q.Timestamp <= endTime && q.Source.Any(s => sourcesToShow.Contains(q.Source))
+            //            select new
+            //            {
+            //                Source = q.Source,
+            //                Reading = q.Reading,
+            //                Timestamp = q.Timestamp
+            //            };
 
             // Cycle through query results to put values into data table
             foreach (var view in query)
@@ -73,17 +78,28 @@ namespace TmcData
             //dataTable.AddAlarmDataTableRow(newRow);
 
             // REAL THING
-
+            var query =
+                TmcRepository.EventLog().
+                Where(q => q.Timestamp >= startTime && q.Timestamp <= endTime && q.LogType.Any(s => typesToShow.Contains(q.LogType))).
+                Select(
+                    q => 
+                    new
+                    {
+                        Name = q.Name,
+                        Timestamp = q.Timestamp,
+                        Description = q.Description,
+                        LogType = q.LogType
+                    });
             // LINQ query to get data from model
-            var query = from q in new ICTDEntities().ComponentEventLogViews
-                        where q.Timestamp >= startTime && q.Timestamp <= endTime && q.LogType.Any(s => typesToShow.Contains(q.LogType))
-                        select new
-                        {
-                            Name = q.Name,
-                            Timestamp = q.Timestamp,
-                            Description = q.Description,
-                            LogType = q.LogType
-                        };
+            //var query = from q in new ICTDEntities().ComponentEventLogViews
+            //            where q.Timestamp >= startTime && q.Timestamp <= endTime
+            //            select new
+            //            {
+            //                Name = q.Name,
+            //                Timestamp = q.Timestamp,
+            //                Description = q.Description,
+            //                LogType = q.LogType
+            //            };
 
             // Cycle through results to put values into data table
             foreach (var view in query)

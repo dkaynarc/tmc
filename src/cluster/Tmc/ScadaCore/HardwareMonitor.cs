@@ -35,7 +35,7 @@ namespace Tmc.Scada.Core
 
             foreach (var hw in _hardware)
             {
-                PreviousHardwareStatuses.Add(hw.Name, hw.GetStatus());
+                PreviousHardwareStatuses.Add(hw.Name, HardwareStatus.Offline);
             }
         }
 
@@ -60,10 +60,11 @@ namespace Tmc.Scada.Core
                                             LogType.Error));
                 }
 
-                if (status != PreviousHardwareStatuses[hw.Name])
-                {
-                    OnStatusChanged(new HardwareEventArgs(hw));
-                }
+                //if (status != PreviousHardwareStatuses[hw.Name])
+                //{
+                // Changed so that this event fires every update for every hardware item - DK
+                OnStatusChanged(new HardwareEventArgs(hw));
+                //}
                 PreviousHardwareStatuses[hw.Name] = status;
             }
         }

@@ -13,6 +13,7 @@ using System.Diagnostics;
 using Tmc.Common;
 using System.Collections.Generic;
 using TmcData;
+using System.Threading.Tasks;
 
 namespace Tmc.Scada.Core.Sequencing
 {
@@ -226,6 +227,13 @@ namespace Tmc.Scada.Core.Sequencing
                     .Goto(State.AssemblyConveyorMovingForward)
                 .On(Trigger.Invalid)
                     .Goto(State.AssemblyConveyorMovingBackward)
+                .On(Trigger.NoTray)
+                    .Goto(State.LoadingTray)
+                    .Execute(() => 
+                        {
+                            Logger.Instance.Write("[Sequencer] No tray found detected. Trying to get another tray");
+                            _conveyorController.SetPosition(ConveyorType.Assembly, Robotics.ConveyorPosition.Right);
+                        })
                 .On(Trigger.Stop)
                     .Goto(State.Stopped)
                 .On(Trigger.Shutdown)
@@ -249,7 +257,10 @@ namespace Tmc.Scada.Core.Sequencing
                 .On(Trigger.Stop)
                     .Goto(State.Stopped)
                 .On(Trigger.Shutdown)
-                    .Goto(State.Shutdown);
+                    .Goto(State.Shutdown)
+                .On(Trigger.TabletRefill)
+                    .Goto(State.PlacingTabletMagazineOnSortingConveyorFromAssembler);
+                
 
             _fsm.In(State.AssemblyConveyorMovingBackward)
                 .ExecuteOnEntry(() =>
@@ -313,6 +324,7 @@ namespace Tmc.Scada.Core.Sequencing
                 .ExecuteOnEntry(() =>
                 {
                     _orderConsumer.CompleteOrder();
+                    _fsm.Fire(Trigger.Completed);
                 })
                 .On(Trigger.Completed)
                     .Goto(State.Idle)
@@ -336,11 +348,12 @@ namespace Tmc.Scada.Core.Sequencing
             _fsm.In(State.Shutdown)
                 .ExecuteOnEntry(() =>
                 {
-                    foreach (var hardware in _hardware)
-                    {
-                        Logger.Instance.Write(String.Format("[Sequencer] Shutting down {0}", hardware.Name), LogType.Message);
-                        hardware.Shutdown();
-                    }
+                    //(var hardware in _hardware)
+                    Parallel.ForEach(_hardware, (hardware) =>
+                        {
+                            Logger.Instance.Write(String.Format("[Sequencer] Shutting down {0}", hardware.Name), LogType.Message);
+                            hardware.Shutdown();
+                        });
                 })
                 .On(Trigger.Start)
                     .Goto(State.Startup);
@@ -493,7 +506,17 @@ namespace Tmc.Scada.Core.Sequencing
 
         private void Assembler_Completed(object sender, ControllerEventArgs e)
         {
-            _fsm.Fire(Trigger.Completed);
+            var args = e as AssemblerEventArgs;
+
+            if (args.AssemblerOperationStatus == AssemblerOperationStatus.Normal)
+            {
+                _fsm.Fire(Trigger.Completed);
+            }
+            else if(args.AssemblerOperationStatus == AssemblerOperationStatus.TabletRefill)
+            {
+                _fsm.Fire(Trigger.TabletRefill);
+            }
+            
         }
 
         private void BindEvents()
@@ -538,6 +561,10 @@ namespace Tmc.Scada.Core.Sequencing
             else if (args.VerificationResult == VerificationResult.Invalid)
             {
                 _fsm.Fire(Trigger.Invalid, args.VerificationMode);
+            }
+            else if (args.VerificationResult == VerificationResult.NoTray)
+            {
+                _fsm.Fire(Trigger.NoTray, args.VerificationMode);
             }
         }
         #endregion Event handlers

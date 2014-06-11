@@ -42,41 +42,47 @@ namespace Tmc.Sensors
                 Sensor light = new Sensor();
                 light.Name = "LightSensor";
                 light.Channel = "ambience";
-                light.IPAddress = "172.19.200.66";
+                light.IPAddress = "192.168.1.6";
                 light.PortName = "9000";
                 Sensor temperature = new Sensor();
                 temperature.Name = "TemperatureSensor";
                 temperature.Channel = "temperature";
-                temperature.IPAddress = "172.19.200.66";
+                temperature.IPAddress = "192.168.1.6";
                 temperature.PortName = "9000";
                 Sensor sound = new Sensor();
                 sound.Name = "SoundSensor";
                 sound.Channel = "sound";
-                sound.IPAddress = "172.19.200.66";
+                sound.IPAddress = "192.168.1.6";
                 sound.PortName = "9000";
                 Sensor humidity = new Sensor();
                 humidity.Name = "HumiditySensor";
                 humidity.Channel = "humidity";
-                humidity.IPAddress = "172.19.200.66";
+                humidity.IPAddress = "192.168.1.6";
                 humidity.PortName = "9000";
+                Sensor dust = new Sensor();
+                dust.Name = "DustSensor";
+                dust.Channel = "dust";
+                dust.IPAddress = "192.168.1.6";
+                dust.PortName = "9000";
 
                 light.Initialise(); //connection 2
                 temperature.Initialise(); //connection 1
                 humidity.Initialise(); //connection 1
                 sound.Initialise(); //connection 1
+                dust.Initialise();
                 
 
                 while(true)
                 {
-                    float result2 = light.getData();
-                    Console.WriteLine("Light Result " + result2);
-                    float result = temperature.getData();
-                    Console.WriteLine("Temperature Result " + result);
-                    float result1 = sound.getData();
-                    Console.WriteLine("Sound Result " + result1);
-                    float result3 = humidity.getData();
-                    Console.WriteLine("Humidity Result " + result3);
-                    Console.ReadLine();
+                   Console.Write("Light: " + light.getData());
+                   Console.Write(", Tempe: " + temperature.getData());
+                   Console.Write(", Sound: " + sound.getData());
+                   Console.Write(", Humidity: " + humidity.getData());
+                   Console.WriteLine(", Dust: " + dust.getData());
+                   // Console.WriteLine(temperature.GetStatus());
+                   // Console.Write("Dust " + dust.getData() + " ");
+                   // Console.WriteLine(dust.GetStatus());
+                    //Console.ReadLine();
                 }
 
                 

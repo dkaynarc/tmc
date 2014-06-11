@@ -92,7 +92,8 @@ namespace Tmc.Scada.Core
     public enum VerificationResult
     {
         Valid,
-        Invalid
+        Invalid,
+        NoTray
     }
 
     public class TrayVerifierParams : ControllerParams
