@@ -69,7 +69,7 @@ namespace Tmc.Scada.Core
             }
         }
 
-        private bool canCompleteOrder(TabletMagazine mag, OrderConfiguration orderConfiguration)
+        public bool canCompleteOrder(TabletMagazine mag, OrderConfiguration orderConfiguration)
         {
             foreach (var pair in orderConfiguration.Tablets.Where(x => x.Value > 0))
             {
@@ -84,14 +84,6 @@ namespace Tmc.Scada.Core
         private void AssembleAsync(TabletMagazine mag, OrderConfiguration orderConfiguration)
         {
             var ct = _cancelTokenSource.Token;
-            if (!canCompleteOrder(mag, orderConfiguration))
-            {
-                Logger.Instance.Write(new LogEntry("Not enough tablets to complete the order, Please refill tablet magazine"));
-                OnCompleted(new AssemblerEventArgs() { AssemblerOperationStatus = AssemblerOperationStatus.TabletRefill });
-                IsRunning = false;
-            }
-            else
-            {
                 Task.Run(() =>
                 {
                     var status = Assemble(mag, orderConfiguration, ct);
@@ -102,7 +94,6 @@ namespace Tmc.Scada.Core
                         AssemblerOperationStatus = AssemblerOperationStatus.Normal
                     });
                 }, ct);
-            }
         }
 
         private ControllerOperationStatus Assemble(TabletMagazine mag, OrderConfiguration orderConfiguration, CancellationToken ct)

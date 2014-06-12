@@ -32,7 +32,6 @@ namespace Tmc.Scada.Core
         }
 
         private Queue<Order> _toUpdate;
-        private Queue<Order> _pendingQueue;
         private Order _assemblingOrder;
         private Timer _updateTimer;
         public List<Order> Orders { get; set; }
@@ -41,7 +40,6 @@ namespace Tmc.Scada.Core
 
         public OrderConsumer()
         {
-            this._pendingQueue = new Queue<Order>();
             this.Orders = new List<Order>();
             this._toUpdate = new Queue<Order>();
 
@@ -67,14 +65,20 @@ namespace Tmc.Scada.Core
 
         public bool IsNewOrderAvailable()
         {
-            return _pendingQueue.Count > 0;
+            return Orders.Count > 0;
+        }
+
+        public Order peekNextOrder()
+        {
+            return Orders.FirstOrDefault();
         }
 
         public Order GetNextOrder()
         {
-            _assemblingOrder = _pendingQueue.Dequeue();
+            _assemblingOrder = Orders.First();
             _assemblingOrder.Status = OrderStatus.Assembling;
-            _toUpdate.Enqueue(_assemblingOrder);
+            TmcRepository.UpdateOrderStatus(_assemblingOrder.Id, (int)_assemblingOrder.Status);
+            //_toUpdate.Enqueue(_assemblingOrder);
 
             return _assemblingOrder;
         }
@@ -82,16 +86,25 @@ namespace Tmc.Scada.Core
         public void CompleteOrder()
         {
             _assemblingOrder.Status = OrderStatus.Completed;
-            _toUpdate.Enqueue(_assemblingOrder);
+
+            TmcRepository.CompleteOrder(_assemblingOrder.Id);
+            //_toUpdate.Enqueue(_assemblingOrder);
+            
+            foreach(var order in Orders.Where(e => e.Id == _assemblingOrder.Id))
+            {
+                Orders.Remove(order);
+            }
         }
 
         public IEnumerable<Order> OrdersByStatus(OrderStatus status)
         {
-            return this._pendingQueue.Select(x => x).Where(y => y.Status == status);
+            return this.Orders.Select(x => x).Where(y => y.Status == status);
         }
 
         private void Update()
         {
+            Orders = new List<Order>();
+
             _updateTimer.Stop();
 
             var list = new List<OrderListView>();
@@ -110,16 +123,7 @@ namespace Tmc.Scada.Core
                 Orders.Add(order);
             }
 
-            foreach (var order in this.Orders.Where(e => e.Status == OrderStatus.Open))
-            {
-                if (!this._pendingQueue.Contains(order))
-                {
-                    order.Status = OrderStatus.Pending;
-                    this._toUpdate.Enqueue(order);
-                    this._pendingQueue.Enqueue(order);
-                }
-            }
-            if (_pendingQueue.Count > 0)
+           if (Orders.Count > 0)
             {
                 OnOrdersAvailable(new EventArgs());
             }
