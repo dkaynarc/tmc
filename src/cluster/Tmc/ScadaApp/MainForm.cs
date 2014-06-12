@@ -20,6 +20,7 @@ namespace Tmc.Scada.App
     {
         private ScadaEngine _scadaEngine;
         private WebApiClient _webApiClient;
+        private WcfHost _wcfHost;
 
         public MainForm()
         {
@@ -73,6 +74,8 @@ namespace Tmc.Scada.App
                 this.alarmsControl.Initialize();
                 CalibrationManager.Instance.DataFilesDirectory = @".\calibration";
                 CalibrationManager.Instance.LoadAllDataFiles();
+                _wcfHost = new WcfHost(_scadaEngine);
+                _wcfHost.Open();
             }
             else
             {

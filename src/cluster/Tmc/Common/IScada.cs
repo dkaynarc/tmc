@@ -7,6 +7,7 @@ using System.ServiceModel;
 
 namespace Tmc.Common
 {
+    [ServiceContract]
     public interface IScada
     {
         [OperationContract]
