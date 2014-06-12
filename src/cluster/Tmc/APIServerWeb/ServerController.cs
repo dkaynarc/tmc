@@ -397,7 +397,7 @@ namespace APIServerWeb
                 }
                 else 
                 {
-                    return Request.CreateResponse(HttpStatusCode.InternalServerError, exc.ToString());
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, machinery);
                 }
             }
             
@@ -422,7 +422,7 @@ namespace APIServerWeb
             {
                 orders = repository.Orders.Where(p => p != null).Where(p => p.StatusID == 3);
                 sortedOrders = orders.Where(p => p.EndTime >= start.Date && p.EndTime <= end.Date);
-                parcels = CopyOrders(sortedOrders);
+                parcels = CopyOrders(sortedOrders, true);
                 return Request.CreateResponse(HttpStatusCode.OK, parcels);
             }
             catch (Exception exc)
@@ -438,12 +438,12 @@ namespace APIServerWeb
         public HttpResponseMessage GetIncompleteOrders()
         {
 
-            IEnumerable<Order> orders = new LinkedList<Order>();
-            orders = repository.Orders.Where(p => p != null).Where(p => p.StatusID != 3); // status id 3 - the order is complete
+          
+           IEnumerable<Order> orders = repository.Orders.Where(p => p.StatusID != 3); // status id 3 - the order is complete
 
             try
             {
-                LinkedList<OrderParcel> parcels = CopyOrders(orders);
+                LinkedList<OrderParcel> parcels = CopyOrders(orders, false);
                 return Request.CreateResponse(HttpStatusCode.OK, parcels);
             }
             catch (Exception exc)
@@ -456,16 +456,19 @@ namespace APIServerWeb
 
 
 
-        private LinkedList<OrderParcel> CopyOrders(IEnumerable<Order> orders)
+        private LinkedList<OrderParcel> CopyOrders(IEnumerable<Order> orders, bool complete)
         {
             LinkedList<OrderParcel> parcels = new LinkedList<OrderParcel>();
             List<Order> list = orders.ToList();
+            List<OrderConfig> configs = repository.OrderConfigs.ToList();
+
 
             foreach (var order in list)
             {
-                string startDate;
-                string endDate;
-                OrderConfig config = repository.OrderConfigs.Where(p => p.OrderID == order.OrderID).First();
+                OrderConfig config = configs.Where(p => p.OrderID == order.OrderID).First();
+                string startDate = "";
+                string endDate = "";
+                
                 try
                 {
                     startDate = order.StartTime.Value.ToShortDateString() + " "
@@ -475,29 +478,42 @@ namespace APIServerWeb
                 }
                 catch (Exception)
                 {
-                    startDate = "";
+                   
                 }
+
+
+                if (complete)
+                {
+                    try
+                    {
+                        endDate = order.EndTime.Value.ToShortDateString() + " "
+                                                       + order.EndTime.Value.Hour + ":" +
+                                                       order.EndTime.Value.Minute + ":" +
+                                                       order.EndTime.Value.Second;
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+
+
+                String userName;
                 try
                 {
-                    endDate = order.EndTime.Value.ToShortDateString() + " "
-                                                   + order.EndTime.Value.Hour + ":" +
-                                                   order.EndTime.Value.Minute + ":" +
-                                                   order.EndTime.Value.Second;
+                    userName = order.UserID == null ? null : UserManager.FindById(Convert.ToString(order.UserID)).UserName;
                 }
                 catch (Exception)
                 {
-                    endDate = "";
+                    userName = "not_provided";
                 }
-
-
-                SCADAUser user = order.UserID == null ? null : UserManager.FindById(Convert.ToString(order.UserID));
 
                 parcels.AddLast(new OrderParcel
                 {
                     startTime = startDate,
                     endTime = endDate,
                     mOrderId = order.OrderID,
-                    mOrderOwner = (user == null ? "not_provided" : user.UserName),
+                    mOrderOwner = userName,
                     mOrderStatus = order.Status.Name,
                     black = config.Black,
                     blue = config.Blue,
@@ -507,7 +523,6 @@ namespace APIServerWeb
                 });
             }
             return parcels;
-
         }
 
 
