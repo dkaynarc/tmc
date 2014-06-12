@@ -42,8 +42,8 @@ namespace Tmc.Scada.Core
         {
             SensorProperties.Add("temperature", new Tuple<string, float, float>("°C", 50, 0));
             SensorProperties.Add("humidity", new Tuple<string, float, float>("%", 30, 10));
-            SensorProperties.Add("light", new Tuple<string, float, float>("lux", 50, 10));
-            SensorProperties.Add("ambience", new Tuple<string, float, float>("dB", 50, 10));
+            SensorProperties.Add("ambience", new Tuple<string, float, float>("lux", 50, 10));
+            SensorProperties.Add("sound", new Tuple<string, float, float>("dB", 50, 10));
             SensorProperties.Add("dust", new Tuple<string, float, float>("particles/cubic metre", 50, 10));
         }
 
@@ -74,7 +74,7 @@ namespace Tmc.Scada.Core
                     logType = LogType.Message;
                 }
                 Log.Add(new EnvironmentLogEntry(sensor.Channel, sensor.GetData(), SensorProperties[sensor.Channel].Item1, logType));
-                TmcRepository.AddEnvironmentalReading(sourceID, DateTime.Now, sensor.GetData(), sourceID);
+                //TmcRepository.AddEnvironmentalReading(sourceID, DateTime.Now, sensor.GetData(), sourceID);
                 sourceID += 1;
             }
         }

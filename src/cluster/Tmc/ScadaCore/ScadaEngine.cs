@@ -136,7 +136,7 @@ namespace Tmc.Scada.Core
             IList<string> hardware = new List<string>();
             if (this.IsInitialized)
             {
-                this.ClusterConfig.GetAllHardware().Select(x => x.Name).ToList();
+                hardware = this.ClusterConfig.GetAllHardware().Select(x => x.Name).ToList();
             }
             return hardware;
         }
