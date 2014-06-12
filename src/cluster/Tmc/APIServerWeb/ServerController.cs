@@ -370,7 +370,7 @@ namespace APIServerWeb
             try
             {
                 IDictionary<string, HardwareStatus> statuses = ScadaConnectionManager.ScadaClient.GetLastHardwareStatuses();
-                List<string> machNames = (List<string>)ScadaConnectionManager.ScadaClient.GetAllHardwareNames();
+                var machNames = ScadaConnectionManager.ScadaClient.GetAllHardwareNames();
 
 
                 foreach (string name in machNames)
