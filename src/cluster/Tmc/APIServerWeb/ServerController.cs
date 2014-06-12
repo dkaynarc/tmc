@@ -17,6 +17,8 @@ using APIServerWeb.EF;
 using System.ServiceModel;
 using APIServerWeb.Authentication;
 using System.Web.Security;
+using Tmc.Common;
+
 
 namespace APIServerWeb
 {
@@ -50,7 +52,7 @@ namespace APIServerWeb
         public ServerController()
         {
             repository = new ICTDEntities();
-            SetupRoles(Roles);
+            //SetupRoles(Roles);
         }
 
 
@@ -94,7 +96,7 @@ namespace APIServerWeb
                 UserManager.RemovePassword(user.Id);
                 UserManager.AddPassword(user.Id, newPassword);
 
-                return "success: password reset";
+                return "success: password reset: " + newPassword;
             }
         }
 
@@ -114,12 +116,13 @@ namespace APIServerWeb
 
             try
             {
+                user = UserManager.FindByName(var);
                 var result = UserManager.Delete(user);
                 return Request.CreateResponse(HttpStatusCode.OK, "success");
             }
-            catch (Exception)
+            catch (Exception exc)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, "fail");
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "fail: " + exc.ToString());
             };
 
         }
@@ -227,14 +230,14 @@ namespace APIServerWeb
 
             catch (DbEntityValidationException exc)
             {
-                foreach (var err in exc.EntityValidationErrors)
-                {
-                    foreach (var errrr in err.ValidationErrors)
-                    {
-                        string st = errrr.ErrorMessage;
-                    }
-                }
-                return "fail";
+                //foreach (var err in exc.EntityValidationErrors)
+                //{
+                //    foreach (var errrr in err.ValidationErrors)
+                //    {
+                //        string st = errrr.ErrorMessage;
+                //    }
+                //}
+                return "fail: " + exc.ToString();
             }
         }
 
@@ -315,9 +318,9 @@ namespace APIServerWeb
                 return new DeleteOrderParcel { orderId = Convert.ToString(var), result = "success" };
 
             }
-            catch (Exception)
+            catch (Exception exc)
             {
-                return new DeleteOrderParcel { orderId = Convert.ToString(var), result = "fail" };
+                return new DeleteOrderParcel { orderId = Convert.ToString(var), result = "fail: " + exc.ToString() };
             }
         }
 
@@ -363,17 +366,41 @@ namespace APIServerWeb
         [HttpGet]
         public HttpResponseMessage GetMachineryStatus()
         {
-            List<MachineParcel> machinery = new List<MachineParcel>
-           { 
-             new MachineParcel{ Name = "SORTER", Status = ON },
-             new MachineParcel { Name = "ASSEMBLER", Status = ON },
-             new MachineParcel { Name = "LOADER", Status = ON },
-             new MachineParcel { Name = "PALLETISER", Status = OFF },
-             new MachineParcel { Name = "CONVEYOR #1", Status = OFF },
-             new MachineParcel { Name = "CONVEYOR #2", Status = OFF }
+            List<MachineParcel> machinery = new List<MachineParcel>();
+            try
+            {
+                IDictionary<string, HardwareStatus> statuses = ScadaConnectionManager.ScadaClient.GetLastHardwareStatuses();
+                List<string> machNames = (List<string>)ScadaConnectionManager.ScadaClient.GetAllHardwareNames();
 
-           };
-            return Request.CreateResponse(HttpStatusCode.OK, machinery);
+
+                foreach (string name in machNames)
+                {
+                    machinery.Add(new MachineParcel { Name = name, Status = Convert.ToString(statuses[name]) });
+                }
+                return Request.CreateResponse(HttpStatusCode.OK, machinery);
+            }
+            catch (Exception exc)
+            {
+                if (exc.GetType() == typeof(EndpointNotFoundException))
+                {
+                    machinery = new List<MachineParcel>
+                   { 
+                    new MachineParcel{ Name = "SORTER", Status = OFF },
+                    new MachineParcel { Name = "ASSEMBLER", Status = OFF },
+                    new MachineParcel { Name = "LOADER", Status = OFF },
+                    new MachineParcel { Name = "PALLETISER", Status = OFF },
+                    new MachineParcel { Name = "CONVEYOR #1", Status = OFF },
+                    new MachineParcel { Name = "CONVEYOR #2", Status = OFF }
+                  };
+
+                    return Request.CreateResponse(HttpStatusCode.OK, machinery);
+                }
+                else 
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, machinery);
+                }
+            }
+            
         }
 
 
@@ -394,8 +421,8 @@ namespace APIServerWeb
             try
             {
                 orders = repository.Orders.Where(p => p != null).Where(p => p.StatusID == 3);
-                sortedOrders = orders.Where(p => p.EndTime.Value.Date >= start.Date && p.EndTime.Value.Date <= end.Date);
-                parcels = CopyOrders(sortedOrders);
+                sortedOrders = orders.Where(p => p.EndTime >= start.Date && p.EndTime <= end.Date);
+                parcels = CopyOrders(sortedOrders, true);
                 return Request.CreateResponse(HttpStatusCode.OK, parcels);
             }
             catch (Exception exc)
@@ -411,12 +438,12 @@ namespace APIServerWeb
         public HttpResponseMessage GetIncompleteOrders()
         {
 
-            IEnumerable<Order> orders = new LinkedList<Order>();
-            orders = repository.Orders.Where(p => p != null).Where(p => p.StatusID != 3); // status id 3 - the order is complete
+          
+           IEnumerable<Order> orders = repository.Orders.Where(p => p.StatusID != 3); // status id 3 - the order is complete
 
             try
             {
-                LinkedList<OrderParcel> parcels = CopyOrders(orders);
+                LinkedList<OrderParcel> parcels = CopyOrders(orders, false);
                 return Request.CreateResponse(HttpStatusCode.OK, parcels);
             }
             catch (Exception exc)
@@ -429,16 +456,19 @@ namespace APIServerWeb
 
 
 
-        private LinkedList<OrderParcel> CopyOrders(IEnumerable<Order> orders)
+        private LinkedList<OrderParcel> CopyOrders(IEnumerable<Order> orders, bool complete)
         {
             LinkedList<OrderParcel> parcels = new LinkedList<OrderParcel>();
             List<Order> list = orders.ToList();
+            List<OrderConfig> configs = repository.OrderConfigs.ToList();
+
 
             foreach (var order in list)
             {
-                string startDate;
-                string endDate;
-                OrderConfig config = repository.OrderConfigs.Where(p => p.OrderID == order.OrderID).First();
+                OrderConfig config = configs.Where(p => p.OrderID == order.OrderID).First();
+                string startDate = "";
+                string endDate = "";
+                
                 try
                 {
                     startDate = order.StartTime.Value.ToShortDateString() + " "
@@ -448,29 +478,42 @@ namespace APIServerWeb
                 }
                 catch (Exception)
                 {
-                    startDate = "";
+                   
                 }
+
+
+                if (complete)
+                {
+                    try
+                    {
+                        endDate = order.EndTime.Value.ToShortDateString() + " "
+                                                       + order.EndTime.Value.Hour + ":" +
+                                                       order.EndTime.Value.Minute + ":" +
+                                                       order.EndTime.Value.Second;
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+
+
+                String userName;
                 try
                 {
-                    endDate = order.EndTime.Value.ToShortDateString() + " "
-                                                   + order.EndTime.Value.Hour + ":" +
-                                                   order.EndTime.Value.Minute + ":" +
-                                                   order.EndTime.Value.Second;
+                    userName = order.UserID == null ? null : UserManager.FindById(Convert.ToString(order.UserID)).UserName;
                 }
                 catch (Exception)
                 {
-                    endDate = "";
+                    userName = "not_provided";
                 }
-
-
-                SCADAUser user = order.UserID == null ? null : UserManager.FindById(Convert.ToString(order.UserID));
 
                 parcels.AddLast(new OrderParcel
                 {
                     startTime = startDate,
                     endTime = endDate,
                     mOrderId = order.OrderID,
-                    mOrderOwner = (user == null ? "not_provided" : user.UserName),
+                    mOrderOwner = userName,
                     mOrderStatus = order.Status.Name,
                     black = config.Black,
                     blue = config.Blue,
@@ -480,7 +523,6 @@ namespace APIServerWeb
                 });
             }
             return parcels;
-
         }
 
 
@@ -494,20 +536,27 @@ namespace APIServerWeb
             try
             {
                 OrderConfig conf = repository.OrderConfigs.Where(p => p.OrderID == orderId).First();
+                
                 conf.Green = green;
                 conf.Black = black;
                 conf.Blue = blue;
                 conf.Red = red;
                 conf.White = white;
-
+                  
+                Order order = repository.Orders.Where(p => p.OrderID == orderId).First();
+                order.NumberOfProducts = Convert.ToInt16(black) +
+                                              Convert.ToInt16(blue) +
+                                              Convert.ToInt16(green) +
+                                              Convert.ToInt16(red) +
+                                              Convert.ToInt16(white);
                 repository.SaveChanges();
 
                 return "success";
             }
 
-            catch (DbEntityValidationException)
+            catch (DbEntityValidationException exc)
             {
-                return "fail";
+                return "fail " + exc.ToString();
             }
         }
 
