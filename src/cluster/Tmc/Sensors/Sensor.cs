@@ -135,7 +135,7 @@ namespace Tmc.Sensors
                 
             }
 
-            if (parameters.TryGetValue("ConnectionPort", out s))
+            if (parameters.TryGetValue("PortName", out s))
             {
                 this.PortName = s; 
             }
@@ -160,6 +160,8 @@ namespace Tmc.Sensors
             try
             {   
                 _streamWriter.Write(this.Channel);
+
+
                 _streamWriter.Flush();                               // Flush WriterStream data to network stream (i.e. sending to Raspberry Pi)        
 
                 string result = null;

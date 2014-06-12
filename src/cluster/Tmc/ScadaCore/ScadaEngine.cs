@@ -32,7 +32,7 @@ namespace Tmc.Scada.Core
         {
             this.OrderConsumer.Start();
             this.HardwareMonitor.Start();
-            //this.EnvironmentMonitor.Start();
+            this.EnvironmentMonitor.Start();
         }
 
         public bool Initialize()
@@ -163,7 +163,7 @@ namespace Tmc.Scada.Core
             {
                 this.ClusterConfig = ClusterFactory.Instance.CreateCluster(configFile);
 
-                //this.EnvironmentMonitor = new EnvironmentMonitor(this.ClusterConfig);
+                this.EnvironmentMonitor = new EnvironmentMonitor(this.ClusterConfig);
                 this.HardwareMonitor = new HardwareMonitor(this.ClusterConfig);
                 this.TabletMagazine = new TabletMagazine();
                 this.OrderConsumer = new OrderConsumer();

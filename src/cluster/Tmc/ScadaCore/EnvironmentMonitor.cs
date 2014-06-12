@@ -22,6 +22,7 @@ namespace Tmc.Scada.Core
 
         public EnvironmentMonitor(ClusterConfig config)
         {
+            SensorProperties = new Dictionary<String, Tuple<String, float, float>>();
             InitialiseSensorProperties();
             Log = new List<EnvironmentLogEntry>();
             _sensors = new List<ISensor>();
