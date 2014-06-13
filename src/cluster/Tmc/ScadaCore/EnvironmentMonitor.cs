@@ -66,7 +66,7 @@ namespace Tmc.Scada.Core
                 if ((sensor.GetData() > SensorProperties[sensor.Channel].Item2) || (sensor.GetData() < SensorProperties[sensor.Channel].Item3))
                 {
                     logType = LogType.Warning;
-                    Logger.Instance.Write(new LogEntry(sensor.Name + " has failed",
+                    Logger.Instance.Write(new LogEntry(sensor.Name + " values are out of bounds.",
                LogType.Warning));
                 }
                 else
@@ -74,7 +74,7 @@ namespace Tmc.Scada.Core
                     logType = LogType.Message;
                 }
                 Log.Add(new EnvironmentLogEntry(sensor.Channel, sensor.GetData(), SensorProperties[sensor.Channel].Item1, logType));
-                //TmcRepository.AddEnvironmentalReading(sourceID, DateTime.Now, sensor.GetData(), sourceID);
+                TmcRepository.AddEnvironmentalReading(sourceID, DateTime.Now, sensor.GetData(), sourceID);
                 sourceID += 1;
             }
         }

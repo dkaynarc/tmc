@@ -192,7 +192,9 @@ namespace Tmc.Scada.Core.Sequencing
                 .On(Trigger.Stop)
                     .Goto(State.Stopped)
                 .On(Trigger.Shutdown)
-                    .Goto(State.Shutdown);
+                    .Goto(State.Shutdown)
+                .On(Trigger.Failed)
+                    .Goto(State.Idle);
 
             _fsm.In(State.AssemblyConveyorMovingForward)
                 .ExecuteOnEntry(() =>
@@ -321,7 +323,9 @@ namespace Tmc.Scada.Core.Sequencing
                 .On(Trigger.Stop)
                     .Goto(State.Stopped)
                 .On(Trigger.Shutdown)
-                    .Goto(State.Shutdown);
+                    .Goto(State.Shutdown)
+                .On(Trigger.Failed)
+                    .Goto(State.PlacingTrayInBuffer);
 
             _fsm.In(State.OrderComplete)
                 .ExecuteOnEntry(() =>
@@ -544,7 +548,14 @@ namespace Tmc.Scada.Core.Sequencing
 
         private void Loader_Completed(object sender, ControllerEventArgs e)
         {
-            _fsm.Fire(Trigger.Completed);
+            if (e.OperationStatus == ControllerOperationStatus.Succeeded)
+            {
+                _fsm.Fire(Trigger.Completed);
+            }
+            else
+            {
+                _fsm.Fire(Trigger.Failed);
+            }
         }
 
         private void Sorter_Completed(object sender, ControllerEventArgs e)
