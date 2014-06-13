@@ -97,6 +97,41 @@ namespace Tmc.Vision
         /// <returns>return position of viable tablets and state</returns>
         public List<Tablet> GetVisibleTablets()
         {
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 59;//46;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 570;//55;//75;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 62;//50;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 76;// 68;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 181;//170;//140;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 119;//125;
+
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue = 0;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 152;//153;//93;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value = 101;//198;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue = 9;//171;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation = 240;//128;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Value = 240;//162;//250;
+
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Hue = 17;//12
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Satuation = 63;//52;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Value = 165;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 24;//18
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 95;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Value = 231;//239;
+
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 103;//114;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 10;//36;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 27;//49;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 166;//147;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 136;//127;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 109;// 82;//109;
+
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Hue = 177;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Satuation = 23;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Value = 15;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Hue = 36;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Satuation = 86;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Value = 58;
+
             AdjustMinMaxRadius(ChessboardPoints);
             Debug.WriteLine("\n\n");
             TabletList.Clear();//clear tablets from last use
@@ -190,8 +225,8 @@ namespace Tmc.Vision
 
             size = ((MagY / 5) * 8)/2;
 
-            minRadius = (int)(size - 2);
-            maxRadius = (int)(size + 2);
+            minRadius = (int)(size - 0);
+            maxRadius = (int)(size + 6);
 
 
         }
@@ -326,9 +361,9 @@ namespace Tmc.Vision
 
                 var histo = ImagesToHisto(GetTablet(src, tablet));
 
-                int[][] hue = getHighLowHSV(histo, 450, HSVdata.Hue);
-                int[][] sat = getHighLowHSV(histo, 450, HSVdata.Sat);
-                int[][] val = getHighLowHSV(histo, 450, HSVdata.Val);
+                int[][] hue = getHighLowHSV(histo, 300, HSVdata.Hue);
+                int[][] sat = getHighLowHSV(histo, 300, HSVdata.Sat);
+                int[][] val = getHighLowHSV(histo, 300, HSVdata.Val);
 
 
 
@@ -342,7 +377,7 @@ namespace Tmc.Vision
                 else
                 {
                     drawTab.Draw(tablet, new Bgr(Color.White), 2);
-#if DEBUG
+#if false
                     //Debug.WriteLine("Hue: " + hue[0][0] + " - " + hue[0][1] + ", Sat: " + sat[0][0] + " - " + sat[0][1] + ", Val: " + val[0][0] + " - " + val[0][1]);
                     Debug.WriteLine("Na: " + hue[0][0] + "\t" + hue[0][1] + "\t" + sat[0][0] + "\t" + sat[0][1] + "\t" + val[0][0] + "\t" + val[0][1]);
                     int hueM = hue.GetLength(0) - 1;
