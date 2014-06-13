@@ -178,6 +178,7 @@ public class ModuleActivity extends FragmentActivity implements
 										.edit();
 								ed.remove(Constants.USERNAME_KEY);
 								ed.remove(Constants.USERROLE_KEY);
+								ed.remove(Constants.ORDERS_KEY);
 								ed.commit();
 								finish();
 							}

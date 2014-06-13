@@ -94,7 +94,7 @@ public class MachineStatusAdapter extends ArrayAdapter<Machine>
 				if (machine.getMachineStatus().equals(Constants.ON))
 					statusImage
 							.setImageResource(android.R.drawable.button_onoff_indicator_on);
-				else if (machine.getMachineStatus().equals(Constants.OFF))
+				else
 					statusImage
 							.setImageResource(android.R.drawable.button_onoff_indicator_off);
 			}

@@ -40,15 +40,6 @@ public class LoginActivity extends Activity
 		setContentView(R.layout.activity_login);
 		EditText ipAddress = (EditText) findViewById(R.id.loginactivity_ipaddress_et);
 		ipAddress.setText("192.168.1.100");
-		/*
-		 * Intent intent = new Intent(LoginActivity.this, ModuleActivity.class);
-		 * if (turnedOn == false)
-		 */
-		// Replace this with something you might want to do only once during
-		// startup.
-		/* startActivity(intent); */
-
-		// turnedOn = true;
 	}
 
 	/**
@@ -61,27 +52,12 @@ public class LoginActivity extends Activity
 	public void onLoginClicked(View v)
 	{
 		EditText ipAddress = (EditText) findViewById(R.id.loginactivity_ipaddress_et);
-		Constants.SERVER_URL = "http://" + ipAddress.getText().toString() + ":8080/api/Server/";
+		Constants.SERVER_URL = "http://" + ipAddress.getText().toString() + "/api/Server/";
 		String userName = ((EditText) findViewById(R.id.loginactivity_username_et))
 				.getText().toString();
 		String password = ((EditText) findViewById(R.id.loginactivity_password_et))
 				.getText().toString();
 		makeLoginService(userName, password);
-		// ////////////////////
-		// Replace condition with function that takes in the username and
-		// password,performs the necessary confidentiality enforcements
-		// and returns a boolean whether or not it is the correct details.
-
-		/*
-		 * if(false((EditText)
-		 * findViewById(R.id.loginactivity_username_et)).getText()
-		 * .toString().equals(Constants.USERNAME) && ((EditText)
-		 * findViewById(R.id.loginactivity_password_et))
-		 * .getText().toString().equals(Constants.PASSWORD)) { Intent intent =
-		 * new Intent(LoginActivity.this, ModuleActivity.class);
-		 * startActivity(intent); } else Toast.makeText(this,
-		 * Constants.WRONGINFO, Toast.LENGTH_SHORT) .show();
-		 */
 	}
 
 	private void makeLoginService(String userName, String password)
@@ -95,7 +71,7 @@ public class LoginActivity extends Activity
 
 		// stop any already running services associated with this activity
 		stopService(service);
-		pd = ProgressDialog.show(this, null, "Contacting server");
+		pd = ProgressDialog.show(this, null, "Authenticating");
 		startService(service);
 
 	}

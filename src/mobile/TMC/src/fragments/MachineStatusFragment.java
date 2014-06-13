@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import model.Constants;
 import model.Machine;
 import ictd.activities.R;
@@ -49,6 +48,7 @@ public class MachineStatusFragment extends ListFragment
 	MediaPlayer mMediaPlayer = new MediaPlayer();
 	private ResultReceiver receiver;
 	private ProgressDialog pd;
+	private Timer timer;
 
 	private OnClickListener onEmergencyStopClickListener = new OnClickListener() {
 		public void onClick(View view)
@@ -102,20 +102,9 @@ public class MachineStatusFragment extends ListFragment
 			shutdown();
 		}
 	};
-	private Timer timer;
 
-	/**
-	 * Implements the handler for the new threads created by the startup and
-	 * shutdown buttons. Only necessary for demonstration purposes.
-	 */
+	
 
-	/*
-	 * @SuppressLint("HandlerLeak") private Handler mHandler = new Handler() {
-	 * 
-	 * @Override public void handleMessage(Message msg) { switch (msg.what) {
-	 * case Constants.SHUTDOWN: turnOff(); break; case Constants.STARTUP:
-	 * turnOn(); break; } } };
-	 */
 
 	/**
 	 * Sets the layout for the activity.
@@ -288,7 +277,9 @@ public class MachineStatusFragment extends ListFragment
 		mMediaPlayer.start();
 	}
 
-	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// private class
 	private class ResultReceiver extends BroadcastReceiver
 	{
@@ -366,6 +357,10 @@ public class MachineStatusFragment extends ListFragment
 					Toast.LENGTH_SHORT).show();
 	}
 
+	
+	
+	
+	
 	private void handleMachineStatus(String response)
 	{
 		ArrayList<Machine> newStats = new ArrayList<Machine>();
@@ -384,7 +379,7 @@ public class MachineStatusFragment extends ListFragment
 
 		catch (JSONException e)
 		{
-			e.printStackTrace();
+			Toast.makeText(getActivity(), Constants.UPDATE_FAIL, Toast.LENGTH_SHORT).show();
 			return;
 		}
 
@@ -405,6 +400,14 @@ public class MachineStatusFragment extends ListFragment
 		adapter.notifyDataSetChanged();
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
 	private void doStatusCheck(MachineStatusAdapter adapter,
 			ArrayList<Machine> newStats)
 	{
@@ -422,18 +425,15 @@ public class MachineStatusFragment extends ListFragment
 			}
 
 		}
-
-		if (changedMach.size() != 0)
+			
+		if(changedMach.size() > 0)
 		{
-			if (changedMach.get(0).getMachineStatus().equalsIgnoreCase(Constants.OFF))
-				showAlertDialog(buildMessage(changedMach), Constants.OFF);
-
-			else
-				showAlertDialog(buildMessage(changedMach), Constants.ON);
-
-		}
+		   showAlertDialog(buildMessage(changedMach), changedMach.get(0).getMachineStatus());
+	    }
 	}
 
+	
+	
 	private String buildMessage(ArrayList<Machine> changedMach)
 	{
 		StringBuilder message = new StringBuilder();
@@ -492,14 +492,15 @@ public class MachineStatusFragment extends ListFragment
 		Drawable icon = getResources().getDrawable(
 				android.R.drawable.ic_dialog_alert);
 
-		if (status.equalsIgnoreCase(Constants.OFF))
+		if (status.equalsIgnoreCase(Constants.ON))
 		{
-			icon.setColorFilter(new LightingColorFilter(Color.RED, Color.RED));
+			icon.setColorFilter(new LightingColorFilter(Color.GREEN,
+					Color.GREEN));		
 		}
 		else
-			icon.setColorFilter(new LightingColorFilter(Color.GREEN,
-					Color.GREEN));
+			icon.setColorFilter(new LightingColorFilter(Color.RED, Color.RED));
 
+		
 		new AlertDialog.Builder(getActivity())
 				.setIcon(icon)
 				.setTitle(Constants.ATTENTION)

@@ -17,7 +17,7 @@ public class MachineUpdateService extends IntentService
 
 	public MachineUpdateService()
 	{
-		super("SynchService");
+		super("MachineUpdateService");
 	}
 
 	@Override

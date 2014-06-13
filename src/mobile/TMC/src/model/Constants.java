@@ -15,10 +15,10 @@ public class Constants
 	public static final String CANCELLED = "Cancelled";
 	/* public static final String ACTIVE = "ACTIVE"; */
 	public static final String COMPLETE = "Complete";
-	public static final String ON = "ON";
-	public static final String OFF = "OFF";
-	public static final String ROBOT = "ROBOT";
-	public static final String CONVEYOR = "CONVEYOR";
+	public static final String ON = "Operational";
+	public static final String OFF = "Offline";
+	public static final String ROBOT = "Robot";
+	public static final String CONVEYOR = "Conveyor";
 	/*
 	 * public static final ArrayList<Order> ORDERS = new ArrayList<Order>(
 	 * Arrays.asList(new Order(1029231, "Carlo", COMPLETE), ///new
@@ -88,7 +88,7 @@ public class Constants
 	public static final int MACHINE_STATUS_COMMAND = 7;
 	public static final CharSequence ATTENTION = "Attention!";
 	public static final CharSequence MACHINE_STOP = "Some machinery stopped unexpectedly";
-	public static final long UPDATE_INTERVAL = 15000;// milliseconds
+	public static final long UPDATE_INTERVAL = 10000;// milliseconds
 	public static final int EMERGENCY_STOP_COMMAND = 8;
 	public static final CharSequence STOP_SUCCESS = "The system has been stopped";
 	public static final CharSequence STOP_FAIL = "Failed to stop the system";
@@ -96,9 +96,9 @@ public class Constants
 	public static final CharSequence START_FAIL = "Failed to start the system";
 	public static final int START_COMMAND = 9;
 	public static final int STOP_COMMAND = 10;
-	public static String SERVER_URL = "http://stesha.com.au/api/Server/";
-	//public static String SERVER_URL = "http://192.168.1.100:9000/api/Server/";
-	//public static String SERVER_URL = "http://192.168.1.100:8080/api/Server/";
+	//public static String SERVER_URL = "http://stesha.com.au/api/Server/";
+	public static String SERVER_URL = "";
+	//public static String SERVER_URL = "http://192.168.1.5:8080/api/Server/";
 	public static final String ENVIRONMENT = "ENVIRONMENT";
 	public static final String BLACK = "Black";
 	public static final String BLUE = "Blue";
@@ -118,4 +118,8 @@ public class Constants
 	public static final String RESULT = "Result";
 	public static final String CONNECTION_OK = "CONNECTION: OK";
 	public static final String CONNECTION_FAILED = "CONNECTION: FAILED";
+	public static final CharSequence ORDER_UPDATE_FAIL = "Failed to update orders list";
+	public static final CharSequence UPDATE_FAIL = "Machine update failed";
+	public static final String ORDERS_PERSISTANCE = "orders";
+	public static final String ORDERS_KEY = "orders";
 }
