@@ -76,13 +76,13 @@ namespace Tmc.Scada.Core
             this.SlotCapacity = 5;
 
             int slotIndex = 0;
-            int slotIndexReversed = SlotCapacity - 1;
             var values = ((TabletColors[])(Enum.GetValues(typeof(TabletColors)))).AsEnumerable().Where(x => x != TabletColors.Unknown);
             foreach (var value in values)
             {
                 Slots.Add(new Slot(value));
-                _slotIndexMap.Add(value, slotIndex++);
-                _slotReverseIndexMap.Add(value, slotIndexReversed--);
+                _slotIndexMap.Add(value, slotIndex);
+                _slotReverseIndexMap.Add(value, 7 - slotIndex);
+                slotIndex++;
             }
         }
 

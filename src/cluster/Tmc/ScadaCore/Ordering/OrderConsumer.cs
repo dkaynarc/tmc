@@ -70,12 +70,12 @@ namespace Tmc.Scada.Core
 
         public Order peekNextOrder()
         {
-            return Orders.FirstOrDefault();
+            _assemblingOrder = Orders.FirstOrDefault();
+            return _assemblingOrder;
         }
 
         public Order GetNextOrder()
         {
-            _assemblingOrder = Orders.First();
             _assemblingOrder.Status = OrderStatus.Assembling;
             TmcRepository.UpdateOrderStatus(_assemblingOrder.Id, (int)_assemblingOrder.Status);
             //_toUpdate.Enqueue(_assemblingOrder);
@@ -90,7 +90,7 @@ namespace Tmc.Scada.Core
             TmcRepository.CompleteOrder(_assemblingOrder.Id);
             //_toUpdate.Enqueue(_assemblingOrder);
             
-            foreach(var order in Orders.Where(e => e.Id == _assemblingOrder.Id))
+            foreach(var order in Orders.Where(e => e.Id == _assemblingOrder.Id).ToList())
             {
                 Orders.Remove(order);
             }
@@ -108,6 +108,7 @@ namespace Tmc.Scada.Core
             _updateTimer.Stop();
 
             var list = new List<OrderListView>();
+            list.AddRange(TmcRepository.GetOrdersByStatus((int)OrderStatus.Assembling));
             list.AddRange(TmcRepository.GetOrdersByStatus((int)OrderStatus.Pending));
             list.AddRange(TmcRepository.GetOrdersByStatus((int)OrderStatus.Open));
 

@@ -300,7 +300,7 @@ namespace Tmc.Scada.Core.Sequencing
                     });
                 })
                 .On(Trigger.Valid)
-                    .Goto(State.AssemblyConveyorMovingBackward)
+                    .Goto(State.OrderComplete)
                 .On(Trigger.Invalid)
                     .Goto(State.AssemblyConveyorMovingBackward)
                 .On(Trigger.Stop)
@@ -319,7 +319,7 @@ namespace Tmc.Scada.Core.Sequencing
 
                 })
                 .On(Trigger.Completed)
-                    .Goto(State.OrderComplete)
+                    .Goto(State.Idle)
                 .On(Trigger.Stop)
                     .Goto(State.Stopped)
                 .On(Trigger.Shutdown)
@@ -334,7 +334,7 @@ namespace Tmc.Scada.Core.Sequencing
                     _fsm.Fire(Trigger.Completed);
                 })
                 .On(Trigger.Completed)
-                    .Goto(State.Idle)
+                    .Goto(State.AssemblyConveyorMovingBackward)
                 .On(Trigger.Stop)
                     .Goto(State.Stopped)
                 .On(Trigger.Shutdown)
@@ -355,12 +355,18 @@ namespace Tmc.Scada.Core.Sequencing
             _fsm.In(State.Shutdown)
                 .ExecuteOnEntry(() =>
                 {
+                    foreach(var hardware in _hardware)
+                    {
+                        hardware.Shutdown();
+                    }
+
+                    //Removed because robots are using the same Named EventWaitHandle (cbf changing this) - Shale
                     //(var hardware in _hardware)
-                    Parallel.ForEach(_hardware, (hardware) =>
-                        {
-                            Logger.Instance.Write(String.Format("[Sequencer] Shutting down {0}", hardware.Name), LogType.Message);
-                            hardware.Shutdown();
-                        });
+                    //Parallel.ForEach(_hardware, (hardware) =>
+                    //    {
+                    //        Logger.Instance.Write(String.Format("[Sequencer] Shutting down {0}", hardware.Name), LogType.Message);
+                    //        hardware.Shutdown();
+                    //    });
                 })
                 .On(Trigger.Start)
                     .Goto(State.Startup);

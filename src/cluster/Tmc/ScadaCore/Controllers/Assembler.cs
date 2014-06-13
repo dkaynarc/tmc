@@ -120,7 +120,7 @@ namespace Tmc.Scada.Core
                     {
                         var slotDepth = mag.GetSlotDepth(tablet.Color);
                         mag.RemoveTablet(tablet.Color);
-                        var slotIndex = mag.GetSlotIndex(tablet.Color);
+                        var slotIndex = mag.GetSlotIndexReversed(tablet.Color);
                         Logger.Instance.Write(String.Format("[Assembler] Placing ({0}) tablet from slot {1} into slot {2}",
                             tablet.Color, slotIndex, i));
                         _assemblerRobot.PlaceTablet(slotIndex, slotDepth, i);
