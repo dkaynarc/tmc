@@ -41,10 +41,10 @@ namespace Tmc.Scada.Core
         private void InitialiseSensorProperties()
         {
             SensorProperties.Add("temperature", new Tuple<string, float, float>("°C", 50, 0));
-            SensorProperties.Add("humidity", new Tuple<string, float, float>("%", 30, 10));
-            SensorProperties.Add("ambience", new Tuple<string, float, float>("lux", 50, 10));
+            SensorProperties.Add("humidity", new Tuple<string, float, float>("%", 60, 0));
+            SensorProperties.Add("ambience", new Tuple<string, float, float>("lux", 600, 200));
             SensorProperties.Add("sound", new Tuple<string, float, float>("dB", 50, 10));
-            SensorProperties.Add("dust", new Tuple<string, float, float>("particles/cubic metre", 50, 10));
+            SensorProperties.Add("dust", new Tuple<string, float, float>("particles/cubic metre", 20000, 10));
         }
 
         public void Start()

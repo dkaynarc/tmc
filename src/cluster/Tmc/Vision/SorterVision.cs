@@ -8,15 +8,17 @@ using System.Diagnostics;
 
 namespace Tmc.Vision
 {
-    public class SorterVision : VisionBase
+    [Serializable]
+    public class SorterVisionCalibrationData : ICalibrationData
     {
-        /// <summary>
-        /// 
-        /// </summary>
+        public PointF[] ChessboardPoints { get; set; }
+
+        public Type ParentType { get; set; }
+    }
+
+    public class SorterVision : VisionBase, ICalibrateable
+    {
         private int minRadius;
-        /// <summary>
-        /// 
-        /// </summary>
         private int maxRadius;
         private int cannyThresh;
         private int cannyAccumThresh;
@@ -89,6 +91,13 @@ namespace Tmc.Vision
             minDist = 20;
             cannyThresh = 2;
             cannyAccumThresh = 83;
+
+            this.Register();
+        }
+
+        ~SorterVision()
+        {
+            this.Unregister();
         }
 
         /// <summary>
@@ -110,17 +119,33 @@ namespace Tmc.Vision
             
             DetectGoodPickupTablets(img, circles);
 
-
             return TabletList;
         }
 
         /// <summary>
         /// This function curenlty on calbrate on the chessboard
         /// </summary>
-        public void Calibrate()
+        public ICalibrationData Calibrate()
         {
             Image<Bgr, Byte> chessB = camera.GetImage(1);
             ChessboardPoints = FindPattern(chessB.Convert<Gray, Byte>(), new Size(12, 9));
+
+            var calData = new SorterVisionCalibrationData
+            {
+                ParentType = this.GetType(),
+                ChessboardPoints = this.ChessboardPoints
+            };
+
+            return calData;
+        }
+
+        public void SetCalibrationData(ICalibrationData data)
+        {
+            var myCalData = data as SorterVisionCalibrationData;
+            if (myCalData != null)
+            {
+                ChessboardPoints = myCalData.ChessboardPoints;
+            }
         }
 
         /// <summary>
@@ -593,6 +618,16 @@ namespace Tmc.Vision
             //CvInvoke.cvWaitKey(0);
             //if ((countTL >= 1) && (countTR >= 1) && (countBL >= 1) && (countBR >= 1)) saveImage(tabletImage, tablet.Center.X + "good.jpg");
             return ((countTL >= 1) && (countTR >= 1) && (countBL >= 1) && (countBR >= 1));
+        }
+
+        public void Register()
+        {
+            CalibrationManager.Instance.Register(this);
+        }
+
+        public void Unregister()
+        {
+            CalibrationManager.Instance.Unregister(this);
         }
     }
 }

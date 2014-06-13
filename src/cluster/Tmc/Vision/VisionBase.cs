@@ -812,6 +812,10 @@ namespace Tmc.Vision
         /// </returns>
         protected bool FirstPass(int[][] hue, int[][] sat, int[][] val, CircleF circle, CircleF[] circles, Hsv[,] HSVTabletcolorsRanges)
         {
+            if ((val.GetLength(0) == 0) || (sat.GetLength(0) == 0) || (hue.GetLength(0) == 0))
+            {
+                return false;
+            }
             if ((hue.GetLength(0) == 1) && (sat.GetLength(0) == 1) && (val.GetLength(0) == 1))
             {
                 TabletColors a = detectcolor(new Hsv((hue[0][0] + hue[0][1]) / 2, (sat[0][0] + sat[0][1]) / 2, (val[0][0] + val[0][1]) / 2), HSVTabletcolorsRanges);
