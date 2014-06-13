@@ -97,7 +97,7 @@ namespace Tmc.Vision
         /// <returns>
         /// it returns the state of the tray
         /// </returns>
-        /// <todo>use the new function in vision base to detect tablet colour</todo>
+        /// <note>use the new function in vision base to detect tablet colour</note>
         public bool GetTabletsInTray(out Tray<Tablet> tray)
         {
             trayList = new Tray<Tablet>();
@@ -177,9 +177,9 @@ namespace Tmc.Vision
         /// image that contains the tray
         /// </param>
         /// <returns>true if tray found, false if not</returns>
-        /// <todo>
+        /// <note>
         /// do the returns
-        /// </todo>
+        /// </note>
         private bool DetectTray(Image<Bgr, Byte> src)
         {
             Point[] line = new Point[2];    //holds the location of the start and end yellow line in the picture
@@ -266,9 +266,9 @@ namespace Tmc.Vision
         /// <summary>
         /// Used to detect the color of the tablet, only recognises good tablets and assemble the tray list
         /// </summary>
-        /// <todo>
+        /// <note>
         /// move to vision base and make it more advance with the color detect
-        /// </todo>
+        /// </note>
         private void DetectTabletType()
         {
             TabletColors tabletcolor;
@@ -278,9 +278,9 @@ namespace Tmc.Vision
             {
                 float[][] abca = ImagesToHisto(GetTablet(imgTray, tablet));
 
-                int[][] hue = getHighLowHSV(abca, 50, HSVdata.Hue);
-                int[][] sat = getHighLowHSV(abca, 50, HSVdata.Sat);
-                int[][] val = getHighLowHSV(abca, 50, HSVdata.Val);
+                int[][] hue = getHighLowHSV(abca, 250, HSVdata.Hue);
+                int[][] sat = getHighLowHSV(abca, 250, HSVdata.Sat);
+                int[][] val = getHighLowHSV(abca, 250, HSVdata.Val);
                 
                 if (FirstPass(hue, sat, val, tablet, tablets, HSVTabletcolorsRanges) == true)
                 {
@@ -409,9 +409,9 @@ namespace Tmc.Vision
         /// <param name="circle">
         /// contains the location if the circles
         /// </param>
-        /// <todo>
+        /// <note>
         /// //change this so it can have angled lines, not sure if needed but
-        /// </todo>
+        /// </note>
         private int FindCellInTrayForTablet(int cols, int rows, CircleF circle)
         {
             int[] lineX = { 0, (int)(cols / 3), (int)((cols / 3) * 2), cols };

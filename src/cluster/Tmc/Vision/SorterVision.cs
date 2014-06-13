@@ -8,17 +8,15 @@ using System.Diagnostics;
 
 namespace Tmc.Vision
 {
-    [Serializable]
-    public class SorterVisionCalibrationData : ICalibrationData
+    public class SorterVision : VisionBase
     {
-        public PointF[] ChessboardPoints { get; set; }
-
-        public Type ParentType { get; set; }
-    }
-
-    public class SorterVision : VisionBase, ICalibrateable
-    {
+        /// <summary>
+        /// 
+        /// </summary>
         private int minRadius;
+        /// <summary>
+        /// 
+        /// </summary>
         private int maxRadius;
         private int cannyThresh;
         private int cannyAccumThresh;
@@ -49,40 +47,40 @@ namespace Tmc.Vision
             Debug.Listeners.Add(listener);
             //do calibration
 
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 46;//46;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 55;//55;//75;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 49;//50;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 78;// 68;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 180;//170;//140;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 146;//125;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 59;//46;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 120;//55;//75;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 62;//50;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 77;// 68;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 190;//170;//140;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 122;//125;
 
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue = 1;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 100;//153;//93;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value = 117;//198;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue = 8;//171;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation = 219;//128;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Value = 196;//250;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue = 0;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 152;//153;//93;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value = 101;//198;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue = 9;//171;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation = 255;//128;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Value = 170;//162;//250;
 
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Hue = 10;//12
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Satuation = 34;//52;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Value = 183;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 23;//18
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 110;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Hue = 17;//12
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Satuation = 63;//52;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Value = 165;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 24;//18
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 95;
             HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Value = 255;//239;
 
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 107;//114;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 32;//36;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 39;//49;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 137;//147;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 176;//127;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 133;//109;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 103;//114;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 10;//36;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 27;//49;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 166;//147;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 156;//127;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 109;// 82;//109;
 
             HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Hue = 177;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Satuation = 51;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Value = 19;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Hue = 16;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Satuation = 135;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Value = 116;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Satuation = 23;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Value = 15;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Hue = 36;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Satuation = 86;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Value = 58;
 
             minRadius = 60;
             maxRadius = 63;
@@ -91,13 +89,6 @@ namespace Tmc.Vision
             minDist = 20;
             cannyThresh = 2;
             cannyAccumThresh = 83;
-
-            this.Register();
-        }
-
-        ~SorterVision()
-        {
-            this.Unregister();
         }
 
         /// <summary>
@@ -106,6 +97,8 @@ namespace Tmc.Vision
         /// <returns>return position of viable tablets and state</returns>
         public List<Tablet> GetVisibleTablets()
         {
+            
+
             AdjustMinMaxRadius(ChessboardPoints);
             Debug.WriteLine("\n\n");
             TabletList.Clear();//clear tablets from last use
@@ -114,8 +107,9 @@ namespace Tmc.Vision
             //img = new Image<Bgr, byte>("C:/Users/Denis/Dropbox/ICT DESIGN/Assignment 3/vision/cal/sort32.jpg");
 
             CircleF[] circles = DetectTablets(img, minRadius, maxRadius, dp, minDist, cannyThresh, cannyAccumThresh);
-
+            
             DetectGoodPickupTablets(img, circles);
+
 
             return TabletList;
         }
@@ -123,27 +117,10 @@ namespace Tmc.Vision
         /// <summary>
         /// This function curenlty on calbrate on the chessboard
         /// </summary>
-        public ICalibrationData Calibrate()
+        public void Calibrate()
         {
             Image<Bgr, Byte> chessB = camera.GetImage(1);
             ChessboardPoints = FindPattern(chessB.Convert<Gray, Byte>(), new Size(12, 9));
-
-            var calData = new SorterVisionCalibrationData
-            {
-                ParentType = this.GetType(),
-                ChessboardPoints = this.ChessboardPoints
-            };
-
-            return calData;
-        }
-
-        public void SetCalibrationData(ICalibrationData data)
-        {
-            var myCalData = data as SorterVisionCalibrationData;
-            if (myCalData != null)
-            {
-                ChessboardPoints = myCalData.ChessboardPoints;
-            }
         }
 
         /// <summary>
@@ -158,7 +135,6 @@ namespace Tmc.Vision
         /// <returns>
         /// returns the location of al the chessboard point
         /// </returns>
-        ///
         private PointF[] FindPattern(Emgu.CV.Image<Gray, byte> src, Size dim)
         {
             //string win1 = "Test Window"; //The name of the window
@@ -216,8 +192,8 @@ namespace Tmc.Vision
 
             size = ((MagY / 5) * 8)/2;
 
-            minRadius = (int)(size - 2);
-            maxRadius = (int)(size + 2);
+            minRadius = (int)(size - 0);
+            maxRadius = (int)(size + 6);
 
 
         }
@@ -343,7 +319,7 @@ namespace Tmc.Vision
             List<CircleF> TabletsInList = new List<CircleF>();
 
             Image<Bgr, Byte> drawTab = src.Clone();
-            var tabletHSV = new List<Tuple<int[][], int[][], int[][]>>(tablets.Length);
+            var tabletHSV = new List<Tuple<int[][], int [][], int[][]>>(tablets.Length);
 
             for (int i = 0; i < tablets.Length; i++)
             {
@@ -352,9 +328,9 @@ namespace Tmc.Vision
 
                 var histo = ImagesToHisto(GetTablet(src, tablet));
 
-                int[][] hue = getHighLowHSV(histo, 100, HSVdata.Hue);
-                int[][] sat = getHighLowHSV(histo, 100, HSVdata.Sat);
-                int[][] val = getHighLowHSV(histo, 100, HSVdata.Val);
+                int[][] hue = getHighLowHSV(histo, 200, HSVdata.Hue);
+                int[][] sat = getHighLowHSV(histo, 200, HSVdata.Sat);
+                int[][] val = getHighLowHSV(histo, 200, HSVdata.Val);
 
 
 
@@ -368,7 +344,7 @@ namespace Tmc.Vision
                 else
                 {
                     drawTab.Draw(tablet, new Bgr(Color.White), 2);
-#if DEBUG
+#if false
                     //Debug.WriteLine("Hue: " + hue[0][0] + " - " + hue[0][1] + ", Sat: " + sat[0][0] + " - " + sat[0][1] + ", Val: " + val[0][0] + " - " + val[0][1]);
                     Debug.WriteLine("Na: " + hue[0][0] + "\t" + hue[0][1] + "\t" + sat[0][0] + "\t" + sat[0][1] + "\t" + val[0][0] + "\t" + val[0][1]);
                     int hueM = hue.GetLength(0) - 1;
@@ -617,16 +593,6 @@ namespace Tmc.Vision
             //CvInvoke.cvWaitKey(0);
             //if ((countTL >= 1) && (countTR >= 1) && (countBL >= 1) && (countBR >= 1)) saveImage(tabletImage, tablet.Center.X + "good.jpg");
             return ((countTL >= 1) && (countTR >= 1) && (countBL >= 1) && (countBR >= 1));
-        }
-
-        public void Register()
-        {
-            CalibrationManager.Instance.Register(this);
-        }
-
-        public void Unregister()
-        {
-            CalibrationManager.Instance.Unregister(this);
         }
     }
 }
