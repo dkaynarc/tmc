@@ -25,7 +25,7 @@ namespace Tmc.Scada.App
         public MainForm()
         {
             InitializeComponent();
-            Logger.Instance.Strategy = LogStrategy.File;
+            Logger.Instance.Strategy = LogStrategy.Database;
             this.createUserButton.Hide();
             _scadaEngine = new ScadaEngine();
             this.InitializeAll();
@@ -71,7 +71,6 @@ namespace Tmc.Scada.App
                 this.plantMimic1.Initialise(_scadaEngine.HardwareMonitor);
                 this.orderControl.Initialise();
                 this.debugOverrides.Initialize(_scadaEngine);
-                this.alarmsControl.Initialize();
                 CalibrationManager.Instance.DataFilesDirectory = @".\calibration";
                 CalibrationManager.Instance.LoadAllDataFiles();
                 _wcfHost = new WcfHost(_scadaEngine);
