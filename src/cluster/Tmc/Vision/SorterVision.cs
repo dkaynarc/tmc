@@ -47,40 +47,40 @@ namespace Tmc.Vision
             Debug.Listeners.Add(listener);
             //do calibration
 
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 46;//46;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 55;//55;//75;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 49;//50;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 78;// 68;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 180;//170;//140;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 146;//125;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 59;//46;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 570;//55;//75;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 62;//50;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 76;// 68;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 181;//170;//140;
+            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 119;//125;
 
             HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue = 1;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 100;//153;//93;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value = 117;//198;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue = 8;//171;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation = 219;//128;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Value = 196;//250;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 152;//153;//93;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value = 101;//198;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue = 9;//171;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation = 229;//128;
+            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Value = 162;//250;
 
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Hue = 10;//12
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Satuation = 34;//52;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Value = 183;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 23;//18
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 110;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Value = 255;//239;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Hue = 17;//12
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Satuation = 63;//52;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Value = 165;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 24;//18
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 95;
+            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Value = 231;//239;
 
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 107;//114;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 32;//36;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 39;//49;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 137;//147;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 176;//127;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 133;//109;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 103;//114;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 10;//36;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 27;//49;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 166;//147;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 136;//127;
+            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 82;//109;
 
             HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Hue = 177;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Satuation = 51;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Value = 19;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Hue = 16;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Satuation = 135;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Value = 75;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Satuation = 23;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Value = 15;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Hue = 36;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Satuation = 86;
+            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Value = 58;
 
             minRadius = 60;
             maxRadius = 63;
@@ -133,7 +133,6 @@ namespace Tmc.Vision
         /// <returns>
         /// returns the location of al the chessboard point
         /// </returns>
-        /// 
         private PointF[] FindPattern(Emgu.CV.Image<Gray, byte> src, Size dim)
         {
             //string win1 = "Test Window"; //The name of the window
@@ -327,9 +326,9 @@ namespace Tmc.Vision
 
                 var histo = ImagesToHisto(GetTablet(src, tablet));
 
-                int[][] hue = getHighLowHSV(histo, 100, HSVdata.Hue);
-                int[][] sat = getHighLowHSV(histo, 100, HSVdata.Sat);
-                int[][] val = getHighLowHSV(histo, 100, HSVdata.Val);
+                int[][] hue = getHighLowHSV(histo, 450, HSVdata.Hue);
+                int[][] sat = getHighLowHSV(histo, 450, HSVdata.Sat);
+                int[][] val = getHighLowHSV(histo, 450, HSVdata.Val);
 
 
 
