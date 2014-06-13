@@ -278,9 +278,9 @@ namespace Tmc.Vision
             {
                 float[][] abca = ImagesToHisto(GetTablet(imgTray, tablet));
 
-                int[][] hue = getHighLowHSV(abca, 50, HSVdata.Hue);
-                int[][] sat = getHighLowHSV(abca, 50, HSVdata.Sat);
-                int[][] val = getHighLowHSV(abca, 50, HSVdata.Val);
+                int[][] hue = getHighLowHSV(abca, 250, HSVdata.Hue);
+                int[][] sat = getHighLowHSV(abca, 250, HSVdata.Sat);
+                int[][] val = getHighLowHSV(abca, 250, HSVdata.Val);
                 
                 if (FirstPass(hue, sat, val, tablet, tablets, HSVTabletcolorsRanges) == true)
                 {
