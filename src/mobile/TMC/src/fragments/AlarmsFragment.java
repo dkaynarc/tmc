@@ -48,6 +48,7 @@ public class AlarmsFragment extends ListFragment
 	
 	public void onStart()
 	{
+		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
 		receiver = new ResultReceiver();
 		getActivity().registerReceiver(	receiver, new IntentFilter(Integer.toString(Constants.GET_ALARM_COMMAND)));
 		makeService();
@@ -59,6 +60,9 @@ public class AlarmsFragment extends ListFragment
 	public void onStop()
 	{
 		getActivity().unregisterReceiver(receiver);
+		if(pd != null)
+			pd.dismiss();
+		
 		super.onStop();
 	}
 	
@@ -71,7 +75,7 @@ public class AlarmsFragment extends ListFragment
 		parcel.putInt("command", Constants.GET_ALARM_COMMAND);
 		service.putExtra("parcel", parcel);
 
-		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
+		
 		getActivity().startService(service);
 	}
 	

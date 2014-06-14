@@ -39,7 +39,7 @@ public class LoginActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		EditText ipAddress = (EditText) findViewById(R.id.loginactivity_ipaddress_et);
-		ipAddress.setText("192.168.1.100");
+		ipAddress.setText("192.168.1.100:8080");
 	}
 
 	/**

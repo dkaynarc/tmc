@@ -482,9 +482,12 @@ public class MachineStatusFragment extends ListFragment
 	@Override
 	public void onStop()
 	{
-		super.onStop();
 		getActivity().unregisterReceiver(receiver);
 		stopTimer();
+		if(pd != null)
+			pd.dismiss();
+		
+		super.onStop();
 	}
 
 	private void showAlertDialog(String message, String status)

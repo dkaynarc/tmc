@@ -65,20 +65,19 @@ public class EnvironmentFragment extends Fragment
 
 	public void onStart()
 	{
-		super.onStart();
-
 		receiver = new ResultReceiver();
 		getActivity().registerReceiver(	receiver, new IntentFilter(Integer
 								.toString(Constants.ENV_UPDATE_COMMAND)));
 		makeService(Constants.ENV_UPDATE_COMMAND);
 		startTimer(Constants.UPDATE_INTERVAL);
+		super.onStart();
 	}
 
 	public void onStop()
 	{
-		super.onStop();
 		getActivity().unregisterReceiver(receiver);
 		timer.cancel(true);
+		super.onStop();
 	}
 
 	private class ResultReceiver extends BroadcastReceiver
@@ -86,7 +85,7 @@ public class EnvironmentFragment extends Fragment
 
 		@Override
 		public void onReceive(Context context, Intent intent)
-		{
+		{	
 			handleEnvUpdate(intent.getStringExtra("result"));
 		}
 	}

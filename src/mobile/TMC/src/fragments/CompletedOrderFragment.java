@@ -226,6 +226,9 @@ public class CompletedOrderFragment extends ListFragment
 	public void onStop()
 	{
 		getActivity().unregisterReceiver(receiver);
+		if(pd != null)
+			pd.dismiss();
+		
 		super.onStop();
 	}
 

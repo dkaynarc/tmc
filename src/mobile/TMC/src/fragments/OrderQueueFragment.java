@@ -471,9 +471,12 @@ public class OrderQueueFragment extends ListFragment
 	@Override
 	public void onStop()
 	{
-		super.onStop();
 		getActivity().unregisterReceiver(receiver);
 		stopTimer();
+		if(pd != null)
+			pd.dismiss();
+		
+		super.onStop();
 	}
 
 
