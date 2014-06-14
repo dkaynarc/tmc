@@ -25,7 +25,7 @@ namespace Tmc.Scada.App
         public MainForm()
         {
             InitializeComponent();
-            Logger.Instance.Strategy = LogStrategy.Database;
+            Logger.Instance.Strategy = LogStrategy.All;
             this.createUserButton.Hide();
             _scadaEngine = new ScadaEngine();
             this.InitializeAll();
@@ -36,8 +36,8 @@ namespace Tmc.Scada.App
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            var mbResult = MessageBox.Show("Do you want to shut down the cluster?", "Shutdown Confirmation", MessageBoxButtons.OKCancel);
-            if (mbResult == DialogResult.OK)
+            var mbResult = MessageBox.Show("Do you want to shut down the cluster?", "Shutdown Confirmation", MessageBoxButtons.YesNo);
+            if (mbResult == DialogResult.Yes)
             {
                 _scadaEngine.Shutdown();
             }

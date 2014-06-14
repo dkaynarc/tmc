@@ -6,20 +6,28 @@
     <!--<ConnectionString>http://192.168.1.16:8080/photo.jpg</ConnectionString>-->
     <!--Smit Cam-->
     <!--<ConnectionString>http://192.168.1.195:8080/photoaf.jpg</ConnectionString>-->
-    <!-- DK-->
-    <ConnectionString>http://192.168.1.17:8080/photoaf.jpg</ConnectionString>
+    <!--Jack Cam-->
+    <ConnectionString>http://192.168.1.19:8080/photoaf.jpg</ConnectionString>
     
     <!--HSV Color Ranges-->
-    <BlackLow>177,23,15</BlackLow>
-    <BlackHigh>36,86,58</BlackHigh>
-    <BlueLow>103,10,27</BlueLow>
-    <BlueHigh>166,156,109</BlueHigh>
-    <GreenLow>59,120,62</GreenLow>
-    <GreenHigh>77,190,122</GreenHigh>
-    <RedLow>0,152,101</RedLow>
-    <RedHigh>9,255,170</RedHigh>
-    <WhiteLow>17,63,165</WhiteLow>
-    <WhiteHigh>24,95,255</WhiteHigh>
+    <BlackLow>0,0,31</BlackLow>
+    <BlackHigh>151,83,87</BlackHigh>
+    <BlueLow>103,77,49</BlueLow>
+    <BlueHigh>122,197,115</BlueHigh>
+    <GreenLow>70,91,60</GreenLow>
+    <GreenHigh>91,188,132</GreenHigh>
+    <RedLow>175,95,110</RedLow>
+    <RedHigh>12,168,166</RedHigh>
+    <WhiteLow>0,0,166</WhiteLow>
+    <WhiteHigh>166,37,252</WhiteHigh>
+  
+    <!--Other calibration-->
+    <MinRadius>60</MinRadius>
+    <MaxRadius>63</MaxRadius>
+    <Dp>2.3</Dp>
+    <MinDist>20</MinDist>
+    <CannyThresh>2</CannyThresh>
+    <CannyAccumThresh>83</CannyAccumThresh>
   </Hardware>
   <Hardware Type="Camera">
     <Name>TrayVerifierCamera</Name>
@@ -43,6 +51,14 @@
     <RedHigh>7,185,255</RedHigh>
     <WhiteLow>0,0,230</WhiteLow>
     <WhiteHigh>166,47,255</WhiteHigh>
+  
+    <!--Other calibration-->
+    <MinRadius>54</MinRadius>
+    <MaxRadius>62</MaxRadius>
+    <Dp>1.8</Dp>
+    <MinDist>20</MinDist>
+    <CannyThresh>2</CannyThresh>
+    <CannyAccumThresh>70</CannyAccumThresh>
   </Hardware>
   <!--<Hardware Type="Sensor">
     <Name>TemperatureSensor</Name>
@@ -77,7 +93,7 @@
   <Hardware Type="LoaderRobot" Name="LoaderRobot" IPAddress="192.168.1.202"/>
   <Hardware Type="SorterRobot" Name="SorterRobot" IPAddress="192.168.1.201"/>
   <Hardware Type="AssemblerRobot" Name="AssemblerRobot" IPAddress="192.168.1.200"/>
-  <Hardware Type="BluetoothConveyor" Name="SorterConveyor" PortName="COM5" WaitTime="7000"/>
-  <Hardware Type="SerialConveyor" Name="AssemblyConveyor" PortName="COM10"/>
+  <Hardware Type="BluetoothConveyor" Name="SorterConveyor" PortName="COM7" WaitTime="7000"/>
+  <Hardware Type="SerialConveyor" Name="AssemblyConveyor" PortName="COM3"/>
   <Hardware Type="Plc" Name="MainPlc" IPAddress="192.168.1.5"/>
 </Cluster>

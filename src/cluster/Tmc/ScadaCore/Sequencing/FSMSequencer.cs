@@ -357,7 +357,9 @@ namespace Tmc.Scada.Core.Sequencing
                 {
                     foreach(var hardware in _hardware)
                     {
+                        Logger.Instance.Write(String.Format("[Sequencer] Shutting down {0}", hardware.Name));
                         hardware.Shutdown();
+                        Logger.Instance.Write(String.Format("[Sequencer] {0} Shutdown complete", hardware.Name));
                     }
 
                     //Removed because robots are using the same Named EventWaitHandle (cbf changing this) - Shale

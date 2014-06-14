@@ -13,6 +13,12 @@ namespace Tmc.Vision
         public string Name { get; set; }
         public Uri ConnectionString { get; set; }
         public Hsv[,] HSVColorRanges { get; set; }
+        public int MinRadius { get; set; }
+        public int MaxRadius { get; set; }
+        public double Dp { get; set; }
+        public double MinDist { get; set; }
+        public int CannyThresh { get; set; }
+        public int CannyAccumThresh { get; set; }
         private HardwareStatus _hardwareStatus;
 
         public Camera()
@@ -133,7 +139,51 @@ namespace Tmc.Vision
                 throw new InvalidOperationException("No connection string passed to camera");
             }
 
-            ParseHsvColorRanges(parameters);            
+            ParseCalibrationData(parameters);            
+        }
+
+        private void ParseCalibrationData(Dictionary<string, string> parameters)
+        {
+            ParseHsvColorRanges(parameters);
+            ParseOtherCalibrationData(parameters);
+        }
+
+        private void ParseOtherCalibrationData(Dictionary<string, string> parameters)
+        {
+            int minRadius = 0, maxRadius = 0, cannyThresh = 0, cannyAccumThresh = 0;
+            double dp = 0, minDist = 0;
+            string s = "";
+
+            if (parameters.TryGetValue("MinRadius", out s))
+            {
+                int.TryParse(s, out minRadius);
+                this.MinRadius = minRadius;
+            }
+            if (parameters.TryGetValue("MaxRadius", out s))
+            {
+                int.TryParse(s, out maxRadius);
+                this.MaxRadius = maxRadius;
+            }
+            if (parameters.TryGetValue("CannyThresh", out s))
+            {
+                int.TryParse(s, out cannyThresh);
+                this.CannyThresh = cannyThresh;
+            }
+            if (parameters.TryGetValue("CannyAccumThresh", out s))
+            {
+                int.TryParse(s, out cannyAccumThresh);
+                this.CannyAccumThresh = CannyAccumThresh;
+            }
+            if (parameters.TryGetValue("Dp", out s))
+            {
+                double.TryParse(s, out dp);
+                this.Dp = dp;
+            }
+            if (parameters.TryGetValue("minDist", out s))
+            {
+                double.TryParse(s, out minDist);
+                this.MinDist = minDist;
+            }
         }
 
         private void ParseHsvColorRanges(Dictionary<string, string> parameters)

@@ -29,7 +29,7 @@ namespace TmcData
         public override string ToString()
         {
             return string.Format("[{0} {1}] - {2} - {3}", 
-                this.TimeStamp.ToShortDateString(), this.TimeStamp.ToShortTimeString(),
+                this.TimeStamp.ToShortDateString(), this.TimeStamp.ToLongTimeString(),
                 this.Level.ToString(), this.Message);
         }
     }
