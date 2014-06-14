@@ -54,8 +54,11 @@ namespace Tmc.Scada.Core
 
         private void Update(object sender, ElapsedEventArgs e)
         {
-            var eStopBtnState = _plc.GetSwitchStates()[PlcAttachedSwitch.ScadaEmergencyStop];
-            if (eStopBtnState)
+            var plcSwitches = _plc.GetSwitchStates();
+            var scadaEStopBtn = plcSwitches[PlcAttachedSwitch.ScadaEmergencyStop];
+            var plcEStopBtn = plcSwitches[PlcAttachedSwitch.PlcEmergencyStop];
+
+            if (scadaEStopBtn || plcEStopBtn)
             {
                 Logger.Instance.Write("[EmergencyStopMonitor] Emergency stop command received from PLC", LogType.Warning);
                 _engine.EmergencyStop();
