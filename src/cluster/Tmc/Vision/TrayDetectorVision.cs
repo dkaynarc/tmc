@@ -14,6 +14,8 @@ namespace Tmc.Vision
         private double dp, minDist;
         private Hsv[,] HSVTabletcolorsRanges = new Hsv[5, 2];
 
+        private int HSVDetectionThershold;
+
         private Camera camera;
         private Point[] trayPoints = new Point[4];
         private Image<Bgr, Byte> img;
@@ -87,6 +89,7 @@ namespace Tmc.Vision
             cannyThresh = 2;
             cannyAccumThresh = 70;
 
+            HSVDetectionThershold = 150;
             //this.camera.ConnectionString = new Uri(@"http://192.168.0.190:8080/photoaf.jpg");
             //this.camera.ConnectionString = new Uri(@"https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-ash3/t1.0-9/10247212_10202692742692192_8562559696417032763_n.jpg");
         }
@@ -278,9 +281,9 @@ namespace Tmc.Vision
             {
                 float[][] abca = ImagesToHisto(GetTablet(imgTray, tablet));
 
-                int[][] hue = getHighLowHSV(abca, 250, HSVdata.Hue);
-                int[][] sat = getHighLowHSV(abca, 250, HSVdata.Sat);
-                int[][] val = getHighLowHSV(abca, 250, HSVdata.Val);
+                int[][] hue = getHighLowHSV(abca, HSVDetectionThershold, HSVdata.Hue);
+                int[][] sat = getHighLowHSV(abca, HSVDetectionThershold, HSVdata.Sat);
+                int[][] val = getHighLowHSV(abca, HSVDetectionThershold, HSVdata.Val);
                 
                 if (FirstPass(hue, sat, val, tablet, tablets, HSVTabletcolorsRanges) == true)
                 {
