@@ -38,12 +38,12 @@ namespace Tmc.Scada.App
         /// <param name="e"></param>
         private void controlPageStartup()
         {
-            if(_scadaEngine.GetOperationStatus() == "Offline")
+            if(_scadaEngine.Status == ScadaStatus.Offline)
             {
                 this.startOrStopButton.Text = "Start";
                 this.systemStatusLabel.Text = "Idle";
             }
-            else if(_scadaEngine.GetOperationStatus() == "Online")
+            else if(_scadaEngine.Status == ScadaStatus.Online)
             {
                 this.startOrStopButton.Text = "Stop";
                 this.systemStatusLabel.Text = "Online";

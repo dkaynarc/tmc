@@ -12,20 +12,29 @@ using Tmc.Robotics;
 
 namespace Tmc.Scada.Core
 {
+    public enum ScadaStatus
+    {
+        Offline,
+        Online
+    }
+
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.Single)]
     public class ScadaEngine : IScada
     {
         public string Name { get; set; }
         public bool IsInitialized { get; private set; }
+        public ScadaStatus Status { get; private set; }
         public ClusterConfig ClusterConfig { get; set; }
         public OrderConsumer OrderConsumer { get; set; }
         public TabletMagazine TabletMagazine { get; set; }
         public HardwareMonitor HardwareMonitor { get; set; }
         public EnvironmentMonitor EnvironmentMonitor { get; set; }
         private ISequencer _sequencer;
+        private EmergencyStopMonitor _eStopMonitor;
 
         public ScadaEngine()
         {
+            this.Status = ScadaStatus.Offline;   
         }
 
         private void StartAllTimers()
@@ -33,6 +42,7 @@ namespace Tmc.Scada.Core
             this.OrderConsumer.Start();
             this.HardwareMonitor.Start();
             this.EnvironmentMonitor.Start();
+            this._eStopMonitor.Start();
         }
 
         public bool Initialize()
@@ -57,7 +67,8 @@ namespace Tmc.Scada.Core
                 _sequencer.TransitionLogger.CurrentState == State.Startup)
             {
                 this._sequencer.FireStartTrigger();
-                Logger.Instance.Write(new LogEntry("Cluster operation started", LogType.Message));
+                Logger.Instance.Write(new LogEntry("[SCADA] Cluster operation started", LogType.Message));
+                this.Status = ScadaStatus.Online;
             }
         }
 
@@ -68,7 +79,8 @@ namespace Tmc.Scada.Core
                 if ((_sequencer.TransitionLogger.CurrentState != State.Stopped) || (_sequencer.TransitionLogger.CurrentState != State.Shutdown))
                 {
                     this._sequencer.FireStopTrigger();
-                    Logger.Instance.Write(new LogEntry("Cluster operation stopped", LogType.Message));
+                    Logger.Instance.Write(new LogEntry("[SCADA] Cluster operation stopped", LogType.Message));
+                    this.Status = ScadaStatus.Offline;
                 }
             }
         }
@@ -80,7 +92,7 @@ namespace Tmc.Scada.Core
                 if (_sequencer.TransitionLogger.CurrentState == State.Stopped)
                 {
                     this._sequencer.FireResumeTrigger();
-                    Logger.Instance.Write(new LogEntry("Cluster operation resumed", LogType.Message));
+                    Logger.Instance.Write(new LogEntry("[SCADA] Cluster operation resumed", LogType.Message));
                 }
             }
         }
@@ -92,7 +104,7 @@ namespace Tmc.Scada.Core
                 if (_sequencer.TransitionLogger.CurrentState != State.Shutdown)
                 {
                     this._sequencer.FireShutdownTrigger();
-                    Logger.Instance.Write(new LogEntry("Cluster operation shutdown", LogType.Message));
+                    Logger.Instance.Write(new LogEntry("[SCADA] Cluster operation shut down", LogType.Message));
                 }
             }
         }
@@ -101,19 +113,17 @@ namespace Tmc.Scada.Core
         {
             if (this.IsInitialized)
             {
-                foreach (var hardware in ClusterConfig.GetAllHardware())
-                {
-                    hardware.EmergencyStop();
-                }
-                Logger.Instance.Write(new LogEntry("Emergency stop command given", LogType.Warning));
+                Logger.Instance.Write(new LogEntry("[SCADA] Emergency stop commencing", LogType.Warning));
+                this.Status = ScadaStatus.Offline;
                 _sequencer.FireStopTrigger();
                 _sequencer.StopSequencing();
+                foreach (var hardware in ClusterConfig.GetAllHardware())
+                {
+                    Logger.Instance.Write(new LogEntry(String.Format("[SCADA] Emergency Stopping {0}", hardware.Name), LogType.Warning));
+                    hardware.EmergencyStop();
+                }
+                Logger.Instance.Write(new LogEntry("[SCADA] Emergency stop complete", LogType.Warning));
             }
-        }
-
-        public string GetOperationStatus()
-        {
-            return "";
         }
 
         public void SetOperatingMode(OperationMode mode)
@@ -168,6 +178,7 @@ namespace Tmc.Scada.Core
                 this.TabletMagazine = new TabletMagazine();
                 this.OrderConsumer = new OrderConsumer();
                 this._sequencer = new FSMSequencer(this);
+                this._eStopMonitor = new EmergencyStopMonitor(this);
             }
             catch (Exception ex)
             {

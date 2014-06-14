@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Controllers\Assembler.cs" />
     <Compile Include="Controllers\IController.cs" />
+    <Compile Include="EmergencyStopMonitor.cs" />
     <Compile Include="EnvironmentMonitor.cs" />
     <Compile Include="ClusterConfig.cs" />
     <Compile Include="ClusterFactory.cs" />
