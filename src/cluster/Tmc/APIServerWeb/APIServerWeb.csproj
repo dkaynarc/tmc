@@ -255,8 +255,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>17451</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <!--<IISUrl>http://192.168.1.11:9000</IISUrl>-->
-          <IISUrl>http://localhost:9000</IISUrl>
+          <IISUrl>http://192.168.1.11:9000</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>http://localhost</CustomServerUrl>
