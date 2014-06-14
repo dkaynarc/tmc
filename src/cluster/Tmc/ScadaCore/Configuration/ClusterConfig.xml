@@ -8,6 +8,18 @@
     <!--<ConnectionString>http://192.168.1.195:8080/photoaf.jpg</ConnectionString>-->
     <!-- DK-->
     <ConnectionString>http://192.168.1.17:8080/photoaf.jpg</ConnectionString>
+    
+    <!--HSV Color Ranges-->
+    <BlackLow>177,23,15</BlackLow>
+    <BlackHigh>36,86,58</BlackHigh>
+    <BlueLow>103,10,27</BlueLow>
+    <BlueHigh>166,156,109</BlueHigh>
+    <GreenLow>59,120,62</GreenLow>
+    <GreenHigh>77,190,122</GreenHigh>
+    <RedLow>0,152,101</RedLow>
+    <RedHigh>9,255,170</RedHigh>
+    <WhiteLow>17,63,165</WhiteLow>
+    <WhiteHigh>24,95,255</WhiteHigh>
   </Hardware>
   <Hardware Type="Camera">
     <Name>TrayVerifierCamera</Name>
@@ -19,6 +31,18 @@
     <!--<ConnectionString>http://192.168.1.20:8080/photo.jpg</ConnectionString>-->
     <!-- Shale -->
     <ConnectionString>http://192.168.1.8:8080/photo.jpg</ConnectionString>
+    
+    <!--HSV Color Ranges-->
+    <BlackLow>177,14,61</BlackLow>
+    <BlackHigh>14,84,192</BlackHigh>
+    <BlueLow>122,40,95</BlueLow>
+    <BlueHigh>131,120,200</BlueHigh>
+    <GreenLow>55,50,79</GreenLow>
+    <GreenHigh>75,152,216</GreenHigh>
+    <RedLow>0,113,142</RedLow>
+    <RedHigh>7,185,255</RedHigh>
+    <WhiteLow>0,0,230</WhiteLow>
+    <WhiteHigh>166,47,255</WhiteHigh>
   </Hardware>
   <!--<Hardware Type="Sensor">
     <Name>TemperatureSensor</Name>

@@ -44,40 +44,43 @@ namespace Tmc.Vision
             this.camera = camera;
             Debug.Listeners.Add(listener);
 
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 55;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 50;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 79;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 75;//87;//74;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 152;
-            HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 216;//229;//222;
+            //HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Hue = 55;
+            //HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Satuation = 50;
+            //HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.Low].Value = 79;
+            //HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Hue = 75;//87;//74;
+            //HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Satuation = 152;
+            //HSVTabletcolorsRanges[(int)TabletColors.Green, (int)HSVRange.High].Value = 216;//229;//222;
 
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue = 0;//176;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 113;//93;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value = 142;//198;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue = 7;//171;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation = 185;//128;
-            HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Value = 255;//250;
+            //HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Hue = 0;//176;
+            //HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Satuation = 113;//93;
+            //HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.Low].Value = 142;//198;
+            //HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Hue = 7;//171;
+            //HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Satuation = 185;//128;
+            //HSVTabletcolorsRanges[(int)TabletColors.Red, (int)HSVRange.High].Value = 255;//250;
 
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Hue = 0;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Satuation = 0;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Value = 230;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 166;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 47;
-            HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Value = 255;
+            //HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Hue = 0;
+            //HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Satuation = 0;
+            //HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.Low].Value = 230;
+            //HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Hue = 166;
+            //HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Satuation = 47;
+            //HSVTabletcolorsRanges[(int)TabletColors.White, (int)HSVRange.High].Value = 255;
 
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 112;//112;//115;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 40;//76;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 95;//117;//69;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 131;//126;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 120;//124;//125;
-            HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 200;// 235;//226;// 214;//213;
+            //HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Hue = 112;//112;//115;
+            //HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Satuation = 40;//76;
+            //HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.Low].Value = 95;//117;//69;
+            //HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Hue = 131;//126;
+            //HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Satuation = 120;//124;//125;
+            //HSVTabletcolorsRanges[(int)TabletColors.Blue, (int)HSVRange.High].Value = 200;// 235;//226;// 214;//213;
 
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Hue = 177;//102;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Satuation = 14;//15;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Value = 61;//90;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Hue = 14;//145;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Satuation = 84;//39;
-            HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Value = 192;//161;//167;
+            //HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Hue = 177;//102;
+            //HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Satuation = 14;//15;
+            //HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.Low].Value = 61;//90;
+            //HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Hue = 14;//145;
+            //HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Satuation = 84;//39;
+            //HSVTabletcolorsRanges[(int)TabletColors.Black, (int)HSVRange.High].Value = 192;//161;//167;
+
+            // Pull the HSV color ranges from our camera
+            this.HSVTabletcolorsRanges = camera.HSVColorRanges;
 
             minRadius = 54;
             maxRadius = 62;

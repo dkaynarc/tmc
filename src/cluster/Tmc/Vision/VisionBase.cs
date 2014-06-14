@@ -12,7 +12,7 @@ namespace Tmc.Vision
         /// <summary>
         /// This is used for lower and higher HSV values
         /// </summary>
-        protected enum HSVRange { Low = 0, High };
+        public enum HSVRange { Low = 0, High };
 
         /// <summary>
         ///

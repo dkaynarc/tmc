@@ -11,29 +11,15 @@ namespace Tmc.Vision
     public class Camera : ICamera
     {
         public string Name { get; set; }
-
         public Uri ConnectionString { get; set; }
-
-        public Capture CaptureDevice { get { return _capture; } private set { _capture = value; } }
-
-        private Capture _capture;
+        public Hsv[,] HSVColorRanges { get; set; }
         private HardwareStatus _hardwareStatus;
 
         public Camera()
         {
             _hardwareStatus = HardwareStatus.Offline;
+            HSVColorRanges = new Hsv[5, 2];
         }
-
-        //public Image<Bgr, byte> GetImage()
-        //{
-        //    Image<Bgr, Byte> img = new Image<Bgr, byte>("../../sort.jpg");//var img = _capture.QueryFrame();
-        //    if (img == null)
-        //    {
-        //        _hardwareStatus = HardwareStatus.Failed;
-        //        throw new InvalidOperationException("Could not get image from capture device");
-        //    }
-        //    return img;
-        //}
 
         public Image<Bgr, byte> GetImage()
         {
@@ -61,7 +47,6 @@ namespace Tmc.Vision
             return image;
         }
 
-        //RotateFlip(RotateFlipType.Rotate90FlipNone);
         public Image<Bgr, byte> GetImageHttp(Uri uri)
         {
             Image<Bgr, byte> emguImg = null;
@@ -106,13 +91,11 @@ namespace Tmc.Vision
 
         public void Shutdown()
         {
-            //_capture.Dispose();
             _hardwareStatus = HardwareStatus.Offline;
         }
 
         public void EmergencyStop()
         {
-
         }
 
         public HardwareStatus GetStatus()
@@ -124,26 +107,18 @@ namespace Tmc.Vision
         {
             try
             {
-                //_capture = new Capture(ConnectionString.ToString());
-                //string win1 = "Test Window"; //The name of the window
-                //CvInvoke.cvNamedWindow(win1); //Create the window using the specific name
-                //BitmapImage image = new BitmapImage(new Uri("http://192.168.0.11:8080/photo.jpg"));
-
-                //Image<Bgr, Byte> img = new Image<Bgr, byte>("../../tray.jpg"); //Create an image of 400x200 of Blue color
-                //CvInvoke.cvShowImage(win1, img); //Show the image
-                //CvInvoke.cvWaitKey(0);  //Wait for the key pressing event
-                //CvInvoke.cvDestroyWindow(win1); //Destory the window
                 _hardwareStatus = HardwareStatus.Operational;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new InvalidOperationException("Unable to open camera using connection string " + ConnectionString);
+                throw new InvalidOperationException("Unable to open camera using connection string " + ConnectionString, ex);
             }
         }
 
         public void SetParameters(Dictionary<string, string> parameters)
         {
             string s = "";
+
             if (parameters.TryGetValue("Name", out s))
             {
                 this.Name = s;
@@ -157,6 +132,87 @@ namespace Tmc.Vision
             {
                 throw new InvalidOperationException("No connection string passed to camera");
             }
+
+            ParseHsvColorRanges(parameters);            
+        }
+
+        private void ParseHsvColorRanges(Dictionary<string, string> parameters)
+        {
+            string blackLow, blackHigh;
+            string blueLow, blueHigh;
+            string greenLow, greenHigh;
+            string redLow, redHigh;
+            string whiteLow, whiteHigh;
+
+            parameters.TryGetValue("BlackLow", out blackLow);
+            parameters.TryGetValue("BlackHigh", out blackHigh);
+
+            parameters.TryGetValue("BlueLow", out blueLow);
+            parameters.TryGetValue("BlueHigh", out blueHigh);
+
+            parameters.TryGetValue("GreenLow", out greenLow);
+            parameters.TryGetValue("GreenHigh", out greenHigh);
+
+            parameters.TryGetValue("RedLow", out redLow);
+            parameters.TryGetValue("RedHigh", out redHigh);
+
+            parameters.TryGetValue("WhiteLow", out whiteLow);
+            parameters.TryGetValue("WhiteHigh", out whiteHigh);
+
+            this.HSVColorRanges = ParseHsvColorRanges(blackLow, blackHigh,
+                                                        blueLow, blueHigh,
+                                                        greenLow, greenHigh,
+                                                        redLow, redHigh,
+                                                        whiteLow, whiteHigh);
+        }
+
+        private static Hsv[,] ParseHsvColorRanges(string blackLow, string blackHigh,
+                                                    string blueLow, string blueHigh,
+                                                    string greenLow, string greenHigh,
+                                                    string redLow, string redHigh,
+                                                    string whiteLow, string whiteHigh)
+        {
+            var ranges = new Hsv[5, 2];
+
+            ranges[(int)TabletColors.Black, (int)VisionBase.HSVRange.Low] = ParseHsv(blackLow);
+            ranges[(int)TabletColors.Black, (int)VisionBase.HSVRange.High] = ParseHsv(blackHigh);
+            ranges[(int)TabletColors.Blue, (int)VisionBase.HSVRange.Low] = ParseHsv(blueLow);
+            ranges[(int)TabletColors.Blue, (int)VisionBase.HSVRange.High] = ParseHsv(blueHigh);
+            ranges[(int)TabletColors.Green, (int)VisionBase.HSVRange.Low] = ParseHsv(greenLow);
+            ranges[(int)TabletColors.Green, (int)VisionBase.HSVRange.High] = ParseHsv(greenHigh);
+            ranges[(int)TabletColors.Red, (int)VisionBase.HSVRange.Low] = ParseHsv(redLow);
+            ranges[(int)TabletColors.Red, (int)VisionBase.HSVRange.High] = ParseHsv(redHigh);
+            ranges[(int)TabletColors.White, (int)VisionBase.HSVRange.Low] = ParseHsv(whiteLow);
+            ranges[(int)TabletColors.White, (int)VisionBase.HSVRange.High] = ParseHsv(whiteHigh);
+
+            return ranges;
+        }
+
+        private static Hsv ParseHsv(string s)
+        {
+            var hsv = new Hsv();
+
+            double hue = 0;
+            double sat = 0;
+            double val = 0;
+
+            if (!String.IsNullOrEmpty(s))
+            {
+                var words = new List<string>(s.Split(','));
+                words.ForEach(x => x.Trim());
+
+                if (words.Count == 3)
+                {
+                    Double.TryParse(words[0], out hue);
+                    Double.TryParse(words[1], out sat);
+                    Double.TryParse(words[2], out val);
+                }
+
+                hsv.Hue = hue;
+                hsv.Satuation = sat;
+                hsv.Value = val;
+            }
+            return hsv;
         }
     }
 }
