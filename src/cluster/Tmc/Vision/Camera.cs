@@ -19,6 +19,7 @@ namespace Tmc.Vision
         public double MinDist { get; set; }
         public int CannyThresh { get; set; }
         public int CannyAccumThresh { get; set; }
+        public int HSVDetectionThreshold { get; set; }
         private HardwareStatus _hardwareStatus;
 
         public Camera()
@@ -150,7 +151,7 @@ namespace Tmc.Vision
 
         private void ParseOtherCalibrationData(Dictionary<string, string> parameters)
         {
-            int minRadius = 0, maxRadius = 0, cannyThresh = 0, cannyAccumThresh = 0;
+            int minRadius = 0, maxRadius = 0, cannyThresh = 0, cannyAccumThresh = 0, hsvDetectionThreshold = 0;
             double dp = 0, minDist = 0;
             string s = "";
 
@@ -183,6 +184,11 @@ namespace Tmc.Vision
             {
                 double.TryParse(s, out minDist);
                 this.MinDist = minDist;
+            }
+            if (parameters.TryGetValue("HSVDetectionThreshold", out s))
+            {
+                int.TryParse(s, out hsvDetectionThreshold);
+                this.HSVDetectionThreshold = hsvDetectionThreshold;
             }
         }
 

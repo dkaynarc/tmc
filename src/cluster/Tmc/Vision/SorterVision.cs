@@ -25,6 +25,8 @@ namespace Tmc.Vision
         private double dp;
         private double minDist;//expand dp
 
+        private int HSVDetectionThreshold;
+
         private Hsv[,] HSVTabletcolorsRanges = new Hsv[5, 2];
 
         private PointF[] ChessboardPoints = new PointF[107];
@@ -59,6 +61,8 @@ namespace Tmc.Vision
             cannyThresh = camera.CannyThresh;
             cannyAccumThresh = camera.CannyAccumThresh;
 
+            HSVDetectionThreshold = camera.HSVDetectionThreshold;
+
             this.Register();
         }
 
@@ -73,14 +77,12 @@ namespace Tmc.Vision
         /// <returns>return position of viable tablets and state</returns>
         public List<Tablet> GetVisibleTablets()
         {
-            
-
             AdjustMinMaxRadius(ChessboardPoints);
             Debug.WriteLine("\n\n");
             TabletList.Clear();//clear tablets from last use
             img = camera.GetImage(1);
+            CvInvoke.cvSmooth(img, img,Emgu.CV.CvEnum.SMOOTH_TYPE.CV_GAUSSIAN, 13, 13, 1.5, 0);
             saveImage(img, "sorter pic.jpg");
-            //img = new Image<Bgr, byte>("C:/Users/Denis/Dropbox/ICT DESIGN/Assignment 3/vision/cal/sort32.jpg");
 
             CircleF[] circles = DetectTablets(img, minRadius, maxRadius, dp, minDist, cannyThresh, cannyAccumThresh);
             
@@ -184,8 +186,8 @@ namespace Tmc.Vision
 
             size = ((MagY / 5) * 8)/2;
 
-            minRadius = (int)(size - 0);
-            maxRadius = (int)(size + 6);
+            minRadius = (int)(size - 2);
+            maxRadius = (int)(size + 5);
 
 
         }
@@ -320,9 +322,9 @@ namespace Tmc.Vision
 
                 var histo = ImagesToHisto(GetTablet(src, tablet));
 
-                int[][] hue = getHighLowHSV(histo, 200, HSVdata.Hue);
-                int[][] sat = getHighLowHSV(histo, 200, HSVdata.Sat);
-                int[][] val = getHighLowHSV(histo, 200, HSVdata.Val);
+                int[][] hue = getHighLowHSV(histo, HSVDetectionThreshold, HSVdata.Hue);
+                int[][] sat = getHighLowHSV(histo, HSVDetectionThreshold, HSVdata.Sat);
+                int[][] val = getHighLowHSV(histo, HSVDetectionThreshold, HSVdata.Val);
 
 
 
@@ -336,14 +338,14 @@ namespace Tmc.Vision
                 else
                 {
                     drawTab.Draw(tablet, new Bgr(Color.White), 2);
-#if false
+#if true
                     //Debug.WriteLine("Hue: " + hue[0][0] + " - " + hue[0][1] + ", Sat: " + sat[0][0] + " - " + sat[0][1] + ", Val: " + val[0][0] + " - " + val[0][1]);
-                    Debug.WriteLine("Na: " + hue[0][0] + "\t" + hue[0][1] + "\t" + sat[0][0] + "\t" + sat[0][1] + "\t" + val[0][0] + "\t" + val[0][1]);
+                    Debug.WriteLine("Na: \t" + hue[0][0] + "\t" + hue[0][1] + "\t" + sat[0][0] + "\t" + sat[0][1] + "\t" + val[0][0] + "\t" + val[0][1]);
                     int hueM = hue.GetLength(0) - 1;
                     int satM = sat.GetLength(0) - 1;
                     int valM = val.GetLength(0) - 1;
                     //Debug.WriteLine("Hue: " + hue[hueM][0] + " - " + hue[hueM][1] + ", Sat: " + sat[satM][0] + " - " + sat[satM][1] + ", Val: " + val[valM][0] + " - " + val[valM][1]);
-                    Debug.WriteLine("Na: " + hue[hueM][0] + "\t" + hue[hueM][1] + "\t" + sat[satM][0] + "\t" + sat[satM][1] + "\t" + val[valM][0] + "\t" + val[valM][1]);
+                    Debug.WriteLine("Na: \t" + hue[hueM][0] + "\t" + hue[hueM][1] + "\t" + sat[satM][0] + "\t" + sat[satM][1] + "\t" + val[valM][0] + "\t" + val[valM][1]);
                     Debug.Flush();
 #endif
                 }
@@ -391,9 +393,9 @@ namespace Tmc.Vision
                 {
                     float[][] abca = ImagesToHisto(GetTablet(src, tablet));
                     //b++;
-                    int[][] hue = getHighLowHSV(abca, 50, HSVdata.Hue);
-                    int[][] sat = getHighLowHSV(abca, 50, HSVdata.Sat);
-                    int[][] val = getHighLowHSV(abca, 50, HSVdata.Val);
+                    int[][] hue = getHighLowHSV(abca, HSVDetectionThreshold, HSVdata.Hue);
+                    int[][] sat = getHighLowHSV(abca, HSVDetectionThreshold, HSVdata.Sat);
+                    int[][] val = getHighLowHSV(abca, HSVDetectionThreshold, HSVdata.Val);
 
                     if (FirstPass(hue, sat, val, tablet, tablets, HSVTabletcolorsRanges) == true)
                     {
@@ -410,12 +412,12 @@ namespace Tmc.Vision
                         drawTab.Draw(tablet, new Bgr(Color.Red), 2);
 #if DEBUG
                         //Debug.WriteLine("Hue: " + hue[0][0] + " - " + hue[0][1] + ", Sat: " + sat[0][0] + " - " + sat[0][1] + ", Val: " + val[0][0] + " - " + val[0][1]);
-                        Debug.WriteLine("Good: " + hue[0][0] + "\t" + hue[0][1] + "\t" + sat[0][0] + "\t" + sat[0][1] + "\t" + val[0][0] + "\t" + val[0][1]);
+                        Debug.WriteLine("Good: \t" + hue[0][0] + "\t" + hue[0][1] + "\t" + sat[0][0] + "\t" + sat[0][1] + "\t" + val[0][0] + "\t" + val[0][1]);
                         int hueM = hue.GetLength(0) - 1;
                         int satM = sat.GetLength(0) - 1;
                         int valM = val.GetLength(0) - 1;
                         //Debug.WriteLine("Hue: " + hue[hueM][0] + " - " + hue[hueM][1] + ", Sat: " + sat[satM][0] + " - " + sat[satM][1] + ", Val: " + val[valM][0] + " - " + val[valM][1]);
-                        Debug.WriteLine("Good: " + hue[hueM][0] + "\t" + hue[hueM][1] + "\t" + sat[satM][0] + "\t" + sat[satM][1] + "\t" + val[valM][0] + "\t" + val[valM][1]);
+                        Debug.WriteLine("Good: \t" + hue[hueM][0] + "\t" + hue[hueM][1] + "\t" + sat[satM][0] + "\t" + sat[satM][1] + "\t" + val[valM][0] + "\t" + val[valM][1]);
                         Debug.Flush();
 #endif
                     }
@@ -428,12 +430,12 @@ namespace Tmc.Vision
                         drawTab.Draw(tablet, new Bgr(Color.Blue), 2);
 #if DEBUG
                         //Debug.WriteLine("Hue: " + hue[0][0] + " - " + hue[0][1] + ", Sat: " + sat[0][0] + " - " + sat[0][1] + ", Val: " + val[0][0] + " - " + val[0][1]);
-                        Debug.WriteLine("Bad: " + hue[0][0] + "\t" + hue[0][1] + "\t" + sat[0][0] + "\t" + sat[0][1] + "\t" + val[0][0] + "\t" + val[0][1]);
+                        Debug.WriteLine("Bad: \t" + hue[0][0] + "\t" + hue[0][1] + "\t" + sat[0][0] + "\t" + sat[0][1] + "\t" + val[0][0] + "\t" + val[0][1]);
                         int hueM = hue.GetLength(0) - 1;
                         int satM = sat.GetLength(0) - 1;
                         int valM = val.GetLength(0) - 1;
                         //Debug.WriteLine("Hue: " + hue[hueM][0] + " - " + hue[hueM][1] + ", Sat: " + sat[satM][0] + " - " + sat[satM][1] + ", Val: " + val[valM][0] + " - " + val[valM][1]);
-                        Debug.WriteLine("Bad: " + hue[hueM][0] + "\t" + hue[hueM][1] + "\t" + sat[satM][0] + "\t" + sat[satM][1] + "\t" + val[valM][0] + "\t" + val[valM][1]);
+                        Debug.WriteLine("Bad: \t" + hue[hueM][0] + "\t" + hue[hueM][1] + "\t" + sat[satM][0] + "\t" + sat[satM][1] + "\t" + val[valM][0] + "\t" + val[valM][1]);
                         Debug.Flush();
 #endif
                     }

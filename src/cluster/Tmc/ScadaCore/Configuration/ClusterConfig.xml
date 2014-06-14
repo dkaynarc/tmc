@@ -28,6 +28,7 @@
     <MinDist>20</MinDist>
     <CannyThresh>2</CannyThresh>
     <CannyAccumThresh>83</CannyAccumThresh>
+    <HSVDetectionThreshold>150</HSVDetectionThreshold>
   </Hardware>
   <Hardware Type="Camera">
     <Name>TrayVerifierCamera</Name>
@@ -59,6 +60,7 @@
     <MinDist>20</MinDist>
     <CannyThresh>2</CannyThresh>
     <CannyAccumThresh>70</CannyAccumThresh>
+    <HSVDetectionThreshold>150</HSVDetectionThreshold>
   </Hardware>
   <!--<Hardware Type="Sensor">
     <Name>TemperatureSensor</Name>
