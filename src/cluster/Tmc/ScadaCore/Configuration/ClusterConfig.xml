@@ -8,7 +8,7 @@
     <!--<ConnectionString>http://192.168.1.195:8080/photoaf.jpg</ConnectionString>-->
     <!--Jack Cam-->
     <ConnectionString>http://192.168.1.19:8080/photoaf.jpg</ConnectionString>
-    
+
     <!--HSV Color Ranges-->
     <BlackLow>0,0,31</BlackLow>
     <BlackHigh>151,83,87</BlackHigh>
@@ -20,7 +20,7 @@
     <RedHigh>12,168,166</RedHigh>
     <WhiteLow>0,0,166</WhiteLow>
     <WhiteHigh>166,37,252</WhiteHigh>
-  
+
     <!--Other calibration-->
     <MinRadius>60</MinRadius>
     <MaxRadius>63</MaxRadius>
@@ -40,24 +40,24 @@
     <!--<ConnectionString>http://192.168.1.20:8080/photo.jpg</ConnectionString>-->
     <!-- Shale -->
     <ConnectionString>http://192.168.1.8:8080/photo.jpg</ConnectionString>
-    
+
     <!--HSV Color Ranges-->
-    <BlackLow>177,14,61</BlackLow>
-    <BlackHigh>14,84,192</BlackHigh>
-    <BlueLow>122,40,95</BlueLow>
-    <BlueHigh>131,120,200</BlueHigh>
-    <GreenLow>55,50,79</GreenLow>
-    <GreenHigh>75,152,216</GreenHigh>
-    <RedLow>0,113,142</RedLow>
-    <RedHigh>7,185,255</RedHigh>
-    <WhiteLow>0,0,230</WhiteLow>
-    <WhiteHigh>166,47,255</WhiteHigh>
-  
+    <BlackLow>1,14,36</BlackLow>
+    <BlackHigh>72,51,255</BlackHigh>
+    <BlueLow>11,128,28</BlueLow>
+    <BlueHigh>119,118,216</BlueHigh>
+    <GreenLow>55,73,49</GreenLow>
+    <GreenHigh>146,113,222</GreenHigh>
+    <RedLow>0,9,86</RedLow>
+    <RedHigh>177,189,255</RedHigh>
+    <WhiteLow>0,51,0</WhiteLow>
+    <WhiteHigh>39,221,255</WhiteHigh>
+
     <!--Other calibration-->
     <MinRadius>54</MinRadius>
     <MaxRadius>62</MaxRadius>
     <Dp>1.8</Dp>
-    <MinDist>20</MinDist>
+    <MinDist>18</MinDist>
     <CannyThresh>2</CannyThresh>
     <CannyAccumThresh>70</CannyAccumThresh>
     <HSVDetectionThreshold>150</HSVDetectionThreshold>
