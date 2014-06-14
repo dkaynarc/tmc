@@ -95,7 +95,7 @@
   <Hardware Type="LoaderRobot" Name="LoaderRobot" IPAddress="192.168.1.202"/>
   <Hardware Type="SorterRobot" Name="SorterRobot" IPAddress="192.168.1.201"/>
   <Hardware Type="AssemblerRobot" Name="AssemblerRobot" IPAddress="192.168.1.200"/>
-  <Hardware Type="BluetoothConveyor" Name="SorterConveyor" PortName="COM7" WaitTime="7000"/>
+  <Hardware Type="BluetoothConveyor" Name="SorterConveyor" PortName="COM4" WaitTime="7000"/>
   <Hardware Type="SerialConveyor" Name="AssemblyConveyor" PortName="COM3"/>
   <Hardware Type="Plc" Name="MainPlc" IPAddress="192.168.1.5"/>
 </Cluster>

@@ -18,7 +18,7 @@ namespace Tmc.Scada.Core
         private List<IHardware> _allHardware;
         private ScadaEngine _engine;
 
-        public EmergencyStopMonitor(ScadaEngine engine, long updateTimeMsec = 200)
+        public EmergencyStopMonitor(ScadaEngine engine, long updateTimeMsec = 2000)
         {
             this._engine = engine;
             _timer = new Timer(updateTimeMsec);
@@ -55,8 +55,8 @@ namespace Tmc.Scada.Core
         private void Update(object sender, ElapsedEventArgs e)
         {
             var plcSwitches = _plc.GetSwitchStates();
-            var scadaEStopBtn = plcSwitches[PlcAttachedSwitch.ScadaEmergencyStop];
-            var plcEStopBtn = plcSwitches[PlcAttachedSwitch.PlcEmergencyStop];
+            var scadaEStopBtn = !plcSwitches[PlcAttachedSwitch.ScadaEmergencyStop];
+            var plcEStopBtn = !plcSwitches[PlcAttachedSwitch.PlcEmergencyStop];
 
             if (scadaEStopBtn || plcEStopBtn)
             {
