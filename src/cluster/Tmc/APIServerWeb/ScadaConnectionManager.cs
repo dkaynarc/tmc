@@ -16,13 +16,11 @@ namespace APIServerWeb
         {
             get
             {
-                if (_scadaClient == null)
-                {
-                    var pipeFactory = new ChannelFactory<IScada>(
-                        new NetNamedPipeBinding(),
-                        new EndpointAddress(ConfigurationManager.AppSettings["ScadaWcfPipe"]));
-                    _scadaClient = pipeFactory.CreateChannel();
-                }
+                var pipeFactory = new ChannelFactory<IScada>(
+                    new NetNamedPipeBinding(),
+                    new EndpointAddress(ConfigurationManager.AppSettings["ScadaWcfPipe"]));
+                _scadaClient = pipeFactory.CreateChannel();
+
                 return _scadaClient;
             }
         }
