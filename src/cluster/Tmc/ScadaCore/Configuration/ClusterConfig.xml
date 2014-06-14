@@ -13,21 +13,21 @@
     <BlackLow>0,0,31</BlackLow>
     <BlackHigh>151,83,87</BlackHigh>
     <BlueLow>103,77,49</BlueLow>
-    <BlueHigh>122,197,115</BlueHigh>
-    <GreenLow>70,91,60</GreenLow>
-    <GreenHigh>91,188,132</GreenHigh>
-    <RedLow>175,95,110</RedLow>
-    <RedHigh>12,168,166</RedHigh>
-    <WhiteLow>0,0,166</WhiteLow>
-    <WhiteHigh>166,37,252</WhiteHigh>
+    <BlueHigh>122,197,130</BlueHigh>
+    <GreenLow>70,84,60</GreenLow>
+    <GreenHigh>91,188,142</GreenHigh>
+    <RedLow>175,84,110</RedLow>
+    <RedHigh>12,177,168</RedHigh>
+    <WhiteLow>0,0,160</WhiteLow>
+    <WhiteHigh>166,49,255</WhiteHigh>
 
     <!--Other calibration-->
     <MinRadius>60</MinRadius>
     <MaxRadius>63</MaxRadius>
     <Dp>2.3</Dp>
-    <MinDist>20</MinDist>
+    <MinDist>10</MinDist>
     <CannyThresh>2</CannyThresh>
-    <CannyAccumThresh>83</CannyAccumThresh>
+    <CannyAccumThresh>79</CannyAccumThresh>
     <HSVDetectionThreshold>150</HSVDetectionThreshold>
   </Hardware>
   <Hardware Type="Camera">
@@ -42,16 +42,16 @@
     <ConnectionString>http://192.168.1.8:8080/photo.jpg</ConnectionString>
 
     <!--HSV Color Ranges-->
-    <BlackLow>1,14,36</BlackLow>
-    <BlackHigh>72,51,255</BlackHigh>
-    <BlueLow>11,128,28</BlueLow>
-    <BlueHigh>119,118,216</BlueHigh>
-    <GreenLow>55,73,49</GreenLow>
-    <GreenHigh>146,113,222</GreenHigh>
-    <RedLow>0,9,86</RedLow>
-    <RedHigh>177,189,255</RedHigh>
-    <WhiteLow>0,51,0</WhiteLow>
-    <WhiteHigh>39,221,255</WhiteHigh>
+    <BlackLow>1,36,51</BlackLow>
+    <BlackHigh>14,84,255</BlackHigh>
+    <BlueLow>111,28,118</BlueLow>
+    <BlueHigh>128,118,216</BlueHigh>
+    <GreenLow>53,44,113</GreenLow>
+    <GreenHigh>73,146,255</GreenHigh>
+    <RedLow>0,86,189</RedLow>
+    <RedHigh>9,177,255</RedHigh>
+    <WhiteLow>0,0,221</WhiteLow>
+    <WhiteHigh>151,52,255</WhiteHigh>
 
     <!--Other calibration-->
     <MinRadius>54</MinRadius>

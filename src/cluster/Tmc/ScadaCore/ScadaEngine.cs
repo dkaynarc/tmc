@@ -42,7 +42,7 @@ namespace Tmc.Scada.Core
             this.OrderConsumer.Start();
             this.HardwareMonitor.Start();
             this.EnvironmentMonitor.Start();
-            this._eStopMonitor.Start();
+            //this._eStopMonitor.Start();
         }
 
         public bool Initialize()
@@ -178,7 +178,7 @@ namespace Tmc.Scada.Core
                 this.TabletMagazine = new TabletMagazine();
                 this.OrderConsumer = new OrderConsumer();
                 this._sequencer = new FSMSequencer(this);
-                this._eStopMonitor = new EmergencyStopMonitor(this);
+                //this._eStopMonitor = new EmergencyStopMonitor(this);
             }
             catch (Exception ex)
             {

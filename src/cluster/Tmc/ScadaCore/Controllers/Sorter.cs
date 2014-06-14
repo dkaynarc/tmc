@@ -167,22 +167,40 @@ namespace Tmc.Scada.Core
         private ControllerOperationStatus Sort(TabletMagazine mag, CancellationToken ct)
         {
             var status = ControllerOperationStatus.Succeeded;
+            int shakeRetryAttempts = 0;
             try
             {
                 List<Tablet> visibleTablets = null;
-                while ((visibleTablets = GetVisibleTablets()).Count > 0)
+                while (!mag.IsFull())
                 {
-                    var tablet = visibleTablets[0];
-                    Logger.Instance.Write(String.Format("[Sorter] Seen ({0}) tablet seen at ({1},{2}) in camera space",
-                        tablet.Color, tablet.LocationPoint.X, tablet.LocationPoint.Y));
-                    if (mag.IsFull() || ct.IsCancellationRequested)
+                    if (ct.IsCancellationRequested)
                     {
                         status = ControllerOperationStatus.Cancelled;
                         return status;
                     }
-                    if (!mag.IsSlotFull(tablet.Color))
+
+                    visibleTablets = GetVisibleTablets(mag);
+
+                    if (visibleTablets.Count != 0)
                     {
+                        var tablet = visibleTablets[0];
+                        Logger.Instance.Write(String.Format("[Sorter] Seen ({0}) tablet seen at ({1},{2}) in camera space",
+                            tablet.Color, tablet.LocationPoint.X, tablet.LocationPoint.Y));
+                        shakeRetryAttempts = 0;
+
                         PlaceTablet(tablet, mag);
+                    }
+                    else if ((visibleTablets.Count == 0) && (shakeRetryAttempts < MaxShakeRetryAttempts))
+                    {
+                        Logger.Instance.Write(String.Format("[Sorter] No tablets found. Shaking (attempt {0} of {1})",
+                            shakeRetryAttempts, MaxShakeRetryAttempts));
+                        _robot.Shake();
+                        shakeRetryAttempts++;
+                    }
+                    else
+                    {
+                        Logger.Instance.Write(String.Format("[Sorter] Couldnt fully fill the tablet magazine due to insuffient tablets"));
+                        break;
                     }
                 }
             }
@@ -194,24 +212,30 @@ namespace Tmc.Scada.Core
             return status;
         }
 
-        private List<Tablet> GetVisibleTablets()
+        private List<Tablet> GetVisibleTablets(TabletMagazine mag)
         {
-            int shakeRetryAttempts = 0;
-            var visibleTablets = _vision.GetVisibleTablets().Where(t => t.Color != TabletColors.Unknown);
-            var fencedTablets = visibleTablets.Where(t => t.LocationPoint.X > XMin 
+            List<Tablet> visibleTablets = _vision.GetVisibleTablets().Where(t => t.Color != TabletColors.Unknown).ToList();
+
+            List<Tablet> updatedVisibleTablets = new List<Tablet>();
+
+            foreach (Tablet tablet in FencedTablets(visibleTablets))
+            {
+                if(!mag.IsSlotFull(tablet.Color))
+                {
+                    updatedVisibleTablets.Add(tablet);
+                }
+            }
+
+            return updatedVisibleTablets;
+        }
+
+        private IEnumerable<Tablet> FencedTablets(List<Tablet> visibleTablets)
+        {
+            var fencedTablets = visibleTablets.Where(t => t.LocationPoint.X > XMin
                                                         && t.LocationPoint.Y > YMin
                                                         && t.LocationPoint.X < XMax
                                                         && t.LocationPoint.Y < YMax);
-
-            while ((fencedTablets.Count() == 0) && (shakeRetryAttempts < MaxShakeRetryAttempts))
-            {
-                Logger.Instance.Write(String.Format("[Sorter] No tablets found. Shaking (attempt {0} of {1})", 
-                    shakeRetryAttempts, MaxShakeRetryAttempts));
-                _robot.Shake();
-                visibleTablets = _vision.GetVisibleTablets();
-                shakeRetryAttempts++;
-            }
-            return visibleTablets.ToList();
+            return fencedTablets;
         }
 
         private void PlaceTablet(Tablet tablet, TabletMagazine mag)
