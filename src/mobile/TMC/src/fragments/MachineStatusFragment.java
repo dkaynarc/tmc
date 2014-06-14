@@ -22,7 +22,6 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
 import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -45,7 +44,6 @@ import android.widget.Toast;
 
 public class MachineStatusFragment extends ListFragment
 {
-	MediaPlayer mMediaPlayer = new MediaPlayer();
 	private ResultReceiver receiver;
 	private ProgressDialog pd;
 	private Timer timer;
@@ -103,9 +101,6 @@ public class MachineStatusFragment extends ListFragment
 		}
 	};
 
-	
-
-
 	/**
 	 * Sets the layout for the activity.
 	 * 
@@ -126,9 +121,6 @@ public class MachineStatusFragment extends ListFragment
 		((Button) rootView.findViewById(R.id.machinelist_emergencystop_b))
 				.setOnClickListener(onEmergencyStopClickListener);
 
-
-
-		
 		setListAdapter(new MachineStatusAdapter(getActivity(),
 				R.layout.machine_row, new ArrayList<Machine>()/* dummy array */));
 		return rootView;
@@ -170,19 +162,6 @@ public class MachineStatusFragment extends ListFragment
 
 	public void startup()
 	{
-		new Thread() {
-			@Override
-			public void run()
-			{
-				playSound(R.raw.startup);
-				// Replace while and mHandler method with startup() function
-				while (mMediaPlayer.isPlaying())
-				{
-				}
-				/* mHandler.sendEmptyMessage(Constants.STARTUP); */
-			}
-		}.start();
-
 		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
 		makeMachineService(Constants.START_COMMAND);
 	}
@@ -195,19 +174,6 @@ public class MachineStatusFragment extends ListFragment
 
 	public void shutdown()
 	{
-		new Thread() {
-			@Override
-			public void run()
-			{
-				playSound(R.raw.shutdown);
-				// Replace while and mHandler method with shutdown() function
-				while (mMediaPlayer.isPlaying())
-				{
-				}
-				/* mHandler.sendEmptyMessage(Constants.SHUTDOWN); */
-			}
-		}.start();
-
 		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
 		makeMachineService(Constants.STOP_COMMAND);
 	}
@@ -259,27 +225,9 @@ public class MachineStatusFragment extends ListFragment
 		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
 		makeMachineService(Constants.EMERGENCY_STOP_COMMAND);
 		// /////////////
-		playSound(R.raw.stop);
 	}
 
-	/**
-	 * Plays the sound of the id given.
-	 * 
-	 * @param soundId
-	 */
-
-	public void playSound(int soundId)
-	{
-		if (mMediaPlayer.isPlaying())
-			mMediaPlayer.stop();
-		mMediaPlayer = MediaPlayer.create(getActivity(), soundId);
-		mMediaPlayer.setLooping(false);
-		mMediaPlayer.start();
-	}
-
-	
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// private class
 	private class ResultReceiver extends BroadcastReceiver
 	{
@@ -312,9 +260,6 @@ public class MachineStatusFragment extends ListFragment
 		}
 	}
 
-	
-	
-	
 	private void handleStop(String response)
 	{
 		if (response.equalsIgnoreCase("\"success\""))
@@ -357,10 +302,6 @@ public class MachineStatusFragment extends ListFragment
 					Toast.LENGTH_SHORT).show();
 	}
 
-	
-	
-	
-	
 	private void handleMachineStatus(String response)
 	{
 		ArrayList<Machine> newStats = new ArrayList<Machine>();
@@ -379,7 +320,8 @@ public class MachineStatusFragment extends ListFragment
 
 		catch (JSONException e)
 		{
-			Toast.makeText(getActivity(), Constants.UPDATE_FAIL, Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), Constants.UPDATE_FAIL,
+					Toast.LENGTH_SHORT).show();
 			return;
 		}
 
@@ -400,14 +342,6 @@ public class MachineStatusFragment extends ListFragment
 		adapter.notifyDataSetChanged();
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
 	private void doStatusCheck(MachineStatusAdapter adapter,
 			ArrayList<Machine> newStats)
 	{
@@ -425,15 +359,14 @@ public class MachineStatusFragment extends ListFragment
 			}
 
 		}
-			
-		if(changedMach.size() > 0)
+
+		if (changedMach.size() > 0)
 		{
-		   showAlertDialog(buildMessage(changedMach), changedMach.get(0).getMachineStatus());
-	    }
+			showAlertDialog(buildMessage(changedMach), changedMach.get(0)
+					.getMachineStatus());
+		}
 	}
 
-	
-	
 	private String buildMessage(ArrayList<Machine> changedMach)
 	{
 		StringBuilder message = new StringBuilder();
@@ -450,10 +383,18 @@ public class MachineStatusFragment extends ListFragment
 	{
 		super.onStart();
 		receiver = new ResultReceiver();
-		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.MACHINE_STATUS_COMMAND)));
-		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.STOP_COMMAND)));
-		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.START_COMMAND)));
-		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.EMERGENCY_STOP_COMMAND)));
+		getActivity().registerReceiver(
+				receiver,
+				new IntentFilter(Integer
+						.toString(Constants.MACHINE_STATUS_COMMAND)));
+		getActivity().registerReceiver(receiver,
+				new IntentFilter(Integer.toString(Constants.STOP_COMMAND)));
+		getActivity().registerReceiver(receiver,
+				new IntentFilter(Integer.toString(Constants.START_COMMAND)));
+		getActivity().registerReceiver(
+				receiver,
+				new IntentFilter(Integer
+						.toString(Constants.EMERGENCY_STOP_COMMAND)));
 
 		// initial fill of the view with machine status info
 		makeMachineService(Constants.MACHINE_STATUS_COMMAND);
@@ -466,7 +407,8 @@ public class MachineStatusFragment extends ListFragment
 		Intent service;
 
 		if (command == Constants.MACHINE_STATUS_COMMAND)
-			service = new Intent(getActivity(), services.MachineUpdateService.class);
+			service = new Intent(getActivity(),
+					services.MachineUpdateService.class);
 
 		else
 			service = new Intent(getActivity(), services.SynchService.class);
@@ -495,18 +437,19 @@ public class MachineStatusFragment extends ListFragment
 		if (status.equalsIgnoreCase(Constants.ON))
 		{
 			icon.setColorFilter(new LightingColorFilter(Color.GREEN,
-					Color.GREEN));		
+					Color.GREEN));
 		}
 		else
 			icon.setColorFilter(new LightingColorFilter(Color.RED, Color.RED));
 
-		
 		new AlertDialog.Builder(getActivity())
 				.setIcon(icon)
 				.setTitle(Constants.ATTENTION)
 				.setMessage(
-						"The status of the following machinery changed: " + message)
-				.setNegativeButton(Constants.OK, new DialogInterface.OnClickListener() {
+						"The status of the following machinery changed: "
+								+ message)
+				.setNegativeButton(Constants.OK,
+						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id)
 							{
 								dialog.cancel();

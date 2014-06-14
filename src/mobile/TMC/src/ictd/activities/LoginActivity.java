@@ -52,7 +52,8 @@ public class LoginActivity extends Activity
 	public void onLoginClicked(View v)
 	{
 		EditText ipAddress = (EditText) findViewById(R.id.loginactivity_ipaddress_et);
-		Constants.SERVER_URL = "http://" + ipAddress.getText().toString() + "/api/Server/";
+		Constants.SERVER_URL = "http://" + ipAddress.getText().toString()
+				+ "/api/Server/";
 		String userName = ((EditText) findViewById(R.id.loginactivity_username_et))
 				.getText().toString();
 		String password = ((EditText) findViewById(R.id.loginactivity_password_et))
@@ -120,8 +121,9 @@ public class LoginActivity extends Activity
 			{
 				saveToSharedPref(Constants.USERNAME_KEY, msg.getUserName());
 				saveToSharedPref(Constants.USERROLE_KEY, msg.getRoleName());
-				
-				Intent intent = new Intent(LoginActivity.this, ModuleActivity.class);
+
+				Intent intent = new Intent(LoginActivity.this,
+						ModuleActivity.class);
 				startActivity(intent);
 			}
 		}
@@ -131,8 +133,6 @@ public class LoginActivity extends Activity
 
 	}
 
-	
-	
 	private void saveToSharedPref(String key, String value)
 	{
 		SharedPreferences preferences = getSharedPreferences(

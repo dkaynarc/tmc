@@ -12,7 +12,7 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
 import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
+//import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -30,7 +30,7 @@ public class ModuleActivity extends FragmentActivity implements
 {
 	ModuleAdapter mModuleAdapter;
 	ViewPager mViewPager;
-	MediaPlayer mMediaPlayer = new MediaPlayer();
+	// MediaPlayer mMediaPlayer = new MediaPlayer();
 	Menu mMenu = null;
 
 	/**
@@ -133,14 +133,14 @@ public class ModuleActivity extends FragmentActivity implements
 	{
 	}
 
-	public void playSound(int soundId)
-	{
-		if (mMediaPlayer.isPlaying())
-			mMediaPlayer.stop();
-		mMediaPlayer = MediaPlayer.create(this, soundId);
-		mMediaPlayer.setLooping(false);
-		mMediaPlayer.start();
-	}
+	// public void playSound(int soundId)
+	// {
+	// if (mMediaPlayer.isPlaying())
+	// mMediaPlayer.stop();
+	// mMediaPlayer = MediaPlayer.create(this, soundId);
+	// mMediaPlayer.setLooping(false);
+	// mMediaPlayer.start();
+	// }
 
 	public void setConnection(boolean okay)
 	{
@@ -156,7 +156,7 @@ public class ModuleActivity extends FragmentActivity implements
 
 	public void logout()
 	{
-		playSound(R.raw.ohno);
+		// playSound(R.raw.ohno);
 		Drawable myIcon = getResources().getDrawable(
 				android.R.drawable.ic_dialog_alert);
 		ColorFilter filter = new LightingColorFilter(Color.RED, Color.RED);
@@ -170,7 +170,7 @@ public class ModuleActivity extends FragmentActivity implements
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id)
 							{
-								playSound(R.raw.bye);
+								// playSound(R.raw.bye);
 
 								SharedPreferences preferences = getSharedPreferences(
 										Constants.APP_PERSISTANCE, 0);

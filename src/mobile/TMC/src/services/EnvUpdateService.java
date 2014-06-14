@@ -11,7 +11,7 @@ import android.os.Bundle;
 
 public class EnvUpdateService extends IntentService
 {
-	
+
 	private int command;
 
 	public EnvUpdateService()
@@ -30,7 +30,7 @@ public class EnvUpdateService extends IntentService
 
 	private void updateEnv()
 	{
-	    String urlString = Constants.SERVER_URL + "GetEnvironment";
+		String urlString = Constants.SERVER_URL + "GetEnvironment";
 
 		String response = connect(urlString);
 

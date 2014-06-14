@@ -25,7 +25,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -49,11 +48,10 @@ import android.widget.Toast;
 
 public class OrderQueueFragment extends ListFragment
 {
-	MediaPlayer mMediaPlayer = new MediaPlayer();
 	private ResultReceiver receiver;
 	private ProgressDialog pd;
-    private Timer timer;
-	
+	private Timer timer;
+
 	/**
 	 * Implements the order's delete button.
 	 */
@@ -70,18 +68,24 @@ public class OrderQueueFragment extends ListFragment
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id)
 						{
-							
-							
-							if((readUserRole().equalsIgnoreCase(Constants.OPERATOR_ROLE)) || 
-							                  (readCurrentUserName().equalsIgnoreCase(((Order) view.getTag()).getOrderOwner())))
+
+							if ((readUserRole()
+									.equalsIgnoreCase(Constants.OPERATOR_ROLE))
+									|| (readCurrentUserName()
+											.equalsIgnoreCase(((Order) view
+													.getTag()).getOrderOwner())))
 							{
-								makeService(Constants.DELETE_ORDER_COMMAND,((Order) view.getTag()).getOrderId());
-								pd = ProgressDialog.show(getActivity(), null, "Deleting the order");
+								makeService(Constants.DELETE_ORDER_COMMAND,
+										((Order) view.getTag()).getOrderId());
+								pd = ProgressDialog.show(getActivity(), null,
+										"Deleting the order");
 							}
 							else
-							Toast.makeText(getActivity(), 
-										"You are not authorized to delete this order", Toast.LENGTH_SHORT).show();
-							
+								Toast.makeText(
+										getActivity(),
+										"You are not authorized to delete this order",
+										Toast.LENGTH_SHORT).show();
+
 						}
 					})
 					.setNegativeButton(Constants.CANCEL,
@@ -107,7 +111,6 @@ public class OrderQueueFragment extends ListFragment
 			startActivityForResult(intent, Constants.REQUEST_CODE);
 		}
 	};
-	
 
 	/**
 	 * Sets the layout for the activity.
@@ -173,9 +176,11 @@ public class OrderQueueFragment extends ListFragment
 							public void onClick(DialogInterface dialog, int id)
 							{
 
-								
-								if((readUserRole().equalsIgnoreCase(Constants.OPERATOR_ROLE)) || 
-						                  (readCurrentUserName().equalsIgnoreCase(order.getOrderOwner())))
+								if ((readUserRole()
+										.equalsIgnoreCase(Constants.OPERATOR_ROLE))
+										|| (readCurrentUserName()
+												.equalsIgnoreCase(order
+														.getOrderOwner())))
 								{
 									Intent intent = new Intent(getActivity(),
 											ModifyOrderActivity.class);
@@ -209,9 +214,6 @@ public class OrderQueueFragment extends ListFragment
 						}).show();
 	}
 
-	
-	
-	
 	private String readCurrentUserName()
 	{
 		SharedPreferences preferences = getActivity().getSharedPreferences(
@@ -219,10 +221,11 @@ public class OrderQueueFragment extends ListFragment
 		String userName = preferences.getString(Constants.USERNAME_KEY, null);
 		return userName;
 	}
-	
+
 	private String readUserRole()
 	{
- 		SharedPreferences preferences = getActivity().getSharedPreferences(Constants.APP_PERSISTANCE, 0);
+		SharedPreferences preferences = getActivity().getSharedPreferences(
+				Constants.APP_PERSISTANCE, 0);
 		String userName = preferences.getString(Constants.USERROLE_KEY, null);
 		return userName;
 	}
@@ -241,28 +244,15 @@ public class OrderQueueFragment extends ListFragment
 		switch (resultCode)
 		{
 		case Constants.CREATE_ORDER:
-			playSound(R.raw.createorder);
+			Toast.makeText(this.getActivity(), "Order created.",
+					Toast.LENGTH_SHORT).show();
 			break;
 
 		case Constants.MODIFY_ORDER:
-			playSound(R.raw.modifyorder);
+			Toast.makeText(this.getActivity(), "Order modified.",
+					Toast.LENGTH_SHORT).show();
 			break;
 		}
-	}
-
-	/**
-	 * Plays the sound of the id given.
-	 * 
-	 * @param soundId
-	 */
-
-	public void playSound(int songId)
-	{
-		if (mMediaPlayer.isPlaying())
-			mMediaPlayer.stop();
-		mMediaPlayer = MediaPlayer.create(getActivity(), songId);
-		mMediaPlayer.setLooping(false);
-		mMediaPlayer.start();
 	}
 
 	// ///////////////////////////////////////////////////////////////////////////
@@ -278,10 +268,6 @@ public class OrderQueueFragment extends ListFragment
 		getActivity().stopService(service);
 		getActivity().startService(service);
 	}
-	
-	
-	
-	
 
 	// private class
 	private class ResultReceiver extends BroadcastReceiver
@@ -289,9 +275,9 @@ public class OrderQueueFragment extends ListFragment
 		@Override
 		public void onReceive(Context context, Intent intent)
 		{
-			if(pd != null)
-			     pd.dismiss();
-			
+			if (pd != null)
+				pd.dismiss();
+
 			String response = intent.getStringExtra("result");
 
 			switch (Integer.decode(intent.getStringExtra("command")))
@@ -308,10 +294,6 @@ public class OrderQueueFragment extends ListFragment
 		}
 	}
 
-	
-	
-	
-	
 	private void handleOrderDelete(String response)
 	{
 		try
@@ -333,7 +315,8 @@ public class OrderQueueFragment extends ListFragment
 						adapter.remove(order);
 				}
 				adapter.notifyDataSetChanged();
-				playSound(R.raw.deleteorder);
+				Toast.makeText(this.getActivity(), "Order deleted.",
+						Toast.LENGTH_SHORT).show();
 				return;
 			}
 
@@ -352,7 +335,6 @@ public class OrderQueueFragment extends ListFragment
 	{
 		OrderQueueAdapter adapter = (OrderQueueAdapter) getListView()
 				.getAdapter();
-		
 
 		ArrayList<Order> orders = new ArrayList<Order>();
 
@@ -367,85 +349,83 @@ public class OrderQueueFragment extends ListFragment
 
 				Order order = new Order(jObj.getInt("mOrderId"),
 						jObj.getString("mOrderOwner"),
-						jObj.getString("mOrderStatus"), 
-						jObj.getInt("black"),
-						jObj.getInt("blue"), 
-						jObj.getInt("green"),
-						jObj.getInt("red"), 
-						jObj.getInt("white"));
+						jObj.getString("mOrderStatus"), jObj.getInt("black"),
+						jObj.getInt("blue"), jObj.getInt("green"),
+						jObj.getInt("red"), jObj.getInt("white"));
 
 				order.setFinishTime(jObj.getString("endTime"));
 				order.setStartTime(jObj.getString("startTime"));
 				orders.add(order);
 			}
-			
-			if(orders.size() > 0)
-		    {
-			  adapter.clear();
-	    	  adapter.addAll(orders);
-		      adapter.notifyDataSetChanged();
-		      saveOrderDataLocally(orders);
-		      Toast.makeText(getActivity(), "Updated orders information", Toast.LENGTH_SHORT).show();
-	       }
+
+			if (orders.size() > 0)
+			{
+				adapter.clear();
+				adapter.addAll(orders);
+				adapter.notifyDataSetChanged();
+				saveOrderDataLocally(orders);
+				Toast.makeText(getActivity(), "Updated orders information",
+						Toast.LENGTH_SHORT).show();
+			}
 		}
 		catch (JSONException e)
 		{
-			Toast.makeText(getActivity(), Constants.ORDER_UPDATE_FAIL, Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), Constants.ORDER_UPDATE_FAIL,
+					Toast.LENGTH_SHORT).show();
 		}
-     }
+	}
 
-	
-	
 	@Override
 	public void onStart()
 	{
 		super.onStart();
 		receiver = new ResultReceiver();
-		getActivity().registerReceiver( receiver, new IntentFilter(Integer.toString(Constants.UPDATE_ORDERS_COMMAND)));
-		getActivity().registerReceiver(	receiver, new IntentFilter(Integer.toString(Constants.DELETE_ORDER_COMMAND)));
-		
-		if(localDataExist())
+		getActivity().registerReceiver(
+				receiver,
+				new IntentFilter(Integer
+						.toString(Constants.UPDATE_ORDERS_COMMAND)));
+		getActivity().registerReceiver(
+				receiver,
+				new IntentFilter(Integer
+						.toString(Constants.DELETE_ORDER_COMMAND)));
+
+		if (localDataExist())
 		{
 			OrderQueueAdapter adapter = (OrderQueueAdapter) getListView()
 					.getAdapter();
 			adapter.clear();
-	    	adapter.addAll(readLocalOrderData());
-		    adapter.notifyDataSetChanged();
+			adapter.addAll(readLocalOrderData());
+			adapter.notifyDataSetChanged();
 		}
-		else		
-		   pd = ProgressDialog.show(getActivity(), null, "Updating incomplete orders");
-		 
+		else
+			pd = ProgressDialog.show(getActivity(), null,
+					"Updating incomplete orders");
+
 		makeService(Constants.UPDATE_ORDERS_COMMAND, 0);
 		startTimer(Constants.UPDATE_INTERVAL);
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	private boolean localDataExist() 
+	private boolean localDataExist()
 	{
 		ArrayList<Order> orders = readLocalOrderData();
-		if(orders.size() > 0)return true;
-		else return false;
+		if (orders.size() > 0)
+			return true;
+		else
+			return false;
 	}
-	
-	
+
 	private void saveOrderDataLocally(ArrayList<Order> orders)
 	{
 		Gson json = new Gson();
-		
+
 		SharedPreferences preferences = getActivity().getSharedPreferences(
-		                                          Constants.APP_PERSISTANCE, 0);
+				Constants.APP_PERSISTANCE, 0);
 		SharedPreferences.Editor editor = preferences.edit();
 
 		OrderParcel parc = new OrderParcel();
 		parc.setOrders(orders);
 		editor.putString(Constants.ORDERS_KEY, json.toJson(parc));
-		
+
 		editor.commit();
 	}
 
@@ -454,20 +434,17 @@ public class OrderQueueFragment extends ListFragment
 		Gson json = new Gson();
 		SharedPreferences preferences = getActivity().getSharedPreferences(
 				Constants.APP_PERSISTANCE, 0);
-		
-		
-		OrderParcel ordrPrc =  json.fromJson(preferences.getString(Constants.ORDERS_KEY, null), OrderParcel.class);
-		if(ordrPrc != null)	
+
+		OrderParcel ordrPrc = json.fromJson(
+				preferences.getString(Constants.ORDERS_KEY, null),
+				OrderParcel.class);
+		if (ordrPrc != null)
 			return ordrPrc.getOrders();
-		
-		else return new ArrayList<Order>();
+
+		else
+			return new ArrayList<Order>();
 	}
 
-	
-	
-	
-	
-	
 	@Override
 	public void onStop()
 	{
@@ -475,7 +452,6 @@ public class OrderQueueFragment extends ListFragment
 		getActivity().unregisterReceiver(receiver);
 		stopTimer();
 	}
-
 
 	private void stopTimer()
 	{
@@ -516,6 +492,5 @@ public class OrderQueueFragment extends ListFragment
 		}
 
 	}
-
 
 }

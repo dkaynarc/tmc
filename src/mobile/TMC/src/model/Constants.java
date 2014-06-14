@@ -96,9 +96,9 @@ public class Constants
 	public static final CharSequence START_FAIL = "Failed to start the system";
 	public static final int START_COMMAND = 9;
 	public static final int STOP_COMMAND = 10;
-	//public static String SERVER_URL = "http://stesha.com.au/api/Server/";
+	// public static String SERVER_URL = "http://stesha.com.au/api/Server/";
 	public static String SERVER_URL = "";
-	//public static String SERVER_URL = "http://192.168.1.5:8080/api/Server/";
+	// public static String SERVER_URL = "http://192.168.1.5:8080/api/Server/";
 	public static final String ENVIRONMENT = "ENVIRONMENT";
 	public static final String BLACK = "Black";
 	public static final String BLUE = "Blue";
