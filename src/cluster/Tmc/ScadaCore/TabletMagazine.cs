@@ -81,7 +81,15 @@ namespace Tmc.Scada.Core
             {
                 Slots.Add(new Slot(value));
                 _slotIndexMap.Add(value, slotIndex);
-                _slotReverseIndexMap.Add(value, 7 - slotIndex);
+                if (slotIndex == 4)
+                {
+                    _slotReverseIndexMap.Add(value, 3);
+                }
+                else
+                {
+                    _slotReverseIndexMap.Add(value, slotIndex + 4);
+                }
+                //_slotReverseIndexMap.Add(value, 7 - slotIndex);
                 slotIndex++;
             }
         }

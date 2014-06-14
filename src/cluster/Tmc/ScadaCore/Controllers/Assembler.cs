@@ -28,7 +28,7 @@ namespace Tmc.Scada.Core
         {
             _assemblerRobot = config.Robots[typeof(AssemblerRobot)] as AssemblerRobot;
             this._cancelTokenSource = new CancellationTokenSource();
-            this.LastOrderTray = null;
+            this.LastOrderTray = new Tray<Tablet>();
 
             if (_assemblerRobot == null)
             {
@@ -99,9 +99,11 @@ namespace Tmc.Scada.Core
         private ControllerOperationStatus Assemble(TabletMagazine mag, OrderConfiguration orderConfiguration, CancellationToken ct)
         {
             var status = ControllerOperationStatus.Succeeded;
+            this.LastOrderTray = new Tray<Tablet>();
             try
             {
                 var tray = MapOrderToTray(orderConfiguration);
+
                 for (int i = 0; i < tray.Cells.Count; i++)
                 {
                     var tablet = tray.Cells[i];
@@ -124,10 +126,11 @@ namespace Tmc.Scada.Core
                         Logger.Instance.Write(String.Format("[Assembler] Placing ({0}) tablet from slot {1} into slot {2}",
                             tablet.Color, slotIndex, i));
                         _assemblerRobot.PlaceTablet(slotIndex, slotDepth, i);
+                        LastOrderTray.Cells[i] = tablet;
                     }
                 }
                 status = ControllerOperationStatus.Succeeded;
-                LastOrderTray = tray;
+                //LastOrderTray = tray;
             }
             catch (Exception ex)
             {
