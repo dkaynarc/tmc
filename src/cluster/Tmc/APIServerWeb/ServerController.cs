@@ -26,8 +26,6 @@ namespace APIServerWeb
     {
         private const String SCADA_UNAVAILABLE_MESSAGE = "fail :";
         ICTDEntities repository;
-        private const string ON = "ON";
-        private const string OFF = "OFF";
         private const string userRoleName = "user";
         private const string adminRoleName = "operator";
         private int passwordLength = 7;
@@ -129,9 +127,6 @@ namespace APIServerWeb
 
 
 
-
-
-
         public void SetupRoles(string[] roles)
         {
             try
@@ -196,7 +191,7 @@ namespace APIServerWeb
 
 
         [HttpGet]
-        public string PlaceOrder(string var1, int var2, int var3, int var4, int var5, int var6)
+        public String PlaceOrder(string var1, int var2, int var3, int var4, int var5, int var6)
         {
             Order order = new Order
             {
@@ -363,6 +358,7 @@ namespace APIServerWeb
 
 
 
+
         [HttpGet]
         public HttpResponseMessage GetMachineryStatus()
         {
@@ -370,7 +366,7 @@ namespace APIServerWeb
             try
             {
                 IDictionary<string, HardwareStatus> statuses = ScadaConnectionManager.ScadaClient.GetLastHardwareStatuses();
-                List<string> machNames = (List<string>)ScadaConnectionManager.ScadaClient.GetAllHardwareNames();
+                var machNames = ScadaConnectionManager.ScadaClient.GetAllHardwareNames();
 
 
                 foreach (string name in machNames)
@@ -379,28 +375,30 @@ namespace APIServerWeb
                 }
                 return Request.CreateResponse(HttpStatusCode.OK, machinery);
             }
+
+
             catch (Exception exc)
             {
                 if (exc.GetType() == typeof(EndpointNotFoundException))
                 {
                     machinery = new List<MachineParcel>
                    { 
-                    new MachineParcel{ Name = "SORTER", Status = OFF },
-                    new MachineParcel { Name = "ASSEMBLER", Status = OFF },
-                    new MachineParcel { Name = "LOADER", Status = OFF },
-                    new MachineParcel { Name = "PALLETISER", Status = OFF },
-                    new MachineParcel { Name = "CONVEYOR #1", Status = OFF },
-                    new MachineParcel { Name = "CONVEYOR #2", Status = OFF }
-                  };
+                     new MachineParcel{ Name = "SorterRobot", Status = Convert.ToString(HardwareStatus.Offline) },
+                     new MachineParcel { Name = "AssemblerRobot", Status = Convert.ToString(HardwareStatus.Offline)},
+                     new MachineParcel { Name = "LoaderRobot", Status = Convert.ToString(HardwareStatus.Offline) },
+                     new MachineParcel { Name = "SorterCamera", Status = Convert.ToString(HardwareStatus.Offline) },
+                     new MachineParcel { Name = "SorterConveyor", Status = Convert.ToString(HardwareStatus.Offline) },
+                     new MachineParcel { Name = "AssemblyConveyor", Status = Convert.ToString(HardwareStatus.Offline) },
+                     new MachineParcel { Name = "TrayVerifierCamera", Status = Convert.ToString(HardwareStatus.Offline) }
+                   };
 
                     return Request.CreateResponse(HttpStatusCode.OK, machinery);
                 }
-                else 
+                else
                 {
-                    return Request.CreateResponse(HttpStatusCode.InternalServerError, machinery);
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, exc.ToString());
                 }
             }
-            
         }
 
 
@@ -438,8 +436,8 @@ namespace APIServerWeb
         public HttpResponseMessage GetIncompleteOrders()
         {
 
-          
-           IEnumerable<Order> orders = repository.Orders.Where(p => p.StatusID != 3); // status id 3 - the order is complete
+
+            IEnumerable<Order> orders = repository.Orders.Where(p => p.StatusID != 3); // status id 3 - the order is complete
 
             try
             {
@@ -468,7 +466,7 @@ namespace APIServerWeb
                 OrderConfig config = configs.Where(p => p.OrderID == order.OrderID).First();
                 string startDate = "";
                 string endDate = "";
-                
+
                 try
                 {
                     startDate = order.StartTime.Value.ToShortDateString() + " "
@@ -478,7 +476,7 @@ namespace APIServerWeb
                 }
                 catch (Exception)
                 {
-                   
+
                 }
 
 
@@ -536,13 +534,13 @@ namespace APIServerWeb
             try
             {
                 OrderConfig conf = repository.OrderConfigs.Where(p => p.OrderID == orderId).First();
-                
+
                 conf.Green = green;
                 conf.Black = black;
                 conf.Blue = blue;
                 conf.Red = red;
                 conf.White = white;
-                  
+
                 Order order = repository.Orders.Where(p => p.OrderID == orderId).First();
                 order.NumberOfProducts = Convert.ToInt16(black) +
                                               Convert.ToInt16(blue) +
@@ -563,24 +561,29 @@ namespace APIServerWeb
 
 
 
+
         [HttpGet]
         public HttpResponseMessage GetAlarms()
         {
-            IEnumerable<ComponentEventLog> events = repository.ComponentEventLogs.Where(p => p.ID != null);
+            IEnumerable<ComponentEventLog> events = repository.ComponentEventLogs.Select(p => p);
             LinkedList<AlarmParcel> alParcels = new LinkedList<AlarmParcel>();
 
             foreach (ComponentEventLog alarm in events)
             {
-                alParcels.AddLast(
-                    new AlarmParcel
-                    {
-                        Description = alarm.Description,
-                        Id = alarm.ID,
-                        Type = alarm.LogType.Name,
-                        Time = alarm.Timestamp.Value.ToShortDateString() + " " + alarm.Timestamp.Value.ToShortTimeString()
-                    });
+                try
+                {
+                    alParcels.AddLast(
+                        new AlarmParcel
+                        {
+                            Description = alarm.Description,
+                            Id = alarm.ID,
+                            Type = alarm.LogType.Name,
+                            Time = alarm.Timestamp.Value.ToShortDateString() + " " + alarm.Timestamp.Value.ToShortTimeString()
+                        });
+                }
+                catch (Exception)
+                { }// continue retrieving alarm events
             }
-
             return Request.CreateResponse(HttpStatusCode.OK, alParcels);
         }
 
