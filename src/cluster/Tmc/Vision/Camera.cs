@@ -173,14 +173,14 @@ namespace Tmc.Vision
             if (parameters.TryGetValue("CannyAccumThresh", out s))
             {
                 int.TryParse(s, out cannyAccumThresh);
-                this.CannyAccumThresh = CannyAccumThresh;
+                this.CannyAccumThresh = cannyAccumThresh;
             }
             if (parameters.TryGetValue("Dp", out s))
             {
                 double.TryParse(s, out dp);
                 this.Dp = dp;
             }
-            if (parameters.TryGetValue("minDist", out s))
+            if (parameters.TryGetValue("MinDist", out s))
             {
                 double.TryParse(s, out minDist);
                 this.MinDist = minDist;
