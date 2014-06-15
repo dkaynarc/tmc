@@ -36,7 +36,6 @@ public class EnvironmentFragment extends Fragment
 		View rootView = inflater.inflate(R.layout.fragment_environment,
 				container, false);
 
-
 		dustView = (TextView) rootView.findViewById(R.id.environment_dust_tv);
 
 		humidityView = (TextView) rootView
@@ -59,14 +58,17 @@ public class EnvironmentFragment extends Fragment
 		Bundle parcel = new Bundle();
 		parcel.putInt("command", Constants.ENV_UPDATE_COMMAND);
 		service.putExtra("parcel", parcel);
-        getActivity().stopService(service);
+		getActivity().stopService(service);
 		getActivity().startService(service);
 	}
 
 	public void onStart()
 	{
 		receiver = new ResultReceiver();
-		getActivity().registerReceiver(	receiver, new IntentFilter(Integer
+		getActivity()
+				.registerReceiver(
+						receiver,
+						new IntentFilter(Integer
 								.toString(Constants.ENV_UPDATE_COMMAND)));
 		makeService(Constants.ENV_UPDATE_COMMAND);
 		startTimer(Constants.UPDATE_INTERVAL);
@@ -109,7 +111,8 @@ public class EnvironmentFragment extends Fragment
 						Toast.LENGTH_SHORT).show();// to be removed
 			}
 			else
-			  Toast.makeText(getActivity(), Constants.ENV_UPDATE_FAIL, Toast.LENGTH_SHORT).show();		 
+				Toast.makeText(getActivity(), Constants.ENV_UPDATE_FAIL,
+						Toast.LENGTH_SHORT).show();
 		}
 		catch (Exception exc)
 		{
@@ -118,9 +121,6 @@ public class EnvironmentFragment extends Fragment
 		}
 	}
 
-	
-	
-	
 	private void startTimer(long i)
 	{
 		timer = new Timer();

@@ -63,7 +63,7 @@ public class SynchService extends IntentService
 		case Constants.STOP_COMMAND:
 			machineStop();
 			break;
-			
+
 		case Constants.GET_ALARM_COMMAND:
 			getAlarms();
 			break;
@@ -75,17 +75,16 @@ public class SynchService extends IntentService
 
 	}
 
-	private void getAlarms() 
+	private void getAlarms()
 	{
 		urlString += "GetAlarms";
 
 		String response = connect(urlString);
 
 		notifyCaller(response);
-	
+
 	}
 
-	
 	private void machineStop()
 	{
 		urlString += "StopScada";
@@ -129,9 +128,6 @@ public class SynchService extends IntentService
 
 	}
 
-	
-	
-	
 	private void deleteOrder(Bundle parcel)
 	{
 		urlString += "DeleteOrder/" + parcel.getString("orderId");
@@ -142,20 +138,16 @@ public class SynchService extends IntentService
 
 	}
 
-	
-	
 	private void getCompleteOrders(Bundle parcel)
 	{
-		urlString += "GetCompleteOrders/" + parcel.getString("from") + "/" + parcel.getString("to");
+		urlString += "GetCompleteOrders/" + parcel.getString("from") + "/"
+				+ parcel.getString("to");
 
 		String response = connect(urlString);
 
 		notifyCaller(response);
 	}
 
-
-	
-	
 	private void getIncompleteOrders()
 	{
 		urlString += "GetIncompleteOrders";
@@ -164,27 +156,19 @@ public class SynchService extends IntentService
 
 		notifyCaller(response);
 	}
-	
-	
-	
-	
+
 	private void placeNewOrder(Bundle parcel)
 	{
-		urlString += "PlaceOrder/" +
-	                  parcel.getString("orderName") + "/"
-				    + parcel.getString("black") + "/" + 
-	                  parcel.getString("blue")
-				    + "/" + parcel.getString("green") + "/"
-				    + parcel.getString("red") + "/" 
-				    + parcel.getString("white");
+		urlString += "PlaceOrder/" + parcel.getString("orderName") + "/"
+				+ parcel.getString("black") + "/" + parcel.getString("blue")
+				+ "/" + parcel.getString("green") + "/"
+				+ parcel.getString("red") + "/" + parcel.getString("white");
 
 		String response = connect(urlString);
 
 		notifyCaller(response);
 	}
 
-	
-	
 	private void authenticate(Bundle parcel)
 	{
 		urlString += "Authenticate/" + parcel.getString("userName") + "/"
@@ -195,9 +179,6 @@ public class SynchService extends IntentService
 		notifyCaller(response);
 	}
 
-	
-	
-	
 	private String connect(String urlStr)
 	{
 		StringBuilder str = new StringBuilder();
@@ -211,8 +192,8 @@ public class SynchService extends IntentService
 
 			con.setRequestProperty("Content-Type", "application/json");
 			con.setRequestProperty("Accept", "application/json");
-			// int code = con.getResponseCode();
-			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					con.getInputStream()));
 
 			String line;
 
@@ -236,7 +217,7 @@ public class SynchService extends IntentService
 	{
 		Intent intent = new Intent();
 
-		intent.setAction(Integer.toString(command));// sets broadcast receiver to which the message is to be sent
+		intent.setAction(Integer.toString(command));
 		intent.putExtra("command", Integer.toString(command));
 		intent.putExtra("result", response);
 		sendBroadcast(intent);

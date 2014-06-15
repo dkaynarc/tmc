@@ -24,9 +24,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class ModuleAdapter extends FragmentPagerAdapter
 {
 	private Context context;
-    private String roleName;
-
-
+	private String roleName;
 
 	public ModuleAdapter(FragmentManager fm, Context context)
 	{
@@ -102,7 +100,7 @@ public class ModuleAdapter extends FragmentPagerAdapter
 	@Override
 	public CharSequence getPageTitle(int position)
 	{
-		if(roleName.equals(Constants.OPERATOR_ROLE))
+		if (roleName.equals(Constants.OPERATOR_ROLE))
 		{
 			switch (position)
 			{
@@ -127,13 +125,11 @@ public class ModuleAdapter extends FragmentPagerAdapter
 				return Constants.COMPLETED_ORDERS;
 			}
 	}
-	
-	
-	
-	
+
 	private String readUserRole()
 	{
- 		SharedPreferences preferences = ((ModuleActivity)context).getSharedPreferences(Constants.APP_PERSISTANCE, 0);
+		SharedPreferences preferences = ((ModuleActivity) context)
+				.getSharedPreferences(Constants.APP_PERSISTANCE, 0);
 		String userName = preferences.getString(Constants.USERROLE_KEY, null);
 		return userName;
 	}

@@ -1,6 +1,7 @@
 /* COPYRIGHT (C) 2014 Carlo Chumroonridhi. All Rights Reserved. */
 
 package adapters;
+
 import ictd.activities.R;
 import java.util.ArrayList;
 import model.Order;

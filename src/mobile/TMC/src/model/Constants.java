@@ -19,30 +19,6 @@ public class Constants
 	public static final String OFF = "Offline";
 	public static final String ROBOT = "Robot";
 	public static final String CONVEYOR = "Conveyor";
-	/*
-	 * public static final ArrayList<Order> ORDERS = new ArrayList<Order>(
-	 * Arrays.asList(new Order(1029231, "Carlo", COMPLETE), ///new
-	 * Order(2294714, "Joel", ACTIVE), new Order(3129214, "Siarhei",PENDING),
-	 * new Order(2294714, "Joel", PENDING), new Order(3129214, "Siarhei",
-	 * PENDING), new Order(2294714, "Joel",PENDING), new Order(3129214,
-	 * "Siarhei", PENDING), new Order(2294714, "Joel", PENDING), new
-	 * Order(3129214, "Siarhei", PENDING), new Order(2294714, "Joel",PENDING),
-	 * new Order(3129214, "Siarhei", PENDING), new Order(2294714, "Joel",
-	 * PENDING), new Order(3129214, "Siarhei", PENDING), new Order(2294714,
-	 * "Joel",PENDING), new Order(3129214, "Siarhei", PENDING), new
-	 * Order(9365826, "Smit", COMPLETE)));
-	 */
-	/*
-	 * public static final ArrayList<Machine> MACHINES = new ArrayList<Machine>(
-	 * Arrays.asList(new Machine("Sorter", ROBOT, ON), new Machine("Assembler",
-	 * ROBOT, OFF), new Machine("Loader", ROBOT, ON), new Machine("Palletiser",
-	 * ROBOT, OFF), new Machine("Conveyor #1", CONVEYOR, ON), new
-	 * Machine("Conveyor #2", CONVEYOR, OFF)));
-	 */
-	/*
-	 * public static final String USERNAME = "mobile"; public static final
-	 * String PASSWORD = "ictd";
-	 */
 	public static final String WRONGINFO = "Incorrect username/password.";
 	public static final String NAME = "Name";
 	public static final String NUMBER = "Number";
@@ -96,9 +72,9 @@ public class Constants
 	public static final CharSequence START_FAIL = "Failed to start the system";
 	public static final int START_COMMAND = 9;
 	public static final int STOP_COMMAND = 10;
-	//public static String SERVER_URL = "http://stesha.com.au/api/Server/";
+	// public static String SERVER_URL = "http://stesha.com.au/api/Server/";
 	public static String SERVER_URL = "";
-	//public static String SERVER_URL = "http://192.168.1.5:8080/api/Server/";
+	// public static String SERVER_URL = "http://192.168.1.5:8080/api/Server/";
 	public static final String ENVIRONMENT = "ENVIRONMENT";
 	public static final String BLACK = "Black";
 	public static final String BLUE = "Blue";

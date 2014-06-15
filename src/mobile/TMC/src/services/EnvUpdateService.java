@@ -11,7 +11,7 @@ import android.os.Bundle;
 
 public class EnvUpdateService extends IntentService
 {
-	
+
 	private int command;
 
 	public EnvUpdateService()
@@ -30,7 +30,7 @@ public class EnvUpdateService extends IntentService
 
 	private void updateEnv()
 	{
-	    String urlString = Constants.SERVER_URL + "GetEnvironment";
+		String urlString = Constants.SERVER_URL + "GetEnvironment";
 
 		String response = connect(urlString);
 
@@ -51,9 +51,7 @@ public class EnvUpdateService extends IntentService
 			con.setRequestProperty("Cache-Control", "no-cache");
 			con.setRequestProperty("Content-Type", "application/json");
 			con.setRequestProperty("Accept", "application/json");
-			// int code = con.getResponseCode();
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					con.getInputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
 			String line;
 

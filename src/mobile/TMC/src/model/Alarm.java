@@ -1,39 +1,39 @@
 package model;
 
-public class Alarm {
+public class Alarm
+{
 
-	
 	private CharSequence id = null;
 	private CharSequence type = null;
 	private CharSequence description = null;
 	private CharSequence time = null;
-	
-	public Alarm(String id, String type, String description, String time) 
+
+	public Alarm(String id, String type, String description, String time)
 	{
 		this.id = id;
 		this.type = type;
 		this.description = description;
-	    this.time = time;
+		this.time = time;
 	}
 
 	public CharSequence getId()
-	{	
+	{
 		return id;
 	}
 
-	public CharSequence getType() 
+	public CharSequence getType()
 	{
 		return type;
 	}
 
-	public CharSequence getDescription() 
-	{	
+	public CharSequence getDescription()
+	{
 		return description;
 	}
 
-	public CharSequence getTime() 
-	{	
+	public CharSequence getTime()
+	{
 		return time;
 	}
-	
+
 }

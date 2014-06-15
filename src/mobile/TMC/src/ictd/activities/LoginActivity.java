@@ -120,8 +120,9 @@ public class LoginActivity extends Activity
 			{
 				saveToSharedPref(Constants.USERNAME_KEY, msg.getUserName());
 				saveToSharedPref(Constants.USERROLE_KEY, msg.getRoleName());
-				
-				Intent intent = new Intent(LoginActivity.this, ModuleActivity.class);
+
+				Intent intent = new Intent(LoginActivity.this,
+						ModuleActivity.class);
 				startActivity(intent);
 			}
 		}
@@ -131,8 +132,6 @@ public class LoginActivity extends Activity
 
 	}
 
-	
-	
 	private void saveToSharedPref(String key, String value)
 	{
 		SharedPreferences preferences = getSharedPreferences(
