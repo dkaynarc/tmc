@@ -36,10 +36,6 @@ public class SynchService extends IntentService
 			placeNewOrder(parcel);
 			break;
 
-		case Constants.UPDATE_ORDERS_COMMAND:
-			getIncompleteOrders();
-			break;
-
 		case Constants.DELETE_ORDER_COMMAND:
 			deleteOrder(parcel);
 			break;
@@ -148,14 +144,14 @@ public class SynchService extends IntentService
 		notifyCaller(response);
 	}
 
-	private void getIncompleteOrders()
-	{
-		urlString += "GetIncompleteOrders";
+	//private void getIncompleteOrders()
+	//{
+	//	urlString += "GetIncompleteOrders";
 
-		String response = connect(urlString);
+		//String response = connect(urlString);
 
-		notifyCaller(response);
-	}
+	//	notifyCaller(response);
+	//}
 
 	private void placeNewOrder(Bundle parcel)
 	{

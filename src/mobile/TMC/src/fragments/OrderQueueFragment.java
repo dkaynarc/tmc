@@ -258,7 +258,16 @@ public class OrderQueueFragment extends ListFragment
 	// ///////////////////////////////////////////////////////////////////////////
 	private void makeService(int command, int orderId)
 	{
-		Intent service = new Intent(getActivity(), services.SynchService.class);
+		Intent service;
+		if(command == Constants.UPDATE_ORDERS_COMMAND)
+		{
+			service = new Intent(getActivity(), services.OrdersService.class);
+		}
+		else
+		{
+			service = new Intent(getActivity(), services.SynchService.class);
+		}
+		
 		Bundle parcel = new Bundle();
 		parcel.putInt("command", command);
 		parcel.putString("orderId", Integer.toString(orderId));

@@ -224,7 +224,7 @@ public class CompletedOrderFragment extends ListFragment
 
 	private void makeService(int command, String from, String to)
 	{
-		pd = ProgressDialog.show(getActivity(), null, "Contacting server");
+		pd = ProgressDialog.show(getActivity(), null, "Getting complete orders");
 		Intent service = new Intent(getActivity(), services.SynchService.class);
 		Bundle parcel = new Bundle();
 		parcel.putString("from", from);

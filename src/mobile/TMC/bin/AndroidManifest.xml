@@ -78,6 +78,11 @@
               android:name="services.EnvUpdateService">
           </service> 
        
+          <service 
+              android:enabled="true" 
+              android:name="services.OrdersService">
+          </service> 
+          
     </application>
 
 </manifest>
