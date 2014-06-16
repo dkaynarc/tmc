@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 public class AlarmsFragment extends ListFragment
 {
@@ -70,9 +71,9 @@ public class AlarmsFragment extends ListFragment
 		Intent service = new Intent(getActivity(), services.SynchService.class);
 		Bundle parcel = new Bundle();
 		parcel.putInt("command", Constants.GET_ALARM_COMMAND);
-		service.putExtra("parcel", parcel);
-
-		
+		service.putExtra("parcel", parcel);	
+		// stop any already running services associated with this activity
+		getActivity().stopService(service);
 		getActivity().startService(service);
 	}
 
@@ -90,10 +91,7 @@ public class AlarmsFragment extends ListFragment
 
 	private void handleAlarms(String response)
 	{
-		Log.v("MAD", response);
-
 		AlarmsAdapter adapter = (AlarmsAdapter) getListView().getAdapter();
-		adapter.clear();
 
 		ArrayList<Alarm> alarms = new ArrayList<Alarm>();
 		JSONArray jArray;
@@ -114,9 +112,13 @@ public class AlarmsFragment extends ListFragment
 		}
 		catch (JSONException e)
 		{
+			Toast.makeText(getActivity(), "Failed to retrieve alarms data", Toast.LENGTH_SHORT).show();
 			Log.v("MAD", e.toString());
 		}
 
+		if(alarms.size() > 0)
+			adapter.clear();
+		
 		adapter.addAll(alarms);
 		adapter.notifyDataSetChanged();
 	}

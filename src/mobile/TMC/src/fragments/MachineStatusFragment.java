@@ -383,18 +383,10 @@ public class MachineStatusFragment extends ListFragment
 	{
 		super.onStart();
 		receiver = new ResultReceiver();
-		getActivity().registerReceiver(
-				receiver,
-				new IntentFilter(Integer
-						.toString(Constants.MACHINE_STATUS_COMMAND)));
-		getActivity().registerReceiver(receiver,
-				new IntentFilter(Integer.toString(Constants.STOP_COMMAND)));
-		getActivity().registerReceiver(receiver,
-				new IntentFilter(Integer.toString(Constants.START_COMMAND)));
-		getActivity().registerReceiver(
-				receiver,
-				new IntentFilter(Integer
-						.toString(Constants.EMERGENCY_STOP_COMMAND)));
+		getActivity().registerReceiver( receiver, new IntentFilter(Integer.toString(Constants.MACHINE_STATUS_COMMAND)));
+		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.STOP_COMMAND)));
+		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.START_COMMAND)));
+		getActivity().registerReceiver(receiver, new IntentFilter(Integer.toString(Constants.EMERGENCY_STOP_COMMAND)));
 
 		// initial fill of the view with machine status info
 		makeMachineService(Constants.MACHINE_STATUS_COMMAND);

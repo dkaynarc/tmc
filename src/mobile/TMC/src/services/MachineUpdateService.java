@@ -12,7 +12,6 @@ import android.os.Bundle;
 public class MachineUpdateService extends IntentService
 {
 	private String urlString = Constants.SERVER_URL;
-	// private String urlString = "http://172.19.14.150:9000/api/Server/";
 	private int command;
 
 	public MachineUpdateService()

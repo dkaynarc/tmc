@@ -106,17 +106,7 @@ public class CreateOrderActivity extends Activity
 				Integer.decode(spBlue.getSelectedItem().toString()),
 				Integer.decode(spGreen.getSelectedItem().toString()),
 				Integer.decode(spRed.getSelectedItem().toString()),
-				Integer.decode(spWhite.getSelectedItem().toString())); // the
-																		// user
-																		// name
-																		// is to
-																		// be
-																		// changed
-																		// to a
-																		// real
-																		// user
-																		// name
-
+				Integer.decode(spWhite.getSelectedItem().toString())); 
 		if (newOrder.getQuantity() < 1)
 		{
 			Toast.makeText(getBaseContext(), Constants.ENTER_ITEMS_QUANTITY,

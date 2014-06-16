@@ -91,6 +91,8 @@ public class OrderQueueAdapter extends ArrayAdapter<Order>
 			{
 				if (order.getOrderStatus().equals(Constants.PENDING))
 					picture.setImageResource(R.drawable.pending);
+				else if (order.getOrderStatus().equals(Constants.CANCELLED))
+					picture.setImageResource(R.drawable.cancelled);
 				else if (order.getOrderStatus().equals(Constants.ASSEMBLY))
 					picture.setImageResource(R.drawable.active);
 				else if (order.getOrderStatus().equals(Constants.COMPLETE))
