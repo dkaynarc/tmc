@@ -225,12 +225,24 @@
     <None Include="Properties\DataSources\Tmc.Scada.Core.TabletMagazine1.datasource" />
     <None Include="Properties\DataSources\TmcData.ComponentEventLogView.datasource" />
     <None Include="Properties\DataSources\TmcData.Datasets.ReportDataSet.datasource" />
-    <None Include="Reporting\AlarmReport.rdlc" />
-    <EmbeddedResource Include="Reporting\CycleReport.rdlc" />
-    <EmbeddedResource Include="Reporting\EnvironmentReport.rdlc" />
-    <EmbeddedResource Include="Reporting\MachineReport.rdlc" />
-    <EmbeddedResource Include="Reporting\OrderReport.rdlc" />
-    <EmbeddedResource Include="Reporting\ProductionReport.rdlc" />
+    <None Include="Reporting\AlarmReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="Reporting\CycleReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reporting\EnvironmentReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reporting\MachineReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reporting\OrderReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reporting\ProductionReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="ReportViewerForm.resx">
       <DependentUpon>ReportViewerForm.cs</DependentUpon>
     </EmbeddedResource>

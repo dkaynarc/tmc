@@ -143,7 +143,7 @@ namespace Tmc.Scada.App
             }
 
             string reportName = ReportNameDictionary[reportType]; // get report name from dicitionary
-            reportViewerForm.ReportViewer.LocalReport.ReportPath = "..\\..\\Reporting\\" + reportName + ".rdlc"; // get report template file
+            reportViewerForm.ReportViewer.LocalReport.ReportPath = "Reporting\\" + reportName + ".rdlc"; // get report template file
             reportViewerForm.ReportViewer.LocalReport.DataSources.Clear();
             reportViewerForm.ReportViewer.LocalReport.DataSources.Add(new ReportDataSource(reportName + "DataSet", this.GetReportDataSource(reportType, startDate, endDate)));
         }
