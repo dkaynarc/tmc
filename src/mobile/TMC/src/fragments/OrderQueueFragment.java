@@ -56,49 +56,6 @@ public class OrderQueueFragment extends ListFragment
 	 * Implements the order's delete button.
 	 */
 
-	private OnClickListener onDeleteOrderClickListener = new OnClickListener() {
-		public void onClick(final View view)
-		{
-			new AlertDialog.Builder(getActivity())
-					.setIcon(android.R.drawable.ic_delete)
-					.setTitle(Constants.DELETE_TITLE)
-					.setMessage(Constants.DELETE_CONFIRM)
-					.setPositiveButton(Constants.OK,
-
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id)
-						{
-
-							if ((readUserRole()
-									.equalsIgnoreCase(Constants.OPERATOR_ROLE))
-									|| (readCurrentUserName()
-											.equalsIgnoreCase(((Order) view
-													.getTag()).getOrderOwner())))
-							{
-								makeService(Constants.DELETE_ORDER_COMMAND,
-										((Order) view.getTag()).getOrderId());
-								pd = ProgressDialog.show(getActivity(), null,
-										"Deleting the order");
-							}
-							else
-								Toast.makeText(
-										getActivity(),
-										"You are not authorized to delete this order",
-										Toast.LENGTH_SHORT).show();
-
-						}
-					})
-					.setNegativeButton(Constants.CANCEL,
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int id)
-								{
-									dialog.cancel();
-								}
-							}).show();
-		}
-	};
-
 	/**
 	 * Implements the create order onClick Listener which starts up the new
 	 * activity.
@@ -128,7 +85,7 @@ public class OrderQueueFragment extends ListFragment
 
 		// Replace list "orders" with the list of orders returned
 		setListAdapter(new OrderQueueAdapter(getActivity(), R.layout.order_row,
-				new ArrayList<Order>(), onDeleteOrderClickListener));
+				new ArrayList<Order>()));
 
 		return rootView;
 	}
@@ -171,7 +128,7 @@ public class OrderQueueFragment extends ListFragment
 							}
 						})
 
-				.setNegativeButton(Constants.MODIFY,
+				.setNeutralButton(Constants.MODIFY,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id)
 							{
@@ -210,6 +167,47 @@ public class OrderQueueFragment extends ListFragment
 											Constants.NOT_AUTHORIZED,
 											Toast.LENGTH_SHORT).show();
 								}
+							}
+						})
+				.setNegativeButton("DELETE",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id)
+							{
+								dialog.dismiss();
+								new AlertDialog.Builder(getActivity())
+										.setIcon(android.R.drawable.ic_delete)
+										.setTitle(Constants.DELETE_TITLE)
+										.setMessage(Constants.DELETE_CONFIRM)
+										.setPositiveButton(Constants.OK,
+
+										new DialogInterface.OnClickListener() {
+											public void onClick(
+													DialogInterface dialog,
+													int id)
+											{
+
+												if ((readUserRole()
+														.equalsIgnoreCase(Constants.OPERATOR_ROLE))
+														|| (readCurrentUserName()
+																.equalsIgnoreCase(order
+																		.getOrderOwner())))
+												{
+													makeService(
+															Constants.DELETE_ORDER_COMMAND,
+															order.getOrderId());
+													pd = ProgressDialog
+															.show(getActivity(),
+																	null,
+																	"Deleting the order");
+												}
+												else
+													Toast.makeText(
+															getActivity(),
+															"You are not authorized to delete this order",
+															Toast.LENGTH_SHORT)
+															.show();
+											}
+										}).show();
 							}
 						}).show();
 	}
@@ -258,16 +256,7 @@ public class OrderQueueFragment extends ListFragment
 	// ///////////////////////////////////////////////////////////////////////////
 	private void makeService(int command, int orderId)
 	{
-		Intent service;
-		if(command == Constants.UPDATE_ORDERS_COMMAND)
-		{
-			service = new Intent(getActivity(), services.OrdersService.class);
-		}
-		else
-		{
-			service = new Intent(getActivity(), services.SynchService.class);
-		}
-		
+		Intent service = new Intent(getActivity(), services.SynchService.class);
 		Bundle parcel = new Bundle();
 		parcel.putInt("command", command);
 		parcel.putString("orderId", Integer.toString(orderId));
@@ -459,9 +448,9 @@ public class OrderQueueFragment extends ListFragment
 	{
 		getActivity().unregisterReceiver(receiver);
 		stopTimer();
-		if(pd != null)
+		if (pd != null)
 			pd.dismiss();
-		
+
 		super.onStop();
 	}
 

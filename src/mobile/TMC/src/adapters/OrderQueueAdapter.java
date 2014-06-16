@@ -11,7 +11,6 @@ import model.Order;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -28,7 +27,6 @@ import android.widget.TextView;
 public class OrderQueueAdapter extends ArrayAdapter<Order>
 {
 	ArrayList<Order> mObjects = null;
-	OnClickListener mOnClickListener;
 
 	/**
 	 * Initializes the Order adapter's order items.
@@ -37,11 +35,10 @@ public class OrderQueueAdapter extends ArrayAdapter<Order>
 	 */
 
 	public OrderQueueAdapter(Context context, int resource,
-			ArrayList<Order> objects, OnClickListener onClickListener)
+			ArrayList<Order> objects)
 	{
 		super(context, resource, objects);
 		mObjects = objects;
-		mOnClickListener = onClickListener;
 	}
 
 	/**
@@ -81,6 +78,7 @@ public class OrderQueueAdapter extends ArrayAdapter<Order>
 					.findViewById(R.id.orderrow_orderstatus_iv);
 			ImageButton delete = (ImageButton) v
 					.findViewById(R.id.orderrow_deleteorder_ib);
+			delete.setVisibility(View.INVISIBLE);
 			if (name != null)
 				name.setText(order.getOrderOwner());
 			if (number != null)// ////////////////exception here
@@ -97,11 +95,6 @@ public class OrderQueueAdapter extends ArrayAdapter<Order>
 					picture.setImageResource(R.drawable.active);
 				else if (order.getOrderStatus().equals(Constants.COMPLETE))
 					picture.setImageResource(R.drawable.complete);
-			}
-			if (delete != null)
-			{
-				delete.setOnClickListener(mOnClickListener);
-				delete.setTag(order);
 			}
 		}
 		else
